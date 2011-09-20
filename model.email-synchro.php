@@ -228,7 +228,8 @@ class RawEmailMessage
 		{
 			$sName = $aMatches[1];
 		}
-		$sName = ucwords(strtolower($sName)); // Even prettier: make each first letter of each word - and only them - upper case
+		// Warning: the line below generates incorrect utf-8 for the character 'é' when running on Windows/PHP 5.3.6
+		//$sName = ucwords(strtolower($sName)); // Even prettier: make each first letter of each word - and only them - upper case
 		return $sName;
 	}
 	
@@ -567,7 +568,6 @@ class POP3EmailSource extends EmailSource
 	 */
 	public function DeleteMessage($index)
 	{
-		return true;
 		$ret = $this->oPop3->deleteMsg(1+$index);
 		return $ret;
 
