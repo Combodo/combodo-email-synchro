@@ -1,0 +1,64 @@
+Return-Path: <pada@alice-dsl.net>
+Delivered-To: tickets@combodo.com
+Received: from b0.ovh.net (HELO queue) (213.186.33.50)
+	by b0.ovh.net with SMTP; 3 Apr 2011 21:00:37 +0200
+Received: from localhost (HELO mail469.ha.ovh.net) (127.0.0.1)
+  by localhost with SMTP; 3 Apr 2011 21:00:37 +0200
+Received: from b0.ovh.net (HELO queueout) (213.186.33.50)
+	by b0.ovh.net with SMTP; 3 Apr 2011 21:00:36 +0200
+Delivered-To: combodo.com-support@combodo.com
+Received: from b0.ovh.net (HELO queue) (213.186.33.50)
+	by b0.ovh.net with SMTP; 3 Apr 2011 21:00:36 +0200
+Received: from jack.hrz.tu-chemnitz.de (134.109.132.46)
+  by mx1.ovh.net with SMTP; 3 Apr 2011 21:00:36 +0200
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=tu-chemnitz.de; s=dkim2010;
+	h=Sender:Content-Type:MIME-Version:Message-ID:Subject:To:From:Date; bh=pwy8iQxFNUZB6ZFiBJm/pS4Jt0AM+Y/WMbyX/bry2mo=;
+	b=sH3m9mVIdPoJnkC8bwQFUiRiftYsR9Yi/xv9mNnw7ayvuAGiIc4zcZLOVlfAYirz6rWesX4oHkNsymiYO4uDMzWAlJ7+7DYYIWFyQ6OY4orCU4khpPrEJeApm14LzoTEJBAxh1DdDzz9VB6kJPadRidSXVwbBpLEnvVfuBdmHvE=;
+Received: from e176006046.adsl.alicedsl.de ([85.176.6.46] helo=localhost.localdomain)
+	by jack.hrz.tu-chemnitz.de with esmtpsa (TLSv1:AES256-SHA:256)
+	(Exim 4.74)
+	(envelope-from <pada@alice-dsl.net>)
+	id 1Q6SXL-0005z2-Ez
+	for support@combodo.com; Sun, 03 Apr 2011 21:00:35 +0200
+Received: from pada with local id 1Q6SXL-0003Kr-Ic
+	for support@combodo.com; Sun, 03 Apr 2011 21:00:35 +0200
+Date: Sun, 3 Apr 2011 21:00:35 +0200
+From: Daniel Parthey <pada@alice-dsl.net>
+To: support@combodo.com
+Subject: iTop on Chemnitz Linux Days 2012
+Message-ID: <20110403190035.GA12759@daniel.localdomain>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+User-Agent: Mutt/1.5.20 (2009-06-14)
+Sender: pada@alice-dsl.net
+X-Spam-Score: 0.0 (/)
+X-Spam-Report: --- Textanalyse SpamAssassin 3.3.1 (0.0 Punkte)
+ Fragen an/questions to:  Postmaster TU Chemnitz <postmaster@tu-chemnitz.de>
+ *  0.0 UNPARSEABLE_RELAY Informational: message has unparseable relay lines
+ --- Ende Textanalyse
+X-Scan-Signature: e22f204a10c8c9aa5eddfd3a49287aa0
+X-Ovh-Tracer-Id: 14110903533905066254
+X-Ovh-Remote: 134.109.132.46 (jack.hrz.tu-chemnitz.de)
+X-Ovh-Local: 213.186.33.29 (mx1.ovh.net)
+X-Spam-Check: DONE|U 0.5/N
+
+Hello iTop Team,
+
+what about registering a booth or talk at Chemnitz Linux Days
+for next year, March 2012?
+
+You can find more information about the event at
+http://chemnitzer.linux-tage.de/
+http://de.wikipedia.org/wiki/Chemnitzer_Linux-Tage
+
+Registration for Talks and Demonstration will be on the website around
+December 2011. Since this is a very popular German Linux and OpenSource
+event, talks and presentation should be in german to reach the widest
+possible audience.
+
+It is also possible to become a sponsor of the event:
+http://chemnitzer.linux-tage.de/2011/info/sponsoren/facts/?cookielang=en
+
+Kind regards
+Daniel Parthey

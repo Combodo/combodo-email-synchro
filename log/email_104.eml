@@ -1,0 +1,99 @@
+Return-Path: <bnovihoho@ecggh.com>
+Delivered-To: tickets@combodo.com
+Received: from b0.ovh.net (HELO queue) (213.186.33.50)
+	by b0.ovh.net with SMTP; 9 Aug 2011 17:53:05 +0200
+Received: from localhost (HELO mail478.ha.ovh.net) (127.0.0.1)
+  by localhost with SMTP; 9 Aug 2011 17:53:05 +0200
+Received: from b0.ovh.net (HELO queueout) (213.186.33.50)
+	by b0.ovh.net with SMTP; 9 Aug 2011 17:53:05 +0200
+Delivered-To: combodo.com-support@combodo.com
+Received: from b0.ovh.net (HELO queue) (213.186.33.50)
+	by b0.ovh.net with SMTP; 9 Aug 2011 17:53:05 +0200
+Received: from ecg-mailgw.ecggh.com (80.87.77.103)
+  by mx1.ovh.net with SMTP; 9 Aug 2011 17:53:03 +0200
+Received: from ECG-MAILSVR.ecggh.com ([192.168.3.251]) by ECG-MAILGW.ecggh.com with Microsoft SMTPSVC(6.0.3790.4675);
+	 Tue, 9 Aug 2011 15:53:02 +0000
+Content-class: urn:content-classes:message
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01CC56AC.6AF2419A"
+Subject: Use i top to generate Monthly report
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Date: Tue, 9 Aug 2011 15:53:00 -0000
+Message-ID: <94C5F4A5264B804E9308A01567BC9631B46564@ECG-MAILSVR.ecggh.com>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: Use i top to generate Monthly report
+Thread-Index: AcxWrC+IDMmLG8C0RZyNW7cxgTilMw==
+From: "Benjamin Novihoho" <bnovihoho@ecggh.com>
+To: <support@combodo.com>
+Return-Path: bnovihoho@ecggh.com
+X-OriginalArrivalTime: 09 Aug 2011 15:53:02.0034 (UTC) FILETIME=[6B3BB320:01CC56AC]
+X-Ovh-Tracer-Id: 6331779602153281294
+X-Ovh-Remote: 80.87.77.103 (ecg-mailgw.ecggh.com)
+X-Ovh-Local: 213.186.33.29 (mx1.ovh.net)
+X-Spam-Check: DONE|U 0.5/N
+
+This is a multi-part message in MIME format.
+
+------_=_NextPart_001_01CC56AC.6AF2419A
+Content-Type: text/plain;
+	charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+
+I really want to know how I can use itop to generate a monthly report
+
+
+------_=_NextPart_001_01CC56AC.6AF2419A
+Content-Type: text/html;
+	charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+
+<html xmlns:v=3D"urn:schemas-microsoft-com:vml" =
+xmlns:o=3D"urn:schemas-microsoft-com:office:office" =
+xmlns:w=3D"urn:schemas-microsoft-com:office:word" =
+xmlns:m=3D"http://schemas.microsoft.com/office/2004/12/omml" =
+xmlns=3D"http://www.w3.org/TR/REC-html40"><head><META =
+HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
+charset=3Dus-ascii"><meta name=3DGenerator content=3D"Microsoft Word 14 =
+(filtered medium)"><style><!--
+/* Font Definitions */
+@font-face
+	{font-family:Calibri;
+	panose-1:2 15 5 2 2 2 4 3 2 4;}
+/* Style Definitions */
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0in;
+	margin-bottom:.0001pt;
+	font-size:11.0pt;
+	font-family:"Calibri","sans-serif";}
+a:link, span.MsoHyperlink
+	{mso-style-priority:99;
+	color:blue;
+	text-decoration:underline;}
+a:visited, span.MsoHyperlinkFollowed
+	{mso-style-priority:99;
+	color:purple;
+	text-decoration:underline;}
+span.EmailStyle17
+	{mso-style-type:personal-compose;
+	font-family:"Calibri","sans-serif";
+	color:windowtext;}
+.MsoChpDefault
+	{mso-style-type:export-only;
+	font-family:"Calibri","sans-serif";}
+@page WordSection1
+	{size:8.5in 11.0in;
+	margin:1.0in 1.0in 1.0in 1.0in;}
+div.WordSection1
+	{page:WordSection1;}
+--></style><!--[if gte mso 9]><xml>
+<o:shapedefaults v:ext=3D"edit" spidmax=3D"1026" />
+</xml><![endif]--><!--[if gte mso 9]><xml>
+<o:shapelayout v:ext=3D"edit">
+<o:idmap v:ext=3D"edit" data=3D"1" />
+</o:shapelayout></xml><![endif]--></head><body lang=3DEN-US link=3Dblue =
+vlink=3Dpurple><div class=3DWordSection1><p class=3DMsoNormal>I really =
+want to know how I can use itop to generate a monthly =
+report<o:p></o:p></p></div></body></html>
+------_=_NextPart_001_01CC56AC.6AF2419A--

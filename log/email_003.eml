@@ -1,0 +1,48 @@
+Return-Path: <christian.lempereur@aukena.be>
+Delivered-To: tickets@combodo.com
+Received: from b0.ovh.net (HELO queue) (213.186.33.50)
+	by b0.ovh.net with SMTP; 17 Jan 2011 16:18:36 +0200
+Received: from localhost (HELO mail234.ha.ovh.net) (127.0.0.1)
+  by localhost with SMTP; 17 Jan 2011 16:18:36 +0200
+Received: from b0.ovh.net (HELO queueout) (213.186.33.50)
+	by b0.ovh.net with SMTP; 17 Jan 2011 16:18:35 +0200
+Delivered-To: combodo.com-support@combodo.com
+Received: from b0.ovh.net (HELO queue) (213.186.33.50)
+	by b0.ovh.net with SMTP; 17 Jan 2011 16:18:35 +0200
+Received: from mailrelay007.isp.belgacom.be (195.238.6.173)
+  by mx1.ovh.net with SMTP; 17 Jan 2011 16:18:34 +0200
+X-Belgacom-Dynamic: yes
+X-IronPort-Anti-Spam-Filtered: true
+X-IronPort-Anti-Spam-Result: AsoEAHfdM02ykD+i/2dsb2JhbACCN4FUgl3QfY4hgSSDOHQEix8
+Received: from 162-63-144-178.mobileinternet.proximus.be (HELO [178.144.63.162]) ([178.144.63.162])
+  by relay.skynet.be with ESMTP; 17 Jan 2011 15:18:33 +0100
+Message-ID: <4D344FB7.4010306@aukena.be>
+Date: Mon, 17 Jan 2011 15:18:31 +0100
+From: Christian Lempereur <christian.lempereur@aukena.be>
+Organization: Aukena.sprl
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.2.13) Gecko/20101208 Lightning/1.0b2 Thunderbird/3.1.7
+MIME-Version: 1.0
+To: "support@combodo.com" <support@combodo.com>
+Subject: Ticket #345 Impossible to reassign to other Workgroup V1.0.1 and
+ 1.0.2beta.
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Ovh-Tracer-Id: 5744904276702924302
+X-Ovh-Remote: 195.238.6.173 (mailrelay007.isp.belgacom.be)
+X-Ovh-Local: 213.186.33.29 (mx1.ovh.net)
+X-Spam-Check: DONE|U 0.5/N
+
+Bonjour,
+
+Pouvez-vous utiliser si nécessaire un appel sur le contrat de support 
+Alvadis pour le ticket Sourceforge en référence?
+La transaction telle qu'elle existe ne permet pas de modifier le 
+Workgroup vu que celui-ci est lié au contrat.
+Modifier le Service ne permet pas de modifier le workgroup non plus.
+
+Si ce n'est pas clair, n'hésitez pas à me demander.
+
+Cordialement,
+Christian
+
+

@@ -1,0 +1,62 @@
+Return-Path: <sfdutoit@gmail.com>
+Delivered-To: tickets@combodo.com
+Received: from b0.ovh.net (HELO queue) (213.186.33.50)
+	by b0.ovh.net with SMTP; 6 Jul 2011 17:32:13 +0200
+Received: from localhost (HELO mail227.ha.ovh.net) (127.0.0.1)
+  by localhost with SMTP; 6 Jul 2011 17:32:13 +0200
+Received: from b0.ovh.net (HELO queueout) (213.186.33.50)
+	by b0.ovh.net with SMTP; 6 Jul 2011 17:32:13 +0200
+Delivered-To: combodo.com-support@combodo.com
+Received: from b0.ovh.net (HELO queue) (213.186.33.50)
+	by b0.ovh.net with SMTP; 6 Jul 2011 17:32:12 +0200
+Received: from mail-qw0-f41.google.com (209.85.216.41)
+  by mx1.ovh.net with SMTP; 6 Jul 2011 17:32:11 +0200
+Received: by qwa26 with SMTP id 26so3802qwa.28
+        for <support@combodo.com>; Wed, 06 Jul 2011 08:32:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=mime-version:date:message-id:subject:from:to:content-type;
+        bh=IZgR1R8C0dns/AarTsLn+SMQqFeyyC6Ki2yjDUywJDU=;
+        b=DCugpyrxE3RUTdgCRNgofxxgzwBhFADpoMjOVBijjRgWXDD7fWC9SzQ3sOntzrzPSA
+         owmmo1JeNOSwABXZaSxlW9wXjHfOymnoezlSGo6AZ+QLh/dXkN0pdQfkqy2pEazHS6kY
+         nhmLfz1ChX6oyAi4dCmravWct9wu+Sjj2dWeo=
+MIME-Version: 1.0
+Received: by 10.229.1.230 with SMTP id 38mr2229948qcg.19.1309966331221; Wed,
+ 06 Jul 2011 08:32:11 -0700 (PDT)
+Received: by 10.229.110.18 with HTTP; Wed, 6 Jul 2011 08:32:11 -0700 (PDT)
+Date: Wed, 6 Jul 2011 17:32:11 +0200
+Message-ID: <CA+tC0hU2hDpUtTua92Yik6w_e3MqZ576eecELxzZcg0Y=AWJFA@mail.gmail.com>
+Subject: Itop 1.1 Users Guide
+From: Stephan Du Toit <sfdutoit@gmail.com>
+To: support@combodo.com
+Content-Type: multipart/alternative; boundary=00148536e646d717e004a7684db8
+X-Ovh-Tracer-Id: 9221964663661840654
+X-Ovh-Remote: 209.85.216.41 (mail-qw0-f41.google.com)
+X-Ovh-Local: 213.186.33.29 (mx1.ovh.net)
+X-Spam-Check: DONE|U 0.5/N
+
+--00148536e646d717e004a7684db8
+Content-Type: text/plain; charset=ISO-8859-1
+
+Good Day,
+
+I am looking for the User guide and Administrators guide for Itop 1.1,
+Is this available for download ?
+
+Regards,
+Stephan
+
+--00148536e646d717e004a7684db8
+Content-Type: text/html; charset=ISO-8859-1
+Content-Transfer-Encoding: quoted-printable
+
+<div>Good Day, </div>
+<div>=A0</div>
+<div>I am looking for the User guide and Administrators guide for Itop 1.1,=
+ </div>
+<div>Is this available for download ?</div>
+<div>=A0</div>
+<div>Regards,</div>
+<div>Stephan</div>
+
+--00148536e646d717e004a7684db8--

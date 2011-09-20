@@ -1,0 +1,54 @@
+Return-Path: <mbianco@edrans.com>
+Delivered-To: tickets@combodo.com
+Received: from b0.ovh.net (HELO queue) (213.186.33.50)
+	by b0.ovh.net with SMTP; 1 Mar 2011 14:01:34 +0200
+Received: from localhost (HELO mail462.ha.ovh.net) (127.0.0.1)
+  by localhost with SMTP; 1 Mar 2011 14:01:34 +0200
+Received: from b0.ovh.net (HELO queueout) (213.186.33.50)
+	by b0.ovh.net with SMTP; 1 Mar 2011 14:01:33 +0200
+Delivered-To: combodo.com-contact@combodo.com
+Received: from b0.ovh.net (HELO queue) (213.186.33.50)
+	by b0.ovh.net with SMTP; 1 Mar 2011 14:01:33 +0200
+Received: from mail-iw0-f169.google.com (209.85.214.169)
+  by mx1.ovh.net with SMTP; 1 Mar 2011 14:01:33 +0200
+Received: by iwl42 with SMTP id 42so4374262iwl.28
+        for <contact@combodo.com>; Tue, 01 Mar 2011 04:01:31 -0800 (PST)
+MIME-Version: 1.0
+Received: by 10.42.4.199 with SMTP id 7mr6602162ict.229.1298980891488; Tue, 01
+ Mar 2011 04:01:31 -0800 (PST)
+Received: by 10.42.220.193 with HTTP; Tue, 1 Mar 2011 04:01:31 -0800 (PST)
+Date: Tue, 1 Mar 2011 12:01:31 +0000
+Message-ID: <AANLkTi=v_VZthaoVB+QExUE0Ar62XDxWAOwJovCR=3MN@mail.gmail.com>
+Subject: itop question
+From: Martin Bianco <mbianco@edrans.com>
+To: contact@combodo.com
+Content-Type: multipart/alternative; boundary=0050450165af9b73e6049d6a8e74
+X-Ovh-Tracer-Id: 16148782365075727293
+X-Ovh-Remote: 209.85.214.169 (mail-iw0-f169.google.com)
+X-Ovh-Local: 213.186.33.29 (mx1.ovh.net)
+X-Spam-Check: DONE|U 0.502083/N
+
+--0050450165af9b73e6049d6a8e74
+Content-Type: text/plain; charset=ISO-8859-1
+
+Hi there,
+
+I just happen to know about iTop and I think it looks outstanding!.
+
+one of the features I am interested in is the integration with Nagios.
+
+I could not find much more data to make this integration happen.
+
+could you please point me to the right direction?
+
+Much appreciated,
+
+Martin.
+
+--0050450165af9b73e6049d6a8e74
+Content-Type: text/html; charset=ISO-8859-1
+
+Hi there,<br><br>I just happen to know about iTop and I think it looks outstanding!.<br><br>one of the features I am interested in is the integration with Nagios.<br><br>I could not find much more data to make this integration happen.<br>
+<br>could you please point me to the right direction?<br><br>Much appreciated,<br><br>Martin.<br>
+
+--0050450165af9b73e6049d6a8e74--

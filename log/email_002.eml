@@ -1,0 +1,47 @@
+Return-Path: <bounce-id=d013=u145594.60gp.ovh.net=1294941195347280671@86.mail-out.ovh.net>
+Delivered-To: tickets@combodo.com
+Received: from b0.ovh.net (HELO queue) (213.186.33.50)
+	by b0.ovh.net with SMTP; 13 Jan 2011 19:53:32 +0200
+Received: from localhost (HELO mail234.ha.ovh.net) (127.0.0.1)
+  by localhost with SMTP; 13 Jan 2011 19:53:32 +0200
+Received: from b0.ovh.net (HELO queueout) (213.186.33.50)
+	by b0.ovh.net with SMTP; 13 Jan 2011 19:53:32 +0200
+Delivered-To: combodo.com-contact@combodo.com
+Received: from b0.ovh.net (HELO queue) (213.186.33.50)
+	by b0.ovh.net with SMTP; 13 Jan 2011 19:53:31 +0200
+Received: from 86.mail-out.ovh.net (178.32.118.31)
+  by mx1.ovh.net with SMTP; 13 Jan 2011 19:53:31 +0200
+Received: (qmail 28206 invoked by uid 0); 13 Jan 2011 17:53:19 -0000
+Received: from unknown (HELO 60gp.ovh.net) (213.251.189.204)
+  by 86.mail-out.ovh.net with SMTP; 13 Jan 2011 17:53:15 -0000
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by localhost.domain.tld (Postfix) with ESMTP id 0E0954E1BC
+	for <contact@combodo.com>; Thu, 13 Jan 2011 18:53:27 +0100 (CET)
+Received: by 60gp.ovh.net (Postfix, from userid 145594)
+	id DAA904E1BD; Thu, 13 Jan 2011 18:53:26 +0100 (CET)
+To: contact@combodo.com
+Subject: Formulaire de contact - Demande d'information sur iTop
+From: kwesi.john@woodgroup.com (kwesi.john at woodgroup.com)
+Reply-To: kwesi.john@woodgroup.com (kwesi.john at woodgroup.com)
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
+MIME-Version: 1.0
+Message-Id: <20110113175326.DAA904E1BD@60gp.ovh.net>
+Date: Thu, 13 Jan 2011 18:53:26 +0100 (CET)
+X-Ovh-Tracer-Id: 4326551868858831037
+X-Ovh-Tracer-Id: 4331055467541907645
+X-Ovh-Remote: 178.32.118.31 (86.mail-out.ovh.net)
+X-Ovh-Local: 213.186.33.29 (mx1.ovh.net)
+X-Spam-Check: DONE|U 0.5/N
+
+Nom: John
+Prenom: Kwesi
+Societe: Neal and Massy Wood Group Limited
+Language (of the form): English
+Fonction: IT Support
+Telephone: 1-868-665-5337
+eMail: kwesi.john@woodgroup.com
+
+Message: Does iTop have the ability to allow helpdesk tickets to be created
+from emails? So, basically I want to setup iTop to poll an Exchange Mailbox
+and create tickets are emails arrive.

@@ -1,0 +1,77 @@
+Return-Path: <jeremy.mandle@ricoh-usa.com>
+Delivered-To: tickets@combodo.com
+Received: from b0.ovh.net (HELO queue) (213.186.33.50)
+	by b0.ovh.net with SMTP; 1 Feb 2011 00:48:05 +0200
+Received: from localhost (HELO mail15.ha.ovh.net) (127.0.0.1)
+  by localhost with SMTP; 1 Feb 2011 00:48:05 +0200
+Received: from b0.ovh.net (HELO queueout) (213.186.33.50)
+	by b0.ovh.net with SMTP; 1 Feb 2011 00:48:04 +0200
+Delivered-To: combodo.com-support@combodo.com
+Received: from b0.ovh.net (HELO queue) (213.186.33.50)
+	by b0.ovh.net with SMTP; 1 Feb 2011 00:48:04 +0200
+Received: from mail144.messagelabs.com (216.82.254.51)
+  by mx1.ovh.net with SMTP; 1 Feb 2011 00:48:02 +0200
+X-Env-Sender: Jeremy.Mandle@ricoh-usa.com
+X-Msg-Ref: server-14.tower-144.messagelabs.com!1296514080!62016797!1
+X-StarScan-Version: 6.2.9; banners=-,-,-
+X-Originating-IP: [205.145.16.52]
+Received: (qmail 25795 invoked from network); 31 Jan 2011 22:48:01 -0000
+Received: from hgmac02.ricoh-usa.com (HELO hgamac02.us.ricoh.ds) (205.145.16.52)
+  by server-14.tower-144.messagelabs.com with SMTP; 31 Jan 2011 22:48:01 -0000
+To: support@combodo.com
+MIME-Version: 1.0
+Subject: Regarding iTop Data Model Customization Tools mentioned in the forum...
+X-KeepSent: F79FEC76:53EC5DA2-05257829:007CFF66;
+ type=4; name=$KeepSent
+X-Mailer: Lotus Notes Release 8.5.1 September 28, 2009
+From: Jeremy.Mandle@ricoh-usa.com
+Message-ID: <OFF79FEC76.53EC5DA2-ON05257829.007CFF66-05257829.007D3E77@ricoh-usa.com>
+Date: Mon, 31 Jan 2011 17:48:00 -0500
+X-MIMETrack: Serialize by Router on HGAMAC02/Servers/RCUS(Release 8.5.1FP1HF186 | March
+ 18, 2010) at 01/31/2011 17:48:00,
+	Serialize complete at 01/31/2011 17:48:00
+Content-Type: multipart/alternative; boundary="=_alternative 007D3D3905257829_="
+X-Ovh-Tracer-Id: 4333025791938380558
+X-Ovh-Remote: 216.82.254.51 (mail144.messagelabs.com)
+X-Ovh-Local: 213.186.33.29 (mx1.ovh.net)
+X-Spam-Check: DONE|U 0.500003/N
+
+This is a multipart message in MIME format.
+--=_alternative 007D3D3905257829_=
+Content-Type: text/plain; charset="US-ASCII"
+
+Hello Combodo!
+Thank you so much for the wonderful product.
+I'm interested in any tools you may have for creating/modifying data 
+models / databases / classes.
+Fully comfortable doing it all line by line, table by table... but as I'm 
+planning on adding 15+ columns to the services table along
+I thought just reach out and see if you've cooked anything up.
+
+Regards,
+
+Jeremy Mandle
+Web Developer - IT Support Center
+Ricoh Americas Corporation
+jeremy.mandle@ricoh-usa.com
+--=_alternative 007D3D3905257829_=
+Content-Type: text/html; charset="US-ASCII"
+
+<font size=2 face="sans-serif">Hello Combodo!</font>
+<br><font size=2 face="sans-serif">Thank you so much for the wonderful
+product.</font>
+<br><font size=2 face="sans-serif">I'm interested in any tools you may
+have for creating/modifying data models / databases / classes.</font>
+<br><font size=2 face="sans-serif">Fully comfortable doing it all line
+by line, table by table... but as I'm planning on adding 15+ columns to
+the services table along</font>
+<br><font size=2 face="sans-serif">I thought just reach out and see if
+you've cooked anything up.</font>
+<br>
+<br><font size=2 face="sans-serif">Regards,</font>
+<br>
+<br><font size=2 face="sans-serif">Jeremy Mandle</font>
+<br><font size=2 face="sans-serif">Web Developer - IT Support Center</font>
+<br><font size=2 face="sans-serif">Ricoh Americas Corporation</font>
+<br><font size=2 face="sans-serif">jeremy.mandle@ricoh-usa.com</font>
+--=_alternative 007D3D3905257829_=--

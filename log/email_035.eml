@@ -1,0 +1,52 @@
+Return-Path: <bounce-id=d093=u145594.60gp.ovh.net=130181210134721871@86.mail-out.ovh.net>
+Delivered-To: tickets@combodo.com
+Received: from b0.ovh.net (HELO queue) (213.186.33.50)
+	by b0.ovh.net with SMTP; 3 Apr 2011 08:28:31 +0200
+Received: from localhost (HELO mail475.ha.ovh.net) (127.0.0.1)
+  by localhost with SMTP; 3 Apr 2011 08:28:31 +0200
+Received: from b0.ovh.net (HELO queueout) (213.186.33.50)
+	by b0.ovh.net with SMTP; 3 Apr 2011 08:28:31 +0200
+Delivered-To: combodo.com-contact@combodo.com
+Received: from b0.ovh.net (HELO queue) (213.186.33.50)
+	by b0.ovh.net with SMTP; 3 Apr 2011 08:28:31 +0200
+Received: from 86.mail-out.ovh.net (178.32.118.31)
+  by mx1.ovh.net with SMTP; 3 Apr 2011 08:28:29 +0200
+Received: (qmail 2213 invoked by uid 0); 3 Apr 2011 06:28:25 -0000
+Received: from gw4.ovh.net (HELO 60gp.ovh.net) (213.251.189.204)
+  by 86.mail-out.ovh.net with SMTP; 3 Apr 2011 06:28:21 -0000
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by localhost.domain.tld (Postfix) with ESMTP id 8A3EA276C5
+	for <contact@combodo.com>; Sun,  3 Apr 2011 08:28:25 +0200 (CEST)
+Received: by 60gp.ovh.net (Postfix, from userid 145594)
+	id 5E485276CA; Sun,  3 Apr 2011 08:28:25 +0200 (CEST)
+To: contact@combodo.com
+Subject: Formulaire de contact - Demande d'information sur les partenariats
+From: mahdi.heidari83@gmail.com (mahdi.heidari83 at gmail.com)
+Reply-To: mahdi.heidari83@gmail.com (mahdi.heidari83 at gmail.com)
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
+MIME-Version: 1.0
+Message-Id: <20110403062825.5E485276CA@60gp.ovh.net>
+Date: Sun,  3 Apr 2011 08:28:25 +0200 (CEST)
+X-Ovh-Tracer-Id: 1406530458766414013
+X-Ovh-Tracer-Id: 1408782259436789949
+X-Ovh-Remote: 178.32.118.31 (86.mail-out.ovh.net)
+X-Ovh-Local: 213.186.33.29 (mx1.ovh.net)
+X-Spam-Check: DONE|U 0.5/N
+
+Nom: heidari
+Prenom: mahdi
+Societe: 
+Language (of the form): English
+Fonction: 
+Telephone: 
+eMail: mahdi.heidari83@gmail.com
+
+Message: hi
+I Want to translating your software to my local language (Farsi,Persian)
+from document instruction.
+but my language writing is RtL(right to left) so i need to know how to edit
+software UI or Themplate.
+at last when i completion this job i will send translating files for you to
+comfirm and add to your software language list.
+Ex.for bad english

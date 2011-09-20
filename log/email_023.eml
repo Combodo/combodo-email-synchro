@@ -1,0 +1,313 @@
+Return-Path: <jean-patrick.trauet@mairie-villeurbanne.fr>
+Delivered-To: tickets@combodo.com
+Received: from b0.ovh.net (HELO queue) (213.186.33.50)
+	by b0.ovh.net with SMTP; 1 Mar 2011 11:58:49 +0200
+Received: from localhost (HELO mail511.ha.ovh.net) (127.0.0.1)
+  by localhost with SMTP; 1 Mar 2011 11:58:49 +0200
+Received: from b0.ovh.net (HELO queueout) (213.186.33.50)
+	by b0.ovh.net with SMTP; 1 Mar 2011 11:58:49 +0200
+Delivered-To: combodo.com-contact@combodo.com
+Received: from b0.ovh.net (HELO queue) (213.186.33.50)
+	by b0.ovh.net with SMTP; 1 Mar 2011 11:58:49 +0200
+Received: from ctrlmailhdv.mairie-villeurbanne.fr (213.30.179.218)
+  by mx1.ovh.net with SMTP; 1 Mar 2011 11:58:47 +0200
+X-AuditID: 0a15050f-b7b69ae00000147d-42-4d6cc356ceea
+Received: from servexch.villeurbanne.fr (servexch.villeurbanne.fr [10.1.5.36])
+	by ctrlmailhdv.mairie-villeurbanne.fr (SMTP Gateway) with SMTP id A3.42.05245.653CC6D4; Tue,  1 Mar 2011 10:58:46 +0100 (CET)
+X-PMWin-Version: 3.0.2.0, Antivirus-Engine: 3.16.1, Antivirus-Data: 4.62G
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.3790.3959
+Content-Class: urn:content-classes:message
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01CBD7F7.40D5FA23"
+Subject: Demandes d'informations
+Date: Tue, 1 Mar 2011 10:58:45 +0100
+Message-ID: <6220635AD3D23E40A00A7CC569B64067792301@servexch.villeurbanne.fr>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: Demandes d'informations
+thread-index: AcvX90DH+qgT+zLgTi2QTXs4Fwn4nw==
+From: "Trauet Jean-Patrick" <jean-patrick.trauet@mairie-villeurbanne.fr>
+To: <contact@combodo.com>
+X-Brightmail-Tracker: AAAAAReBPSQ=
+X-Ovh-Tracer-Id: 14075719160705740221
+X-Ovh-Remote: 213.30.179.218 (ctrlmailhdv.mairie-villeurbanne.fr)
+X-Ovh-Local: 213.186.33.29 (mx1.ovh.net)
+X-Spam-Check: DONE|U 0.5/N
+
+This is a multi-part message in MIME format.
+
+------_=_NextPart_001_01CBD7F7.40D5FA23
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+Bonjour,
+
+J'ai d=E9couvert votre logiciel iTop suite =E0 votre pr=E9sentation =E0 =
+l'Adira.
+
+Dans un premier temps, je serais surtout int=E9ress=E9 par la partie =
+CMDB afin de g=E9rer l'int=E9gralit=E9 de mon SI =E0 savoir:
+
+-	Le plan d'adressage IP
+-	Le brassage, les fibres optiques, les r=E9partiteurs
+-	Les PABX, t=E9l=E9phones, mobiles
+-	L'am=E9nagement des baies 19"
+-	Les serveurs physiques, virtuels
+-	Les PC, imprimantes,
+-	Les =E9quipements de r=E9seau de toute nature (bornes wifi, FH, ...)
+-	Etc ...
+
+En r=E9sum=E9 un ensemble de fichiers Excel avec des liens entre tous =
+les objets.
+
+Donc est-il possible facilement de cr=E9er de nouveau type d'objets: =
+fibre optique, sous-r=E9seau IP etc .. ?
+Est-il possible de supprimer/rajouter des champs =E0 un objet ? Pour un =
+serveur par exemple, il me manque des champs, et il y en a en trop.
+Possibilit=E9 de masquer/afficher des colonnes dans les listes (exemple =
+supprimer "Type" dans la liste des =E9quipements de r=E9seau).
+
+Les interfaces r=E9seau pour un =E9quipement r=E9seau sont compliqu=E9es =
+=E0 g=E9rer, on h=E9rite d'informations inutiles, et il est inconcevable =
+de devoir cr=E9er 48 ports pour un switch: est-il possible de simplifier =
+la chose ?
+
+=20
+Par avance merci pour vos informations compl=E9mentaires.
+
+Sinc=E8res salutations
+JP Trauet
+
+ville de villeurbanne - Direction des Syst=E8mes d'Information
+Jean-Patrick TRAUET - Responsable Technique et S=E9curit=E9=20
+ T=E9l : 04 72 65 80 73- Fax : 04 78 03 69 19
+
+
+
+------_=_NextPart_001_01CBD7F7.40D5FA23
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
+charset=3Diso-8859-1">
+<META NAME=3D"Generator" CONTENT=3D"MS Exchange Server version =
+6.5.7651.14">
+<TITLE>Demandes d'informations</TITLE>
+</HEAD>
+<BODY>
+<!-- Converted from text/rtf format -->
+
+<P DIR=3DLTR><SPAN LANG=3D"fr"></SPAN><SPAN LANG=3D"fr"><FONT SIZE=3D2 =
+FACE=3D"Verdana">Bonjour,</FONT></SPAN></P>
+
+<P DIR=3DLTR><SPAN LANG=3D"fr"><FONT SIZE=3D2 FACE=3D"Verdana">J'ai =
+d=E9couvert</FONT></SPAN><SPAN LANG=3D"fr"></SPAN><SPAN LANG=3D"fr"> =
+<FONT SIZE=3D2 FACE=3D"Verdana">votre logiciel iTop</FONT></SPAN><SPAN =
+LANG=3D"fr"></SPAN><SPAN LANG=3D"fr"><FONT SIZE=3D2 FACE=3D"Verdana"> =
+suite =E0 votre pr=E9sentation =E0 l'Adira.</FONT></SPAN></P>
+
+<P DIR=3DLTR><SPAN LANG=3D"fr"></SPAN><SPAN LANG=3D"fr"></SPAN></P>
+
+<P DIR=3DLTR><SPAN LANG=3D"fr"></SPAN><SPAN LANG=3D"fr"><FONT SIZE=3D2 =
+FACE=3D"Verdana">Dans un premier temps, je serais =
+surt</FONT></SPAN><SPAN LANG=3D"fr"></SPAN><SPAN LANG=3D"fr"><FONT =
+SIZE=3D2 FACE=3D"Verdana">o</FONT></SPAN><SPAN LANG=3D"fr"></SPAN><SPAN =
+LANG=3D"fr"><FONT SIZE=3D2 FACE=3D"Verdana">ut int=E9ress=E9 par la =
+partie</FONT></SPAN><SPAN LANG=3D"fr"></SPAN><SPAN LANG=3D"fr"><FONT =
+SIZE=3D2 FACE=3D"Verdana"> CMDB</FONT></SPAN><SPAN =
+LANG=3D"fr"></SPAN><SPAN LANG=3D"fr"><FONT SIZE=3D2 FACE=3D"Verdana"> =
+afin de g=E9rer l'int=E9gralit=E9 de mon SI =E0 =
+savoir:</FONT></SPAN></P>
+
+<P DIR=3DLTR><SPAN LANG=3D"fr"><FONT SIZE=3D2 =
+FACE=3D"Verdana">-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</FONT></SPAN><SPAN=
+ LANG=3D"fr"></SPAN><SPAN LANG=3D"fr"> <FONT SIZE=3D2 =
+FACE=3D"Verdana">Le plan d'adressage IP</FONT></SPAN></P>
+
+<P DIR=3DLTR><SPAN LANG=3D"fr"><FONT SIZE=3D2 =
+FACE=3D"Verdana">-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</FONT></SPAN><SPAN=
+ LANG=3D"fr"></SPAN><SPAN LANG=3D"fr"> <FONT SIZE=3D2 =
+FACE=3D"Verdana">Le brassage</FONT></SPAN><SPAN LANG=3D"fr"></SPAN><SPAN =
+LANG=3D"fr"><FONT SIZE=3D2 FACE=3D"Verdana">, les fibres optiques, les =
+r=E9partiteurs</FONT></SPAN><SPAN LANG=3D"fr"></SPAN><SPAN =
+LANG=3D"fr"></SPAN></P>
+
+<P DIR=3DLTR><SPAN LANG=3D"fr"><FONT SIZE=3D2 =
+FACE=3D"Verdana">-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</FONT> <FONT =
+SIZE=3D2 FACE=3D"Verdana">Les PABX</FONT></SPAN><SPAN =
+LANG=3D"fr"></SPAN><SPAN LANG=3D"fr"><FONT SIZE=3D2 FACE=3D"Verdana">, =
+t=E9l=E9phones, mobiles</FONT></SPAN><SPAN LANG=3D"fr"></SPAN><SPAN =
+LANG=3D"fr"></SPAN></P>
+
+<P DIR=3DLTR><SPAN LANG=3D"fr"><FONT SIZE=3D2 =
+FACE=3D"Verdana">-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</FONT> <FONT =
+SIZE=3D2 FACE=3D"Verdana">L'am=E9nagement des baies =
+19&quot;</FONT></SPAN></P>
+
+<P DIR=3DLTR><SPAN LANG=3D"fr"><FONT SIZE=3D2 =
+FACE=3D"Verdana">-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</FONT> <FONT =
+SIZE=3D2 FACE=3D"Verdana">Les serveurs</FONT></SPAN><SPAN =
+LANG=3D"fr"></SPAN><SPAN LANG=3D"fr"> <FONT SIZE=3D2 =
+FACE=3D"Verdana">physiques,</FONT></SPAN><SPAN LANG=3D"fr"></SPAN><SPAN =
+LANG=3D"fr"> <FONT SIZE=3D2 FACE=3D"Verdana">virtuels</FONT></SPAN><SPAN =
+LANG=3D"fr"></SPAN><SPAN LANG=3D"fr"></SPAN></P>
+
+<P DIR=3DLTR><SPAN LANG=3D"fr"><FONT SIZE=3D2 =
+FACE=3D"Verdana">-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</FONT> <FONT =
+SIZE=3D2 FACE=3D"Verdana">Les PC, imprimantes,</FONT></SPAN><SPAN =
+LANG=3D"fr"></SPAN><SPAN LANG=3D"fr"></SPAN></P>
+
+<P DIR=3DLTR><SPAN LANG=3D"fr"><FONT SIZE=3D2 =
+FACE=3D"Verdana">-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</FONT> <FONT =
+SIZE=3D2 FACE=3D"Verdana">Les =E9quipements de r=E9seau de toute nature =
+(bornes wifi, FH,</FONT></SPAN><SPAN LANG=3D"fr"></SPAN><SPAN =
+LANG=3D"fr"> <FONT SIZE=3D2 FACE=3D"Verdana">&#8230;</FONT></SPAN><SPAN =
+LANG=3D"fr"></SPAN><SPAN LANG=3D"fr"><FONT SIZE=3D2 =
+FACE=3D"Verdana">)</FONT></SPAN><SPAN LANG=3D"fr"></SPAN><SPAN =
+LANG=3D"fr"></SPAN></P>
+
+<P DIR=3DLTR><SPAN LANG=3D"fr"><FONT SIZE=3D2 =
+FACE=3D"Verdana">-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</FONT> <FONT =
+SIZE=3D2 FACE=3D"Verdana">Etc</FONT></SPAN><SPAN =
+LANG=3D"fr"></SPAN><SPAN LANG=3D"fr"> <FONT SIZE=3D2 =
+FACE=3D"Verdana">&#8230;</FONT></SPAN><SPAN LANG=3D"fr"></SPAN><SPAN =
+LANG=3D"fr"></SPAN></P>
+
+<P DIR=3DLTR><SPAN LANG=3D"fr"></SPAN><SPAN LANG=3D"fr"></SPAN></P>
+
+<P DIR=3DLTR><SPAN LANG=3D"fr"><FONT SIZE=3D2 FACE=3D"Verdana">En =
+r=E9sum=E9 un ensemble de fichiers Excel avec des liens =
+entre</FONT></SPAN><SPAN LANG=3D"fr"></SPAN><SPAN LANG=3D"fr"> <FONT =
+SIZE=3D2 FACE=3D"Verdana">tous les objets</FONT></SPAN><SPAN =
+LANG=3D"fr"></SPAN><SPAN LANG=3D"fr"><FONT SIZE=3D2 =
+FACE=3D"Verdana">.</FONT></SPAN></P>
+
+<P DIR=3DLTR><SPAN LANG=3D"fr"></SPAN><SPAN LANG=3D"fr"></SPAN></P>
+
+<P DIR=3DLTR><SPAN LANG=3D"fr"></SPAN><SPAN LANG=3D"fr"><FONT SIZE=3D2 =
+FACE=3D"Verdana">Donc est-il possible</FONT></SPAN><SPAN =
+LANG=3D"fr"></SPAN><SPAN LANG=3D"fr"> <FONT SIZE=3D2 =
+FACE=3D"Verdana">facilement</FONT></SPAN><SPAN LANG=3D"fr"></SPAN><SPAN =
+LANG=3D"fr"> <FONT SIZE=3D2 FACE=3D"Verdana">de cr=E9er =
+de</FONT></SPAN><SPAN LANG=3D"fr"></SPAN><SPAN LANG=3D"fr"> <FONT =
+SIZE=3D2 FACE=3D"Verdana">nouveau type d'objets</FONT></SPAN><SPAN =
+LANG=3D"fr"></SPAN><SPAN LANG=3D"fr"><FONT SIZE=3D2 FACE=3D"Verdana">: =
+fibre optique, so</FONT></SPAN><SPAN LANG=3D"fr"></SPAN><SPAN =
+LANG=3D"fr"><FONT SIZE=3D2 FACE=3D"Verdana">us-r=E9seau IP etc .. =
+?</FONT></SPAN></P>
+
+<P DIR=3DLTR><SPAN LANG=3D"fr"><FONT SIZE=3D2 FACE=3D"Verdana">Est-il =
+possible de supprimer/rajouter des champs =E0 un =
+objet</FONT></SPAN><SPAN LANG=3D"fr"></SPAN><SPAN LANG=3D"fr"><FONT =
+SIZE=3D2 FACE=3D"Verdana"> ? Pour un serveur</FONT></SPAN><SPAN =
+LANG=3D"fr"></SPAN><SPAN LANG=3D"fr"><FONT SIZE=3D2 FACE=3D"Verdana"> =
+par exemple,</FONT></SPAN><SPAN LANG=3D"fr"></SPAN><SPAN LANG=3D"fr"> =
+<FONT SIZE=3D2 FACE=3D"Verdana">il me manque des champs, et il y en a en =
+trop.</FONT></SPAN><SPAN LANG=3D"fr"></SPAN><SPAN =
+LANG=3D"fr"></SPAN></P>
+
+<P DIR=3DLTR><SPAN LANG=3D"fr"><FONT SIZE=3D2 =
+FACE=3D"Verdana">Possibilit=E9 de masquer</FONT></SPAN><SPAN =
+LANG=3D"fr"></SPAN><SPAN LANG=3D"fr"><FONT SIZE=3D2 =
+FACE=3D"Verdana">/</FONT></SPAN><SPAN LANG=3D"fr"></SPAN><SPAN =
+LANG=3D"fr"><FONT SIZE=3D2 FACE=3D"Verdana">afficher des colonnes dans =
+les listes (exemple supprimer &quot;Type&quot; dans la liste des =
+=E9quipements de r=E9seau).</FONT></SPAN><SPAN LANG=3D"fr"></SPAN><SPAN =
+LANG=3D"fr"></SPAN></P>
+
+<P DIR=3DLTR><SPAN LANG=3D"fr"></SPAN><SPAN LANG=3D"fr"></SPAN></P>
+
+<P DIR=3DLTR><SPAN LANG=3D"fr"></SPAN><SPAN LANG=3D"fr"><FONT SIZE=3D2 =
+FACE=3D"Verdana">Les interfaces r=E9seau pour un =E9quipement r=E9seau =
+sont c</FONT></SPAN><SPAN LANG=3D"fr"></SPAN><SPAN LANG=3D"fr"><FONT =
+SIZE=3D2 FACE=3D"Verdana">ompliqu=E9</FONT></SPAN><SPAN =
+LANG=3D"fr"></SPAN><SPAN LANG=3D"fr"><FONT SIZE=3D2 =
+FACE=3D"Verdana">es</FONT></SPAN><SPAN LANG=3D"fr"></SPAN><SPAN =
+LANG=3D"fr"><FONT SIZE=3D2 FACE=3D"Verdana"> =E0 =
+g=E9rer</FONT></SPAN><SPAN LANG=3D"fr"></SPAN><SPAN LANG=3D"fr"><FONT =
+SIZE=3D2 FACE=3D"Verdana">, on h=E9rite d'information</FONT></SPAN><SPAN =
+LANG=3D"fr"></SPAN><SPAN LANG=3D"fr"><FONT SIZE=3D2 FACE=3D"Verdana">s =
+inutiles</FONT></SPAN><SPAN LANG=3D"fr"></SPAN><SPAN LANG=3D"fr"><FONT =
+SIZE=3D2 FACE=3D"Verdana">, et il est inconcevable de devoir cr=E9er 48 =
+ports pour un switch</FONT></SPAN><SPAN LANG=3D"fr"></SPAN><SPAN =
+LANG=3D"fr"><FONT SIZE=3D2 FACE=3D"Verdana">: est-il possible de =
+simplifier la chose ?</FONT></SPAN><SPAN LANG=3D"fr"></SPAN><SPAN =
+LANG=3D"fr"></SPAN></P>
+
+<P DIR=3DLTR><SPAN LANG=3D"fr"><FONT SIZE=3D2 =
+FACE=3D"Verdana"></FONT></SPAN><SPAN LANG=3D"fr"></SPAN><SPAN =
+LANG=3D"fr">&nbsp;</SPAN></P>
+
+<P DIR=3DLTR><SPAN LANG=3D"fr"><FONT SIZE=3D2 FACE=3D"Verdana">Par =
+avance merci pour vos informations compl=E9mentaires.</FONT></SPAN></P>
+
+<P DIR=3DLTR><SPAN LANG=3D"fr"><FONT SIZE=3D2 =
+FACE=3D"Verdana">Sinc=E8res salutations</FONT></SPAN></P>
+
+<P DIR=3DLTR><SPAN LANG=3D"fr"><FONT SIZE=3D2 FACE=3D"Verdana">JP =
+Trauet</FONT></SPAN><SPAN LANG=3D"fr"></SPAN><SPAN =
+LANG=3D"fr"></SPAN></P>
+
+<P DIR=3DLTR><SPAN LANG=3D"fr"></SPAN><SPAN LANG=3D"fr"></SPAN></P>
+
+<P DIR=3DLTR ALIGN=3DCENTER><SPAN LANG=3D"fr"></SPAN><SPAN =
+LANG=3D"fr"><B></B></SPAN><SPAN LANG=3D"fr"><B></B></SPAN><B><SPAN =
+LANG=3D"fr-fr"></SPAN></B><A NAME=3D""><B><SPAN LANG=3D"fr-fr"><FONT =
+COLOR=3D"#408080" SIZE=3D2 FACE=3D"Verdana">ville de =
+vi</FONT></SPAN></B></A><SPAN LANG=3D"fr"><B></B></SPAN><SPAN =
+LANG=3D"fr"><B></B></SPAN><B><SPAN LANG=3D"fr-fr"><FONT =
+COLOR=3D"#408080" SIZE=3D4 FACE=3D"Verdana">ll</FONT></SPAN></B><SPAN =
+LANG=3D"fr"><B></B></SPAN><SPAN LANG=3D"fr"><B></B></SPAN><B><SPAN =
+LANG=3D"fr-fr"><FONT COLOR=3D"#408080" SIZE=3D2 =
+FACE=3D"Verdana">eurbanne</FONT></SPAN></B><SPAN =
+LANG=3D"fr"></SPAN><SPAN LANG=3D"fr-fr"></SPAN><SPAN =
+LANG=3D"fr"></SPAN><SPAN LANG=3D"fr"></SPAN><SPAN LANG=3D"fr-fr"> <FONT =
+COLOR=3D"#006666" SIZE=3D2>-</FONT></SPAN><SPAN LANG=3D"fr"></SPAN><SPAN =
+LANG=3D"fr"></SPAN><SPAN LANG=3D"fr-fr"> <FONT COLOR=3D"#006666" =
+SIZE=3D2 FACE=3D"Tahoma">Direction des</FONT></SPAN><SPAN =
+LANG=3D"fr"></SPAN><SPAN LANG=3D"fr"></SPAN><SPAN LANG=3D"fr-fr"><FONT =
+COLOR=3D"#006666" SIZE=3D2></FONT></SPAN><SPAN LANG=3D"fr"></SPAN><SPAN =
+LANG=3D"fr"></SPAN><SPAN LANG=3D"fr-fr"> <FONT COLOR=3D"#006666" =
+SIZE=3D2 FACE=3D"Tahoma">Syst=E8mes d'Information</FONT></SPAN><SPAN =
+LANG=3D"fr"></SPAN><SPAN LANG=3D"fr-fr"><BR>
+</SPAN><SPAN LANG=3D"fr"><B></B></SPAN><SPAN =
+LANG=3D"fr"><B></B></SPAN><B><SPAN LANG=3D"fr-fr"><FONT =
+COLOR=3D"#333333" SIZE=3D2 FACE=3D"Tahoma">Jean-Patrick =
+TRAUET</FONT></SPAN></B><SPAN LANG=3D"fr"></SPAN><SPAN =
+LANG=3D"fr"></SPAN><SPAN LANG=3D"fr-fr"><FONT SIZE=3D2> =
+-</FONT></SPAN><SPAN LANG=3D"fr"></SPAN><SPAN LANG=3D"fr"></SPAN><SPAN =
+LANG=3D"fr-fr"> <FONT COLOR=3D"#006666" SIZE=3D2 =
+FACE=3D"Tahoma">Responsable Technique et S=E9curit=E9</FONT></SPAN><SPAN =
+LANG=3D"fr"></SPAN><SPAN LANG=3D"fr"></SPAN><SPAN LANG=3D"fr-fr"><FONT =
+SIZE=3D2></FONT></SPAN><SPAN LANG=3D"fr"></SPAN><SPAN =
+LANG=3D"fr-fr"><BR>
+</SPAN><SPAN LANG=3D"fr"></SPAN><SPAN LANG=3D"fr"></SPAN><SPAN =
+LANG=3D"fr-fr">&nbsp;<FONT COLOR=3D"#006666" SIZE=3D1 =
+FACE=3D"Tahoma">T=E9l :</FONT></SPAN><SPAN LANG=3D"fr"></SPAN><SPAN =
+LANG=3D"fr-fr"></SPAN><SPAN LANG=3D"fr"></SPAN><SPAN =
+LANG=3D"fr"></SPAN><SPAN LANG=3D"fr-fr"> <FONT COLOR=3D"#006666" =
+SIZE=3D1 FACE=3D"Tahoma">04 72 65 80 73</FONT></SPAN><SPAN =
+LANG=3D"fr"></SPAN><SPAN LANG=3D"fr"></SPAN><SPAN LANG=3D"fr-fr"><FONT =
+COLOR=3D"#009999" SIZE=3D1 FACE=3D"Tahoma">-</FONT></SPAN><SPAN =
+LANG=3D"fr"></SPAN><SPAN LANG=3D"fr"></SPAN><SPAN LANG=3D"fr-fr"> <FONT =
+COLOR=3D"#006666" SIZE=3D1 FACE=3D"Tahoma">Fax :</FONT></SPAN><SPAN =
+LANG=3D"fr"></SPAN><SPAN LANG=3D"fr-fr"></SPAN><SPAN =
+LANG=3D"fr"></SPAN><SPAN LANG=3D"fr"></SPAN><SPAN LANG=3D"fr-fr"> <FONT =
+COLOR=3D"#006666" SIZE=3D1 FACE=3D"Tahoma">04 78 03 69 =
+19</FONT></SPAN><SPAN LANG=3D"fr"></SPAN><SPAN =
+LANG=3D"fr-fr"></SPAN></P>
+
+<P DIR=3DLTR><SPAN LANG=3D"fr"></SPAN><SPAN LANG=3D"fr"></SPAN><SPAN =
+LANG=3D"fr-fr"></SPAN></P>
+
+<P DIR=3DLTR><SPAN LANG=3D"fr"></SPAN><SPAN LANG=3D"fr"></SPAN></P>
+
+</BODY>
+</HTML>
+------_=_NextPart_001_01CBD7F7.40D5FA23--

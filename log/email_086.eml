@@ -1,0 +1,365 @@
+Return-Path: <vincenzo.todisco@serco.com>
+Delivered-To: tickets@combodo.com
+Received: from b0.ovh.net (HELO queue) (213.186.33.50)
+	by b0.ovh.net with SMTP; 11 Jul 2011 15:01:37 +0200
+Received: from localhost (HELO mail449.ha.ovh.net) (127.0.0.1)
+  by localhost with SMTP; 11 Jul 2011 15:01:37 +0200
+Received: from b0.ovh.net (HELO queueout) (213.186.33.50)
+	by b0.ovh.net with SMTP; 11 Jul 2011 15:01:37 +0200
+Delivered-To: combodo.com-support@combodo.com
+Received: from b0.ovh.net (HELO queue) (213.186.33.50)
+	by b0.ovh.net with SMTP; 11 Jul 2011 15:01:37 +0200
+Received: from mail180.messagelabs.com (85.158.139.51)
+  by mx1.ovh.net with SMTP; 11 Jul 2011 15:01:35 +0200
+X-VirusChecked: Checked
+X-Env-Sender: Vincenzo.Todisco@serco.com
+X-Msg-Ref: server-9.tower-180.messagelabs.com!1310389298!70863788!1
+X-StarScan-Version: 6.2.17; banners=-,-,-
+X-Originating-IP: [217.22.1.163]
+Received: (qmail 19731 invoked from network); 11 Jul 2011 13:01:38 -0000
+Received: from coremtaexm06.core.serco.com (HELO coremtaexm06.core.serco.com) (217.22.1.163)
+  by server-9.tower-180.messagelabs.com with DHE-RSA-AES256-SHA encrypted SMTP; 11 Jul 2011 13:01:38 -0000
+Received: from [10.240.3.49] (helo=COREEXCHHUB04.ad.serco.com)
+	by coremtaexm06.core.serco.com with esmtps (TLSv1:RC4-MD5:128)
+	(Exim 4.63)
+	(envelope-from <Vincenzo.Todisco@serco.com>)
+	id 1QgG7A-0002dj-P1
+	for support@combodo.com; Mon, 11 Jul 2011 14:01:34 +0100
+Received: from CORE4EXCHHUB01.ad.serco.com (10.180.68.53) by
+ COREEXCHHUB04.ad.serco.com (10.240.3.49) with Microsoft SMTP Server (TLS) id
+ 8.2.255.0; Mon, 11 Jul 2011 14:01:32 +0100
+Received: from COREEXCHCCR04.ad.serco.com ([10.181.68.57]) by
+ CORE4EXCHHUB01.ad.serco.com ([10.180.68.53]) with mapi; Mon, 11 Jul 2011
+ 14:01:32 +0100
+From: Vincenzo Todisco <Vincenzo.Todisco@serco.com>
+To: "support@combodo.com" <support@combodo.com>
+Date: Mon, 11 Jul 2011 14:02:57 +0100
+Subject: iTop - integration
+Thread-Topic: iTop - integration
+Thread-Index: Acw/ytaVzxOVI/hmQtSMzdvbF3Dk5Q==
+Message-ID: <9DC51416E8A84B478588DCE82922DC721C5C734258@COREEXCHCCR04.ad.serco.com>
+Accept-Language: en-US, en-GB
+Content-Language: en-US
+X-MS-Has-Attach: yes
+X-MS-TNEF-Correlator:
+x-titus-version: 3.1.56
+x-tituslabs-classifications-30: TLPropertyRoot=Serco;Classification=Serco
+ Public (No visible marking);
+acceptlanguage: en-US, en-GB
+Content-Type: multipart/related;
+	boundary="_004_9DC51416E8A84B478588DCE82922DC721C5C734258COREEXCHCCR04_";
+	type="multipart/alternative"
+MIME-Version: 1.0
+X-processed-by-10: processed by coremtaexm06.core.serco.com , Serco-UK , Mon, 11 Jul 2011 14:01:34 +0100
+X-Ovh-Tracer-Id: 17595282270079432718
+X-Ovh-Remote: 85.158.139.51 (mail180.messagelabs.com)
+X-Ovh-Local: 213.186.33.29 (mx1.ovh.net)
+X-Spam-Check: DONE|U 0.5/N
+
+--_004_9DC51416E8A84B478588DCE82922DC721C5C734258COREEXCHCCR04_
+Content-Type: multipart/alternative;
+	boundary="_000_9DC51416E8A84B478588DCE82922DC721C5C734258COREEXCHCCR04_"
+
+--_000_9DC51416E8A84B478588DCE82922DC721C5C734258COREEXCHCCR04_
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+
+Hello,
+
+I'm from a company that is pushing this tool internally and with customers =
+(e.g. European Space Agency).
+Due to look&feel requirements we are integrating our portals with iTop usin=
+g web services in order to open service requests and incidents.
+During the investigation I have solved a wsdl problem and have extended the=
+ "createIncidentTicket" with "createRequestTicket".
+Please let me know if you are interested to receive the new wsdl in order t=
+o include it into your next version and to initiate a collaboration that ma=
+y improve your software.
+
+Have a good day.
+
+Vincenzo Mario Todisco
+Serco s.p.a.
+Software Engineer & Project Manager
+Via Sciadonna 24/26
+00044 Frascati (Roma)
+Tel: (+39) 06 98354448
+Fax: (+39) 06 9419426
+Mobile: (+39) 348 0745523
+[cid:image001.jpg@01CC3FDB.4F91E190]
+This e-mail and any attachments are for the intended addressee(s) only and =
+may contain proprietary, confidential and/or legally privileged material.
+If you are not a named addressee, do not use, retain, copy or disclose any =
+part of this communication or any attachment as it is strictly prohibited a=
+nd may be unlawful.
+This email is not guaranteed to be free from viruses and we have no liabili=
+ty for any virus which may be transferred via this email.
+You are advised to take your own steps to protect against viruses.
+Unless this email's content expresses the contrary, this communication is n=
+ot intended to create or modify any contract or obligation.
+This email may be a personal communication from the sender and as such does=
+ not represent the views of the company.
+Serco SpA, Sede Legale: Via Venti Settembre, 1, 00187, Roma, Italy.
+Serco s.p.a. is a company of Serco Group Plc Registered in England and Wale=
+s.
+
+
+
+--_000_9DC51416E8A84B478588DCE82922DC721C5C734258COREEXCHCCR04_
+Content-Type: text/html; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+
+<html xmlns:v=3D"urn:schemas-microsoft-com:vml" xmlns:o=3D"urn:schemas-micr=
+osoft-com:office:office" xmlns:w=3D"urn:schemas-microsoft-com:office:word" =
+xmlns:x=3D"urn:schemas-microsoft-com:office:excel" xmlns:p=3D"urn:schemas-m=
+icrosoft-com:office:powerpoint" xmlns:a=3D"urn:schemas-microsoft-com:office=
+:access" xmlns:dt=3D"uuid:C2F41010-65B3-11d1-A29F-00AA00C14882" xmlns:s=3D"=
+uuid:BDC6E3F0-6DA3-11d1-A2A3-00AA00C14882" xmlns:rs=3D"urn:schemas-microsof=
+t-com:rowset" xmlns:z=3D"#RowsetSchema" xmlns:b=3D"urn:schemas-microsoft-co=
+m:office:publisher" xmlns:ss=3D"urn:schemas-microsoft-com:office:spreadshee=
+t" xmlns:c=3D"urn:schemas-microsoft-com:office:component:spreadsheet" xmlns=
+:odc=3D"urn:schemas-microsoft-com:office:odc" xmlns:oa=3D"urn:schemas-micro=
+soft-com:office:activation" xmlns:html=3D"http://www.w3.org/TR/REC-html40" =
+xmlns:q=3D"http://schemas.xmlsoap.org/soap/envelope/" xmlns:rtc=3D"http://m=
+icrosoft.com/officenet/conferencing" xmlns:D=3D"DAV:" xmlns:Repl=3D"http://=
+schemas.microsoft.com/repl/" xmlns:mt=3D"http://schemas.microsoft.com/share=
+point/soap/meetings/" xmlns:x2=3D"http://schemas.microsoft.com/office/excel=
+/2003/xml" xmlns:ppda=3D"http://www.passport.com/NameSpace.xsd" xmlns:ois=
+=3D"http://schemas.microsoft.com/sharepoint/soap/ois/" xmlns:dir=3D"http://=
+schemas.microsoft.com/sharepoint/soap/directory/" xmlns:ds=3D"http://www.w3=
+.org/2000/09/xmldsig#" xmlns:dsp=3D"http://schemas.microsoft.com/sharepoint=
+/dsp" xmlns:udc=3D"http://schemas.microsoft.com/data/udc" xmlns:xsd=3D"http=
+://www.w3.org/2001/XMLSchema" xmlns:sub=3D"http://schemas.microsoft.com/sha=
+repoint/soap/2002/1/alerts/" xmlns:ec=3D"http://www.w3.org/2001/04/xmlenc#"=
+ xmlns:sp=3D"http://schemas.microsoft.com/sharepoint/" xmlns:sps=3D"http://=
+schemas.microsoft.com/sharepoint/soap/" xmlns:xsi=3D"http://www.w3.org/2001=
+/XMLSchema-instance" xmlns:udcs=3D"http://schemas.microsoft.com/data/udc/so=
+ap" xmlns:udcxf=3D"http://schemas.microsoft.com/data/udc/xmlfile" xmlns:udc=
+p2p=3D"http://schemas.microsoft.com/data/udc/parttopart" xmlns:wf=3D"http:/=
+/schemas.microsoft.com/sharepoint/soap/workflow/" xmlns:dsss=3D"http://sche=
+mas.microsoft.com/office/2006/digsig-setup" xmlns:dssi=3D"http://schemas.mi=
+crosoft.com/office/2006/digsig" xmlns:mdssi=3D"http://schemas.openxmlformat=
+s.org/package/2006/digital-signature" xmlns:mver=3D"http://schemas.openxmlf=
+ormats.org/markup-compatibility/2006" xmlns:m=3D"http://schemas.microsoft.c=
+om/office/2004/12/omml" xmlns:mrels=3D"http://schemas.openxmlformats.org/pa=
+ckage/2006/relationships" xmlns:spwp=3D"http://microsoft.com/sharepoint/web=
+partpages" xmlns:ex12t=3D"http://schemas.microsoft.com/exchange/services/20=
+06/types" xmlns:ex12m=3D"http://schemas.microsoft.com/exchange/services/200=
+6/messages" xmlns:pptsl=3D"http://schemas.microsoft.com/sharepoint/soap/Sli=
+deLibrary/" xmlns:spsl=3D"http://microsoft.com/webservices/SharePointPortal=
+Server/PublishedLinksService" xmlns:Z=3D"urn:schemas-microsoft-com:" xmlns:=
+st=3D"&#1;" xmlns=3D"http://www.w3.org/TR/REC-html40"><head><meta http-equi=
+v=3DContent-Type content=3D"text/html; charset=3Dus-ascii"><meta name=3DGen=
+erator content=3D"Microsoft Word 12 (filtered medium)"><!--[if !mso]><style=
+>v\:* {behavior:url(#default#VML);}
+o\:* {behavior:url(#default#VML);}
+w\:* {behavior:url(#default#VML);}
+.shape {behavior:url(#default#VML);}
+</style><![endif]--><style><!--
+/* Font Definitions */
+@font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+@font-face
+	{font-family:Calibri;
+	panose-1:2 15 5 2 2 2 4 3 2 4;}
+@font-face
+	{font-family:Tahoma;
+	panose-1:2 11 6 4 3 5 4 4 2 4;}
+/* Style Definitions */
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0in;
+	margin-bottom:.0001pt;
+	font-size:11.0pt;
+	font-family:"Calibri","sans-serif";}
+a:link, span.MsoHyperlink
+	{mso-style-priority:99;
+	color:blue;
+	text-decoration:underline;}
+a:visited, span.MsoHyperlinkFollowed
+	{mso-style-priority:99;
+	color:purple;
+	text-decoration:underline;}
+p.MsoAcetate, li.MsoAcetate, div.MsoAcetate
+	{mso-style-priority:99;
+	mso-style-link:"Balloon Text Char";
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:8.0pt;
+	font-family:"Tahoma","sans-serif";}
+span.EmailStyle17
+	{mso-style-type:personal-compose;
+	font-family:"Calibri","sans-serif";
+	color:windowtext;}
+span.BalloonTextChar
+	{mso-style-name:"Balloon Text Char";
+	mso-style-priority:99;
+	mso-style-link:"Balloon Text";
+	font-family:"Tahoma","sans-serif";}
+.MsoChpDefault
+	{mso-style-type:export-only;}
+@page WordSection1
+	{size:8.5in 11.0in;
+	margin:1.0in 1.0in 1.0in 1.0in;}
+div.WordSection1
+	{page:WordSection1;}
+--></style><!--[if gte mso 9]><xml>
+<o:shapedefaults v:ext=3D"edit" spidmax=3D"2050" />
+</xml><![endif]--><!--[if gte mso 9]><xml>
+<o:shapelayout v:ext=3D"edit">
+<o:idmap v:ext=3D"edit" data=3D"1" />
+</o:shapelayout></xml><![endif]--></head><body lang=3DEN-US link=3Dblue vli=
+nk=3Dpurple><div class=3DWordSection1><p class=3DMsoNormal>Hello,<o:p></o:p=
+></p><p class=3DMsoNormal><o:p>&nbsp;</o:p></p><p class=3DMsoNormal>I&#8217=
+;m from a company that is pushing this tool internally and with customers (=
+e.g. European Space Agency).<o:p></o:p></p><p class=3DMsoNormal>Due to look=
+&amp;feel requirements we are integrating our portals with iTop using web s=
+ervices in order to open service requests and incidents.<o:p></o:p></p><p c=
+lass=3DMsoNormal>During the investigation I have solved a wsdl problem and =
+have extended the &#8220;createIncidentTicket&#8221; with &#8220;createRequ=
+estTicket&#8221;.<o:p></o:p></p><p class=3DMsoNormal>Please let me know if =
+you are interested to receive the new wsdl in order to include it into your=
+ next version and to initiate a collaboration that may improve your softwar=
+e.<o:p></o:p></p><p class=3DMsoNormal><o:p>&nbsp;</o:p></p><p class=3DMsoNo=
+rmal>Have a good day.<o:p></o:p></p><p class=3DMsoNormal><o:p>&nbsp;</o:p><=
+/p><p class=3DMsoNormal style=3D'mso-margin-top-alt:auto;mso-margin-bottom-=
+alt:auto'><b><i><span lang=3DIT style=3D'font-size:12.0pt;font-family:"Time=
+s New Roman","serif"'>Vincenzo Mario Todisco<br></span></i></b><i><span lan=
+g=3DIT style=3D'font-size:12.0pt;font-family:"Times New Roman","serif"'>Ser=
+co s.p.a.<br>Software Engineer &amp; Project Manager </span></i><span lang=
+=3DIT style=3D'font-size:12.0pt;font-family:"Times New Roman","serif"'><o:p=
+></o:p></span></p><p class=3DMsoNormal><i><span lang=3DIT style=3D'font-siz=
+e:10.0pt;font-family:"Times New Roman","serif"'>Via Sciadonna 24/26<br>0004=
+4 Frascati (Roma)<br>Tel: (+39) 06 98354448<br>Fax: (+39) 06 9419426<br>Mob=
+ile: (+39) 348 0745523</span></i><span lang=3DIT style=3D'font-size:10.0pt;=
+font-family:"Times New Roman","serif"'><o:p></o:p></span></p><p class=3DMso=
+Normal><span style=3D'font-size:12.0pt;font-family:"Times New Roman","serif=
+"'><img width=3D287 height=3D74 id=3D"Picture_x0020_1" src=3D"cid:image001.=
+jpg@01CC3FDB.4F91E190" alt=3D"Serco logo"></span><span lang=3DEN-GB style=
+=3D'font-size:12.0pt;font-family:"Times New Roman","serif"'><o:p></o:p></sp=
+an></p><p class=3DMsoNormal style=3D'text-align:justify'><span lang=3DEN-GB=
+ style=3D'font-size:7.0pt;font-family:"Times New Roman","serif"'>This e-mai=
+l and any attachments are for the intended addressee(s) only and may contai=
+n proprietary, confidential and/or legally privileged material. </span><spa=
+n lang=3DEN-GB style=3D'font-size:12.0pt;font-family:"Times New Roman","ser=
+if"'><o:p></o:p></span></p><p class=3DMsoNormal style=3D'text-align:justify=
+'><span lang=3DEN-GB style=3D'font-size:7.0pt;font-family:"Times New Roman"=
+,"serif"'>If you are not a named addressee, do not use, retain, copy or dis=
+close any part of this communication or any attachment as it is strictly pr=
+ohibited and may be unlawful. </span><span lang=3DEN-GB style=3D'font-size:=
+12.0pt;font-family:"Times New Roman","serif"'><o:p></o:p></span></p><p clas=
+s=3DMsoNormal style=3D'text-align:justify'><span lang=3DEN-GB style=3D'font=
+-size:7.0pt;font-family:"Times New Roman","serif"'>This email is not guaran=
+teed to be free from viruses and we have no liability for any virus which m=
+ay be transferred via this email. </span><span lang=3DEN-GB style=3D'font-s=
+ize:12.0pt;font-family:"Times New Roman","serif"'><o:p></o:p></span></p><p =
+class=3DMsoNormal style=3D'text-align:justify'><span lang=3DEN-GB style=3D'=
+font-size:7.0pt;font-family:"Times New Roman","serif"'>You are advised to t=
+ake your own steps to protect against viruses. </span><span lang=3DEN-GB st=
+yle=3D'font-size:12.0pt;font-family:"Times New Roman","serif"'><o:p></o:p><=
+/span></p><p class=3DMsoNormal style=3D'text-align:justify'><span lang=3DEN=
+-GB style=3D'font-size:7.0pt;font-family:"Times New Roman","serif"'>Unless =
+this email's content expresses the contrary, this communication is not inte=
+nded to create or modify any contract or obligation. </span><span lang=3DEN=
+-GB style=3D'font-size:12.0pt;font-family:"Times New Roman","serif"'><o:p><=
+/o:p></span></p><p class=3DMsoNormal style=3D'text-align:justify'><span lan=
+g=3DEN-GB style=3D'font-size:7.0pt;font-family:"Times New Roman","serif"'>T=
+his email may be a personal communication from the sender and as such does =
+not represent the views of the company. </span><span lang=3DEN-GB style=3D'=
+font-size:12.0pt;font-family:"Times New Roman","serif"'><o:p></o:p></span><=
+/p><p class=3DMsoNormal style=3D'text-align:justify'><span lang=3DIT style=
+=3D'font-size:7.0pt;font-family:"Times New Roman","serif"'>Serco SpA, Sede =
+Legale: Via Venti Settembre, 1, 00187, Roma, Italy. </span><span lang=3DIT =
+style=3D'font-size:12.0pt;font-family:"Times New Roman","serif"'><o:p></o:p=
+></span></p><p class=3DMsoNormal style=3D'text-align:justify'><span lang=3D=
+EN-GB style=3D'font-size:7.0pt;font-family:"Times New Roman","serif"'>Serco=
+ s.p.a. is a company of <b>Serco Group Plc Registered in England and Wales.=
+</b> </span><span lang=3DEN-GB style=3D'font-size:12.0pt;font-family:"Times=
+ New Roman","serif"'><o:p></o:p></span></p><p class=3DMsoNormal><span lang=
+=3DEN-GB><o:p>&nbsp;</o:p></span></p><p class=3DMsoNormal><o:p>&nbsp;</o:p>=
+</p></div></body></html>=
+
+--_000_9DC51416E8A84B478588DCE82922DC721C5C734258COREEXCHCCR04_--
+
+--_004_9DC51416E8A84B478588DCE82922DC721C5C734258COREEXCHCCR04_
+Content-Type: image/jpeg; name="image001.jpg"
+Content-Description: image001.jpg
+Content-Disposition: inline; filename="image001.jpg"; size=4023;
+	creation-date="Mon, 11 Jul 2011 14:01:29 GMT";
+	modification-date="Mon, 11 Jul 2011 14:01:29 GMT"
+Content-ID: <image001.jpg@01CC3FDB.4F91E190>
+Content-Transfer-Encoding: base64
+
+/9j/4AAQSkZJRgABAQEAYABgAAD/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0a
+HBwgJC4nICIsIxwcKDcpLDAxNDQ0Hyc5PTgyPC4zNDL/2wBDAQkJCQwLDBgNDRgyIRwhMjIyMjIy
+MjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjL/wAARCABKAR8DASIA
+AhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQA
+AAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3
+ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWm
+p6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEA
+AwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSEx
+BhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElK
+U1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3
+uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD36iii
+gAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKA
+CiiigAooooAKKKKACis/VtTbTY7by7fz5LiYQopkCDJBOST/ALtVbbxJaGOc3+2xeGYQsHkDKzFd
+w2sOvB6dalzinZm0cPUlHmirr+um5tUVkjxFp0dust3dQ25cvtUyBshWK54+n4VNc67pVpIiXF/B
+GzqHGW/hPQ57A9qOePcXsKt7cr+40KKy21+whR2u7iGACV40zIGL7cZIA+o47VJPrulWqwtNfwIs
+yeZGS3BX+99Pejnj3D2FX+V/caFFVrjUbO1tFu57hEgbG1yeGz0x61Xl17SoYYZpL+ARzAmNt2Qw
+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
+
+--_004_9DC51416E8A84B478588DCE82922DC721C5C734258COREEXCHCCR04_--

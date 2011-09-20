@@ -1,0 +1,62 @@
+Return-Path: <johannes.theuerkorn@netpioneer.de>
+Delivered-To: tickets@combodo.com
+Received: from b0.ovh.net (HELO queue) (213.186.33.50)
+	by b0.ovh.net with SMTP; 17 Feb 2011 21:55:23 +0200
+Received: from localhost (HELO mail472.ha.ovh.net) (127.0.0.1)
+  by localhost with SMTP; 17 Feb 2011 21:55:23 +0200
+Received: from b0.ovh.net (HELO queueout) (213.186.33.50)
+	by b0.ovh.net with SMTP; 17 Feb 2011 21:55:23 +0200
+Delivered-To: combodo.com-support@combodo.com
+Received: from b0.ovh.net (HELO queue) (213.186.33.50)
+	by b0.ovh.net with SMTP; 17 Feb 2011 21:55:23 +0200
+Received: from mx01.netpioneer.de (81.26.173.72)
+  by mx1.ovh.net with SMTP; 17 Feb 2011 21:55:22 +0200
+Received: from kim.netpioneer.de ([10.13.253.49] helo=kim.ka.netpioneer.de)
+	by mx01.netpioneer.de with esmtp 
+	id 1Pq9wg-0000jq-0T
+	for <support@combodo.com>; Thu, 17 Feb 2011 20:55:22 +0100
+x-mimeole: Produced By Microsoft Exchange V6.5
+Content-class: urn:content-classes:message
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+Subject: createfrommail.php
+Date: Thu, 17 Feb 2011 20:55:21 +0100
+Message-ID: <4DFE5A2A5CFD1F4883CE843583DA612302B9FF92@kim.ka.netpioneer.de>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: createfrommail.php
+Thread-Index: AcvO3JwfrjxDa4vyQNWOMSdBO4jmEg==
+From: "Johannes Theuerkorn" <Johannes.Theuerkorn@netpioneer.de>
+To: <support@combodo.com>
+X-Ovh-Tracer-Id: 9019021205702826766
+X-Ovh-Remote: 81.26.173.72 (mx01.netpioneer.de)
+X-Ovh-Local: 213.186.33.29 (mx1.ovh.net)
+X-Spam-Check: DONE|U 0.5/N
+
+Good evening,
+
+I read your post on =
+http://sourceforge.net/projects/itop/forums/forum/1113906/topic/4047143 =
+about a createfrommail.php script.
+Can you give some more information about it and a link to a =
+forum/developement page for it?
+We are just evaluating diffrent help desk systems before implementing =
+one in our company.
+Mail 2 ticket is a must for the helpdesk system so i would be glad =
+having more information how to imlement it in iTop.
+
+KR Johannes
+--
+Johannes Theuerkorn
+
+Aushilfskraft System- und Netzwerkadministrator
+Netpioneer GmbH, Beiertheimer Allee 18, 76137 Karlsruhe
+Gesch=E4ftsf=FChrer: Axel Jahn
+HRB: 107521 Handelsregister Mannheim
+
+Tel: 0721 / 9 20 60 844
+Fax: 0721 / 9 20 60 30
+E-Mail: Johannes.Theuerkorn@netpioneer.de
+www: http://www.netpioneer.de

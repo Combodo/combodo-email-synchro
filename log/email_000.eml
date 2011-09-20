@@ -1,0 +1,51 @@
+Return-Path: <bounce-id=d012=u145594.60gp.ovh.net=129484553434742581@50.mail-out.ovh.net>
+Delivered-To: tickets@combodo.com
+Received: from b0.ovh.net (HELO queue) (213.186.33.50)
+	by b0.ovh.net with SMTP; 12 Jan 2011 17:18:59 +0200
+Received: from localhost (HELO mail232.ha.ovh.net) (127.0.0.1)
+  by localhost with SMTP; 12 Jan 2011 17:18:59 +0200
+Received: from b0.ovh.net (HELO queueout) (213.186.33.50)
+	by b0.ovh.net with SMTP; 12 Jan 2011 17:18:59 +0200
+Delivered-To: combodo.com-contact@combodo.com
+Received: from b0.ovh.net (HELO queue) (213.186.33.50)
+	by b0.ovh.net with SMTP; 12 Jan 2011 17:18:59 +0200
+Received: from 50.mail-out.ovh.net (188.165.45.9)
+  by mx1.ovh.net with SMTP; 12 Jan 2011 17:18:57 +0200
+Received: (qmail 4494 invoked by uid 0); 12 Jan 2011 15:18:57 -0000
+Received: from unknown (HELO 60gp.ovh.net) (213.251.189.204)
+  by 50.mail-out.ovh.net with SMTP; 12 Jan 2011 15:18:54 -0000
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by localhost.domain.tld (Postfix) with ESMTP id 6902E3DF23
+	for <contact@combodo.com>; Wed, 12 Jan 2011 16:18:54 +0100 (CET)
+Received: by 60gp.ovh.net (Postfix, from userid 145594)
+	id 456323DF24; Wed, 12 Jan 2011 16:18:54 +0100 (CET)
+To: contact@combodo.com
+Subject: Formulaire de contact - Demande d'information sur iTop
+From: ssdavid13@ymail.com (ssdavid13 at ymail.com)
+Reply-To: ssdavid13@ymail.com (ssdavid13 at ymail.com)
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
+MIME-Version: 1.0
+Message-Id: <20110112151854.456323DF24@60gp.ovh.net>
+Date: Wed, 12 Jan 2011 16:18:54 +0100 (CET)
+X-Ovh-Tracer-Id: 14293862267599524029
+X-Ovh-Tracer-Id: 14294706692683795133
+X-Ovh-Remote: 188.165.45.9 (50.mail-out.ovh.net)
+X-Ovh-Local: 213.186.33.29 (mx1.ovh.net)
+X-Spam-Check: DONE|U 0.5/N
+
+Nom: Salim
+Prenom: David
+Societe: prodam
+Language (of the form): English
+Fonction: TI Manager
+Telephone: 55 92 9115-9496
+eMail: ssdavid13@ymail.com
+
+Message: Hello. I am doing a research about OGC assess process. I found
+many aplications that have OGC ITIL Logo and fews open source ITSM that
+have ITIL certified. I would like know if you did assess process of Pink
+VERIFY from Pink Elephant. If you had any information that can help me on
+that study and if you not did, i would like know if you want answer the
+criterias papers of Pink VERIFY to be assessed by my job.
+Thanks.

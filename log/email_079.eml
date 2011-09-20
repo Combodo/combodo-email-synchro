@@ -1,0 +1,62 @@
+Return-Path: <jvveen@vanmeijel.nl>
+Delivered-To: tickets@combodo.com
+Received: from b0.ovh.net (HELO queue) (213.186.33.50)
+	by b0.ovh.net with SMTP; 28 Jun 2011 16:26:32 +0200
+Received: from localhost (HELO mail518.ha.ovh.net) (127.0.0.1)
+  by localhost with SMTP; 28 Jun 2011 16:26:32 +0200
+Received: from b0.ovh.net (HELO queueout) (213.186.33.50)
+	by b0.ovh.net with SMTP; 28 Jun 2011 16:26:32 +0200
+Delivered-To: combodo.com-contact@combodo.com
+Received: from b0.ovh.net (HELO queue) (213.186.33.50)
+	by b0.ovh.net with SMTP; 28 Jun 2011 16:26:32 +0200
+Received: from mail-qy0-f169.google.com (209.85.216.169)
+  by mx1.ovh.net with SMTP; 28 Jun 2011 16:26:32 +0200
+Received: by qyk32 with SMTP id 32so1977383qyk.7
+        for <contact@combodo.com>; Tue, 28 Jun 2011 07:26:31 -0700 (PDT)
+MIME-Version: 1.0
+Received: by 10.224.176.14 with SMTP id bc14mr5606811qab.160.1309271191056;
+ Tue, 28 Jun 2011 07:26:31 -0700 (PDT)
+Received: by 10.224.36.203 with HTTP; Tue, 28 Jun 2011 07:26:30 -0700 (PDT)
+Date: Tue, 28 Jun 2011 16:26:30 +0200
+Message-ID: <BANLkTimyOB1ACzaHwc8MpGsXNfZ297Fmow@mail.gmail.com>
+Subject: Request information about iTop
+From: Jasper van Veen <jvveen@vanmeijel.nl>
+To: contact@combodo.com
+Content-Type: multipart/alternative; boundary=20cf303b3aa741f1a304a6c674c8
+X-Ovh-Tracer-Id: 16471915637263405501
+X-Ovh-Remote: 209.85.216.169 (mail-qy0-f169.google.com)
+X-Ovh-Local: 213.186.33.29 (mx1.ovh.net)
+X-Spam-Check: DONE|U 0.50344/N
+
+--20cf303b3aa741f1a304a6c674c8
+Content-Type: text/plain; charset=ISO-8859-1
+
+Hello,
+
+I have a question about managing licenses, if i create a new license for
+let's say MS Office 2007 with a usage limit of 100
+and add this license to 45 computers who have MS Office 2007 installed is
+there any possibility to see a overall view ?
+(amount 100 licenses    45 in use    45 free )  something like this !?
+Instead of going to usage screen and count the computers to see how many
+have the license.
+
+Thanks.
+
+Jasper van der Veen
+
+--20cf303b3aa741f1a304a6c674c8
+Content-Type: text/html; charset=ISO-8859-1
+Content-Transfer-Encoding: quoted-printable
+
+Hello,<br><div><br></div><div>I have a question about managing licenses, if=
+ i create a new license for let&#39;s say MS Office 2007 with a usage limit=
+ of 100</div><div>and add this license to 45 computers who have MS Office 2=
+007 installed is there any possibility to see a overall view ? =A0</div>
+<div>(amount 100 licenses =A0 =A045 in use =A0 =A045 free ) =A0something li=
+ke this !?</div><div>Instead of going to usage screen and count the compute=
+rs to see how many have the license.</div><div><br></div><div>Thanks.</div>=
+<div><br>
+</div><div>Jasper van der Veen</div>
+
+--20cf303b3aa741f1a304a6c674c8--

@@ -1,0 +1,170 @@
+Return-Path: <arndt.korsus@haspa-direkt.de>
+Delivered-To: tickets@combodo.com
+Received: from b0.ovh.net (HELO queue) (213.186.33.50)
+	by b0.ovh.net with SMTP; 12 Aug 2011 15:11:34 +0200
+Received: from localhost (HELO mail536.ha.ovh.net) (127.0.0.1)
+  by localhost with SMTP; 12 Aug 2011 15:11:34 +0200
+Received: from b0.ovh.net (HELO queueout) (213.186.33.50)
+	by b0.ovh.net with SMTP; 12 Aug 2011 15:11:33 +0200
+Delivered-To: combodo.com-contact@combodo.com
+Received: from b0.ovh.net (HELO queue) (213.186.33.50)
+	by b0.ovh.net with SMTP; 12 Aug 2011 15:11:33 +0200
+Received: from mail02.noris.net (62.128.1.232)
+  by mx1.ovh.net with SMTP; 12 Aug 2011 15:11:33 +0200
+Received: from iks1.haspa-direkt.noris.de ([213.95.35.55])
+	by mail02.noris.net with esmtps (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:32)
+	(Exim)
+	(envelope-from <Arndt.Korsus@Haspa-DIREKT.de>)
+	id 1QrrWP-0001nR-DG
+	for contact@combodo.com; Fri, 12 Aug 2011 15:11:33 +0200
+Received: from haspa01 (localhost [127.0.0.1])
+	by iks1.haspa-direkt.noris.de (Postfix) with ESMTP id E2A0D2B13F
+	for <contact@combodo.com>; Fri, 12 Aug 2011 15:11:32 +0200 (CEST)
+Received: from webmail.haspa-direkt.de (webmail.haspa-direkt.de [213.95.18.242])
+	by iks1.haspa-direkt.noris.de (Postfix) with ESMTPS id 8282F2B0DC
+	for <contact@combodo.com>; Fri, 12 Aug 2011 15:10:55 +0200 (CEST)
+Received: from localhost ([127.0.0.1] helo=webmail.haspa-direkt.de)
+	by webmail.haspa-direkt.de with esmtp (Exim 4.63)
+	(envelope-from <Arndt.Korsus@Haspa-DIREKT.de>)
+	id 1QrrVn-0007yZ-FJ
+	for contact@combodo.com; Fri, 12 Aug 2011 15:10:55 +0200
+Subject: Demo is down
+From: =?windows-1252?Q?Arndt_Korsus?= <Arndt.Korsus@Haspa-DIREKT.de>
+To: contact@combodo.com
+Date: Fri, 12 Aug 2011 15:10:55 +0200
+X-Priority: 3 (Normal)
+X-Mailer: Zarafa 6.20.11-17604
+Message-ID: <vmime.4e45265f.e27.25f9152f3ddc0a9@webmail.haspa-direkt.de>
+X-TBoneOriginalFrom: =?windows-1252?Q?Arndt_Korsus?= <Arndt.Korsus@Haspa-DIREKT.de>
+X-TBoneOriginalTo: contact@combodo.com
+X-TBoneDomainSigned: false
+MIME-Version: 1.0
+Content-Type: multipart/signed; protocol="application/x-pkcs7-signature"; micalg=sha1; boundary="----CFECC4D45FE14B05913863390D5732EE"
+X-Noris-IP: 213.95.35.55
+X-Ovh-Tracer-Id: 2775624745587016381
+X-Ovh-Remote: 62.128.1.232 (mail02.noris.net)
+X-Ovh-Local: 213.186.33.29 (mx1.ovh.net)
+X-Spam-Check: DONE|U 0.5/N
+
+This is an S/MIME signed message
+
+------CFECC4D45FE14B05913863390D5732EE
+Content-Type: multipart/alternative; 
+ boundary="=_vpihffkG9IIEvLXLVRONLbCuFzjZ+zQqpRlxfUTI9Hg6v8N4"
+
+This is a multi-part message in MIME format. Your mail reader does not
+understand MIME message format.
+--=_vpihffkG9IIEvLXLVRONLbCuFzjZ+zQqpRlxfUTI9Hg6v8N4
+Content-Type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: quoted-printable
+
+=0D=0A=A0=0D=0A=A0=0D=0A=0D=0AMit freundlichen Gr=FC=DFen=0D=0A=0D=0AHasp=
+a-DIREKT Servicegesellschaft=0D=0Af=FCr Direktvertrieb mbH=0D=0A=0D=0AArn=
+dt Korsus=0D=0A=0D=0A__________________________=0D=0AHaspa-DIREKT=0D=0AAr=
+ndt Korsus=0D=0ATechnische Leitung=0D=0ASteindamm 80=0D=0A20099 Hamburg=0D=
+=0A=0D=0ATel.: 040-2887-1799=0D=0AMobil: 015116305280=0D=0AFax: 040-2887-=
+2489=0D=0AArndt.Korsus@Haspa-DIREKT.de=0D=0Ahttp://www.haspa-direkt.de=0D=
+=0A=0D=0AHaspa-DIREKT Servicegesellschaft f=FCr Direktvertrieb mbH - Sitz=
+ Hamburg=0D=0AHandelsregister Amtsgericht Hamburg HRB 35930 - USt-ID-Nr. =
+DE216540952=0D=0AVorsitzender des Aufsichtsrats: Reinhard Klein=0D=0AGesc=
+h=E4ftsf=FChrung: Ralf Jansen, Rainer Pohl=0D=0A=0D=0ADie in dieser Nachr=
+icht enthaltenen Informationen k=F6nnen vertraulich sein=0D=0Aund sind au=
+sschlie=DFlich f=FCr den Adressaten bestimmt. Sollten Sie nicht der=0D=0A=
+vorgesehene Empf=E4nger sein, so bitten wir Sie, den Absender unverz=FCgl=
+ich zu=0D=0Ainformieren und die E-Mail zu l=F6schen. Eine nicht autorisie=
+rte Verwendung,=0D=0AVerbreitung oder Kopie ist nicht gestattet. Wir weis=
+en darauf hin, dass=0D=0A=FCber das Internet per E-Mail =FCbermittelte Na=
+chrichten ver=E4ndert oder=0D=0Averf=E4lscht werden k=F6nnen. Herk=F6mmli=
+che E-Mails sind nicht gegen den Zugriff=0D=0ADritter gesch=FCtzt, so das=
+s unter Umst=E4nden auch die Vertraulichkeit nicht=0D=0Agewahrt sein kann=
+=2E Von der =DCbermittlung sensibler Gesch=E4ftsdaten sollten=0D=0ASie da=
+her absehen.=0D=0A
+--=_vpihffkG9IIEvLXLVRONLbCuFzjZ+zQqpRlxfUTI9Hg6v8N4
+Content-Type: text/html; charset=windows-1252
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://ww=
+w.w3.org/TR/html4/loose.dtd"><html>=0A<head>=0A  <meta name=3D"Generator"=
+ content=3D"Zarafa WebAccess v6.20.11-17604">=0A  <meta http-equiv=3D"Con=
+tent-Type" content=3D"text/html; charset=3DWindows-1252">=0A  <title>Demo=
+ is down</title>=0A  <style type=3D"text/css">=0A      body=0D=0A      {=0D=
+=0A        font-family: Arial, Verdana, Sans-Serif;=0D=0A        font-siz=
+e: 12px;=0D=0A        padding: 5px 5px 5px 5px;=0D=0A        margin: 0px;=
+=0D=0A        border-style: none;=0D=0A        background-color: #ffffff;=
+=0D=0A      }=0D=0A=0D=0A      p, ul, li=0D=0A      {=0D=0A        margin=
+-top: 0px;=0D=0A        margin-bottom: 0px;=0D=0A      }=0D=0A  </style>=0A=
+</head>=0A<body>=0A<p>&nbsp;<br />&nbsp;</p><p>Mit freundlichen Gr&uuml;&=
+szlig;en<br /> <br />Haspa-DIREKT Servicegesellschaft<br />f&uuml;r Direk=
+tvertrieb mbH<br /> <br />Arndt Korsus<br /> <br />______________________=
+____<br />Haspa-DIREKT<br />Arndt Korsus<br />Technische Leitung<br />Ste=
+indamm 80<br />20099 Hamburg<br /> <br />Tel.: 040-2887-1799<br />Mobil: =
+015116305280<br />Fax: 040-2887-2489<br />Arndt.Korsus@Haspa-DIREKT.de<br=
+ />http://www.haspa-direkt.de<br /><br />Haspa-DIREKT Servicegesellschaft=
+ f&uuml;r Direktvertrieb mbH - Sitz Hamburg<br />Handelsregister Amtsgeri=
+cht Hamburg HRB 35930 - USt-ID-Nr. DE216540952<br />Vorsitzender des Aufs=
+ichtsrats: Reinhard Klein<br />Gesch&auml;ftsf&uuml;hrung: Ralf Jansen, R=
+ainer Pohl<br /><br />Die in dieser Nachricht enthaltenen Informationen k=
+&ouml;nnen vertraulich sein<br />und sind ausschlie&szlig;lich f&uuml;r d=
+en Adressaten bestimmt. Sollten Sie nicht der<br />vorgesehene Empf&auml;=
+nger sein, so bitten wir Sie, den Absender unverz&uuml;glich zu<br />info=
+rmieren und die E-Mail zu l&ouml;schen. Eine nicht autorisierte Verwendun=
+g,<br />Verbreitung oder Kopie ist nicht gestattet. Wir weisen darauf hin=
+, dass<br />&uuml;ber das Internet per E-Mail &uuml;bermittelte Nachricht=
+en ver&auml;ndert oder<br />verf&auml;lscht werden k&ouml;nnen. Herk&ouml=
+;mmliche E-Mails sind nicht gegen den Zugriff<br />Dritter gesch&uuml;tzt=
+, so dass unter Umst&auml;nden auch die Vertraulichkeit nicht<br />gewahr=
+t sein kann. Von der &Uuml;bermittlung sensibler Gesch&auml;ftsdaten soll=
+ten<br />Sie daher absehen.</p>=0A</body>=0A</html>
+--=_vpihffkG9IIEvLXLVRONLbCuFzjZ+zQqpRlxfUTI9Hg6v8N4--
+
+------CFECC4D45FE14B05913863390D5732EE
+Content-Type: application/x-pkcs7-signature; name="smime.p7s"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="smime.p7s"
+
+MIIIMwYJKoZIhvcNAQcCoIIIJDCCCCACAQExCzAJBgUrDgMCGgUAMAsGCSqGSIb3
+DQEHAaCCBXYwggVyMIIEWqADAgECAhEArPdghcNaFaUTPrIXPXcobjANBgkqhkiG
+9w0BAQUFADCBkzELMAkGA1UEBhMCR0IxGzAZBgNVBAgTEkdyZWF0ZXIgTWFuY2hl
+c3RlcjEQMA4GA1UEBxMHU2FsZm9yZDEaMBgGA1UEChMRQ09NT0RPIENBIExpbWl0
+ZWQxOTA3BgNVBAMTMENPTU9ETyBDbGllbnQgQXV0aGVudGljYXRpb24gYW5kIFNl
+Y3VyZSBFbWFpbCBDQTAeFw0xMTA3MDEwMDAwMDBaFw0xMjA2MzAyMzU5NTlaMIGj
+MQswCQYDVQQGEwJERTEQMA4GA1UECBMHSGFtYnVyZzEQMA4GA1UEBxMHSGFtYnVy
+ZzEVMBMGA1UEChMMSGFzcGEtRGlyZWt0MRUwEwYDVQQLEwxIYXNwYS1EaXJla3Qx
+FTATBgNVBAMTDGFybmR0LmtvcnN1czErMCkGCSqGSIb3DQEJARYcYXJuZHQua29y
+c3VzQGhhc3BhLWRpcmVrdC5kZTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoC
+ggEBAKDOf7btmYCzHVBbQn2Wsq9fhnOWzA8uQ1TmWFwa6cWsatZaA+rh4WvKPqst
+2zELMOHuc3D4cPCIklxebdtj9OtgBpRFe6Thfo3D43tjCYx4drg1QbWRLDXBHPmo
+i/cIx9U+k8RrYktUnI3dWkhMBDACE85PpP0OJNAWZgvJ+j9Y6kAVJKuh80pUWr3M
+k5qaFoVuLWNqRKRKcdljiJ0uPllyW689pz27A25RESW+Tc/Ptx4rga8X5+rJQ+Mj
+TMxGbiwjslsQPpQ2p1MupksZnRnFzV3May4rHI0dqpQiLvc7V+fWkFr9E08ZKN9W
+PP+o5LKdbFEGXCI4XewoKOuIUsUCAwEAAaOCAa0wggGpMB8GA1UdIwQYMBaAFHoT
+TgB0W8Z4Y2QnwS/ioFu8ecV7MB0GA1UdDgQWBBTP4Dt12EcCLApAS4h2vK6FAa9u
+TzAOBgNVHQ8BAf8EBAMCBaAwDAYDVR0TAQH/BAIwADAdBgNVHSUEFjAUBggrBgEF
+BQcDBAYIKwYBBQUHAwIwRgYDVR0gBD8wPTA7BgwrBgEEAbIxAQIBAwUwKzApBggr
+BgEFBQcCARYdaHR0cHM6Ly9zZWN1cmUuY29tb2RvLm5ldC9DUFMwVwYDVR0fBFAw
+TjBMoEqgSIZGaHR0cDovL2NybC5jb21vZG9jYS5jb20vQ09NT0RPQ2xpZW50QXV0
+aGVudGljYXRpb25hbmRTZWN1cmVFbWFpbENBLmNybDCBiAYIKwYBBQUHAQEEfDB6
+MFIGCCsGAQUFBzAChkZodHRwOi8vY3J0LmNvbW9kb2NhLmNvbS9DT01PRE9DbGll
+bnRBdXRoZW50aWNhdGlvbmFuZFNlY3VyZUVtYWlsQ0EuY3J0MCQGCCsGAQUFBzAB
+hhhodHRwOi8vb2NzcC5jb21vZG9jYS5jb20wDQYJKoZIhvcNAQEFBQADggEBAByZ
+oaUwe4zyzHUDASjzZ/p9juA3wSZKl2YL7lsQuCT0pcYhHUbTdQyLQwRBTd6qZBss
+uE5ACuKjV0e/NQ2wckf5/JTa4Sth9N+45iTY3bR8mQId2d4e2TbK4Rr9Rc9YK0qm
+1n1tMLC8cPEG5U/Kw4DB1pjM8gB6i5XAW1vTyzkYytEgv/tdSZMwVxprJOll1t4D
+UwWEFlIgetXtNzaU6vxeZr4wS5WoKnX4wfc6sS93/zODgqEM1WleS4QbvfhO0leF
+Zri5a1SRDSuai64LiYg8MshmRayD7l6NsJLmrkoUnLZyeLGU6pxYCnnEa7DzM0ta
+H40kjVE+Gi4zsUeWAiYxggKFMIICgQIBATCBqTCBkzELMAkGA1UEBhMCR0IxGzAZ
+BgNVBAgTEkdyZWF0ZXIgTWFuY2hlc3RlcjEQMA4GA1UEBxMHU2FsZm9yZDEaMBgG
+A1UEChMRQ09NT0RPIENBIExpbWl0ZWQxOTA3BgNVBAMTMENPTU9ETyBDbGllbnQg
+QXV0aGVudGljYXRpb24gYW5kIFNlY3VyZSBFbWFpbCBDQQIRAKz3YIXDWhWlEz6y
+Fz13KG4wCQYFKw4DAhoFAKCBsTAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwG
+CSqGSIb3DQEJBTEPFw0xMTA4MTIxMzExMzJaMCMGCSqGSIb3DQEJBDEWBBQr9Wkj
+a69ZokaVdlqwEF/Ib0LRpjBSBgkqhkiG9w0BCQ8xRTBDMAoGCCqGSIb3DQMHMA4G
+CCqGSIb3DQMCAgIAgDANBggqhkiG9w0DAgIBQDAHBgUrDgMCBzANBggqhkiG9w0D
+AgIBKDANBgkqhkiG9w0BAQEFAASCAQCJuOExBRqwn50x3QnNeMikn1o+otM+mOHu
+/25rpoOWIM0z7VTn3/RSdLua+qRXGl7fW4ILSs1f89I31WJg8qygxMqx6KZZt7bZ
+QmZY+ilPPyDVX2EgT5GRScyDJYbd5xYVLzz+dRsN9mOEcDCzO9PZVyOvNRSp44m1
+rT6XbRmPSZOXq1kn+2rEDI5GQcKf4Bb4br2LiMSGxpp9x7KFnXteWak7euhdACeB
+xA6mNQ9rNOwtoT2d1Jt68BGoiUUsPrdJI5Knv5jCD0E4sAAPaJFXYa7+mks7Yl+Z
+6yEkUhi9OXEwHEwhRhrWWB+xORxiJb/gjF091X907F1lbCr6WWoB
+
+------CFECC4D45FE14B05913863390D5732EE--

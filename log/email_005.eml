@@ -1,0 +1,70 @@
+Return-Path: <a-yoshiyama@bu.jp.nec.com>
+Delivered-To: tickets@combodo.com
+Received: from b0.ovh.net (HELO queue) (213.186.33.50)
+	by b0.ovh.net with SMTP; 25 Jan 2011 15:37:18 +0200
+Received: from localhost (HELO mail221.ha.ovh.net) (127.0.0.1)
+  by localhost with SMTP; 25 Jan 2011 15:37:18 +0200
+Received: from b0.ovh.net (HELO queueout) (213.186.33.50)
+	by b0.ovh.net with SMTP; 25 Jan 2011 15:37:17 +0200
+Delivered-To: combodo.com-contact@combodo.com
+Received: from b0.ovh.net (HELO queue) (213.186.33.50)
+	by b0.ovh.net with SMTP; 25 Jan 2011 15:37:17 +0200
+Received: from tyo202.gate.nec.co.jp (202.32.8.206)
+  by mx1.ovh.net with SMTP; 25 Jan 2011 15:37:15 +0200
+Received: from mailgate4.nec.co.jp ([10.7.69.184])
+	by tyo202.gate.nec.co.jp (8.13.8/8.13.4) with ESMTP id p0PDYhZj023542
+	for <contact@combodo.com>; Tue, 25 Jan 2011 22:34:43 +0900 (JST)
+Received: (from root@localhost) by mailgate4.nec.co.jp (8.11.7/3.7W-MAILGATE-NEC)
+	id p0PDYg703161 for contact@combodo.com; Tue, 25 Jan 2011 22:34:42 +0900 (JST)
+Received: from mail01b.kamome.nec.co.jp (mail01b.kamome.nec.co.jp [10.25.43.2])
+	by mailsv3.nec.co.jp (8.13.8/8.13.4) with ESMTP id p0PDYg61008047
+	for <contact@combodo.com>; Tue, 25 Jan 2011 22:34:42 +0900 (JST)
+Received: from genzui.jp.nec.com ([10.26.220.13] [10.26.220.13]) by mail01b.kamome.nec.co.jp with ESMTP id BT-MMP-762010; Tue, 25 Jan 2011 22:33:10 +0900
+Received: from [10.81.11.249] ([10.81.11.249] [10.81.11.249]) by mail.jp.nec.com with ESMTP; Tue, 25 Jan 2011 22:33:09 +0900
+Message-ID: <4D3ED115.4070407@bu.jp.nec.com>
+Date: Tue, 25 Jan 2011 22:33:09 +0900
+From: =?ISO-2022-JP?B?GyRCNUg7MxsoQiAbJEI5OBsoQg==?=
+ <a-yoshiyama@bu.jp.nec.com>
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.2; ja; rv:1.9.2.12) Gecko/20101027 Lightning/1.0b2 Thunderbird/3.1.6
+MIME-Version: 1.0
+To: contact@combodo.com
+Subject: Japanese translation of iTop
+Content-Type: text/plain; charset=ISO-2022-JP
+Content-Transfer-Encoding: 7bit
+X-Ovh-Tracer-Id: 15118302475422577341
+X-Ovh-Remote: 202.32.8.206 (tyo202.gate.nec.co.jp)
+X-Ovh-Local: 213.186.33.29 (mx1.ovh.net)
+X-Spam-Check: DONE|U 0.513994/N
+
+Hello,
+
+We found and tested iTop CMDB. It's a good software especially its
+design of O/R mapping and i18n.
+
+So, we are preparing Japanese translation of iTop. It's mostly done, but
+we need to make sure of meaning of some words. Please let us know about
+below:
+
+Change Management:
+ - What is the difference of "acceptance" and "approval"?
+
+Configration Management:
+- What is the difference of "implement" and "production"?
+ - Does "implement" mean "preparing"? "not in service"?
+ - Does "production" mean "providing services" or "using now"?
+- What does "criticity" mean?
+
+Incident Management:
+- What does "ev_timeout" mean?
+
+Service Management:
+- What does "Underpinning Contracts" mean?
+
+Ticket Management:
+- What does "caller" mean?
+
+
+We are going to contribute our work to iTop community.
+
+Regads,
+ Akira YOSHIYAMA <a-yoshiyama@bu.jp.nec.com> <yosshy@debian.or.jp>

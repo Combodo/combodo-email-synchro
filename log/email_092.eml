@@ -1,0 +1,46 @@
+Return-Path: <bounce-id=d199=u145594.60gp.ovh.net=1311008463347167041@86.mail-out.ovh.net>
+Delivered-To: tickets@combodo.com
+Received: from b0.ovh.net (HELO queue) (213.186.33.50)
+	by b0.ovh.net with SMTP; 18 Jul 2011 19:01:27 +0200
+Received: from localhost (HELO mail538.ha.ovh.net) (127.0.0.1)
+  by localhost with SMTP; 18 Jul 2011 19:01:27 +0200
+Received: from b0.ovh.net (HELO queueout) (213.186.33.50)
+	by b0.ovh.net with SMTP; 18 Jul 2011 19:01:26 +0200
+Delivered-To: combodo.com-contact@combodo.com
+Received: from b0.ovh.net (HELO queue) (213.186.33.50)
+	by b0.ovh.net with SMTP; 18 Jul 2011 19:01:25 +0200
+Received: from 86.mail-out.ovh.net (178.32.118.31)
+  by mx1.ovh.net with SMTP; 18 Jul 2011 19:01:20 +0200
+Received: (qmail 16871 invoked by uid 0); 18 Jul 2011 17:01:08 -0000
+Received: from gw4.ovh.net (HELO 60gp.ovh.net) (213.251.189.204)
+  by 86.mail-out.ovh.net with SMTP; 18 Jul 2011 17:01:03 -0000
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by localhost.domain.tld (Postfix) with ESMTP id 18F9D15B2
+	for <contact@combodo.com>; Mon, 18 Jul 2011 19:01:15 +0200 (CEST)
+Received: by 60gp.ovh.net (Postfix, from userid 145594)
+	id E650315B3; Mon, 18 Jul 2011 19:01:14 +0200 (CEST)
+To: contact@combodo.com
+Subject: Formulaire de contact - Demande d'information sur les partenariats
+From: f.centonze@dadonet.it (f.centonze at dadonet.it)
+Reply-To: f.centonze@dadonet.it (f.centonze at dadonet.it)
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
+MIME-Version: 1.0
+Message-Id: <20110718170114.E650315B3@60gp.ovh.net>
+Date: Mon, 18 Jul 2011 19:01:14 +0200 (CEST)
+X-Ovh-Tracer-Id: 7408139913142210749
+X-Ovh-Remote: 178.32.118.31 (86.mail-out.ovh.net)
+X-Ovh-Local: 213.186.33.29 (mx1.ovh.net)
+X-Spam-Check: DONE|U 0.5/N
+
+Nom: Centonze
+Prenom: Fabio
+Societe: Dadonet
+Language (of the form): English
+Fonction: 
+Telephone: 
+eMail: f.centonze@dadonet.it
+
+Message: Hello,
+we are interested in supporting iTop in Italy, you can get some information
+about a possible partnership?
