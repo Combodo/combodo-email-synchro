@@ -1,7 +1,7 @@
 <?php
 // Copyright (C) 2010 Combodo SARL
 //
-include 'Net/POP3.php';			// PEAR POP3
+include APPROOT.'modules/combodo-email-synchro/POP3.php';			// PEAR POP3
 include APPROOT.'modules/combodo-email-synchro/mimeDecode.php';	// MODIFIED PEAR mimeDecode
 
 /**
@@ -21,7 +21,7 @@ class EmailReplica extends DBObject
 		(
 			"category" => "requestmgmt",
 			"key_type" => "autoincrement",
-			"name_attcode" => "message_id",
+			"name_attcode" => "uidl",
 			"state_attcode" => "",
 			"reconc_keys" => array("message_id"),
 			"db_table" => "email_replica",
@@ -30,7 +30,8 @@ class EmailReplica extends DBObject
 		);
 		MetaModel::Init_Params($aParams);
 
-		MetaModel::Init_AddAttribute(new AttributeExternalKey("ticket_id", array("targetclass"=>"Ticket", "jointype"=>null, "allowed_values"=>null, "sql"=>"ticket_id", "is_null_allowed"=>false, "on_target_delete"=>DEL_AUTO, "depends_on"=>array())));
+		MetaModel::Init_AddAttribute(new AttributeInteger("ticket_id", array("allowed_values"=>null, "sql"=>"ticket_id", "default_value"=>0, "is_null_allowed"=>true, "depends_on"=>array())));
+		MetaModel::Init_AddAttribute(new AttributeString("uidl", array("allowed_values"=>null, "sql"=>"uidl", "default_value"=>null, "is_null_allowed"=>true, "depends_on"=>array())));
 		MetaModel::Init_AddAttribute(new AttributeString("message_id", array("allowed_values"=>null, "sql"=>"message_id", "default_value"=>null, "is_null_allowed"=>true, "depends_on"=>array())));
 		MetaModel::Init_AddAttribute(new AttributeText("references", array("allowed_values"=>null, "sql"=>"references", "default_value"=>null, "is_null_allowed"=>true, "depends_on"=>array())));
 	}
@@ -74,16 +75,15 @@ class RawEmailMessage
 		{
 			$sCharset = $aMatches[1];
 		}
-		$sSubject =iconv($sCharset, 'UTF-8//IGNORE//TRANSLIT', $oStructure->headers['subject']);
 		
 		// Search for the text/plain body part
 		$iPartIndex = 0;
 		$bFound = false;
-		$sTextBody = '';
+		$sBodyText = '';
 		$sReferences = isset($oStructure->headers['references']) ? $oStructure->headers['references'] : '';
 		if (!isset($oStructure->parts) || count($oStructure->parts) == 0)
 		{
-			$sTextBody = iconv($sCharset, 'UTF-8//IGNORE//TRANSLIT', $oStructure->body);
+			$sBodyText = iconv($sCharset, 'UTF-8//IGNORE//TRANSLIT', $oStructure->body);
 		}
 		else
 		{
@@ -101,29 +101,10 @@ class RawEmailMessage
 			}
 		}
 		
-//if (empty($sTextBody))
-//{
-//	echo "Unable to find a suitable body in the message:\n";	
-//	echo "==============================================\n";
-//	print_r($oStructure);
-//	echo "\n==============================================\n\n";
-//}
-//else
-//{
-//	echo "==============================================\n";
-//	echo $sTextBody;
-//	echo "\n==============================================\n\n";
-//}
-		
-//echo "Body:\n";	
-//print_r($sTextBody);
-//echo "\noMime:\n";
-//print_r($oMime);		
-		
 		$sRecipient = '';
 		$aReferences = array();
 		$aBodyParts = '';
-		$aAttachments = array();
+		$aAttachments = $this->GetAttachments($oStructure->parts);
 		$sDecodeStatus = '';
 		
 		return new EmailMessage($this->sUIDL, $sMessageId, $sSubject, $sCallerEmail, $sCallerName, $sRecipient, $aReferences, $sBodyText, $sBodyFormat, $aAttachments, $sDecodeStatus);
@@ -171,16 +152,6 @@ class RawEmailMessage
 		$aParams['input'] = $this->sRawHeaders.$aParams['crlf'];
 		$oStructure = Mail_mimeDecode::decode( $aParams );
 		$this->aParsedHeaders = $oStructure->headers;
-//
-//		if (!isset($oStructure->ctype_parameters['charset']))
-//		{
-//			$this->aWarnings[] = 'No character set found, using ISO-8859-1 by default';
-//			$sCharset = 'ISO-8859-1';
-//		}
-//		else
-//		{
-//			$sCharset = $oStructure->ctype_parameters['charset'];
-//		}
 	}
 	
 	/**
@@ -271,7 +242,8 @@ class RawEmailMessage
 		while($index < count($aParts))
 		{
 			if (($aParts[$index]->ctype_primary == $sPrimaryType) &&
-			   ($aParts[$index]->ctype_secondary == $sSecondaryPart))
+			   ($aParts[$index]->ctype_secondary == $sSecondaryPart) &&
+			   ($aParts[$index]->disposition != 'attachment') )
 			{
 				if (preg_match('/charset="?([^";]*)"?;?/', $aParts[$index]->headers['content-type'], $aMatches))
 				{
@@ -281,7 +253,8 @@ class RawEmailMessage
 					{
 						// Unable to decode the character set... let's hope something is still readable as-is
 						$sBody = $aParts[$index]->body;
-						// TODO: log a warning 
+						// TODO: log a warning
+//echo "Unable to decode the body...\n";
 					}
 				}
 				else
@@ -289,20 +262,68 @@ class RawEmailMessage
 					$sBody = $aParts[$index]->body;
 				}
 				// Found the desired body 
+//echo "Found a body...\n";
 				break;
 			}
 			else if (is_array($aParts[$index]->parts))
 			{
+//echo "The part $index contain sub-parts, recursing...\n";
 				$sBody = $this->ScanParts($aParts[$index]->parts, $sPrimaryType, $sSecondaryPart);
 				if (!empty($sBody))
 				{
 					// Found the desired body 
+//echo "Found a body...\n";
 					break;
 				}
 			}
 			$index++;
 		}
 		return $sBody;	
+	}
+	
+	function GetAttachments($aParts, $aAttachments = array())
+	{
+		$index = 0;
+		foreach($aParts as $aPart)
+		{
+			if (($aPart->disposition == 'attachment') || ( ($aPart->ctype_primary != 'multipart') && ($aPart->ctype_primary != 'text')) )
+			{
+
+				$sMimeType = $aPart->ctype_primary.'/'.$aPart->ctype_secondary;
+				$sFileName = @$aPart->d_parameters['filename'];
+				if (empty($sFileName))
+				{
+					$sFileName = @$aPart->ctype_parameters['name'];
+				}
+				if (empty($sFileName))
+				{
+					$sFileName = sprintf('%s%03d.%s',$aPart->ctype_primary, $index, $aPart->ctype_secondary); // i.e. image001.jpg
+				}
+				$sContent = $aPart->body;
+				$aAttachments[] = array('mimeType' => $sMimeType, 'filename' => $sFileName, 'content' => $sContent);
+//echo "Attachment: mimeType: $sMimeType, filename: $sFileName\n";				
+			}
+			else if (is_array($aPart->parts))
+			{
+				$aAttachments = $this->GetAttachments($aPart->parts, $aAttachments);
+			}
+			$index++;
+		}
+		return $aAttachments;
+	}
+	
+	public function SendAsAttachment($sTo, $sCC, $sSubject, $sTextMessage)
+	{
+  		$sDelimiter = '--- iTopEmailPart--- '.md5(date('r', time()))." ---\n";
+  		$sHeader = "From: denis.flaven@combodo.com\n";
+ 		$sHeader .= "Content-Type: multipart/mixed; boundary=\"{$sDelimiter}\"\n";
+  		
+  		$sTextHeader = "Content-Type: text/plain; charset='utf-8'\nContent-Transfer-Encoding: 8bit\n";
+  		$sAttachmentHeader = "Content-Type: message/rfc822\nContent-Disposition: attachment\n";
+  		$sAttachment = 	$this->sRawHeaders."\r\n".$this->sBody;
+
+  		$sBody = $sDelimiter.$sTextHeader."\n".$sTextMessage."\n".$sDelimiter.$sAttachmentHeader.$sAttachment."\n";
+  		mail($sTo, $sSubject, $sBody, $sHeader);
 	}
 }
 
@@ -337,15 +358,6 @@ class EmailMessage {
 		$this->aAttachments = $aAttachments;
 		$this->sDecodeStatus = $sDecodeStatus;		
 	}
-	/**
-	 * Retrieve the body part of the message in the given format
-	 * @param $sFormat string Either text or html
-	 * @param $bNewPartOnly True to get only the 'new' (i.e reply) part of the text
-	 */
-	public function GetBody($sFormat, $bNewPartOnly = false)
-	{
-		
-	}
 
 	/**
 	 * Archives the message into a file
@@ -360,6 +372,16 @@ class EmailMessage {
 	public function ReadFromFile($sFile)
 	{
 		
+	}
+	
+	public function IsValid()
+	{
+		$bValid = !empty($this->sUIDL) && !empty($this->sSubject) && !empty($this->sCallerEmail) && !empty($this->sCallerName);
+		foreach($this->aAttachments as $aAttachment)
+		{
+			$bValid = $bValid && !empty($aAttachment['mimeType']) && !empty($aAttachment['filename']) && !empty($aAttachment['content']);
+		}
+		return $bValid;
 	}
 }
 
@@ -392,6 +414,10 @@ abstract class EmailSource
 	 * Name of the eMail source
 	 */
 	 abstract public function GetName();
+	/**
+	 * Disconnect from the server
+	 */
+	 abstract public function Disconnect();
 }
 
 ////////////////////////////////////////////////////////////////////
@@ -402,10 +428,12 @@ class TestEmailSource extends EmailSource
 {
 	protected $sSourceDir;
 	protected $aMessages;
+	protected $sName;
 	
-	public function __construct($sSourceDir)
+	public function __construct($sSourceDir, $sName)
 	{
 		$this->sSourceDir = $sSourceDir;
+		$this->sName = $sName;
 		$this->aMessages = array();
 		$hDir = opendir($this->sSourceDir);
 		while(($sFile = readdir($hDir)) !== false)
@@ -456,6 +484,10 @@ class TestEmailSource extends EmailSource
 	 */
 	 public function GetName()
 	 {
+	 	if (!empty($this->sName))
+	 	{
+		 	return $this->sName;
+	 	}
 	 	return 'Test Source (from '.$this->sSourceDir.')';
 	 }
 	 
@@ -472,6 +504,10 @@ class TestEmailSource extends EmailSource
 		}
 		return $aListing;
 	 }
+	 
+	 public function Disconnect()
+	 {
+	 }
 }
 
 ////////////////////////////////////////////////////////////////////
@@ -484,21 +520,21 @@ class POP3EmailSource extends EmailSource
 	protected $sServer = '';
 	protected $sLogin = '';
 	
-	public function __construct($sServer, $iPort, $sLogin, $sPwd)
+	public function __construct($sServer, $iPort, $sLogin, $sPwd, $authOption = true)
 	{
 		$this->oPop3 = new Net_POP3();
 		$this->sServer = $sServer;
 		$this->sLogin = $sLogin;
 		$bRet = $this->oPop3->connect($sServer, $iPort);
-		if (!$bRet)
+		if ($bRet !== true)
 		{
 			throw new Exception("Cannot connect to $sServer on port $iPort");
 		}
 		
-		$bRet = $this->oPop3->login($sLogin, $sPwd);
-		if (!$bRet)
+		$bRet = $this->oPop3->login($sLogin, $sPwd, $authOption);
+		if ($bRet !== true)
 		{
-			throw new Exception("Cannot login using $sLogin with pwd: $sPwd");
+			throw new Exception("Cannot login using $sLogin with pwd: $sPwd ");
 		}
 	}	
 
@@ -520,9 +556,9 @@ class POP3EmailSource extends EmailSource
 	{
 		$sRawHeaders = $this->oPop3->getRawHeaders(1+$index);
 		$sBody = $this->oPop3->getBody(1+$index);
-		$sUIDL = $this->oPop3->_cmdUidl(1+$index);
+		$aUIDL = $this->oPop3->_cmdUidl(1+$index);
 		
-		return new RawEmailMessage($sUIDL, $sRawHeaders, $sBody);
+		return new RawEmailMessage($aUIDL['uidl'], $sRawHeaders, $sBody);
 	}
 
 	/**
@@ -531,7 +567,10 @@ class POP3EmailSource extends EmailSource
 	 */
 	public function DeleteMessage($index)
 	{
-		$this->oPop3->deleteMsg(1+$index);
+		return true;
+		$ret = $this->oPop3->deleteMsg(1+$index);
+		return $ret;
+
 	}
 	
 	/**
@@ -539,7 +578,7 @@ class POP3EmailSource extends EmailSource
 	 */
 	 public function GetName()
 	 {
-	 	return 'POP3 Mailbox (server: '.$this->sServer.', login: '.$this->sLogin.')';
+	 	return $this->sLogin;
 	 }
 	 
 	/**
@@ -548,7 +587,17 @@ class POP3EmailSource extends EmailSource
 	 */
 	 public function GetListing()
 	 {
-		return $this->oPop3->_cmdUidl();
+		$ret = $this->oPop3->_cmdUidl();
+		if ($ret == null)
+		{
+			$ret = array();
+		}
+		return $ret;
+	 }
+	 
+	 public function Disconnect()
+	 {
+	 	$this->oPop3->disconnect();
 	 }
 }
 
@@ -562,10 +611,13 @@ abstract class EmailProcessor
 	
 	abstract public function ListEmailSources();
 	
-	abstract public function DispatchMessage(EmailSource $oSource, $index, $sUIDL);
+	abstract public function DispatchMessage(EmailSource $oSource, $index, $sUIDL, $oEmailReplica = null);
 
-	abstract public function ProcessMessage(EmailSource $oSource, $index, EmailMessage $oEmail);
+	abstract public function ProcessMessage(EmailSource $oSource, $index, EmailMessage $oEmail, $oEmailReplica = null);
 	
+	/**
+	 * Not used yet !!!
+	 */
 	abstract public function OnDecodeError(EmailSource $oSource, $index, EmailMessage $oEmail);
 }
 
@@ -578,14 +630,35 @@ class TestEmailProcessor extends EmailProcessor
 		return array( 0 => new TestEmailSource(dirname(__FILE__).'/log'));
 	}
 	
-	public function DispatchMessage(EmailSource $oSource, $index, $sUIDL)
+	public function DispatchMessage(EmailSource $oSource, $index, $sUIDL, $oEmailReplica = null)
 	{
 		return EmailProcessor::PROCESS_MESSAGE;
 	}
 	
-	public function ProcessMessage(EmailSource $oSource, $index, EmailMessage $oEmail)
+	public function ProcessMessage(EmailSource $oSource, $index, EmailMessage $oEmail, $oEmailReplica = null)
 	{
-		$sMessage = "[$index] ".$oEmail->sMessageId.' - From: '.$oEmail->sCallerEmail.' ['.$oEmail->sCallerName.']'.' Subject: '.$oEmail->sSubject;
+		$sMessage = "[$index] ".$oEmail->sMessageId.' - From: '.$oEmail->sCallerEmail.' ['.$oEmail->sCallerName.']'.' Subject: '.$oEmail->sSubject.' - '.count($oEmail->aAttachments).' attachment(s)';
+		if (empty($oEmail->sSubject))
+		{
+			$sMessage .= "\n=====================================\nERROR: Empty body for the message.\n";
+		}
+		$index = 0;
+		foreach($oEmail->aAttachments as $aAttachment)
+		{
+			if (empty($aAttachment['mimeType']))
+			{
+				$sMessage .= "\n=====================================\nERROR: Empty mimeType for attachment #$index of the message.\n";
+			}
+			if (empty($aAttachment['filename']))
+			{
+				$sMessage .= "\n=====================================\nERROR: Empty filename for attachment #$index of the message.\n";
+			}
+			if (empty($aAttachment['content']))
+			{
+				$sMessage .= "\n=====================================\nERROR: Empty CONTENT for attachment #$index of the message.\n";
+			}
+			$index++;
+		}
 		if (!utils::IsModeCLI())
 		{
 			$sMessage = '<p>'.htmlentities($sMessage, ENT_QUOTES, 'UTF-8').'</p>';
@@ -605,10 +678,27 @@ class TestEmailProcessor extends EmailProcessor
 class EmailBackgroundProcess implements iBackgroundProcess
 {
 	static $aEmailProcessors = array();
+	protected $bDebug;
 	
 	static public function RegisterEmailProcessor($sClassName)
 	{
 		self::$aEmailProcessors[] = $sClassName;
+	}
+	
+	public function __construct()
+	{
+		$this->bDebug = MetaModel::GetModuleSetting('combodo-email-synchro', 'debug', false);
+		$this->sSaveErrorsTo = MetaModel::GetModuleSetting('combodo-email-synchro', 'save_errors_to', '');
+		$this->sNotifyErrorsTo = MetaModel::GetModuleSetting('combodo-email-synchro', 'notify_errors_to', '');
+		$this->sNotifyErrorsFrom = MetaModel::GetModuleSetting('combodo-email-synchro', 'notify_errors_from', '');
+	}
+
+	protected function Trace($sText)
+	{
+		if ($this->bDebug)
+		{
+			echo $sText."\n";
+		}
 	}
 	
 	public function GetPeriodicity()
@@ -619,57 +709,138 @@ class EmailBackgroundProcess implements iBackgroundProcess
 	public function Process($iTimeLimit)
 	{
 		$iTotalMessages = 0;
+		$iTotalProcessed = 0;
+		$iTotalDeleted = 0;
 		foreach(self::$aEmailProcessors as $sProcessorClass)
 		{
 			$oProcessor = new $sProcessorClass();
 			$aSources = $oProcessor->ListEmailSources();
 			foreach($aSources as $oSource)
 			{
-				$aMessages = $oSource->GetListing();
-				
-				$iMsgCount = count($aMessages);
-				 
-				for($iMessage = 0; $iMessage < $iMsgCount; $iMessage++)
+				$iMsgCount = $oSource->GetMessagesCount();
+				$this->Trace("GetMessagesCount returned: $iMsgCount");			
+
+				if ($iMsgCount != 0)
 				{
-					$sUILD = $aMessages[$iMessage]['uild'];
-					
-					$iActionCode = $oProcessor->DispatchMessage($oSource, $iMessage, $sUILD);
-			
-					switch($iActionCode)
+					$aMessages = $oSource->GetListing();
+					$iMsgCount = count($aMessages);
+
+					// Get the corresponding EmailReplica object for each message
+					$aUIDLs = array();
+					for($iMessage = 0; $iMessage < $iMsgCount; $iMessage++)
 					{
-						case EmailProcessor::DELETE_MESSAGE:
-						$oSource->DeleteMessage($iMessage);
-						break;
+						$aUIDLs[] = $aMessages[$iMessage]['uidl'];
+					}
+					$sOQL = 'SELECT EmailReplica WHERE uidl IN ('.implode(',', CMDBSource::Quote($aUIDLs)).')';
+					$this->Trace("Searching EmailReplicas: '$sOQL'");
+					$oReplicaSet = new DBObjectSet(DBObjectSearch::FromOQL($sOQL));
+					while($oReplica = $oReplicaSet->Fetch())
+					{
+						$aReplicas[$oReplica->Get('uidl')] = $oReplica;
+					}				 
+					for($iMessage = 0; $iMessage < $iMsgCount; $iMessage++)
+					{
+						$iTotalMessages++;
+						$sUIDL = $aMessages[$iMessage]['uidl'];
 						
-						case EmailProcessor::PROCESS_MESSAGE;
-						$oRawEmail = $oSource->GetMessage($iMessage);
-						$oEmail = $oRawEmail->Decode(); 
-						$iNextActionCode = $oProcessor->ProcessMessage($oSource, $iMessage, $oEmail);
-						switch($iNextActionCode)
+						$oEmailReplica = array_key_exists($sUIDL, $aReplicas) ? $aReplicas[$sUIDL] : null;
+	
+						if ($oEmailReplica == null)
+						{
+							$this->Trace("Dispatching new message: $sUIDL");
+						}
+						else
+						{
+							$this->Trace("Dispatching old (already read) message: $sUIDL");
+						}
+						
+						$iActionCode = $oProcessor->DispatchMessage($oSource, $iMessage, $sUIDL, $oEmailReplica);
+				
+						switch($iActionCode)
 						{
 							case EmailProcessor::DELETE_MESSAGE:
+							$iTotalDeleted++;
+							$this->Trace("Deleting message (and replica): $sUIDL");
 							$oSource->DeleteMessage($iMessage);
+							if (is_object($oEmailReplica))
+							{
+								$oEmailReplica->DBDelete();
+							}
 							break;
 							
+							case EmailProcessor::PROCESS_MESSAGE:
+							$iTotalProcessed++;
+							if ($oEmailReplica == null)
+							{
+								$this->Trace("Processing new message: $sUIDL");
+							}
+							else
+							{
+								$this->Trace("Processing old (already read) message: $sUIDL");
+							}
+	
+	
+							$oRawEmail = $oSource->GetMessage($iMessage);
+							$oEmail = $oRawEmail->Decode();
+							if (!$oEmail->IsValid())
+							{
+								$this->Trace("Error: Failed to decode message: $sUIDL, the message will not be processed !");
+								if ($this->sSaveErrorsTo != '')
+								{
+									$sDestFileName = $this->sSaveErrorsTo.'/'.$sUIDL.'.eml';
+									$oRawEmail->SaveToFile($sDestFileName);
+									if ( ($this->sNotifyErrorsTo != '') && ($this->sNotifyErrorsFrom))
+									{
+										$sSubject = "iTop ticket creation from mail FAILED";
+										$sMessage = "The message $sUIDL, subject: {$oEmail->sSubject} was not decoded properly and therefore was not processed.\n";
+										$sMessage .= "Check in the mailbox ".$oSource->GetName()." for the original message\n";
+										$sMessage .= "A copy of the original message was saved on the server in the file:  $sDestFileName\n";
+										@mail($this->sNotifyErrorsTo, $sSubject, $sMessage, 'From: '.$this->sNotifyErrorsFrom);
+									}
+								}
+								else if ( ($this->sNotifyErrorsTo != '') && ($this->sNotifyErrorsFrom))
+								{
+									$sSubject = "iTop ticket creation from mail FAILED";
+									$sMessage = "The message $sUIDL, subject: {$oEmail->sSubject} was not decoded properly and therefore was not processed.\n";
+									$sMessage .= "Check in the mailbox ".$oSource->GetName()." for the original message\n";
+									@mail($this->sNotifyErrorsTo, $sSubject, $sMessage, 'From: '.$this->sNotifyErrorsFrom);
+								}
+							}
+							$iNextActionCode = $oProcessor->ProcessMessage($oSource, $iMessage, $oEmail, $oEmailReplica);
+							switch($iNextActionCode)
+							{
+								case EmailProcessor::DELETE_MESSAGE:
+								$iTotalDeleted++;
+								$this->Trace("Deleting message (and replica): $sUIDL");
+								$oSource->DeleteMessage($iMessage);
+								if (is_object($oEmailReplica))
+								{
+									$oEmailReplica->DBDelete();
+								}
+								break;
+								
+								default:
+								// Do nothing...
+							}
+							break;
+				
+							case EmailProcessor::NO_ACTION:
 							default:
-							// Do nothing...
+							// Do nothing
+							break;
 						}
-						break;
-			
-						case EmailProcessor::NO_ACTION:
-						default:
-						// Do nothing
-						break;
+						if (time() > $iTimeLimit) break; // We'll do the rest later
 					}
 					if (time() > $iTimeLimit) break; // We'll do the rest later
 				}
-				if (time() > $iTimeLimit) break; // We'll do the rest later
 			}
+			$oSource->Disconnect();
 			if (time() > $iTimeLimit) break; // We'll do the rest later
 		}
-		return "Nb message(s) processed: $iTotalMessages";
+		return "Message(s) read: $iTotalMessages, message(s) processed: $iTotalProcessed, message(s) deleted: $iTotalDeleted";
 	}
 }
 
-EmailBackgroundProcess::RegisterEmailProcessor('TestEmailProcessor');
+// For testing: uncomment the line below to process test messages stored as files in the 'log' directory
+//EmailBackgroundProcess::RegisterEmailProcessor('TestEmailProcessor');
 ?>

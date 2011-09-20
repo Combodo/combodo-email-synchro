@@ -15,8 +15,8 @@ SetupWebPage::AddModule(
 		'dependencies' => array(
 			'itop-tickets/1.0.0'
 		),
-		'mandatory' => false,
-		'visible' => true,
+		'mandatory' => true,
+		'visible' => false,
 
 		// Components
 		//
@@ -38,10 +38,10 @@ SetupWebPage::AddModule(
 		// Default settings
 		//
 		'settings' => array(
-			'pop3_server' => 'pop3.combodo.com',	// host or IP address of your mail POP3 server
-			'pop3_port' => 110,		  				// POP3 port (std: 110)
-			'mailbox_name' => 'test@combodo.com', 	// Name of the mailbox, i.e. email address: test@combodo.com
-			'mailbox_pwd' => 'combodo',  			// Password to access the mailbox
+			'debug' => false,  			// Set to true to turn on debugging
+			'save_errors_to' => '',  	// Path to a valid directory where to save a copy of the faulty emails
+			'notify_errors_to' => '',  	// A valid email address to notify in case of error
+			'notify_errors_from' => '',	// A valid 'From' email address for sending the notifications
 		),
 	)
 );
