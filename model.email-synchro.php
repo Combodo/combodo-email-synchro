@@ -84,6 +84,10 @@ class RawEmailMessage
 		if (!isset($oStructure->parts) || count($oStructure->parts) == 0)
 		{
 			$sBodyText = iconv($sCharset, 'UTF-8//IGNORE//TRANSLIT', $oStructure->body);
+			if (preg_match('/^([^\\/]+\\/[^\\/;]+);/', $sEncoding, $aMatches))
+			{
+				$sBodyFormat = $aMatches[1];
+			}
 		}
 		else
 		{
@@ -833,8 +837,8 @@ class EmailBackgroundProcess implements iBackgroundProcess
 					}
 					if (time() > $iTimeLimit) break; // We'll do the rest later
 				}
+				$oSource->Disconnect();
 			}
-			$oSource->Disconnect();
 			if (time() > $iTimeLimit) break; // We'll do the rest later
 		}
 		return "Message(s) read: $iTotalMessages, message(s) processed: $iTotalProcessed, message(s) deleted: $iTotalDeleted";
