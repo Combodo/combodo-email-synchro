@@ -388,6 +388,25 @@ class EmailMessage {
 		}
 		return $bValid;
 	}
+	
+	/**
+	 * Produce a plain-text version of the body of the message
+	 * @return string The plain-text version of the text
+	 */
+	public function StripTags()
+	{
+		// Process line breaks: remove carriage returns / line feeds that have no meaning in HTML => replace them by a plain space
+		$sBodyText = str_replace(array('\n', '\r'), ' ', $this->sBodyText);
+		// Replace <p...>...</p> and <br/> by a carriage return
+		$sBodyText = preg_replace('/<p[^>]*>/', '', $sBodyText);
+		$sBodyText = str_replace(array('</br>', '<br/>', '<br>', '</p>'), "\n", $sBodyText);
+		// remove tags (opening and ending tags MUST match!)
+		$sBodyText = strip_tags($sBodyText);
+		// Process some usual entities
+		$sBodyText = html_entity_decode($sBodyText, ENT_QUOTES, 'UTF-8');
+		
+		return $sBodyText;
+	}
 }
 
 ////////////////////////////////////////////////////////////////////
@@ -785,6 +804,7 @@ class EmailBackgroundProcess implements iBackgroundProcess
 	
 	
 							$oRawEmail = $oSource->GetMessage($iMessage);
+							//$oRawEmail->SaveToFile(dirname(__FILE__)."/log/$sUIDL.eml");
 							$oEmail = $oRawEmail->Decode();
 							if (!$oEmail->IsValid())
 							{
