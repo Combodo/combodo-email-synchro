@@ -13,7 +13,6 @@ SetupWebPage::AddModule(
 		// Setup
 		//
 		'dependencies' => array(
-			'itop-tickets/1.0.0'
 		),
 		'mandatory' => true,
 		'visible' => false,
@@ -39,9 +38,14 @@ SetupWebPage::AddModule(
 		//
 		'settings' => array(
 			'debug' => false,  			// Set to true to turn on debugging
-			'save_errors_to' => '',  	// Path to a valid directory where to save a copy of the faulty emails
 			'notify_errors_to' => '',  	// A valid email address to notify in case of error
 			'notify_errors_from' => '',	// A valid 'From' email address for sending the notifications
+			// Lines to be removed just above the 'new part' in a reply-to message... add your own patterns below
+			'introductory-patterns' => array(
+				'/^le .+ a écrit :$/i', // Thunderbird French
+				'/^on .+ wrote:$/i', // Thunderbird English
+				'|^[0-9]{4}/[0-9]{1,2}/[0-9]{1,2} .+:$|', // Gmail style
+			),
 		),
 	)
 );
