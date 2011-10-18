@@ -645,6 +645,9 @@ class EmailMessage {
  */
 abstract class EmailSource
 {
+	protected $sLastErrorSubject;
+	protected $sLastErrorMessage;
+	
 	/**
 	 * Get the number of messages to process
 	 * @return integer The number of available messages
@@ -672,6 +675,16 @@ abstract class EmailSource
 	 * Disconnect from the server
 	 */
 	 abstract public function Disconnect();
+
+	public function GetLastErrorSubject()
+	{
+		return $this->sLastErrorSubject;
+	}
+	
+	public function GetLastErrorMessage();
+	{
+		return $this->sLastErrorMessage;
+	}
 }
 
 ////////////////////////////////////////////////////////////////////
@@ -686,6 +699,8 @@ class TestEmailSource extends EmailSource
 	
 	public function __construct($sSourceDir, $sName)
 	{
+		$this->$sLastErrorSubject = '';
+		$this->$sLastErrorMessage = '';
 		$this->sSourceDir = $sSourceDir;
 		$this->sName = $sName;
 		$this->aMessages = array();
@@ -776,6 +791,8 @@ class POP3EmailSource extends EmailSource
 	
 	public function __construct($sServer, $iPort, $sLogin, $sPwd, $authOption = true)
 	{
+		$this->$sLastErrorSubject = '';
+		$this->$sLastErrorMessage = '';
 		$this->oPop3 = new Net_POP3();
 		$this->sServer = $sServer;
 		$this->sLogin = $sLogin;
