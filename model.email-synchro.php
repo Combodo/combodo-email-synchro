@@ -699,8 +699,8 @@ class TestEmailSource extends EmailSource
 	
 	public function __construct($sSourceDir, $sName)
 	{
-		$this->$sLastErrorSubject = '';
-		$this->$sLastErrorMessage = '';
+		$this->sLastErrorSubject = '';
+		$this->sLastErrorMessage = '';
 		$this->sSourceDir = $sSourceDir;
 		$this->sName = $sName;
 		$this->aMessages = array();
@@ -791,8 +791,8 @@ class POP3EmailSource extends EmailSource
 	
 	public function __construct($sServer, $iPort, $sLogin, $sPwd, $authOption = true)
 	{
-		$this->$sLastErrorSubject = '';
-		$this->$sLastErrorMessage = '';
+		$this->sLastErrorSubject = '';
+		$this->sLastErrorMessage = '';
 		$this->oPop3 = new Net_POP3();
 		$this->sServer = $sServer;
 		$this->sLogin = $sLogin;
