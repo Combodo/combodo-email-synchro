@@ -681,7 +681,7 @@ abstract class EmailSource
 		return $this->sLastErrorSubject;
 	}
 	
-	public function GetLastErrorMessage();
+	public function GetLastErrorMessage()
 	{
 		return $this->sLastErrorMessage;
 	}
