@@ -35,7 +35,9 @@
 //
 // $Id: POP3.php 232731 2007-03-27 13:16:02Z cweiske $
 
-error_reporting(E_ERROR);
+// Commented out because we cannot afford masking catchable fatal errors
+// for all the application !!!
+//error_reporting(E_ERROR);
 
 require_once 'Net/Socket.php';
 
