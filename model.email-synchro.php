@@ -1,6 +1,7 @@
 <?php
 // Copyright (C) 2010 Combodo SARL
 //
+error_reporting(E_ALL);
 include APPROOT.'modules/combodo-email-synchro/POP3.php';			// PEAR POP3
 include APPROOT.'modules/combodo-email-synchro/mimeDecode.php';	// MODIFIED PEAR mimeDecode
 
@@ -189,6 +190,7 @@ class RawEmailMessage
 		$iPartIndex = 0;
 		$bFound = false;
 		$sBodyText = '';
+		$sBodyFormat = '';
 		$sReferences = isset($oStructure->headers['references']) ? $oStructure->headers['references'] : '';
 		if (!isset($oStructure->parts) || count($oStructure->parts) == 0)
 		{
@@ -260,20 +262,22 @@ class RawEmailMessage
 		$aParams['decode_bodies'] = false;
 		$aParams['decode_headers'] = true;
 		$aParams['crlf'] = "\r\n";
-		$aParams['input'] = $this->sRawHeaders.$aParams['crlf'];
-		$oStructure = Mail_mimeDecode::decode( $aParams );
+
+		$oMime = new Mail_mimeDecode($this->sRawHeaders.$aParams['crlf']);
+		$oStructure = $oMime->decode($aParams);
+
 		$this->aParsedHeaders = $oStructure->headers;
 	}
 	
 	/**
 	 * Get the address of the originator of the email
 	 */
-	protected function GetSenderEmail($aHeaders)
+	protected function GetSenderEmail()
 	{
 		$sEmailPattern = '/([-_\.0-9a-zA-Z]+)@([-_\.0-9a-zA-Z]+)/';
-		
+		$sEmail = '';
 		$aMatches = array();
-		if (is_array($aHeaders['sender']) && preg_match($sEmailPattern, array_pop($this->aParsedHeaders['sender']), $aMatches))
+		if (array_key_exists('sender', $this->aParsedHeaders) && is_array($this->aParsedHeaders['sender']) && preg_match($sEmailPattern, array_pop($this->aParsedHeaders['sender']), $aMatches))
 		{
 			$sEmail = $aMatches[1].'@'.$aMatches[2];		
 		}
@@ -495,7 +499,8 @@ class RawEmailMessage
 		
 		// Third attempt: check the MS thread-index header, either via a direct pattern match
 		// or by finding a similar message already processed
-		return EmailReplica::FindTicketFromMSThreadIndex($sMSThreadIndex);
+		// return EmailReplica::FindTicketFromMSThreadIndex($sMSThreadIndex);
+		return null;
 	}
 }
 
@@ -1040,6 +1045,7 @@ class EmailBackgroundProcess implements iBackgroundProcess
 					$sOQL = 'SELECT EmailReplica WHERE uidl IN ('.implode(',', CMDBSource::Quote($aUIDLs)).')';
 					$this->Trace("Searching EmailReplicas: '$sOQL'");
 					$oReplicaSet = new DBObjectSet(DBObjectSearch::FromOQL($sOQL));
+					$aReplicas = array();
 					while($oReplica = $oReplicaSet->Fetch())
 					{
 						$aReplicas[$oReplica->Get('uidl')] = $oReplica;
