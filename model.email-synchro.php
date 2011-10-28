@@ -433,17 +433,14 @@ class RawEmailMessage
 	
 	public function SendAsAttachment($sTo, $sFrom, $sSubject, $sTextMessage)
 	{
-  		$sDelimiter = '== iTopEmailPart--- '.md5(date('r', time()))." ==";
- 		$aHeaders = array('Content-Type' => "multipart/mixed;\r\n boundary=\"{$sDelimiter}\"\r\n");
-  		
-  		$sTextHeader = "Content-Type: text/plain; charset='utf-8'\nContent-Transfer-Encoding: 8bit\r\n";
-  		$sAttachmentHeader = "Content-Type: text/plain;\r\n Name=\"Original Message.eml\"\r\n";
-  		$sAttachmentHeader .= "Content-Transfer-Encoding: base64\r\nContent-Disposition: attachment;\r\n filename=\"Message.eml\"\r\n";
-  		$sAttachmentHeader .= "\r\n";
-  		$sAttachment = 	$this->sRawHeaders."\r\n".$this->sBody;
-		$sAttachment = chunk_split(base64_encode($sAttachment));
-  		$sBody = "This is a multi-part message in MIME format.\r\n--".$sDelimiter."\r\n".$sTextHeader."\r\n".$sTextMessage."\r\n--".$sDelimiter."\r\n".$sAttachmentHeader.$sAttachment."\r\n--".$sDelimiter."--";
   		$oEmail = new Email($sTo, $sSubject, $sBody, $aHeaders);
+  		$oEmail->SetRecipientTO($sTo);
+  		$oEmail->SetSubject($sSubject);
+  		$oEmail->SetBody($sBody);
+  		// Turn the original message into an attachment
+  		$sAttachment = 	$this->sRawHeaders."\r\n".$this->sBody;
+  		$oEmail->AddAttachment($sAttachment, 'Original Message.eml', 'text/plain');
+
   		$aIssues = array();
   		$oEmail->SetRecipientFrom($sFrom);
   		$oEmail->Send($aIssues, true /* bForceSynchronous */, null /* $oLog */);
@@ -1122,8 +1119,8 @@ class EmailBackgroundProcess implements iBackgroundProcess
 									break;
 									
 									case EmailProcessor::PROCESS_ERROR:
-									$sSubject = $oSource->GetLastErrorSubject();
-									$sMessage = $oSource->GetLastErrorMessage();
+									$sSubject = $oProcessor->GetLastErrorSubject();
+									$sMessage = $oProcessor->GetLastErrorMessage();
 									EmailBackgroundProcess::ReportError($sSubject, $sMessage, $oRawEmail);
 									$iTotalDeleted++;
 									$this->Trace("Deleting message (and replica): $sUIDL");
