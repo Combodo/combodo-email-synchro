@@ -194,7 +194,7 @@ class RawEmailMessage
 		$sReferences = isset($oStructure->headers['references']) ? $oStructure->headers['references'] : '';
 		if (!isset($oStructure->parts) || count($oStructure->parts) == 0)
 		{
-			$sBodyText = iconv($sCharset, 'UTF-8//IGNORE//TRANSLIT', $oStructure->body);
+			$sBodyText = @iconv($sCharset, 'UTF-8//IGNORE//TRANSLIT', $oStructure->body);
 		}
 		else
 		{
@@ -216,7 +216,7 @@ class RawEmailMessage
 		$aReferences = explode(' ', $sReferences );
 		$sThreadIndex = $this->GetMSThreadIndex();
 		$aBodyParts = '';
-		$aAttachments = $this->GetAttachments($oStructure->parts);
+		$aAttachments = isset($oStructure->parts) ? $this->GetAttachments($oStructure->parts) : array();
 		$sDecodeStatus = '';
 		$oRelatedObject = $this->GetRelatedObject();
 		
@@ -367,7 +367,7 @@ class RawEmailMessage
 		{
 			if (($aParts[$index]->ctype_primary == $sPrimaryType) &&
 			   ($aParts[$index]->ctype_secondary == $sSecondaryPart) &&
-			   ($aParts[$index]->disposition != 'attachment') )
+			   (!isset($aParts[$index]->disposition) || $aParts[$index]->disposition != 'attachment') )
 			{
 				if (preg_match('/charset="?([^";]*)"?;?/', $aParts[$index]->headers['content-type'], $aMatches))
 				{
@@ -410,7 +410,7 @@ class RawEmailMessage
 		$index = 0;
 		foreach($aParts as $aPart)
 		{
-			if (($aPart->disposition == 'attachment') || ( ($aPart->ctype_primary != 'multipart') && ($aPart->ctype_primary != 'text')) )
+			if (isset($aPart->disposition) && ($aPart->disposition == 'attachment') || ( ($aPart->ctype_primary != 'multipart') && ($aPart->ctype_primary != 'text')) )
 			{
 
 				$sMimeType = $aPart->ctype_primary.'/'.$aPart->ctype_secondary;
@@ -426,7 +426,7 @@ class RawEmailMessage
 				$sContent = $aPart->body;
 				$aAttachments[] = array('mimeType' => $sMimeType, 'filename' => $sFileName, 'content' => $sContent);				
 			}
-			else if (is_array($aPart->parts))
+			else if (isset($aPart->parts) && is_array($aPart->parts))
 			{
 				$aAttachments = $this->GetAttachments($aPart->parts, $aAttachments);
 			}
@@ -437,10 +437,10 @@ class RawEmailMessage
 	
 	public function SendAsAttachment($sTo, $sFrom, $sSubject, $sTextMessage)
 	{
-  		$oEmail = new Email($sTo, $sSubject, $sBody, $aHeaders);
+  		$oEmail = new Email();
   		$oEmail->SetRecipientTO($sTo);
   		$oEmail->SetSubject($sSubject);
-  		$oEmail->SetBody($sBody);
+  		$oEmail->SetBody($sTextMessage);
   		// Turn the original message into an attachment
   		$sAttachment = 	$this->sRawHeaders."\r\n".$this->sBody;
   		$oEmail->AddAttachment($sAttachment, 'Original Message.eml', 'text/plain');
@@ -619,14 +619,14 @@ class EmailMessage {
 				{
 					// Check if the line above contains one of the introductory pattern
 					// like: On 10/09/2010 john.doe@test.com wrote:
-					if ($index > 0)
+					if (($index > 0) && isset($aLines[$index-1]))
 					{
 						$sPrevLine = trim($aLines[$index-1]);
 						foreach($aIntroductoryPatterns as $sPattern)
 						{
 							if (preg_match($sPattern, trim($sPrevLine)))
 							{
-								// remove the introductary line
+								// remove the introductory line
 								unset($aLines[$index-1]);
 								break;
 							}
