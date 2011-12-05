@@ -801,13 +801,21 @@ class POP3EmailSource extends EmailSource
 		$bRet = $this->oPop3->connect($sServer, $iPort);
 		if ($bRet !== true)
 		{
+			if (class_exists('EventHealthIssue'))
+			{
+				EventHealthIssue::LogHealthIssue('combodo-email-synchro', "Cannot connect to POP3 server: '$sServer' on port $iPort");
+			}
 			throw new Exception("Cannot connect to $sServer on port $iPort");
 		}
 		
 		$bRet = $this->oPop3->login($sLogin, $sPwd, $authOption);
 		if ($bRet !== true)
 		{
-			throw new Exception("Cannot login using $sLogin with pwd: $sPwd ");
+			if (class_exists('EventHealthIssue'))
+			{
+				EventHealthIssue::LogHealthIssue('combodo-email-synchro', "Cannot login on server '$sServer' using '$sLogin' with pwd: $sPwd");
+			}
+			throw new Exception("Cannot login using $sLogin with pwd: $sPwd");
 		}
 	}	
 
