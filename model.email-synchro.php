@@ -988,6 +988,7 @@ class EmailBackgroundProcess implements iBackgroundProcess
 	protected static $sSaveErrorsTo = '';
 	protected static $sNotifyErrorsTo = '';
 	protected static $sNotifyErrorsFrom = '';
+	protected static $bMultiSourceMode = false;
 	protected $bDebug;
 	
 	static public function RegisterEmailProcessor($sClassName)
@@ -1025,6 +1026,23 @@ class EmailBackgroundProcess implements iBackgroundProcess
 		}
 	}
 	
+	/**
+	 * Call this function to set this mode to true if you want to
+	 * process several incoming mailboxes and if the mail server
+	 * does not assign unique UIDLs accross all mailboxes
+	 * For example with MS Exchange the UIDL is just a sequential
+	 * number 1,2,3... inside each mailbox.
+	 */
+	public static SetMultiSourceMode($bMode = true)
+	{
+		self::$bMultiSourceMode = $bMode;
+	}
+	
+	public static IsMultiSourceMode()
+	{
+		return self::$bMultiSourceMode;
+	}
+	
 	public function Process($iTimeLimit)
 	{
 		$iTotalMessages = 0;
@@ -1037,7 +1055,8 @@ class EmailBackgroundProcess implements iBackgroundProcess
 			foreach($aSources as $oSource)
 			{
 				$iMsgCount = $oSource->GetMessagesCount();
-				$this->Trace("GetMessagesCount returned: $iMsgCount");			
+				$this->Trace("-----------------------------------------------------------------------------------------");			
+				$this->Trace("Processing Message Source: ".$oSource->GetName()." GetMessagesCount returned: $iMsgCount");			
 
 				if ($iMsgCount != 0)
 				{
@@ -1048,7 +1067,14 @@ class EmailBackgroundProcess implements iBackgroundProcess
 					$aUIDLs = array();
 					for($iMessage = 0; $iMessage < $iMsgCount; $iMessage++)
 					{
-						$aUIDLs[] = $aMessages[$iMessage]['uidl'];
+						if (self::IsMultiSourceMode())
+						{
+							$aUIDLs[] = $oSource->GetName().'_'.$aMessages[$iMessage]['uidl'];
+						}
+						else
+						{
+							$aUIDLs[] = $aMessages[$iMessage]['uidl'];
+						}
 					}
 					$sOQL = 'SELECT EmailReplica WHERE uidl IN ('.implode(',', CMDBSource::Quote($aUIDLs)).')';
 					$this->Trace("Searching EmailReplicas: '$sOQL'");
@@ -1061,7 +1087,14 @@ class EmailBackgroundProcess implements iBackgroundProcess
 					for($iMessage = 0; $iMessage < $iMsgCount; $iMessage++)
 					{
 						$iTotalMessages++;
-						$sUIDL = $aMessages[$iMessage]['uidl'];
+						if (self::IsMultiSourceMode())
+						{
+							$sUIDL = $oSource->GetName().'_'.$aMessages[$iMessage]['uidl'];
+						}
+						else
+						{
+							$sUIDL = $aMessages[$iMessage]['uidl'];
+						}
 						
 						$oEmailReplica = array_key_exists($sUIDL, $aReplicas) ? $aReplicas[$sUIDL] : null;
 	
@@ -1072,6 +1105,7 @@ class EmailBackgroundProcess implements iBackgroundProcess
 						else
 						{
 							$this->Trace("Dispatching old (already read) message: $sUIDL");
+							
 						}
 						
 						$iActionCode = $oProcessor->DispatchMessage($oSource, $iMessage, $sUIDL, $oEmailReplica);
