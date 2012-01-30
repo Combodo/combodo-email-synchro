@@ -1033,7 +1033,7 @@ class EmailBackgroundProcess implements iBackgroundProcess
 	 * For example with MS Exchange the UIDL is just a sequential
 	 * number 1,2,3... inside each mailbox.
 	 */
-	public static SetMultiSourceMode($bMode = true)
+	public static function SetMultiSourceMode($bMode = true)
 	{
 		self::$bMultiSourceMode = $bMode;
 	}
