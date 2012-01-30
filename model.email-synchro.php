@@ -1038,7 +1038,7 @@ class EmailBackgroundProcess implements iBackgroundProcess
 		self::$bMultiSourceMode = $bMode;
 	}
 	
-	public static IsMultiSourceMode()
+	public static function IsMultiSourceMode()
 	{
 		return self::$bMultiSourceMode;
 	}
