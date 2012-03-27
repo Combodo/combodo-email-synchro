@@ -648,6 +648,12 @@ abstract class EmailSource
 {
 	protected $sLastErrorSubject;
 	protected $sLastErrorMessage;
+	protected $sPartsOrder;
+	
+	public function __construct()
+	{
+		$this->sPartsOrder = 'text/plain,text/html'; // Default value can be changed via SetPartsOrder
+	}
 	
 	/**
 	 * Get the number of messages to process
@@ -689,11 +695,19 @@ abstract class EmailSource
 	
 	/**
 	 * Preferred order for retrieving the mail "body" when scanning a multiparts emails
+	 * @param $sPartsOrder string A comma separated list of MIME types e.g. text/plain,text/html
+	 */
+	public function SetPartsOrder($sPartsOrder)
+	{
+		$this->sPartsOrder = $sPartsOrder;
+	}
+		/**
+	 * Preferred order for retrieving the mail "body" when scanning a multiparts emails
 	 * @return string A comma separated list of MIME types e.g. text/plain,text/html
 	 */
 	public function GetPartsOrder()
 	{
-		return 'text/plain,text/html';
+		return $this->sPartsOrder;
 	}
 }
 
@@ -709,6 +723,7 @@ class TestEmailSource extends EmailSource
 	
 	public function __construct($sSourceDir, $sName)
 	{
+		parent::__construct();
 		$this->sLastErrorSubject = '';
 		$this->sLastErrorMessage = '';
 		$this->sSourceDir = $sSourceDir;
@@ -801,6 +816,7 @@ class POP3EmailSource extends EmailSource
 	
 	public function __construct($sServer, $iPort, $sLogin, $sPwd, $authOption = true)
 	{
+		parent::__construct();
 		$this->sLastErrorSubject = '';
 		$this->sLastErrorMessage = '';
 		$this->oPop3 = new Net_POP3();
