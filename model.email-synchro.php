@@ -169,7 +169,7 @@ class RawEmailMessage
 	 * decodes an email from its parts
 	 * @return EmailMessage
 	 */
-	public function Decode()
+	public function Decode($sPreferredDecodingOrder = 'text/plain,text/html')
 	{
 		$sMessageId = $this->GetMessageId();
 		$sCallerEmail = $this->GetSenderEmail();
@@ -177,7 +177,6 @@ class RawEmailMessage
 		$sCallerName = $this->GetCallerName();
 		$oMime = new Mail_mimeDecode($this->sRawHeaders."\r\n".$this->sBody);
 		$oStructure = $oMime->decode(array('include_bodies' => true, 'decode_bodies' => true));
-
 		$sEncoding = $oStructure->headers['content-type'];
 		$aMatches = array();
 		$sCharset = 'US-ASCII';
@@ -198,17 +197,17 @@ class RawEmailMessage
 		}
 		else
 		{
-			// Multi-parts encoding, find a text or HTML part			
-			$sBodyText = $this->ScanParts($oStructure->parts, 'text', 'plain');
-			if (empty($sBodyText))
+			// Multi-parts encoding, search for the "best" part depending on the favorite decoding order
+			$aDecodingOrder = explode(',', $sPreferredDecodingOrder);
+			foreach($aDecodingOrder as $sMimeType)
 			{
-				// Try to find an HTML part...
-				$sBodyText = $this->ScanParts($oStructure->parts, 'text', 'html');
-				$sBodyFormat = 'text/html';
-			}
-			else
-			{
-				$sBodyFormat = 'text/plain';
+				$aMime = explode('/', $sMimeType);
+				$sBodyText = $this->ScanParts($oStructure->parts, $aMime[0], $aMime[1]);
+				if (!empty($sBodyText))
+				{
+					$sBodyFormat = $sMimeType;
+					break;
+				}
 			}
 		}
 		
@@ -298,7 +297,7 @@ class RawEmailMessage
 	 */
 	 protected function GetSubject()
 	 {
-	 	return $this->aParsedHeaders['subject'];
+	 	return @iconv('UTF-8', 'UTF-8//IGNORE//TRANSLIT', $this->aParsedHeaders['subject']);
 	 }
 
 	/**
@@ -389,7 +388,7 @@ class RawEmailMessage
 //echo "Found a body...\n";
 				break;
 			}
-			else if (is_array($aParts[$index]->parts))
+			else if (isset($aParts[$index]->parts) && is_array($aParts[$index]->parts))
 			{
 //echo "The part $index contain sub-parts, recursing...\n";
 				$sBody = $this->ScanParts($aParts[$index]->parts, $sPrimaryType, $sSecondaryPart);
@@ -687,6 +686,15 @@ abstract class EmailSource
 	{
 		return $this->sLastErrorMessage;
 	}
+	
+	/**
+	 * Preferred order for retrieving the mail "body" when scanning a multiparts emails
+	 * @return string A comma separated list of MIME types e.g. text/plain,text/html
+	 */
+	public function GetPartsOrder()
+	{
+		return 'text/plain,text/html';
+	}
 }
 
 ////////////////////////////////////////////////////////////////////
@@ -934,7 +942,7 @@ class TestEmailProcessor extends EmailProcessor
 {
 	public function ListEmailSources()
 	{
-		return array( 0 => new TestEmailSource(dirname(__FILE__).'/log'));
+		return array( 0 => new TestEmailSource(dirname(__FILE__).'/log', 'test'));
 	}
 	
 	public function DispatchMessage(EmailSource $oSource, $index, $sUIDL, $oEmailReplica = null)
@@ -947,7 +955,15 @@ class TestEmailProcessor extends EmailProcessor
 		$sMessage = "[$index] ".$oEmail->sMessageId.' - From: '.$oEmail->sCallerEmail.' ['.$oEmail->sCallerName.']'.' Subject: '.$oEmail->sSubject.' - '.count($oEmail->aAttachments).' attachment(s)';
 		if (empty($oEmail->sSubject))
 		{
+			$sMessage .= "\n=====================================\nERROR: Empty subject for the message.\n";
+		}
+		if (empty($oEmail->sBodyText))
+		{
 			$sMessage .= "\n=====================================\nERROR: Empty body for the message.\n";
+		}
+		else
+		{
+			$sMessage .= "\n=====================================\nFormat:{$oEmail->sBodyFormat} \n{$oEmail->sBodyText}\n============================================.\n";
 		}
 		$index = 0;
 		foreach($oEmail->aAttachments as $aAttachment)
@@ -1136,7 +1152,7 @@ class EmailBackgroundProcess implements iBackgroundProcess
 	
 							$oRawEmail = $oSource->GetMessage($iMessage);
 							//$oRawEmail->SaveToFile(dirname(__FILE__)."/log/$sUIDL.eml"); // Uncomment the line to keep a local copy if needed
-							$oEmail = $oRawEmail->Decode();
+							$oEmail = $oRawEmail->Decode($oSource->GetPartsOrder());
 							if (!$oEmail->IsValid())
 							{
 								$sSubject = "iTop ticket creation or update from mail FAILED";
