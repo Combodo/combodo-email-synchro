@@ -1,0 +1,88 @@
+Return-Path: <helpdesk-france@yrnet.com>
+Delivery-Date: Mon, 26 Mar 2012 11:41:14 +0200
+Received-SPF: pass (mxeu3: domain of yrnet.com designates 207.126.144.52 as permitted sender) client-ip=207.126.144.52; envelope-from=helpdesk-france@yrnet.com; helo=psmtp.com;
+Received: from psmtp.com (eu1sys200amx103.postini.com [207.126.144.52])
+	by mx.kundenserver.de (node=mxeu3) with ESMTP (Nemesis)
+	id 0MWk9f-1RkL5P3l3T-00XMyK for helpdesk@dbfactory.fr; Mon, 26 Mar 2012 11:41:13 +0200
+Received: from yrnet.com ([195.101.248.67]) (using TLSv1) by eu1sys200amx103.postini.com ([207.126.147.10]) with SMTP;
+	Mon, 26 Mar 2012 09:41:13 GMT
+Received: from ([192.168.50.2])
+	by lamantin.yrnet.com with ESMTP  id 3TNF5H1.372584904;
+	Mon, 26 Mar 2012 11:31:32 +0200
+Received: from yrfrnt087 ([10.1.252.108])
+          by yrfrnt005.fr.yvesrocher.com (Lotus Domino Release 7.0.3FP1)
+          with SMTP id 2012032611313229-2592 ;
+          Mon, 26 Mar 2012 11:31:32 +0200 
+MIME-version: 1.0
+To: helpdesk@dbfactory.fr
+From: helpdesk-france@yrnet.com
+Reply-To: helpdesk-france@yrnet.com
+Subject: INCIDENT - The ticket n°1020480 with priority 3 has been assigned to HELPDESK_DBFACTORY
+X-MIMETrack: Itemize by SMTP Server on yrfr00/yves-rocher(Release 7.0.3FP1|February 24, 2008) at
+ 26/03/2012 11:31:32,
+	Serialize by Router on yrfr27/yves-rocher(Release 7.0.3FP1|February 24, 2008) at
+ 26/03/2012 11:31:33,
+	Serialize complete at 26/03/2012 11:31:33
+Date: Mon, 26 Mar 2012 11:31:32 +0200
+Message-ID: <OFADFD596A.04A596DB-ONC12579CD.0034536D@yrnet.com>
+Content-Type: multipart/mixed; boundary="----=_NextPart_000_0004_01C06B5E.74675200.IETSolutions$"
+X-pstn-neptune: 0/0/0.00/0
+X-pstn-levels:     (S:96.41591/99.90000 CV:99.9000 FC:93.6803 LC:95.5390 R:95.9108 P:95.9108 M:97.0282 C:98.6951 )
+X-pstn-dkim: 0 skipped:not-enabled
+X-pstn-settings: 3 (1.0000:1.0000) s cv gt3 gt2 gt1 r p m c 
+X-pstn-addresses: from <helpdesk-france@yrnet.com> [db-null] 
+X-UI-Loop: V01:2X6pdZW8Xxs=:zXpMpGggV2sJ7rUxK7IeondDNbCiODYImALXY9EyST0=
+X-UI-Junk: AutoJunk +104 (SPA);
+  V01:+KXWH+pP:yV2YdOD5v4vI6xJ9pV4YoBesebWsK2MI5n4vuk10goFoTF7Pf+O
+  CDWH48x9k2N6WhYwm9jdz8/PyTKV2aRBpO+8efSAoOkKscSfEGmEcEeU09AOjLNo
+  fgib8AxaHbiOlpMVr54s19UipJp9XhCqpErWa8f6bLAzenkKquEz5mmOkK/2bLR0
+  4jGwDrOetzZzCys+qonmSbNcvxJya5lCaCpjBx2xugjUu320OPq83uxMp1B8GXCF
+  nqS+Al5NODalfJc3sybuC4iXYIB+MgjL0eChgacOuSA3rLJuTWxmVbeaBr/FCUfA
+  g4WgQAig5V7XT9FGXlb65ujhkTQ0lJPnMimomTbdE3JBCp2+Ho3NmWtTC83gTMu/
+  FKxchNtJprRan
+X-Nemesis-Spam: rulefilter
+Envelope-To: helpdesk@dbfactory.fr
+
+
+------=_NextPart_000_0004_01C06B5E.74675200.IETSolutions$
+Content-Type: multipart/alternative; boundary="----=_NextPart_000_0004_01C06B5E.74675200.IETSolutions$_alternative"
+
+------=_NextPart_000_0004_01C06B5E.74675200.IETSolutions$_alternative
+Content-Type: text/plain; charset=ISO-8859-1
+
+This is an HTML-formatted message and cannot be viewed in your mail reader.
+
+------=_NextPart_000_0004_01C06B5E.74675200.IETSolutions$_alternative
+Content-Transfer-Encoding: BASE64
+Content-Type: text/html; charset=ISO-8859-1
+
+PEhUTUw+PEJPRFk+PEZPTlQgRkFDRT0ic2Fucy1zZXJpZiwgQXJpYWwiIFNJWkU9MiBDT0xPUj0i
+YmxhY2siPkhlbGxvLDxCUj48QlI+VGhlIGZvbGxvd2luZyB0aWNrZXQgbrA8L2ZvbnQ+PEZPTlQg
+RkFDRT0ic2Fucy1zZXJpZiwgQXJpYWwiIFNJWkU9MiBDT0xPUj0icmVkIj48Qj4xMDIwNDgwPC9C
+PiA8L2ZvbnQ+IDxGT05UIEZBQ0U9InNhbnMtc2VyaWYsIEFyaWFsIiBTSVpFPTIgQ09MT1I9ImJs
+YWNrIj4gaGFzIGJlZW4gYXNzaWduZWQgdG8geW91IGF0IE1hciAyNiAyMDEyIDExOjMxQU0uPEJS
+PjxCUj48Qj5SZXF1ZXN0ZXI6PC9CPjxCUj4tQ2FsbGVyIE5hbWU6IFBPU1RfQ0hSSVNUSU5FPEJS
+Pi1DYWxsZXIgUGhvbmU6IDAyLjk5LjA4LjI5LjI5PEJSPi1DYWxsZXIgUGhvbmUgRXh0ZW5zaW9u
+OiAyOTkwPEJSPi1DYWxsZXIgTG9jYXRpb246IEZSLUxjZGE8QlI+PEJSPjxCPlN1YmplY3Q6PC9C
+PjxCUj4tQXBwbGljYXRpb24vU2VydmljZTogVU5ZVkVSVCAvIFlSSVM8QlI+LUltcGxlbWVudGF0
+aW9uOiBGUiAtIFl2ZXMgUm9jaGVyIEdyb3VwIC0gRlItTGNkYTxCUj4tUHJpb3JpdHk6IDM8QlI+
+LUdUSTogTWFyIDI2IDIwMTIgIDE6MTNQTTxCUj4tR1RSOiBNYXIgMjggMjAxMiAgOToxNUFNPEJS
+Pi1RdWFsaWZpY2F0aW9uOiBJTkNJREVOVFMtUEVSVEUgLyBPVUJMSSBERSBNT1QgREUgUEFTU0Ug
+LSBQQVNTV09SRCBMT1NUIC8gRk9SR09UVEVOPEJSPjxCUj5Zb3UgY2FuIGFjY2VwdCB0aGUgdGlj
+a2V0IGJ5IGNsaWNraW5nIG9uIHRoaXMgPGEgaHJlZj1odHRwOi8veW5ldC9hcHBsaWNhdGlvbi9n
+ZXN0aW9uaW5jaWRlbnRzL2VtYWlsLnBocD9pZD00MTYzNjM2NTcwNzQ1NDY5NjM2YjY1NzQ0MTcw
+NzA2YzY5NzgyNjZlNzU2ZDU0Njk2MzZiNjU3NDNkMzEzMDMyMzAzNDM4MzAwMDQ1NTY+bGluazwv
+Rk9OVD4gPEZPTlQgRkFDRT0ic2Fucy1zZXJpZiwgQXJpYWwiIFNJWkU9MiBDT0xPUj0iYmx1ZSI+
+PC9hPiE8YnI+PEJSPjxCPkRlc2NyaXB0aW9uOjwvQj48QlI+PC9GT05UPjxGT05UIEZBQ0U9InNh
+bnMtc2VyaWYsIEFyaWFsIiBTSVpFPTIgQ09MT1I9ImJsdWUiPkRlbWFuZGUgdXJnZW50ZS48QlI+
+TmUgc2Ugc291dmllbnQgcGx1cyBkZSBzb24gbW90IGRlIHBhc3NlIFlSSVMuPEJSPklsIHNlcmFp
+dCDgIHLpaW5pdGlhbGlzZXI8QlI+PEJSPjwvRk9OVD48Rk9OVCBGQUNFPSJzYW5zLXNlcmlmLCBB
+cmlhbCIgU0laRT0yIENPTE9SPSJibGFjayI+SGVscCBEZXNrIEZyYW5jZTxCUj5SZWFzc2lnbmVk
+IGJ5IDogRE9SRUxfQkVOT0lUIDxCUj4rMzMgKDApMiA5OSAwOCAyOCA1MDwvRk9OVD48L0JPRFk+
+PC9IVE1MPg==
+
+
+------=_NextPart_000_0004_01C06B5E.74675200.IETSolutions$_alternative--
+
+
+------=_NextPart_000_0004_01C06B5E.74675200.IETSolutions$--
