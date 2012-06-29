@@ -575,7 +575,7 @@ class EmailMessage {
 			$sText = $this->sBodyText;
 		}
 		// Process line breaks: remove carriage returns / line feeds that have no meaning in HTML => replace them by a plain space
-		$sBodyText = str_replace(array('\n', '\r'), ' ',$sText);
+		$sBodyText = str_replace(array("\n", "\r"), ' ',$sText);
 		// Replace <p...>...</p> and <br/> by a carriage return
 		$sBodyText = preg_replace('/<p[^>]*>/', '', $sBodyText);
 		$sBodyText = str_replace(array('</br>', '<br/>', '<br>', '</p>'), "\n", $sBodyText);
