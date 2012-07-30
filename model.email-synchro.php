@@ -1,9 +1,208 @@
 <?php
-// Copyright (C) 2010 Combodo SARL
+// Copyright (C) 2010-2012 Combodo SARL
 //
-error_reporting(E_ALL);
-include APPROOT.'modules/combodo-email-synchro/POP3.php';			// PEAR POP3
-include APPROOT.'modules/combodo-email-synchro/mimeDecode.php';	// MODIFIED PEAR mimeDecode
+//   This program is free software; you can redistribute it and/or modify
+//   it under the terms of the GNU Lesser General Public License as published by
+//   the Free Software Foundation; version 3 of the License.
+//
+//   This program is distributed in the hope that it will be useful,
+//   but WITHOUT ANY WARRANTY; without even the implied warranty of
+//   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//   GNU General Public License for more details.
+//
+//   You should have received a copy of the GNU General Public License
+//   along with this program; if not, write to the Free Software
+//   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+
+require_once(APPROOT.'modules/combodo-email-synchro/rawemailmessage.class.inc.php'); //TODO: make the path 2.0 compliant
+
+/**
+ * A message as read from a POP3 or IMAP mailbox
+ * 
+ * @author      Erwan Taloc <erwan.taloc@combodo.com>
+ * @author      Romain Quetiez <romain.quetiez@combodo.com>
+ * @author      Denis Flaven <denis.flaven@combodo.com>
+ * @license     http://www.opensource.org/licenses/gpl-3.0.html LGPL
+ */
+class MessageFromMailbox extends RawEmailMessage
+{
+	protected $sUIDL;
+	
+	public function __construct($sUIDL, $sRawHeaders, $sBody)
+	{
+		$this->sUIDL = $sUIDL;
+		parent::__construct( $sRawHeaders."\r\n".$sBody);
+	}
+	
+	/**
+	 * Create a new RawEmailMessage object by reading the content of the given file
+	 * @param string $sFilePath The path to the file to load
+	 * @return RawEmailMessage The loaded message
+	 */
+	static public function FromFile($sFilePath)
+	{
+		//TODO: improve error handling in case the file does not exist or is corrupted...
+		return new MessageFromMailbox(basename($sFilePath), file_get_contents($sFilePath), '');
+	}
+	
+	/**
+	 * Decodes an email from its parts
+	 * @return EmailMessage
+	 */
+	public function Decode($sPreferredDecodingOrder = 'text/plain,text/html')
+	{
+		$sMessageId = $this->GetMessageId();
+		$aCallers = $this->GetSender();
+		if (count($aCallers) > 0)
+		{
+			$sCallerEmail = $aCallers[0]['email'];
+			$sCallerName = $this->GetCallerName($aCallers[0]);
+		}
+		$sSubject = $this->GetSubject();
+
+		$sBodyText = '';
+		$sBodyFormat = '';
+		$aDecodingOrder = explode(',', $sPreferredDecodingOrder);
+		foreach($aDecodingOrder as $sMimeType)
+		{
+			$aPart = $this->FindFirstPart($sMimeType, '/attachment/i');
+			if ($aPart !== null)
+			{
+				$sBodyText = $aPart['body'];
+				$sBodyFormat = $sMimeType;
+				break;
+			}
+		}	
+
+		$sRecipient = '';
+		$sReferences = $this->GetHeader('references');
+		$aReferences = explode(' ', $sReferences );
+		$sThreadIndex = $this->GetMSThreadIndex();
+		$aAttachments = $this->GetAttachments();
+		$sDecodeStatus = '';
+		$oRelatedObject = $this->GetRelatedObject();
+		
+		return new EmailMessage($this->sUIDL, $sMessageId, $sSubject, $sCallerEmail, $sCallerName, $sRecipient, $aReferences, $sThreadIndex, $sBodyText, $sBodyFormat, $aAttachments, $oRelatedObject, $sDecodeStatus);
+	}
+	
+	/**
+	 * Get MS Thread-index for this message
+	 */
+	protected function GetMSThreadIndex()
+	{
+		return $this->GetHeader('thread-index');
+	}
+	 
+	protected function GetCallerName()
+	{
+		$aSender = $this->GetSender();
+		$sName = '';
+		
+		if (count($aSender) > 0)
+		{
+			if (!empty($aSender[0]['name']))
+			{
+				$sName = $aSender[0]['name'];
+				if (preg_match("/.+ \(([^\)]+) at [^\)]+\)$/", $sName, $aMatches))
+				{
+					$sName = $aMatches[1];	
+				}			
+			}
+			else
+			{
+				if (preg_match("/^([^@]+)@.+$/", $aSender[0]['email'], $aMatches))
+				{
+					$sName = $aMatches[1]; // Use the first part of the email address before the @
+				}
+			}
+		}
+		
+		// Try to "pretty format" the names
+		if (preg_match("/^([^\.]+)[\._]([^\.]+)$/", $sName, $aMatches))
+		{
+			// transform "john.doe" or "john_doe" into "john doe"
+			$sName = $aMatches[1].' '.$aMatches[2];
+		}
+
+		if (preg_match("/^([^,]+), ([^,]+)$/", $sName, $aMatches))
+		{
+			// transform "doe, john" into "john doe"
+			$sName = $aMatches[2].' '.$aMatches[1];
+		}
+		
+		// Warning: the line below generates incorrect utf-8 for the character 'é' when running on Windows/PHP 5.3.6
+		//$sName = ucwords(strtolower($sName)); // Even prettier: make each first letter of each word - and only them - upper case
+		return $sName;
+	}
+	
+	public function SendAsAttachment($sTo, $sFrom, $sSubject, $sTextMessage)
+	{
+  		$oEmail = new Email();
+  		$oEmail->SetRecipientTO($sTo);
+  		$oEmail->SetSubject($sSubject);
+  		$oEmail->SetBody($sTextMessage);
+  		// Turn the original message into an attachment
+  		$sAttachment = 	$sRawContent;
+  		$oEmail->AddAttachment($sAttachment, 'Original Message.eml', 'text/plain');
+
+  		$aIssues = array();
+  		$oEmail->SetRecipientFrom($sFrom);
+  		$oEmail->Send($aIssues, true /* bForceSynchronous */, null /* $oLog */);
+	}
+	
+	protected function ParseMessageId($sMessageId)
+	{
+		$aMatches = array();
+		$ret = false;
+		if (preg_match('/^<iTop_(.+)_([0-9]+)_.+@.+openitop\.org>$/', $sMessageId, $aMatches))
+		{
+			$ret = array('class' => $aMatches[1], 'id' => $aMatches[2]);
+		}
+		return $ret;
+	}
+	
+	/**
+	 * Find-out (by analyzing the headers) if the message is related to an iTop object
+	 * @return mixed Either the related object or null if none
+	 */
+	protected function GetRelatedObject()
+	{
+		// First look if the message is not a direct reply to a message sent by iTop
+		if (isset($this->aParsedHeaders['in-reply-to']))
+		{
+			$ret = $this->ParseMessageId($this->aParsedHeaders['in-reply-to']);
+			if ($ret !== false)
+			{
+				if (MetaModel::IsValidClass($ret['class']))
+				{
+					$oObject = MetaModel::GetObject($ret['class'], $ret['id'], false /* Caution the object may not exist */);
+					if ($oObject != null) return $oObject;
+				}
+			}
+		}
+
+		// Second chance, look if a message sent by iTop is listed in the references
+		$sReferences = $this->GetHeader('references');
+		$aReferences = explode(' ', $sReferences );
+		foreach($aReferences as $sReference)
+		{
+			$ret = $this->ParseMessageId($sReference);
+			if ($ret !== false)
+			{
+				if (MetaModel::IsValidClass($ret['class']))
+				{
+					$oObject = MetaModel::GetObject($ret['class'], $ret['id'], false /* Caution the object may not exist */);
+					if ($oObject != null) return $oObject;
+				}
+			}
+		}
+		
+		// Third attempt: check the MS thread-index header, either via a direct pattern match
+		// or by finding a similar message already processed
+		// return EmailReplica::FindTicketFromMSThreadIndex($sMSThreadIndex);
+		return null;
+	}
+}
 
 /**
  * Extension to to keep track of the emails thread associated with any Ticket
@@ -147,361 +346,6 @@ class EmailReplica extends DBObject
 	}
 }
 
-/**
- * The raw Email/POP3 values and methods to decode it
- */
-class RawEmailMessage
-{
-	protected $sUIDL;
-	protected $sRawHeaders;
-	protected $aParsedHeaders;
-	protected $sBody;
-
-	public function __construct($sUIDL, $sRawHeaders, $sBody)
-	{
-		$this->sUIDL = $sUIDL;
-		$this->sRawHeaders = $sRawHeaders;
-		$this->sBody = $sBody;
-		$this->ParseHeaders();
-		$this->aWarnings = array();
-	}
-	/**
-	 * decodes an email from its parts
-	 * @return EmailMessage
-	 */
-	public function Decode($sPreferredDecodingOrder = 'text/plain,text/html')
-	{
-		$sMessageId = $this->GetMessageId();
-		$sCallerEmail = $this->GetSenderEmail();
-		$sSubject = $this->GetSubject();
-		$sCallerName = $this->GetCallerName();
-		$oMime = new Mail_mimeDecode($this->sRawHeaders."\r\n".$this->sBody);
-		$oStructure = $oMime->decode(array('include_bodies' => true, 'decode_bodies' => true));
-		$sEncoding = $oStructure->headers['content-type'];
-		$aMatches = array();
-		$sCharset = 'US-ASCII';
-		if (preg_match('/charset="?([^";]*)"?;?/', $sEncoding, $aMatches))
-		{
-			$sCharset = $aMatches[1];
-		}
-		
-		// Search for the text/plain body part
-		$iPartIndex = 0;
-		$bFound = false;
-		$sBodyText = '';
-		$sBodyFormat = '';
-		$sReferences = isset($oStructure->headers['references']) ? $oStructure->headers['references'] : '';
-		if (!isset($oStructure->parts) || count($oStructure->parts) == 0)
-		{
-			$sBodyText = @iconv($sCharset, 'UTF-8//IGNORE//TRANSLIT', $oStructure->body);
-		}
-		else
-		{
-			// Multi-parts encoding, search for the "best" part depending on the favorite decoding order
-			$aDecodingOrder = explode(',', $sPreferredDecodingOrder);
-			foreach($aDecodingOrder as $sMimeType)
-			{
-				$aMime = explode('/', $sMimeType);
-				$sBodyText = $this->ScanParts($oStructure->parts, $aMime[0], $aMime[1]);
-				if (!empty($sBodyText))
-				{
-					$sBodyFormat = $sMimeType;
-					break;
-				}
-			}
-		}
-		
-		$sRecipient = '';
-		$aReferences = explode(' ', $sReferences );
-		$sThreadIndex = $this->GetMSThreadIndex();
-		$aBodyParts = '';
-		$aAttachments = isset($oStructure->parts) ? $this->GetAttachments($oStructure->parts) : array();
-		$sDecodeStatus = '';
-		$oRelatedObject = $this->GetRelatedObject();
-		
-		return new EmailMessage($this->sUIDL, $sMessageId, $sSubject, $sCallerEmail, $sCallerName, $sRecipient, $aReferences, $sThreadIndex, $sBodyText, $sBodyFormat, $aAttachments, $oRelatedObject, $sDecodeStatus);
-	}
-	/**
-	 * Saves the raw message to a file
-	 */
-	public function SaveToFile($sFileName)
-	{
-		$hFile = fopen($sFileName, 'wb');
-		if ($hFile)
-		{
-			fwrite($hFile, $this->sRawHeaders);
-			fwrite($hFile, "\r\n");
-			fwrite($hFile, $this->sBody);
-			fclose($hFile);
-		}
-	}
-	/**
-	 * Reads the raw message from a file previously created by SaveToFile
-	 */
-	public static function ReadFromFile($sFileName)
-	{
-		$sContent = file_get_contents($sFileName);
-		$aMatches = array();
-        if (preg_match("/^(.+?)\r?\n\r?\n(.*)/s", $sContent, $aMatches))
-        {
-			$sRawHeaders = $aMatches[1]."\r\n"; // restore the line termination on the last line of the header
-			$sBody = $aMatches[2];
-			return new RawEmailMessage(basename($sFileName), $sRawHeaders, $sBody);
-        }
-        return null;
-	}
-
-	/**
-	 * Parses the raw message headers into a hash array
-	 */
-    protected function ParseHeaders()
-    {
-		$raw_headers = rtrim($this->sRawHeaders);
-		$aParams['include_bodies'] = false;
-		$aParams['decode_bodies'] = false;
-		$aParams['decode_headers'] = true;
-		$aParams['crlf'] = "\r\n";
-
-		$oMime = new Mail_mimeDecode($this->sRawHeaders.$aParams['crlf']);
-		$oStructure = $oMime->decode($aParams);
-
-		$this->aParsedHeaders = $oStructure->headers;
-	}
-	
-	/**
-	 * Get the address of the originator of the email
-	 */
-	protected function GetSenderEmail()
-	{
-		$sEmailPattern = '/([-_\.0-9a-zA-Z]+)@([-_\.0-9a-zA-Z]+)/';
-		$sEmail = '';
-		$aMatches = array();
-		if (array_key_exists('sender', $this->aParsedHeaders) && is_array($this->aParsedHeaders['sender']) && preg_match($sEmailPattern, array_pop($this->aParsedHeaders['sender']), $aMatches))
-		{
-			$sEmail = $aMatches[1].'@'.$aMatches[2];		
-		}
-		else if (preg_match($sEmailPattern, trim($this->aParsedHeaders['from']), $aMatches))
-		{
-			$sEmail = $aMatches[1].'@'.$aMatches[2];
-		}
-		else if (preg_match($sEmailPattern, trim($this->aParsedHeaders['reply-to']), $aMatches))
-		{
-			$sEmail = $aMatches[1].'@'.$aMatches[2];
-		}
-			
-		return $sEmail;
-	}
-	
-	/**
-	 * Get the subject / title of the message
-	 */
-	 protected function GetSubject()
-	 {
-	 	return @iconv('UTF-8', 'UTF-8//IGNORE//TRANSLIT', $this->aParsedHeaders['subject']);
-	 }
-
-	/**
-	 * Get messageId i.e. unique identifier of the message
-	 */
-	protected function GetMessageId()
-	{
-		return isset($this->aParsedHeaders['message-id']) ? $this->aParsedHeaders['message-id'] : 'ZZZNotFoundZZZ';
-	}
-	 
-	/**
-	 * Get MS Thread-index for this message
-	 */
-	protected function GetMSThreadIndex()
-	{
-		return isset($this->aParsedHeaders['thread-index']) ? $this->aParsedHeaders['thread-index'] : '';
-	}
-	 
-	protected function GetCallerName()
-	{
-		$sFrom = $this->aParsedHeaders['from'];
-		if (preg_match("/(.+) <.+>$/", $sFrom, $aMatches))
-		{
-			$sName = $aMatches[1];
-		}
-		else if (preg_match("/.+ \(([^\)]+) at [^\)]+\)$/", $sFrom, $aMatches))
-		{
-			$sName = $aMatches[1];	
-		}
-		else if (preg_match("/^([^@]+)@.+$/", $sFrom, $aMatches))
-		{
-			$sName = $aMatches[1]; // Use the first part of the email address before the @
-		}
-		
-		// Try to "pretty format" the names
-		if (preg_match("/^([^\.]+)[\._]([^\.]+)$/", $sName, $aMatches))
-		{
-			// transform "john.doe" or "john_doe" into "john doe"
-			$sName = $aMatches[1].' '.$aMatches[2];
-		}
-
-		if (preg_match("/^([^,]+), ([^,]+)$/", $sName, $aMatches))
-		{
-			// transform "doe, john" into "john doe"
-			$sName = $aMatches[2].' '.$aMatches[1];
-		}
-		
-		// Name are sometimes quoted by double quotes... remove them
-		if (preg_match('/"(.+)"/', $sName, $aMatches))
-		{
-			$sName = $aMatches[1];
-		}
-		// Warning: the line below generates incorrect utf-8 for the character 'é' when running on Windows/PHP 5.3.6
-		//$sName = ucwords(strtolower($sName)); // Even prettier: make each first letter of each word - and only them - upper case
-		return $sName;
-	}
-	
-	/**
-	 * Scans an array of 'parts' for a part of the given primary / secondary type
-	 */
-	protected function ScanParts($aParts, $sPrimaryType, $sSecondaryPart)
-	{
-		$index = 0;
-		$sBody = '';
-		while($index < count($aParts))
-		{
-			if (($aParts[$index]->ctype_primary == $sPrimaryType) &&
-			   ($aParts[$index]->ctype_secondary == $sSecondaryPart) &&
-			   (!isset($aParts[$index]->disposition) || $aParts[$index]->disposition != 'attachment') )
-			{
-				if (preg_match('/charset="?([^";]*)"?;?/', $aParts[$index]->headers['content-type'], $aMatches))
-				{
-					$sCharset = strtoupper(trim($aMatches[1]));
-					$sBody = iconv($sCharset, 'UTF-8//IGNORE//TRANSLIT', $aParts[$index]->body);
-					if ($sBody == '')
-					{
-						// Unable to decode the character set... let's hope something is still readable as-is
-						$sBody = $aParts[$index]->body;
-						// TODO: log a warning
-//echo "Unable to decode the body...\n";
-					}
-				}
-				else
-				{
-					$sBody = $aParts[$index]->body;
-				}
-				// Found the desired body 
-//echo "Found a body...\n";
-				break;
-			}
-			else if (isset($aParts[$index]->parts) && is_array($aParts[$index]->parts))
-			{
-//echo "The part $index contain sub-parts, recursing...\n";
-				$sBody = $this->ScanParts($aParts[$index]->parts, $sPrimaryType, $sSecondaryPart);
-				if (!empty($sBody))
-				{
-					// Found the desired body 
-//echo "Found a body...\n";
-					break;
-				}
-			}
-			$index++;
-		}
-		return $sBody;	
-	}
-	
-	function GetAttachments($aParts, $aAttachments = array())
-	{
-		$index = 0;
-		foreach($aParts as $aPart)
-		{
-			if (isset($aPart->disposition) && ($aPart->disposition == 'attachment') || ( ($aPart->ctype_primary != 'multipart') && ($aPart->ctype_primary != 'text')) )
-			{
-
-				$sMimeType = $aPart->ctype_primary.'/'.$aPart->ctype_secondary;
-				$sFileName = @$aPart->d_parameters['filename'];
-				if (empty($sFileName))
-				{
-					$sFileName = @$aPart->ctype_parameters['name'];
-				}
-				if (empty($sFileName))
-				{
-					$sFileName = sprintf('%s%03d.%s',$aPart->ctype_primary, $index, $aPart->ctype_secondary); // i.e. image001.jpg
-				}
-				$sContent = $aPart->body;
-				$aAttachments[] = array('mimeType' => $sMimeType, 'filename' => $sFileName, 'content' => $sContent);				
-			}
-			else if (isset($aPart->parts) && is_array($aPart->parts))
-			{
-				$aAttachments = $this->GetAttachments($aPart->parts, $aAttachments);
-			}
-			$index++;
-		}
-		return $aAttachments;
-	}
-	
-	public function SendAsAttachment($sTo, $sFrom, $sSubject, $sTextMessage)
-	{
-  		$oEmail = new Email();
-  		$oEmail->SetRecipientTO($sTo);
-  		$oEmail->SetSubject($sSubject);
-  		$oEmail->SetBody($sTextMessage);
-  		// Turn the original message into an attachment
-  		$sAttachment = 	$this->sRawHeaders."\r\n".$this->sBody;
-  		$oEmail->AddAttachment($sAttachment, 'Original Message.eml', 'text/plain');
-
-  		$aIssues = array();
-  		$oEmail->SetRecipientFrom($sFrom);
-  		$oEmail->Send($aIssues, true /* bForceSynchronous */, null /* $oLog */);
-	}
-	
-	protected function ParseMessageId($sMessageId)
-	{
-		$aMatches = array();
-		$ret = false;
-		if (preg_match('/^<iTop_(.+)_([0-9]+)_.+@.+openitop\.org>$/', $sMessageId, $aMatches))
-		{
-			$ret = array('class' => $aMatches[1], 'id' => $aMatches[2]);
-		}
-		return $ret;
-	}
-	
-	/**
-	 * Find-out (by analyzing the headers) if the message is related to an iTop object
-	 * @return mixed Either the related object or null if none
-	 */
-	protected function GetRelatedObject()
-	{
-		// First look if the message is not a direct reply to a message sent by iTop
-		if (isset($this->aParsedHeaders['in-reply-to']))
-		{
-			$ret = $this->ParseMessageId($this->aParsedHeaders['in-reply-to']);
-			if ($ret !== false)
-			{
-				if (MetaModel::IsValidClass($ret['class']))
-				{
-					$oObject = MetaModel::GetObject($ret['class'], $ret['id'], false /* Caution the object may not exist */);
-					if ($oObject != null) return $oObject;
-				}
-			}
-		}
-
-		// Second chance, look if a message sent by iTop is listed in the references
-		$sReferences = isset($oStructure->headers['references']) ? $oStructure->headers['references'] : '';
-		$aReferences = explode(' ', $sReferences );
-		foreach($aReferences as $sReference)
-		{
-			$ret = $this->ParseMessageId($sReference);
-			if ($ret !== false)
-			{
-				if (MetaModel::IsValidClass($ret['class']))
-				{
-					$oObject = MetaModel::GetObject($ret['class'], $ret['id'], false /* Caution the object may not exist */);
-					if ($oObject != null) return $oObject;
-				}
-			}
-		}
-		
-		// Third attempt: check the MS thread-index header, either via a direct pattern match
-		// or by finding a similar message already processed
-		// return EmailReplica::FindTicketFromMSThreadIndex($sMSThreadIndex);
-		return null;
-	}
-}
 
 ////////////////////////////////////////////////////////////////////
 /**
@@ -557,10 +401,13 @@ class EmailMessage {
 	public function IsValid()
 	{
 		$bValid = !empty($this->sUIDL) && !empty($this->sSubject) && !empty($this->sCallerEmail) && !empty($this->sCallerName);
+
 		foreach($this->aAttachments as $aAttachment)
 		{
-			$bValid = $bValid && !empty($aAttachment['mimeType']) && !empty($aAttachment['filename']) && !empty($aAttachment['content']);
+			$bAttachmentValid = !empty($aAttachment['mimeType']) && !empty($aAttachment['filename']) && !empty($aAttachment['content']);
+			$bValid = $bValid && $bAttachmentValid;
 		}
+		
 		return $bValid;
 	}
 	
@@ -761,7 +608,7 @@ class TestEmailSource extends EmailSource
 	 */
 	public function GetMessage($index)
 	{
-		return RawEmailMessage::ReadFromFile($this->sSourceDir.'/'.$this->aMessages[$index]);
+		return MessageFromMailbox::FromFile($this->sSourceDir.'/'.$this->aMessages[$index]);
 	}
 
 	/**
@@ -863,7 +710,7 @@ class POP3EmailSource extends EmailSource
 		$sBody = $this->oPop3->getBody(1+$index);
 		$aUIDL = $this->oPop3->_cmdUidl(1+$index);
 		
-		return new RawEmailMessage($aUIDL['uidl'], $sRawHeaders, $sBody);
+		return new MessageFromMailbox($aUIDL['uidl'], $sRawHeaders, $sBody);
 	}
 
 	/**
@@ -905,6 +752,114 @@ class POP3EmailSource extends EmailSource
 	 }
 }
 
+class IMAPEmailSource extends EmailSource
+{
+	protected $rImapConn = null;
+	protected $sLogin = '';
+	
+	public function __construct($sServer, $iPort, $sLogin, $sPwd, $sMailbox, $aOptions)
+	{
+		parent::__construct();
+		$this->sLastErrorSubject = '';
+		$this->sLastErrorMessage = '';
+		$this->sLogin = $sLogin;
+
+		$sOptions = '';
+		if (count($aOptions) > 0)
+		{
+			$sOptions = '/'.implode('/',$aOptions);
+		}
+		
+		$sIMAPConnStr = "{{$sServer}:{$iPort}$sOptions}$sMailbox";
+		$this->rImapConn = imap_open($sIMAPConnStr, $sLogin, $sPwd );
+		if ($this->rImapConn === false)
+		{
+			if (class_exists('EventHealthIssue'))
+			{
+				EventHealthIssue::LogHealthIssue('combodo-email-synchro', "Cannot connect to IMAP server: '$sIMAPConnStr', with credentials: '$sLogin'/'$sPwd'");
+			}
+			print_r(imap_errors());
+			throw new Exception("Cannot connect to IMAP server: '$sIMAPConnStr', with credentials: '$sLogin'/'$sPwd'");
+		}
+	}	
+
+	/**
+	 * Get the number of messages to process
+	 * @return integer The number of available messages
+	 */
+	public function GetMessagesCount()
+	{
+		$oInfo = imap_check($this->rImapConn);
+		if ($oInfo !== false) return $oInfo->Nmsgs;
+		
+		return 0;	
+	}
+	
+	/**
+	 * Retrieves the message of the given index [0..Count]
+	 * @param $index integer The index between zero and count
+	 * @return EmailDecoder
+	 */
+	public function GetMessage($index)
+	{
+		echo("IMAPEmailSource: Fetching the message $index");
+		$sRawHeaders = imap_fetchheader($this->rImapConn, 1+$index);
+		$sBody = imap_body($this->rImapConn, 1+$index, FT_PEEK);
+		$aOverviews = imap_fetch_overview($this->rImapConn, 1+$index);
+		$oOverview = array_pop($aOverviews);
+		return new MessageFromMailbox($oOverview->uid, $sRawHeaders, $sBody);
+	}
+
+	/**
+	 * Deletes the message of the given index [0..Count] from the mailbox
+	 * @param $index integer The index between zero and count
+	 */
+	public function DeleteMessage($index)
+	{
+		echo("IMAPEmailSource: Deleting the message $index");
+		$ret = imap_delete($this->rImapConn, $index);
+		return $ret;
+	}
+	
+	/**
+	 * Name of the eMail source
+	 */
+	 public function GetName()
+	 {
+	 	return $this->sLogin;
+	 }
+	 
+	/**
+	 * Get the list (with their IDs) of all the messages
+	 * @return Array An array of hashes: 'msg_id' => index 'uild' => message identifier
+	 */
+	 public function GetListing()
+	 {
+	 	$ret = null;
+	 	
+        $oInfo = imap_check($this->rImapConn);
+        if ($oInfo !== false)
+        {
+        	$sRange = "1:".$oInfo->Nmsgs;
+
+        	$ret = array();
+			$aResponse = imap_fetch_overview($this->rImapConn,$sRange);
+			
+			foreach ($aResponse as $aMessage)
+			{
+				$ret[] = array('msg_id' => $aMessage->msgno, 'uidl' => $aMessage->uid);
+			}
+        }
+	 	
+		return $ret;
+	 }
+	 
+	 public function Disconnect()
+	 {
+	 	imap_close($this->rImapConn, CL_EXPUNGE);
+	 	$this->rImapConn = null; // Just to be sure
+	 }
+}
 ///////////////////////////////////////////////////////////////////////////////////////
 
 abstract class EmailProcessor
@@ -958,6 +913,7 @@ class TestEmailProcessor extends EmailProcessor
 {
 	public function ListEmailSources()
 	{
+//		return array( 0 => new IMAPEmailSource('ssl0.ovh.net', 993, 'tickets@combodo.com', 'c8mb0do', '', array('imap', 'ssl', 'novalidate-cert')));
 		return array( 0 => new TestEmailSource(dirname(__FILE__).'/log', 'test'));
 	}
 	
@@ -984,17 +940,30 @@ class TestEmailProcessor extends EmailProcessor
 		$index = 0;
 		foreach($oEmail->aAttachments as $aAttachment)
 		{
+			$sMessage .= "\n\tAttachment #$index\n";
 			if (empty($aAttachment['mimeType']))
 			{
 				$sMessage .= "\n=====================================\nERROR: Empty mimeType for attachment #$index of the message.\n";
+			}
+			else
+			{
+				$sMessage .= "\t\tType: {$aAttachment['mimeType']}\n";
 			}
 			if (empty($aAttachment['filename']))
 			{
 				$sMessage .= "\n=====================================\nERROR: Empty filename for attachment #$index of the message.\n";
 			}
+			else
+			{
+				$sMessage .= "\t\tName: {$aAttachment['filename']}\n";
+			}
 			if (empty($aAttachment['content']))
 			{
 				$sMessage .= "\n=====================================\nERROR: Empty CONTENT for attachment #$index of the message.\n";
+			}
+			else
+			{
+				$sMessage .= "\t\tContent: ".strlen($aAttachment['content'])." bytes\n";
 			}
 			$index++;
 		}

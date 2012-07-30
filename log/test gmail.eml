@@ -1,0 +1,58 @@
+X-Account-Key: account2
+X-UIDL: 1343293782.13805.mail212.ha.ovh.net,S=2568
+X-Mozilla-Status: 0000
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <denis.flaven@gmail.com>
+Delivered-To: denis.flaven@combodo.com
+Received: from b0.ovh.net (HELO queue) (213.186.33.50)
+	by b0.ovh.net with SMTP; 26 Jul 2012 11:09:41 +0200
+Received: from mail-ee0-f41.google.com (74.125.83.41)
+  by mx1.ovh.net with SMTP; 26 Jul 2012 11:09:39 +0200
+Received: by eeke49 with SMTP id e49so279205eek.28
+        for <denis.flaven@combodo.com>; Thu, 26 Jul 2012 02:09:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:date:message-id:subject:from:to:content-type;
+        bh=owvUZrj4LsFcrmFU1+KOdSRJFHv0Cxv0QvtC0imEhQQ=;
+        b=stwUeua70dNDNYI8D9Bb9qL+cM03Xl8zsWpKsmuyfRzzRhYHWmE4I69GeiIi4Bd92a
+         ReprGf0MAIbw6eU2peddbtw2TlpDZrDV33bWoAZjWDBpSGR7Qlp9nY2Q7TSOXhECl7Re
+         Wa7jPQgWQ7MvFYCfgG/ng8R5vrZ2Uka9n5TRwkc93inRLOkq/Vu2IZarZHHKknkzDapV
+         OVIH+6n8VmJRDbcqwbuU+Qbo9HIfbMl/5ewcBF2BLFYaH+XKIuFDqfB1UBh7uyQqkzyY
+         kMuHzgIWuRitXxAY1vKRkEsPqW3YRNEsE4fKegTQ0JUh6yfIYYwbmBPdDUyncTYG1mIf
+         hDSg==
+MIME-Version: 1.0
+Received: by 10.14.177.135 with SMTP id d7mr3211512eem.42.1343293779311; Thu,
+ 26 Jul 2012 02:09:39 -0700 (PDT)
+Received: by 10.14.100.207 with HTTP; Thu, 26 Jul 2012 02:09:39 -0700 (PDT)
+Date: Thu, 26 Jul 2012 11:09:39 +0200
+Message-ID: <CAHMxbfPs4Mr3NJOVWWmGvmiWpF9RzrLOthYVkQUpHMRrZjQ+aA@mail.gmail.com>
+Subject: =?ISO-8859-1?Q?Test_de_mail_envoy=E9_avec_Gmail_et_contenant_un_tr=E8?=
+	=?ISO-8859-1?Q?s_tr=E8s_long_sujet_avec_d=27aillleurs_aussi_des_caract=E8res_ac?=
+	=?ISO-8859-1?Q?centu=E9s_histoire_de_voir_ce_qui_se_passe_dans_ce_cas_l=E0=2E_J?=
+	=?ISO-8859-1?Q?e_sais_c=27est_un_peu_exag=E9r=E9=2C_enfin_=E0_peine=2E=2E=2E?=
+From: Denis Flaven <denis.flaven@gmail.com>
+To: denis.flaven@combodo.com
+Content-Type: multipart/alternative; boundary=047d7b603ebc8b7d6e04c5b7f41b
+X-Ovh-Tracer-Id: 671880770298721326
+X-Ovh-Remote: 74.125.83.41 (mail-ee0-f41.google.com)
+X-Ovh-Local: 213.186.33.29 (mx1.ovh.net)
+X-OVH-SPAMSTATE: OK
+X-OVH-SPAMSCORE: 0
+X-OVH-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrfeegkedrleduucetufdoteggodetrfdofgetucfrrhhofhhilhgvmecuqfggjfenuceurghilhhouhhtmecufedttdenucenucfhrhhomhepffgvnhhishcuhfhlrghvvghnuceouggvnhhishdrfhhlrghvvghnsehgmhgrihhlrdgtohhmqeenucfjughrpeffkffuhffvtgesrgdtreertddtud
+X-Spam-Check: DONE|U 0.5/N
+
+--047d7b603ebc8b7d6e04c5b7f41b
+Content-Type: text/plain; charset=ISO-8859-1
+
+Tout est dans le titre
+
+- Denis
+
+--047d7b603ebc8b7d6e04c5b7f41b
+Content-Type: text/html; charset=ISO-8859-1
+
+Tout est dans le titre<br><br>- Denis<br>
+
+--047d7b603ebc8b7d6e04c5b7f41b--
+
