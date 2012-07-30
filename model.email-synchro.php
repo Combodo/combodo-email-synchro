@@ -14,7 +14,7 @@
 //   along with this program; if not, write to the Free Software
 //   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-require_once(APPROOT.'modules/combodo-email-synchro/rawemailmessage.class.inc.php'); //TODO: make the path 2.0 compliant
+require_once(dirname(__FILE__).'/rawemailmessage.class.inc.php');
 
 /**
  * A message as read from a POP3 or IMAP mailbox
@@ -142,7 +142,7 @@ class MessageFromMailbox extends RawEmailMessage
   		$oEmail->SetSubject($sSubject);
   		$oEmail->SetBody($sTextMessage);
   		// Turn the original message into an attachment
-  		$sAttachment = 	$sRawContent;
+  		$sAttachment = 	$this->sRawContent;
   		$oEmail->AddAttachment($sAttachment, 'Original Message.eml', 'text/plain');
 
   		$aIssues = array();
@@ -666,6 +666,9 @@ class POP3EmailSource extends EmailSource
 		parent::__construct();
 		$this->sLastErrorSubject = '';
 		$this->sLastErrorMessage = '';
+		
+		require_once(dirname(__FILE__).'/POP3.php'); //Include this file only if needed since PEAR desactivates the error reporting
+		
 		$this->oPop3 = new Net_POP3();
 		$this->sServer = $sServer;
 		$this->sLogin = $sLogin;
