@@ -805,7 +805,6 @@ class IMAPEmailSource extends EmailSource
 	 */
 	public function GetMessage($index)
 	{
-		echo("IMAPEmailSource: Fetching the message $index");
 		$sRawHeaders = imap_fetchheader($this->rImapConn, 1+$index);
 		$sBody = imap_body($this->rImapConn, 1+$index, FT_PEEK);
 		$aOverviews = imap_fetch_overview($this->rImapConn, 1+$index);
@@ -819,8 +818,7 @@ class IMAPEmailSource extends EmailSource
 	 */
 	public function DeleteMessage($index)
 	{
-		echo("IMAPEmailSource: Deleting the message $index");
-		$ret = imap_delete($this->rImapConn, $index);
+		$ret = imap_delete($this->rImapConn, (1+$index).':'.(1+$index));
 		return $ret;
 	}
 	
