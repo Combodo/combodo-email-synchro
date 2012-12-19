@@ -838,7 +838,7 @@ class IMAPEmailSource extends EmailSource
 	 {
 	 	$ret = null;
 	 	
-        $oInfo = imap_check($this->rImapConn);
+	 	$oInfo = imap_check($this->rImapConn);
         if ($oInfo !== false)
         {
         	$sRange = "1:".$oInfo->Nmsgs;
@@ -851,7 +851,7 @@ class IMAPEmailSource extends EmailSource
 				$ret[] = array('msg_id' => $aMessage->msgno, 'uidl' => $aMessage->uid);
 			}
         }
-	 	
+        
 		return $ret;
 	 }
 	 
@@ -1102,11 +1102,11 @@ class EmailBackgroundProcess implements iBackgroundProcess
 	
 						if ($oEmailReplica == null)
 						{
-							$this->Trace("Dispatching new message: $sUIDL");
+							$this->Trace("\nDispatching new message: uidl=$sUIDL index=$iMessage");
 						}
 						else
 						{
-							$this->Trace("Dispatching old (already read) message: $sUIDL");
+							$this->Trace("\nDispatching old (already read) message: uidl=$sUIDL index=$iMessage");
 							
 						}
 						
@@ -1116,7 +1116,7 @@ class EmailBackgroundProcess implements iBackgroundProcess
 						{
 							case EmailProcessor::DELETE_MESSAGE:
 							$iTotalDeleted++;
-							$this->Trace("Deleting message (and replica): $sUIDL");
+							$this->Trace("Deleting message (and replica): uidl=$sUIDL index=$iMessage");
 							$oSource->DeleteMessage($iMessage);
 							if (is_object($oEmailReplica))
 							{
