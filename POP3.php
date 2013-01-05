@@ -43,6 +43,7 @@ require_once 'Net/Socket.php';
 
 
 
+
 /**
 *  +----------------------------- IMPORTANT ------------------------------+
 *  | Usage of this class compared to native php extensions such as IMAP   |
@@ -145,6 +146,23 @@ class Net_POP3
     var $_capability;
 
 
+	/**
+	 * replacement for PER::isError which should be declared as static
+	 */
+    static function isError($data, $code = null)
+    {
+        if (!is_a($data, 'PEAR_Error')) {
+            return false;
+        }
+
+        if (is_null($code)) {
+            return true;
+        } elseif (is_string($code)) {
+            return $data->getMessage() == $code;
+        }
+
+        return $data->getCode() == $code;
+    }
 
    /**
     * Constructor. Sets up the object variables, and instantiates
@@ -259,10 +277,10 @@ class Net_POP3
     {
         if ($this->_state == NET_POP3_STATE_AUTHORISATION) {
 
-            if (PEAR::isError($ret= $this->_cmdAuthenticate($user, $pass, $apop))){
+            if (self::isError($ret= $this->_cmdAuthenticate($user, $pass, $apop))){
                 return $ret;
             }
-            if (!PEAR::isError($ret)) {
+            if (!self::isError($ret)) {
                 $this->_state = NET_POP3_STATE_TRANSACTION;
                 return true;
             }
@@ -282,7 +300,7 @@ class Net_POP3
     function _parseCapability()
     {
 
-        if(!PEAR::isError($data = $this->_sendCmd('CAPA'))){
+        if(!self::isError($data = $this->_sendCmd('CAPA'))){
             $data = $this->_getMultiline();
         }else {
             // CAPA command not supported, reset data var
@@ -394,7 +412,7 @@ class Net_POP3
     function _cmdAuthenticate($uid , $pwd , $userMethod = null )
     {
 
-        if (PEAR::isError($method = $this->_getBestAuthMethod($userMethod))) {
+        if (self::isError($method = $this->_getBestAuthMethod($userMethod))) {
             return $method;
         }
 
@@ -421,7 +439,7 @@ class Net_POP3
             case 'APOP':
                 $result = $this->_cmdApop( $uid , $pwd );
                 // if APOP fails fallback to USER auth
-                if (PEAR::isError($result)){
+                if (self::isError($result)){
                     //echo "APOP FAILED!!!\n";
                     $result=$this->_authUSER( $uid , $pwd );
                 }
@@ -454,10 +472,10 @@ class Net_POP3
     */
     function _authUSER($user, $pass  )
     {
-        if ( PEAR::isError($ret=$this->_cmdUser($user) ) ){
+        if ( self::isError($ret=$this->_cmdUser($user) ) ){
             return $ret;
         }
-        if ( PEAR::isError($ret=$this->_cmdPass($pass) ) ){
+        if ( self::isError($ret=$this->_cmdPass($pass) ) ){
             return $ret;
         }
         return true;
@@ -480,15 +498,15 @@ class Net_POP3
     {
         $cmd=sprintf('AUTH PLAIN %s', base64_encode( chr(0) . $user . chr(0) . $pass ) );
 
-        if ( PEAR::isError( $ret = $this->_send($cmd) ) ) {
+        if ( self::isError( $ret = $this->_send($cmd) ) ) {
 echo "_send failed: ".$ret."\n";
             return $ret;
         }
-        if ( PEAR::isError( $challenge = $this->_recvLn() ) ){
+        if ( self::isError( $challenge = $this->_recvLn() ) ){
 echo "_recvLn failed: ".$ret."\n";
             return $challenge;
         }
-        if( PEAR::isError($ret=$this->_checkResponse($challenge) )){
+        if( self::isError($ret=$this->_checkResponse($challenge) )){
 echo "_checkResponse failed: ".$ret."\n";
             return $ret;
         }
@@ -513,30 +531,30 @@ echo "_checkResponse failed: ".$ret."\n";
     {
         $this->_send('AUTH LOGIN');
 
-        if ( PEAR::isError( $challenge = $this->_recvLn() ) ) {
+        if ( self::isError( $challenge = $this->_recvLn() ) ) {
             return $challenge;
         }
-        if( PEAR::isError($ret=$this->_checkResponse($challenge) )){
+        if( self::isError($ret=$this->_checkResponse($challenge) )){
             return $ret;
         }
 
 
-        if ( PEAR::isError( $ret = $this->_send(sprintf('%s', base64_encode($user))) ) ) {
+        if ( self::isError( $ret = $this->_send(sprintf('%s', base64_encode($user))) ) ) {
             return $ret;
         }
 
-        if ( PEAR::isError( $challenge = $this->_recvLn() ) ) {
+        if ( self::isError( $challenge = $this->_recvLn() ) ) {
             return $challenge;
         }
-        if( PEAR::isError($ret=$this->_checkResponse($challenge) )){
+        if( self::isError($ret=$this->_checkResponse($challenge) )){
             return $ret;
         }
 
-        if ( PEAR::isError( $ret = $this->_send(sprintf('%s', base64_encode($pass))) ) ) {
+        if ( self::isError( $ret = $this->_send(sprintf('%s', base64_encode($pass))) ) ) {
             return $ret;
         }
 
-        if ( PEAR::isError( $challenge = $this->_recvLn() ) ) {
+        if ( self::isError( $challenge = $this->_recvLn() ) ) {
             return $challenge;
         }
         return $this->_checkResponse($challenge);
@@ -557,14 +575,14 @@ echo "_checkResponse failed: ".$ret."\n";
     */
     function _authCRAM_MD5($uid, $pwd )
     {
-        if (PEAR::isError($ret = $this->_send('AUTH CRAM-MD5'))) {
+        if (self::isError($ret = $this->_send('AUTH CRAM-MD5'))) {
             return $ret;
         }
 
-        if (PEAR::isError($challenge = $this->_recvLn())) {
+        if (self::isError($challenge = $this->_recvLn())) {
             return $challenge;
         }
-        if (PEAR::isError($ret=$this->_checkResponse($challenge))) {
+        if (self::isError($ret=$this->_checkResponse($challenge))) {
             return $ret;
         }
 
@@ -578,10 +596,10 @@ echo "_checkResponse failed: ".$ret."\n";
         $auth_str = base64_encode($cram->getResponse($uid , $pwd , $challenge));
 
 
-        if (PEAR::isError($error = $this->_send($auth_str))) {
+        if (self::isError($error = $this->_send($auth_str))) {
             return $error;
         }
-        if (PEAR::isError($ret = $this->_recvLn())) {
+        if (self::isError($ret = $this->_recvLn())) {
             return $ret;
         }
         //echo "RET:$ret\n";
@@ -604,14 +622,14 @@ echo "_checkResponse failed: ".$ret."\n";
     */
     function _authDigest_MD5($uid, $pwd)
     {
-        if ( PEAR::isError( $ret = $this->_send( 'AUTH DIGEST-MD5' ) ) ) {
+        if ( self::isError( $ret = $this->_send( 'AUTH DIGEST-MD5' ) ) ) {
             return $ret;
         }
 
-        if ( PEAR::isError( $challenge = $this->_recvLn() ) ) {
+        if ( self::isError( $challenge = $this->_recvLn() ) ) {
             return $challenge;
         }
-        if( PEAR::isError($ret=$this->_checkResponse($challenge) )){
+        if( self::isError($ret=$this->_checkResponse($challenge) )){
             return $ret;
         }
 
@@ -622,14 +640,14 @@ echo "_checkResponse failed: ".$ret."\n";
         $digest = &Auth_SASL::factory('digestmd5');
         $auth_str = base64_encode($digest->getResponse($uid, $pwd, $challenge, "localhost", "pop3" ));
 
-        if ( PEAR::isError($error = $this->_send( $auth_str ) ) ) {
+        if ( self::isError($error = $this->_send( $auth_str ) ) ) {
             return $error;
         }
 
-        if ( PEAR::isError( $challenge = $this->_recvLn() ) ) {
+        if ( self::isError( $challenge = $this->_recvLn() ) ) {
             return $challenge;
         }
-        if( PEAR::isError($ret=$this->_checkResponse($challenge) )){
+        if( self::isError($ret=$this->_checkResponse($challenge) )){
             return $ret;
         }
          /*
@@ -637,11 +655,11 @@ echo "_checkResponse failed: ".$ret."\n";
          * subsequent authentication, so we just silently ignore it.
          */
 
-        if ( PEAR::isError( $challenge = $this->_send("\r\n") ) ) {
+        if ( self::isError( $challenge = $this->_send("\r\n") ) ) {
             return $challenge ;
         }
 
-        if ( PEAR::isError( $challenge = $this->_recvLn() ) ) {
+        if ( self::isError( $challenge = $this->_recvLn() ) ) {
             return $challenge;
         }
 
@@ -662,7 +680,7 @@ echo "_checkResponse failed: ".$ret."\n";
         if ($this->_state == NET_POP3_STATE_AUTHORISATION) {
 
             if (!empty($this->_timestamp)) {
-                if(PEAR::isError($data = $this->_sendCmd('APOP ' . $user . ' ' . md5($this->_timestamp . $pass)) ) ){
+                if(self::isError($data = $this->_sendCmd('APOP ' . $user . ' ' . md5($this->_timestamp . $pass)) ) ){
                     return $data;
                 }
                 $this->_state = NET_POP3_STATE_TRANSACTION;
@@ -887,7 +905,7 @@ echo "_checkResponse failed: ".$ret."\n";
     function _cmdStat()
     {
         if ($this->_state == NET_POP3_STATE_TRANSACTION) {
-            if(!PEAR::isError($data = $this->_sendCmd('STAT'))){
+            if(!self::isError($data = $this->_sendCmd('STAT'))){
                 sscanf($data, '+OK %d %d', $msg_num, $size);
                 $this->_maildrop['num_msg'] = $msg_num;
                 $this->_maildrop['size']    = $size;
@@ -912,7 +930,7 @@ echo "_checkResponse failed: ".$ret."\n";
         $return=array();
         if ($this->_state == NET_POP3_STATE_TRANSACTION) {
             if (!isset($msg_id)) {
-                if(!PEAR::isError($data = $this->_sendCmd('LIST') )){
+                if(!self::isError($data = $this->_sendCmd('LIST') )){
                     $data = $this->_getMultiline();
                     $data = explode("\r\n", $data);
                     foreach ($data as $line) {
@@ -924,7 +942,7 @@ echo "_checkResponse failed: ".$ret."\n";
                     return $return;
                 }
             } else {
-                if(!PEAR::isError($data = $this->_sendCmd('LIST ' . $msg_id))){
+                if(!self::isError($data = $this->_sendCmd('LIST ' . $msg_id))){
                     if($data!=''){
                         sscanf($data, '+OK %d %d', $msg_id, $size);
                         return array('msg_id' => $msg_id, 'size' => $size);
@@ -949,7 +967,7 @@ echo "_checkResponse failed: ".$ret."\n";
     function _cmdRetr($msg_id)
     {
         if ($this->_state == NET_POP3_STATE_TRANSACTION) {
-            if(!PEAR::isError($data = $this->_sendCmd('RETR ' . $msg_id) )){
+            if(!self::isError($data = $this->_sendCmd('RETR ' . $msg_id) )){
                 $data = $this->_getMultiline();
                 return $data;
             }
@@ -985,7 +1003,7 @@ echo "_checkResponse failed: ".$ret."\n";
     function _cmdNoop()
     {
         if ($this->_state == NET_POP3_STATE_TRANSACTION) {
-            if(!PEAR::isError($data = $this->_sendCmd('NOOP'))){
+            if(!self::isError($data = $this->_sendCmd('NOOP'))){
                 return true;
             }
         }
@@ -1003,7 +1021,7 @@ echo "_checkResponse failed: ".$ret."\n";
     function _cmdRset()
     {
         if ($this->_state == NET_POP3_STATE_TRANSACTION) {
-            if(!PEAR::isError($data = $this->_sendCmd('RSET'))){
+            if(!self::isError($data = $this->_sendCmd('RSET'))){
                 return true;
             }
         }
@@ -1040,7 +1058,7 @@ echo "_checkResponse failed: ".$ret."\n";
     {
         if ($this->_state == NET_POP3_STATE_TRANSACTION) {
 
-            if(!PEAR::isError($data = $this->_sendCmd('TOP ' . $msg_id . ' ' . $num_lines))){
+            if(!self::isError($data = $this->_sendCmd('TOP ' . $msg_id . ' ' . $num_lines))){
                 return $this->_getMultiline();
             }
         }
@@ -1061,7 +1079,7 @@ echo "_checkResponse failed: ".$ret."\n";
         if ($this->_state == NET_POP3_STATE_TRANSACTION) {
 
             if (!isset($msg_id)) {
-                if(!PEAR::isError($data = $this->_sendCmd('UIDL') )){
+                if(!self::isError($data = $this->_sendCmd('UIDL') )){
                     $data = $this->_getMultiline();
                     $data = explode("\r\n", $data);
                     foreach ($data as $line) {
@@ -1094,11 +1112,11 @@ echo "_checkResponse failed: ".$ret."\n";
     */
     function _sendCmd($cmd)
     {
-        if (PEAR::isError($result = $this->_send($cmd) )){
+        if (self::isError($result = $this->_send($cmd) )){
             return $result ;
         }
 
-        if (PEAR::isError($data = $this->_recvLn() )){
+        if (self::isError($data = $this->_recvLn() )){
             return $data;
         }
 
@@ -1120,7 +1138,7 @@ echo "_checkResponse failed: ".$ret."\n";
     function _getMultiline()
     {
         $data = '';
-        while(!PEAR::isError($tmp = $this->_recvLn() ) ) {
+        while(!self::isError($tmp = $this->_recvLn() ) ) {
             if($tmp == '.' || $tmp == "\n."){
                 return substr($data, 0, -2);
             }
@@ -1164,7 +1182,7 @@ echo "_checkResponse failed: ".$ret."\n";
             echo "C: $data\n";
         }
 
-        if (PEAR::isError($error = $this->_socket->writeLine($data))) {
+        if (self::isError($error = $this->_socket->writeLine($data))) {
             return $this->_raiseError('Failed to write to socket: ' . $error->getMessage());
         }
         return true;
@@ -1182,7 +1200,7 @@ echo "_checkResponse failed: ".$ret."\n";
     */
     function _recvLn()
     {
-        if (PEAR::isError($lastline = $this->_socket->readLine(8192))) {
+        if (self::isError($lastline = $this->_socket->readLine(8192))) {
             return $this->_raiseError('Failed to read from socket: ' . $this->lastline->getMessage());
         }
         if ($this->_debug) {
