@@ -1,0 +1,60 @@
+Return-Path: <root@ns313208.ovh.net>
+Delivered-To: tickets@combodo.com
+Received: from b0.ovh.net (HELO queue) (213.186.33.50)
+	by b0.ovh.net with SMTP; 23 Mar 2013 05:18:52 +0200
+Received: from localhost (HELO mail11.ha.ovh.net) (127.0.0.1)
+  by localhost with SMTP; 23 Mar 2013 05:18:52 +0200
+Received: from b0.ovh.net (HELO queueout) (213.186.33.50)
+	by b0.ovh.net with SMTP; 23 Mar 2013 05:18:51 +0200
+Delivered-To: combodo.com-support@combodo.com
+Received: from b0.ovh.net (HELO queue) (213.186.33.50)
+	by b0.ovh.net with SMTP; 23 Mar 2013 05:18:51 +0200
+Received: from ns313208.ovh.net (188.165.226.207)
+  by mx1.ovh.net with SMTP; 23 Mar 2013 05:18:49 +0200
+Received: from ns313208.ovh.net (localhost.localdomain [127.0.0.1])
+	by ns313208.ovh.net (8.14.3/8.14.3/Debian-9.1ubuntu1) with ESMTP id r2N3InnV024400
+	for <support@combodo.com>; Sat, 23 Mar 2013 04:18:49 +0100
+Received: (from root@localhost)
+	by ns313208.ovh.net (8.14.3/8.14.3/Submit) id r2N3InhX024399
+	for support@combodo.com; Sat, 23 Mar 2013 04:18:49 +0100
+Date: Sat, 23 Mar 2013 04:18:49 +0100
+From: root <root@ns313208.ovh.net>
+Message-Id: <201303230318.r2N3InhX024399@ns313208.ovh.net>
+To: support@combodo.com
+Subject: CRON-APT completed on ns313208.ovh.net [/etc/cron-apt/config]
+X-Ovh-Tracer-Id: 2240822290222810638
+X-Ovh-Remote: 188.165.226.207 (ns313208.ovh.net)
+X-Ovh-Local: 213.186.33.29 (mx1.ovh.net)
+X-OVH-SPAMSTATE: OK
+X-OVH-SPAMSCORE: 0
+X-OVH-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrfeeiuddrieehucetufdoteggodetrfcurfhrohhfihhlvgemucfqggfjnecuuegrihhlohhuthemuceftddtnecu
+X-Spam-Check: DONE|U 0.5/N
+
+CRON-APT RUN [/etc/cron-apt/config]: Sat Mar 23 04:00:01 CET 2013
+CRON-APT SLEEP: 1127, Sat Mar 23 04:18:48 CET 2013
+CRON-APT ACTION: 3-download
+CRON-APT LINE: /usr/bin/apt-get upgrade -u -y
+Reading package lists...
+Building dependency tree...
+Reading state information...
+The following packages have been kept back:
+  linux-image-generic
+0 upgraded, 0 newly installed, 0 to remove and 1 not upgraded.
+1 not fully installed or removed.
+After this operation, 0B of additional disk space will be used.
+Setting up mysql-server-5.1 (5.1.67-0ubuntu0.10.04.1) ...
+
+Configuration file `/etc/apparmor.d/usr.sbin.mysqld'
+ ==> Modified (by you or by a script) since installation.
+ ==> Package distributor has shipped an updated version.
+   What would you like to do about it ?  Your options are:
+    Y or I  : install the package maintainer's version
+    N or O  : keep your currently-installed version
+      D     : show the differences between the versions
+      Z     : background this process to examine the situation
+ The default action is to keep your current version.
+*** usr.sbin.mysqld (Y/I/N/O/D/Z) [default=N] ? dpkg: error processing mysql-server-5.1 (--configure):
+ EOF on stdin at conffile prompt
+Errors were encountered while processing:
+ mysql-server-5.1
+E: Sub-process /usr/bin/dpkg returned an error code (1)

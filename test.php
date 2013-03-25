@@ -68,7 +68,7 @@ $index = 0;
 $aErrors = array();
 $aWarnings = array();
 
-//foreach(array('email_111.eml', 'email_033.eml') as $sFile)
+//foreach(array('email_111.eml') as $sFile)
 //foreach(array('email_029.eml') as $sFile)
 //foreach(array('email_119.eml') as $sFile)
 //foreach(array('email_125.eml') as $sFile)
@@ -131,7 +131,7 @@ while($sFile = readdir($rDir))
 			{
 				echo "\tAttachment #$idx\n";
 				echo "\t\tName: {$aAttachment['filename']}\n";
-				echo "\t\tType: {$aAttachment['mimetype']}\n";
+				echo "\t\tType: {$aAttachment['mimeType']}\n";
 				echo "\t\tSize: ".strlen($aAttachment['content'])." bytes\n";
 				$idx++;
 			}

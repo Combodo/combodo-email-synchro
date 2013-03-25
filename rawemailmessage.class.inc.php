@@ -416,6 +416,11 @@ class RawEmailMessage
 			$aParsedParts['part_id'] = $this->iNextId++;
 			$aParsedParts['type'] = 'simple';
 			$aParsedParts['headers'] = $aHeaders;
+			if (!array_key_exists('content-type', $aParsedParts['headers']))
+			{
+				// The most simple type of part is plain text
+				$aParsedParts['headers']['content-type'] = 'text/plain';
+			}
 			$aParsedParts['body'] = $aBodyLines;
 		}
 		return $aParsedParts;
