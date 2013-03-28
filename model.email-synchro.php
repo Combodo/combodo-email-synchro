@@ -1016,7 +1016,7 @@ class EmailBackgroundProcess implements iBackgroundProcess
 	
 	public function GetPeriodicity()
 	{	
-		return 30; // seconds
+		return (int)MetaModel::GetModuleSetting('combodo-email-synchro', 'periodicity', 30); // seconds
 	}
 
 	public function ReportError($sSubject, $sMessage, $oRawEmail)

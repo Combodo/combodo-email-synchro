@@ -38,6 +38,7 @@ SetupWebPage::AddModule(
 		//
 		'settings' => array(
 			'debug' => false,  			// Set to true to turn on debugging
+			'periodicity' => 30,		// interval at which to check for incoming emails (in s)
 			'notify_errors_to' => '',  	// A valid email address to notify in case of error
 			'notify_errors_from' => '',	// A valid 'From' email address for sending the notifications
 			// Lines to be removed just above the 'new part' in a reply-to message... add your own patterns below
