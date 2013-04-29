@@ -82,7 +82,7 @@ class MessageFromMailbox extends RawEmailMessage
 		$sDecodeStatus = '';
 		$oRelatedObject = $this->GetRelatedObject();
 		
-		return new EmailMessage($this->sUIDL, $sMessageId, $sSubject, $sCallerEmail, $sCallerName, $sRecipient, $aReferences, $sThreadIndex, $sBodyText, $sBodyFormat, $aAttachments, $oRelatedObject, $sDecodeStatus);
+		return new EmailMessage($this->sUIDL, $sMessageId, $sSubject, $sCallerEmail, $sCallerName, $sRecipient, $aReferences, $sThreadIndex, $sBodyText, $sBodyFormat, $aAttachments, $oRelatedObject, $this->GetHeaders(), $sDecodeStatus);
 	}
 	
 	/**
@@ -364,9 +364,10 @@ class EmailMessage {
 	public $sBodyFormat;
 	public $aAttachments;
 	public $oRelatedObject;
-	public $sDecodeStatus;		
+	public $sDecodeStatus;
+	public $aHeaders;		
 	
-	public function __construct($sUIDL, $sMessageId, $sSubject, $sCallerEmail, $sCallerName, $sRecipient, $aReferences, $sThreadIndex, $sBodyText, $sBodyFormat, $aAttachments, $oRelatedObject, $sDecodeStatus)
+	public function __construct($sUIDL, $sMessageId, $sSubject, $sCallerEmail, $sCallerName, $sRecipient, $aReferences, $sThreadIndex, $sBodyText, $sBodyFormat, $aAttachments, $oRelatedObject, $aHeaders, $sDecodeStatus)
 	{
 		$this->sUIDL = $sUIDL;
 		$this->sMessageId = $sMessageId;
@@ -381,6 +382,7 @@ class EmailMessage {
 		$this->aAttachments = $aAttachments;
 		$this->oRelatedObject = $oRelatedObject;
 		$this->sDecodeStatus = $sDecodeStatus;		
+		$this->aHeaders = $aHeaders;		
 	}
 
 	/**
