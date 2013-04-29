@@ -271,6 +271,15 @@ class RawEmailMessage
 	}
 	
 	/**
+	 * Get all the headers of the message as a whole (note: header names are lower case'd)
+	 * @return hash The value of the headers as header_name => value
+	 */
+	public function GetHeaders()
+	{
+		return $aHeaders = $this->aHeaders;
+	}
+	
+	/**
 	 * Gets the full hierarchical structure of the message
 	 * @param hash null. Used for recursion
 	 * @return hash The wholme structure of the message except the 'body' piece of each part
