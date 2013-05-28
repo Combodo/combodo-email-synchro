@@ -21,6 +21,10 @@ SetupWebPage::AddModule(
 		//
 		'datamodel' => array(
 			'model.email-synchro.php',
+			'mailinbox.class.inc.php',
+			'emailprocessor.class.inc.php',
+			'emailbackgroundprocess.class.inc.php',
+			'trigger.class.inc.php',
 		),
 		'dictionary' => array(
 		),
@@ -39,8 +43,10 @@ SetupWebPage::AddModule(
 		'settings' => array(
 			'debug' => false,  			// Set to true to turn on debugging
 			'periodicity' => 30,		// interval at which to check for incoming emails (in s)
-			'notify_errors_to' => '',  	// A valid email address to notify in case of error
-			'notify_errors_from' => '',	// A valid 'From' email address for sending the notifications
+			'body_parts_order' => 'text/html,text/plain', // Order in which to read the parts of the incoming emails
+			'pop3_auth_option' => 'USER',
+			'imap_options' => array('imap'),
+			'exclude_attachment_types' => array('application/exe'), // Example: 'application/exe', 'application/x-winexe', 'application/msdos-windows'
 			// Lines to be removed just above the 'new part' in a reply-to message... add your own patterns below
 			'introductory-patterns' => array(
 				'/^le .+ a écrit :$/i', // Thunderbird French

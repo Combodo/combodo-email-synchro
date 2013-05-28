@@ -1,5 +1,5 @@
 <?php
-// Copyright (C) 2010-2012 Combodo SARL
+// Copyright (C) 2010-2013 Combodo SARL
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Lesser General Public License as published by
@@ -140,10 +140,10 @@ class MessageFromMailbox extends RawEmailMessage
   		$oEmail = new Email();
   		$oEmail->SetRecipientTO($sTo);
   		$oEmail->SetSubject($sSubject);
-  		$oEmail->SetBody($sTextMessage);
+  		$oEmail->SetBody($sTextMessage, 'text/html');
   		// Turn the original message into an attachment
   		$sAttachment = 	$this->sRawContent;
-  		$oEmail->AddAttachment($sAttachment, 'Original Message.eml', 'text/plain');
+  		$oEmail->AddAttachment($sAttachment, 'Original-Message.eml', 'text/plain'); // Using the appropriate MimeType (message/rfc822) causes troubles with Thunderbird
 
   		$aIssues = array();
   		$oEmail->SetRecipientFrom($sFrom);
@@ -498,10 +498,12 @@ abstract class EmailSource
 	protected $sLastErrorSubject;
 	protected $sLastErrorMessage;
 	protected $sPartsOrder;
+	protected $token;
 	
 	public function __construct()
 	{
 		$this->sPartsOrder = 'text/plain,text/html'; // Default value can be changed via SetPartsOrder
+		$this->token  =null;
 	}
 	
 	/**
@@ -550,7 +552,7 @@ abstract class EmailSource
 	{
 		$this->sPartsOrder = $sPartsOrder;
 	}
-		/**
+	/**
 	 * Preferred order for retrieving the mail "body" when scanning a multiparts emails
 	 * @return string A comma separated list of MIME types e.g. text/plain,text/html
 	 */
@@ -558,6 +560,22 @@ abstract class EmailSource
 	{
 		return $this->sPartsOrder;
 	}
+	/**
+	 * Set an opaque reference token for use by the caller...
+	 * @param mixed $token
+	 */
+ 	public function SetToken($token)
+ 	{
+ 		$this->token = $token;
+ 	}
+ 	/**
+ 	 * Get the reference token set earlier....
+ 	 * @return mixed The token set by SetToken()
+ 	 */
+ 	public function GetToken()
+ 	{
+ 		return $this->token;
+ 	}
 }
 
 ////////////////////////////////////////////////////////////////////
@@ -757,6 +775,13 @@ class POP3EmailSource extends EmailSource
 	 }
 }
 
+/**
+ * Read messages from an IMAP mailbox using PHP's IMAP extension
+ * Note: in theory PHP IMAP methods can also be used to connect to
+ *       a POP3 mailbox, but in practice the missing emulation of
+ *       actual unique identifiers (UIDLs) for the messages makes
+ *       this unusable for our particular purpose
+ */
 class IMAPEmailSource extends EmailSource
 {
 	protected $rImapConn = null;
@@ -863,349 +888,7 @@ class IMAPEmailSource extends EmailSource
 	 	$this->rImapConn = null; // Just to be sure
 	 }
 }
-///////////////////////////////////////////////////////////////////////////////////////
-
-abstract class EmailProcessor
-{
-	const NO_ACTION = 0;
-	const DELETE_MESSAGE = 1;
-	const PROCESS_MESSAGE = 2;
-	const PROCESS_ERROR = 3;
-	
-	abstract public function ListEmailSources();
-	
-	abstract public function DispatchMessage(EmailSource $oSource, $index, $sUIDL, $oEmailReplica = null);
-
-	abstract public function ProcessMessage(EmailSource $oSource, $index, EmailMessage $oEmail, $oEmailReplica = null);
-	
-	/**
-	 * Not used yet !!!
-	 */
-	abstract public function OnDecodeError(EmailSource $oSource, $index, EmailMessage $oEmail);
-	
-	/**
-	 * @var string To be set by ProcessMessage in case of error
-	 */
-	protected $sLastErrorSubject;
-	/**
-	 * @var string To be set by ProcessMessage in case of error
-	 */
-	protected $sLastErrorMessage;
-	 
-	/**
-	 * Returns the subject for the last error when process ProcessMessage returns PROCESS_ERROR
-	 * @return string The subject for the error message email
-	 */
-	public function GetLastErrorSubject()
-	{
-		return $this->sLastErrorSubject;
-	}
-	/**
-	 * Returns the body of the message for the last error when process ProcessMessage returns PROCESS_ERROR
-	 * @return string The body for the error message email
-	 */
-	public function GetLastErrorMessage()
-	{
-		return $this->sLastErrorMessage;
-	}
-}
-
-/////////////////////////////////////////////////////////////////////////////
-
-class TestEmailProcessor extends EmailProcessor
-{
-	public function ListEmailSources()
-	{
-//		return array( 0 => new IMAPEmailSource('ssl0.ovh.net', 993, 'tickets@combodo.com', 'c8mb0do', '', array('imap', 'ssl', 'novalidate-cert')));
-		return array( 0 => new TestEmailSource(dirname(__FILE__).'/log', 'test'));
-	}
-	
-	public function DispatchMessage(EmailSource $oSource, $index, $sUIDL, $oEmailReplica = null)
-	{
-		return EmailProcessor::PROCESS_MESSAGE;
-	}
-	
-	public function ProcessMessage(EmailSource $oSource, $index, EmailMessage $oEmail, $oEmailReplica = null)
-	{
-		$sMessage = "[$index] ".$oEmail->sMessageId.' - From: '.$oEmail->sCallerEmail.' ['.$oEmail->sCallerName.']'.' Subject: '.$oEmail->sSubject.' - '.count($oEmail->aAttachments).' attachment(s)';
-		if (empty($oEmail->sSubject))
-		{
-			$sMessage .= "\n=====================================\nERROR: Empty subject for the message.\n";
-		}
-		if (empty($oEmail->sBodyText))
-		{
-			$sMessage .= "\n=====================================\nERROR: Empty body for the message.\n";
-		}
-		else
-		{
-			$sMessage .= "\n=====================================\nFormat:{$oEmail->sBodyFormat} \n{$oEmail->sBodyText}\n============================================.\n";
-		}
-		$index = 0;
-		foreach($oEmail->aAttachments as $aAttachment)
-		{
-			$sMessage .= "\n\tAttachment #$index\n";
-			if (empty($aAttachment['mimeType']))
-			{
-				$sMessage .= "\n=====================================\nERROR: Empty mimeType for attachment #$index of the message.\n";
-			}
-			else
-			{
-				$sMessage .= "\t\tType: {$aAttachment['mimeType']}\n";
-			}
-			if (empty($aAttachment['filename']))
-			{
-				$sMessage .= "\n=====================================\nERROR: Empty filename for attachment #$index of the message.\n";
-			}
-			else
-			{
-				$sMessage .= "\t\tName: {$aAttachment['filename']}\n";
-			}
-			if (empty($aAttachment['content']))
-			{
-				$sMessage .= "\n=====================================\nERROR: Empty CONTENT for attachment #$index of the message.\n";
-			}
-			else
-			{
-				$sMessage .= "\t\tContent: ".strlen($aAttachment['content'])." bytes\n";
-			}
-			$index++;
-		}
-		if (!utils::IsModeCLI())
-		{
-			$sMessage = '<p>'.htmlentities($sMessage, ENT_QUOTES, 'UTF-8').'</p>';
-		}
-		echo $sMessage."\n";
-		return EmailProcessor::NO_ACTION;	
-	}
-	
-	public function OnDecodeError(EmailSource $oSource, $index, EmailMessage $oEmail)
-	{
-		
-	}
-}
-
-/////////////////////////////////////////////////////////////////////////////////////
-
-class EmailBackgroundProcess implements iBackgroundProcess
-{
-	protected static $aEmailProcessors = array();
-	protected static $sSaveErrorsTo = '';
-	protected static $sNotifyErrorsTo = '';
-	protected static $sNotifyErrorsFrom = '';
-	protected static $bMultiSourceMode = false;
-	protected $bDebug;
-	
-	static public function RegisterEmailProcessor($sClassName)
-	{
-		self::$aEmailProcessors[] = $sClassName;
-	}
-	
-	public function __construct()
-	{
-		$this->bDebug = MetaModel::GetModuleSetting('combodo-email-synchro', 'debug', false);
-		self::$sSaveErrorsTo = MetaModel::GetModuleSetting('combodo-email-synchro', 'save_errors_to', '');
-		self::$sNotifyErrorsTo = MetaModel::GetModuleSetting('combodo-email-synchro', 'notify_errors_to', '');
-		self::$sNotifyErrorsFrom = MetaModel::GetModuleSetting('combodo-email-synchro', 'notify_errors_from', '');
-	}
-
-	protected function Trace($sText)
-	{
-		if ($this->bDebug)
-		{
-			echo $sText."\n";
-		}
-	}
-	
-	public function GetPeriodicity()
-	{	
-		return (int)MetaModel::GetModuleSetting('combodo-email-synchro', 'periodicity', 30); // seconds
-	}
-
-	public function ReportError($sSubject, $sMessage, $oRawEmail)
-	{
-		if ( (self::$sNotifyErrorsTo != '') && (self::$sNotifyErrorsFrom != ''))
-		{
-			$oRawEmail->SendAsAttachment(self::$sNotifyErrorsTo, self::$sNotifyErrorsFrom, $sSubject, $sMessage);
-			//@mail(self::$sNotifyErrorsTo, $sSubject, $sMessage, 'From: '.self::$sNotifyErrorsFrom);
-		}
-	}
-	
-	/**
-	 * Call this function to set this mode to true if you want to
-	 * process several incoming mailboxes and if the mail server
-	 * does not assign unique UIDLs accross all mailboxes
-	 * For example with MS Exchange the UIDL is just a sequential
-	 * number 1,2,3... inside each mailbox.
-	 */
-	public static function SetMultiSourceMode($bMode = true)
-	{
-		self::$bMultiSourceMode = $bMode;
-	}
-	
-	public static function IsMultiSourceMode()
-	{
-		return self::$bMultiSourceMode;
-	}
-	
-	public function Process($iTimeLimit)
-	{
-		$iTotalMessages = 0;
-		$iTotalProcessed = 0;
-		$iTotalDeleted = 0;
-		foreach(self::$aEmailProcessors as $sProcessorClass)
-		{
-			$oProcessor = new $sProcessorClass();
-			$aSources = $oProcessor->ListEmailSources();
-			foreach($aSources as $oSource)
-			{
-				$iMsgCount = $oSource->GetMessagesCount();
-				$this->Trace("-----------------------------------------------------------------------------------------");			
-				$this->Trace("Processing Message Source: ".$oSource->GetName()." GetMessagesCount returned: $iMsgCount");			
-
-				if ($iMsgCount != 0)
-				{
-					$aMessages = $oSource->GetListing();
-					$iMsgCount = count($aMessages);
-
-					// Get the corresponding EmailReplica object for each message
-					$aUIDLs = array();
-					for($iMessage = 0; $iMessage < $iMsgCount; $iMessage++)
-					{
-						if (self::IsMultiSourceMode())
-						{
-							$aUIDLs[] = $oSource->GetName().'_'.$aMessages[$iMessage]['uidl'];
-						}
-						else
-						{
-							$aUIDLs[] = $aMessages[$iMessage]['uidl'];
-						}
-					}
-					$sOQL = 'SELECT EmailReplica WHERE uidl IN ('.implode(',', CMDBSource::Quote($aUIDLs)).')';
-					$this->Trace("Searching EmailReplicas: '$sOQL'");
-					$oReplicaSet = new DBObjectSet(DBObjectSearch::FromOQL($sOQL));
-					$aReplicas = array();
-					while($oReplica = $oReplicaSet->Fetch())
-					{
-						$aReplicas[$oReplica->Get('uidl')] = $oReplica;
-					}				 
-					for($iMessage = 0; $iMessage < $iMsgCount; $iMessage++)
-					{
-						$iTotalMessages++;
-						if (self::IsMultiSourceMode())
-						{
-							$sUIDL = $oSource->GetName().'_'.$aMessages[$iMessage]['uidl'];
-						}
-						else
-						{
-							$sUIDL = $aMessages[$iMessage]['uidl'];
-						}
-						
-						$oEmailReplica = array_key_exists($sUIDL, $aReplicas) ? $aReplicas[$sUIDL] : null;
-	
-						if ($oEmailReplica == null)
-						{
-							$this->Trace("\nDispatching new message: uidl=$sUIDL index=$iMessage");
-						}
-						else
-						{
-							$this->Trace("\nDispatching old (already read) message: uidl=$sUIDL index=$iMessage");
-							
-						}
-						
-						$iActionCode = $oProcessor->DispatchMessage($oSource, $iMessage, $sUIDL, $oEmailReplica);
-				
-						switch($iActionCode)
-						{
-							case EmailProcessor::DELETE_MESSAGE:
-							$iTotalDeleted++;
-							$this->Trace("Deleting message (and replica): uidl=$sUIDL index=$iMessage");
-							$oSource->DeleteMessage($iMessage);
-							if (is_object($oEmailReplica))
-							{
-								$oEmailReplica->DBDelete();
-							}
-							break;
-							
-							case EmailProcessor::PROCESS_MESSAGE:
-							$iTotalProcessed++;
-							if ($oEmailReplica == null)
-							{
-								$this->Trace("Processing new message: $sUIDL");
-							}
-							else
-							{
-								$this->Trace("Processing old (already read) message: $sUIDL");
-							}
-	
-	
-							$oRawEmail = $oSource->GetMessage($iMessage);
-							//$oRawEmail->SaveToFile(dirname(__FILE__)."/log/$sUIDL.eml"); // Uncomment the line to keep a local copy if needed
-							$oEmail = $oRawEmail->Decode($oSource->GetPartsOrder());
-							if (!$oEmail->IsValid())
-							{
-								$sSubject = "iTop ticket creation or update from mail FAILED";
-								$sMessage = "The message (".$sUIDL."), subject: '".$oEmail->sSubject."', was not decoded properly and therefore was not processed.\n";
-								$sMessage .= "The original message is attached to this message.\n";
-								$this->Trace($sMessage);
-								EmailBackgroundProcess::ReportError($sSubject, $sMessage, $oRawEmail);
-								$this->Trace("Deleting message (and replica): $sUIDL");
-								$oSource->DeleteMessage($iMessage);
-								if (is_object($oEmailReplica))
-								{
-									$oEmailReplica->DBDelete();
-								}
-							}
-							else
-							{
-								$iNextActionCode = $oProcessor->ProcessMessage($oSource, $iMessage, $oEmail, $oEmailReplica);
-								switch($iNextActionCode)
-								{
-									case EmailProcessor::DELETE_MESSAGE:
-									$iTotalDeleted++;
-									$this->Trace("Deleting message (and replica): $sUIDL");
-									$oSource->DeleteMessage($iMessage);
-									if (is_object($oEmailReplica))
-									{
-										$oEmailReplica->DBDelete();
-									}
-									break;
-									
-									case EmailProcessor::PROCESS_ERROR:
-									$sSubject = $oProcessor->GetLastErrorSubject();
-									$sMessage = $oProcessor->GetLastErrorMessage();
-									EmailBackgroundProcess::ReportError($sSubject, $sMessage, $oRawEmail);
-									$iTotalDeleted++;
-									$this->Trace("Deleting message (and replica): $sUIDL");
-									$oSource->DeleteMessage($iMessage);
-									if (is_object($oEmailReplica))
-									{
-										$oEmailReplica->DBDelete();
-									}
-									break;
-
-									default:
-									// Do nothing...
-								}
-							}
-							break;
-				
-							case EmailProcessor::NO_ACTION:
-							default:
-							// Do nothing
-							break;
-						}
-						if (time() > $iTimeLimit) break; // We'll do the rest later
-					}
-					if (time() > $iTimeLimit) break; // We'll do the rest later
-				}
-				$oSource->Disconnect();
-			}
-			if (time() > $iTimeLimit) break; // We'll do the rest later
-		}
-		return "Message(s) read: $iTotalMessages, message(s) processed: $iTotalProcessed, message(s) deleted: $iTotalDeleted";
-	}
-}
 
 // For testing: uncomment the line below to process test messages stored as files in the 'log' directory
 //EmailBackgroundProcess::RegisterEmailProcessor('TestEmailProcessor');
-?>
+
