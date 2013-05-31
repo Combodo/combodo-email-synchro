@@ -480,13 +480,32 @@ EOF
 				 		if ($oAttDef->IsExternalKey())
 				 		{
 				 			$bFound = false;
+				 			$iIntVal = (int)$value;
+				 			$bByKey = false;
+				 			if (is_numeric($value) && ($iIntVal == $value))
+				 			{
+				 				// A numeric value is supposed to be the object's key
+				 				$bByKey = true;
+				 			}
 				 			foreach($aValues as $id => $sName)
 				 			{
-				 				if (strcasecmp($sName,$value) == 0)
+								if ($bByKey)
+								{
+									if ($id === $iIntVal)
+									{
+					 					$bFound = true;
+					 					$oObj->Set($sAttCode, $id);
+					 					break;										
+									}
+								}
+				 				else
 				 				{
-				 					$bFound = true;
-				 					$oObj->Set($sAttCode, $id);
-				 					break;
+					 				if (strcasecmp($sName,$value) == 0)
+					 				{
+					 					$bFound = true;
+					 					$oObj->Set($sAttCode, $id);
+					 					break;
+					 				}
 				 				}
 				 			}
 				 		}
