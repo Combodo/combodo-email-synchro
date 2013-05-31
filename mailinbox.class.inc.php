@@ -27,6 +27,7 @@ abstract class MailInboxBase extends cmdbAbstractObject
 			"db_key_field" => "id",
 			"db_finalclass_field" => "realclass",
 			"display_template" => "",
+			'icon' => utils::GetAbsoluteUrlModulesRoot().basename(dirname(__FILE__)).'/images/mailbox.png',
 		);
 		MetaModel::Init_Params($aParams);
 		//MetaModel::Init_InheritAttributes();
