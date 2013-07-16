@@ -554,7 +554,7 @@ EOF
 		switch($sProtocol)
 		{
 			case 'imap':
-			$aImapOptions = MetaModel::GetModuleSetting('combodo-email-synchro', 'imap_options', array('pop3'));
+			$aImapOptions = MetaModel::GetModuleSetting('combodo-email-synchro', 'imap_options', array('imap'));
 			self::Trace("Protocol: $sProtocol Mail server: $sServer, port: $iPort, login: $sLogin, password: $sPwd, mailbox: $sMailbox, options: /".implode('/', $aImapOptions));
 			$oSource = new IMAPEmailSource($sServer, $iPort, $sLogin, $sPwd, $sMailbox, $aImapOptions);
 			break;
