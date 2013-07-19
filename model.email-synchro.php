@@ -377,7 +377,7 @@ class EmailMessage {
 		$this->sRecipient = $sRecipient;
 		$this->aReferences = $aReferences;
 		$this->sThreadIndex = $sThreadIndex;
-		$this->sBodyText = $sBodyText;
+		$this->sBodyText = @iconv("UTF-8", "UTF-8//IGNORE", $sBodyText); // Filter out NON UTF-8 characters
 		$this->sBodyFormat = $sBodyFormat;
 		$this->aAttachments = $aAttachments;
 		$this->oRelatedObject = $oRelatedObject;
