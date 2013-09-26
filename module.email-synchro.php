@@ -41,6 +41,8 @@ SetupWebPage::AddModule(
 		// Default settings
 		//
 		'settings' => array(
+			'notify_errors_to' => '', // mandatory to track errors not handled by the email processing module
+			'notify_errors_from' => '', // mandatory as well (can be set at the same value as notify_errors_to)
 			'debug' => false,  			// Set to true to turn on debugging
 			'periodicity' => 30,		// interval at which to check for incoming emails (in s)
 			'body_parts_order' => 'text/html,text/plain', // Order in which to read the parts of the incoming emails
