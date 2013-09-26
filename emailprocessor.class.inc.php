@@ -276,42 +276,53 @@ class MailInboxesEmailProcessor extends EmailProcessor
 	 */
 	public function ProcessMessage(EmailSource $oSource, $index, EmailMessage $oEmail, $oEmailReplica = null)
 	{
-		$oInbox = $this->GetInboxFromSource($oSource);
-		self::Trace("Combodo Email Synchro: Processing message $index ({$oEmail->sUIDL})");
-		if ($oEmailReplica == null)
-		{
-			$oTicket = $oInbox->ProcessNewEmail($oSource, $index, $oEmail);		
-			
-			if (is_object($oTicket))
+		try
+		{			
+			$oInbox = $this->GetInboxFromSource($oSource);
+			self::Trace("Combodo Email Synchro: Processing message $index ({$oEmail->sUIDL})");
+			if ($oEmailReplica == null)
 			{
-				// Create a replica to keep track that we've processed this email
-				$oEmailReplica = new EmailReplica();
-				if (EmailBackgroundProcess::IsMultiSourceMode())
-				{
+					$oTicket = $oInbox->ProcessNewEmail($oSource, $index, $oEmail);
+	
+					if (is_object($oTicket))
+					{
+						// Create a replica to keep track that we've processed this email
+						$oEmailReplica = new EmailReplica();
+						if (EmailBackgroundProcess::IsMultiSourceMode())
+						{
 					
-					$oEmailReplica->Set('uidl', $oSource->GetName().'_'.$oEmail->sUIDL);
-				}
-				else
-				{
-					$oEmailReplica->Set('uidl', $oEmail->sUIDL);	
-				}
-				$oEmailReplica->Set('message_id', $oEmail->sMessageId);
-				$oEmailReplica->Set('ticket_id', $oTicket->GetKey());
-				$oEmailReplica->DBInsert();
+							$oEmailReplica->Set('uidl', $oSource->GetName().'_'.$oEmail->sUIDL);
+						}
+						else
+						{
+							$oEmailReplica->Set('uidl', $oEmail->sUIDL);	
+						}
+						$oEmailReplica->Set('message_id', $oEmail->sMessageId);
+						$oEmailReplica->Set('ticket_id', $oTicket->GetKey());
+						$oEmailReplica->DBInsert();
+					}
+					else
+					{
+						// Error ???
+						self::Trace("Combodo Email Synchro: Failed to create a ticket for the incoming email $index ({$oEmail->sUIDL})");
+					}	
 			}
 			else
 			{
-				// Error ???
-				self::Trace("Combodo Email Synchro: Failed to create a ticket for the incoming email $index ({$oEmail->sUIDL})");
-			}	
+
+					$oInbox->ReprocessOldEmail($oSource, $index, $oEmail, $oEmailReplica);		
+			}
+			$iRetCode = $oInbox->GetNextAction();
+			$sRetCode = $this->GetMessageFromCode($iRetCode);
+			self::Trace("Combodo Email Synchro: End of processing of the new message $index ({$oEmail->sUIDL}) retCode: ".$sRetCode);
 		}
-		else
+		catch(Exception $e)
 		{
-			$oInbox->ReprocessOldEmail($oSource, $index, $oEmail, $oEmailReplica);		
+			$iRetCode = EmailProcessor::PROCESS_ERROR;
+			$this->sLastErrorSubject = "Failed to process email $index ({$oEmail->sUIDL})";
+			$this->sLastErrorMessage = "Email Synchro: Failed to create a ticket for the incoming email $index ({$oEmail->sUIDL}), reason: exception: ".$e->getMessage();
+			self::Trace("Combodo Email Synchro: Failed to create a ticket for the incoming email $index ({$oEmail->sUIDL}), reason: exception: ".$e->getMessage());
 		}
-		$iRetCode = $oInbox->GetNextAction();
-		$sRetCode = $this->GetMessageFromCode($iRetCode);
-		self::Trace("Combodo Email Synchro: End of processing of the new message $index ({$oEmail->sUIDL}) retCode: ".$sRetCode);
 
 		return $iRetCode;
 	}
