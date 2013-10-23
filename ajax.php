@@ -45,13 +45,19 @@ try
 	{
 		case 'mailbox_content':
 		$oInbox = MetaModel::GetObject('MailInboxBase', $iMailInboxId, false);
+		$iMailInboxId = utils::ReadParam('id', 0, false, 'raw_data');
 		if(is_object($oInbox))
 		{
+			$iStartIndex = utils::ReadParam('start', 0);
+			$iMaxCount = utils::ReadParam('count', 10);
 			$iMsgCount = 0;
 			try
 			{
 				$oSource = $oInbox->GetEmailSource();
-				$iMsgCount = $oSource->GetMessagesCount();
+				$iTotalMsgCount = $oSource->GetMessagesCount();
+				$iStart = min($iStartIndex, $iTotalMsgCount);
+				$iEnd = min($iStart + $iMaxCount, $iTotalMsgCount);
+				$iMsgCount = $iEnd - $iStart;
 				$aMessages = $oSource->GetListing();
 			}
 			catch(Exception $e)
@@ -64,7 +70,7 @@ try
 			{
 				// Get the corresponding EmailReplica object for each message
 				$aUIDLs = array();
-				for($iMessage = 0; $iMessage < $iMsgCount; $iMessage++)
+				for($iMessage = 0; $iMessage < $iTotalMsgCount; $iMessage++)
 				{
 					// Assume that EmailBackgroundProcess::IsMultiSourceMode() is always set to true
 					$aUIDLs[] = $oSource->GetName().'_'.$aMessages[$iMessage]['uidl'];
@@ -87,7 +93,7 @@ try
 				);
 
 				$aData = array();
-				for($iMessage = 0; $iMessage < $iMsgCount; $iMessage++)
+				for($iMessage = $iStart; $iMessage < $iStart+$iMsgCount; $iMessage++)
 				{
 					$oRawEmail = $oSource->GetMessage($iMessage);
 					$oEmail = $oRawEmail->Decode($oSource->GetPartsOrder());
@@ -106,7 +112,7 @@ try
 					}
 					$aData[] = array('status' => $sNew, 'from' => $oEmail->sCallerEmail, 'subject' => $oEmail->sSubject, 'ticket' => $sLink);
 				}
-				$oPage->p(Dict::Format('MailInbox:ThereAre_X_Msg_Y_NewInTheMailbox', $iMsgCount, ($iMsgCount - $iProcessedCount)));					
+				$oPage->p(Dict::Format('MailInbox:Z_DisplayedThereAre_X_Msg_Y_NewInTheMailbox', $iMsgCount, $iTotalMsgCount, ($iTotalMsgCount - $iProcessedCount)));					
 				$oPage->table($aTableConfig, $aData);
 			}
 			else

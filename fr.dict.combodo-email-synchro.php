@@ -34,7 +34,7 @@ Dict::Add('FR FR', 'French', 'Français', array(
 
 	'MailInbox:MailboxContent' => 'Contenu de la boîte mail',
 	'MailInbox:EmptyMailbox' => 'La boîte mail est vide.',
-	'MailInbox:ThereAre_X_Msg_Y_NewInTheMailbox' => 'Il y a %d eMail(s) dans la boîte (dont %d nouveaux).',
+	'MailInbox:Z_DisplayedThereAre_X_Msg_Y_NewInTheMailbox' => '%1$d eMails affichés. Il y a au total %2$d eMail(s) dans la boîte (dont %3$d nouveaux).',
 	'MailInbox:Status' => 'Etat',
 	'MailInbox:Subject' => 'Objet',
 	'MailInbox:From' => 'De',
@@ -44,5 +44,5 @@ Dict::Add('FR FR', 'French', 'Français', array(
 
 	'MailInbox:Login/ServerMustBeUnique' => 'La combinaison Identifiant (%1$s) et Serveur (%2$s) est déjà utilisée par une Boîte Mail.',
 	'MailInbox:Login/Server/MailboxMustBeUnique' => 'La combinaison Identifiant (%1$s), Serveur (%2$s) et boîte mail (%3$s) est déjà utilisée par une Boîte Mail.',
-
+	'MailInbox:Display_X_eMailsStartingFrom_Y' => 'Afficher %1$s eMail(s), à partir du numéro %2$s',
 ));

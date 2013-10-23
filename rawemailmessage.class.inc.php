@@ -80,6 +80,24 @@ class RawEmailMessage
 	}
 	
 	/**
+	 * Get the raw size of the message (in bytes)
+	 * @return int The size of the message
+	 */
+	public function GetSize()
+	{
+		return strlen($this->sRawContent);
+	}
+	
+	/**
+	 * Get the raw content of the message
+	 * @return string The raw content of the message
+	 */
+	public function GetRawContent()
+	{
+		return $this->sRawContent;
+	}
+	
+	/**
 	 * Retrieves the address(es) from the originator of the message... tries: From, Sender and Reply-To
 	 * @return array An array of ('email' => email_address, 'name' => display_name) one per 'sender'
 	 */

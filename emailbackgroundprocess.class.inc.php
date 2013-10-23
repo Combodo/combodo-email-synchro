@@ -11,6 +11,7 @@ class EmailBackgroundProcess implements iBackgroundProcess
 	protected static $sNotifyErrorsTo = '';
 	protected static $sNotifyErrorsFrom = '';
 	protected static $bMultiSourceMode = false;
+	public static $iMaxEmailSize = 0;
 	protected $bDebug;
 	
 	/**
@@ -28,6 +29,8 @@ class EmailBackgroundProcess implements iBackgroundProcess
 		self::$sSaveErrorsTo = MetaModel::GetModuleSetting('combodo-email-synchro', 'save_errors_to', '');
 		self::$sNotifyErrorsTo = MetaModel::GetModuleSetting('combodo-email-synchro', 'notify_errors_to', '');
 		self::$sNotifyErrorsFrom = MetaModel::GetModuleSetting('combodo-email-synchro', 'notify_errors_from', '');
+		$sMaxEmailSize = MetaModel::GetModuleSetting('combodo-email-synchro', 'maximum_email_size', '0');
+		self::$iMaxEmailSize = utils::ConvertToBytes($sMaxEmailSize);
 	}
 
 	protected function Trace($sText)
@@ -162,47 +165,60 @@ class EmailBackgroundProcess implements iBackgroundProcess
 	
 							$oRawEmail = $oSource->GetMessage($iMessage);
 							//$oRawEmail->SaveToFile(dirname(__FILE__)."/log/$sUIDL.eml"); // Uncomment the line to keep a local copy if needed
-							$oEmail = $oRawEmail->Decode($oSource->GetPartsOrder());
-							if (!$oEmail->IsValid())
+							if ((self::$iMaxEmailSize > 0) && ($oRawEmail->GetSize() > self::$iMaxEmailSize))
 							{
-								$oProcessor->OnDecodeError($oSource, $sUIDL, $oEmail, $oRawEmail);
-								$this->Trace("Deleting message (and replica): $sUIDL");
+								$oProcessor->OnDecodeError($oSource, $sUIDL, null, $oRawEmail);
+								$this->Trace("Email too big, deleting message (and replica): $sUIDL");
 								$oSource->DeleteMessage($iMessage);
 								if (is_object($oEmailReplica))
 								{
 									$oEmailReplica->DBDelete();
-								}
+								}								
 							}
 							else
 							{
-								$iNextActionCode = $oProcessor->ProcessMessage($oSource, $iMessage, $oEmail, $oEmailReplica);
-								switch($iNextActionCode)
+								$oEmail = $oRawEmail->Decode($oSource->GetPartsOrder());
+								if (!$oEmail->IsValid())
 								{
-									case EmailProcessor::DELETE_MESSAGE:
-									$iTotalDeleted++;
+									$oProcessor->OnDecodeError($oSource, $sUIDL, $oEmail, $oRawEmail);
 									$this->Trace("Deleting message (and replica): $sUIDL");
 									$oSource->DeleteMessage($iMessage);
 									if (is_object($oEmailReplica))
 									{
 										$oEmailReplica->DBDelete();
 									}
-									break;
-									
-									case EmailProcessor::PROCESS_ERROR:
-									$sSubject = $oProcessor->GetLastErrorSubject();
-									$sMessage = $oProcessor->GetLastErrorMessage();
-									EmailBackgroundProcess::ReportError($sSubject, $sMessage, $oRawEmail);
-									$iTotalDeleted++;
-									$this->Trace("Deleting message (and replica): $sUIDL");
-									$oSource->DeleteMessage($iMessage);
-									if (is_object($oEmailReplica))
+								}
+								else
+								{
+									$iNextActionCode = $oProcessor->ProcessMessage($oSource, $iMessage, $oEmail, $oEmailReplica);
+									switch($iNextActionCode)
 									{
-										$oEmailReplica->DBDelete();
+										case EmailProcessor::DELETE_MESSAGE:
+										$iTotalDeleted++;
+										$this->Trace("Deleting message (and replica): $sUIDL");
+										$oSource->DeleteMessage($iMessage);
+										if (is_object($oEmailReplica))
+										{
+											$oEmailReplica->DBDelete();
+										}
+										break;
+										
+										case EmailProcessor::PROCESS_ERROR:
+										$sSubject = $oProcessor->GetLastErrorSubject();
+										$sMessage = $oProcessor->GetLastErrorMessage();
+										EmailBackgroundProcess::ReportError($sSubject, $sMessage, $oRawEmail);
+										$iTotalDeleted++;
+										$this->Trace("Deleting message (and replica): $sUIDL");
+										$oSource->DeleteMessage($iMessage);
+										if (is_object($oEmailReplica))
+										{
+											$oEmailReplica->DBDelete();
+										}
+										break;
+	
+										default:
+										// Do nothing...
 									}
-									break;
-
-									default:
-									// Do nothing...
 								}
 							}
 							break;
@@ -223,3 +239,5 @@ class EmailBackgroundProcess implements iBackgroundProcess
 		return "Message(s) read: $iTotalMessages, message(s) processed: $iTotalProcessed, message(s) deleted: $iTotalDeleted";
 	}
 }
+
+//EmailBackgroundProcess::RegisterEmailProcessor('TestEmailProcessor');

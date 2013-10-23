@@ -19,11 +19,17 @@ abstract class EmailProcessor
 	
 	/**
 	 * Called, before deleting the message from the source when the decoding fails
+	 * $oEmail can be null
 	 */
-	public function OnDecodeError(EmailSource $oSource, $sUIDL, EmailMessage $oEmail, RawEmailMessage $oRawEmail)
+	public function OnDecodeError(EmailSource $oSource, $sUIDL, $oEmail, RawEmailMessage $oRawEmail)
 	{
 		$sSubject = "iTop ticket creation or update from mail FAILED";
-		$sMessage = "The message (".$sUIDL."), subject: '".$oEmail->sSubject."', was not decoded properly and therefore was not processed.\n";
+		$sEMailSubject = '';
+		if ($oEmail != null)
+		{
+			$sEMailSubject = $oEmail->sSubject;
+		}
+		$sMessage = "The message (".$sUIDL."), subject: '$sEMailSubject', was not decoded properly and therefore was not processed.\n";
 		$sMessage .= "The original message is attached to this message.\n";
 		$this->Trace($sMessage);
 		EmailBackgroundProcess::ReportError($sSubject, $sMessage, $oRawEmail);		
@@ -89,7 +95,8 @@ class TestEmailProcessor extends EmailProcessor
 		}
 		else
 		{
-			$sMessage .= "\n=====================================\nFormat:{$oEmail->sBodyFormat} \n{$oEmail->sBodyText}\n============================================.\n";
+			$sNewPart = $oEmail->GetNewPart();
+			$sMessage .= "\n=====================================\nFormat:{$oEmail->sBodyFormat} \nNewpart:\n{$sNewPart}\n============================================.\n";
 		}
 		$index = 0;
 		foreach($oEmail->aAttachments as $aAttachment)
@@ -329,8 +336,9 @@ class MailInboxesEmailProcessor extends EmailProcessor
 	
 	/**
 	 * Called, before deleting the message from the source when the decoding fails
+	 * $oEmail can be null
 	 */
-	public function OnDecodeError(EmailSource $oSource, $sUIDL, EmailMessage $oEmail, RawEmailMessage $oRawEmail)
+	public function OnDecodeError(EmailSource $oSource, $sUIDL, $oEmail, RawEmailMessage $oRawEmail)
 	{
 		$oInbox = $this->GetInboxFromSource($oSource);
 		self::Trace("Combodo Email Synchro: failed to decode the message ($sUIDL})");

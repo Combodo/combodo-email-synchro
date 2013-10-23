@@ -444,9 +444,21 @@ class EmailMessage {
 	{
 		$aIntroductoryPatterns = MetaModel::GetModuleSetting('combodo-email-synchro', 'introductory-patterns',
 			array(
+				'/^De : .+$/', // Outlook French
 				'/^le .+ a écrit :$/i', // Thunderbird French
 				'/^on .+ wrote:$/i', // Thunderbird English
 				'|^[0-9]{4}/[0-9]{1,2}/[0-9]{1,2} .+:$|', // Gmail style
+			)
+		);
+		$aGlobalDelimiterPatterns = MetaModel::GetModuleSetting('combodo-email-synchro', 'multiline-delimiter-patterns',
+			array(
+				"/\RFrom: .+\RSent: .+\R/m",
+				"/\RDe : .+\REnvoyé : .+\R/m",
+			)
+		);
+		$aDelimiterPatterns = MetaModel::GetModuleSetting('combodo-email-synchro', 'delimiter-patterns',
+			array(
+				'/^>.*$/' => false, // Old fashioned mail clients: continue processing the lines, each of them is preceded by >
 			)
 		);
 		
@@ -460,32 +472,60 @@ class EmailMessage {
 			// In plain text mode, exclude all lines starting with >
 			$aLines = explode("\n", $this->sBodyText);
 			$sPrevLine = '';
-			foreach($aLines as $index => $sLine)
+			$bGlobalPattern = false;
+			foreach($aGlobalDelimiterPatterns as $sPattern)
 			{
-				$sLine = trim($sLine);
-				if (substr($sLine,0,1) == '>')
+				if (preg_match($sPattern, $this->sBodyText, $aMatches, PREG_OFFSET_CAPTURE))
 				{
-					// Check if the line above contains one of the introductory pattern
-					// like: On 10/09/2010 john.doe@test.com wrote:
-					if (($index > 0) && isset($aLines[$index-1]))
-					{
-						$sPrevLine = trim($aLines[$index-1]);
-						foreach($aIntroductoryPatterns as $sPattern)
-						{
-							if (preg_match($sPattern, trim($sPrevLine)))
-							{
-								// remove the introductory line
-								unset($aLines[$index-1]);
-								break;
-							}
-						}
-					}
-					unset($aLines[$index]);
+					$sNewText = substr($this->sBodyText, 0, $aMatches[0][1]);
+					$bGlobalPattern = true;
+					break;
 				}
 			}
-			$sNewText = trim(implode("\n", $aLines));
+			if (!$bGlobalPattern)
+			{
+				$aKeptLines = array();
+				foreach($aLines as $index => $sLine)
+				{
+					$sLine = trim($sLine);
+					$bStopNow = $this->IsNewPartLine($sLine, $aDelimiterPatterns);
+					if ($bStopNow !== null)
+					{
+						// Check if the line above contains one of the introductory pattern
+						// like: On 10/09/2010 john.doe@test.com wrote:
+						if (($index > 0) && isset($aLines[$index-1]))
+						{
+							$sPrevLine = trim($aLines[$index-1]);
+							foreach($aIntroductoryPatterns as $sPattern)
+							{
+								if (preg_match($sPattern, trim($sPrevLine)))
+								{
+									// remove the introductory line
+									unset($aKeptLines[$index-1]);
+									break;
+								}
+							}
+						}
+						if ($bStopNow === true)
+						{
+							break;
+						}
+					}
+					$aKeptLines[] = $sLine;
+				}
+				$sNewText = trim(implode("\n", $aKeptLines));
+			}
 		}
 		return $sNewText;
+	}
+	
+	protected function IsNewPartLine($sLine, $aDelimiterPatterns)
+	{
+		foreach($aDelimiterPatterns as $sPattern => $bStopNow)
+		{
+			if (preg_match($sPattern, $sLine)) return $bStopNow;
+		}
+		return null;
 	}
 }
 
@@ -591,6 +631,8 @@ class TestEmailSource extends EmailSource
 	public function __construct($sSourceDir, $sName)
 	{
 		parent::__construct();
+		//$this->sPartsOrder = 'text/html,text/plain'; // Default value can be changed via SetPartsOrder
+		
 		$this->sLastErrorSubject = '';
 		$this->sLastErrorMessage = '';
 		$this->sSourceDir = $sSourceDir;

@@ -48,6 +48,8 @@ SetupWebPage::AddModule(
 			'body_parts_order' => 'text/html,text/plain', // Order in which to read the parts of the incoming emails
 			'pop3_auth_option' => 'USER',
 			'imap_options' => array('imap'),
+			'maximum_email_size' => '10M', // Maximum allowed size for incoming emails
+			'big_files_dir' => '',
 			'exclude_attachment_types' => array('application/exe'), // Example: 'application/exe', 'application/x-winexe', 'application/msdos-windows'
 			// Lines to be removed just above the 'new part' in a reply-to message... add your own patterns below
 			'introductory-patterns' => array(
@@ -55,6 +57,13 @@ SetupWebPage::AddModule(
 				'/^on .+ wrote:$/i', // Thunderbird English
 				'|^[0-9]{4}/[0-9]{1,2}/[0-9]{1,2} .+:$|', // Gmail style
 			),
+			// Patterns which delimit the previous message in case of a Reply
+			// The "new" part of the message is the text before the pattern
+			// Add your own multi-line patterns (use \R for a line break)
+			'multiline-delimiter-patterns' => array(
+				"/\RFrom: .+\RSent: .+\R/m", 		// Outlook English
+				"/\RDe : .+\REnvoyé : .+\R/m",		// Outlook French
+			)
 		),
 	)
 );

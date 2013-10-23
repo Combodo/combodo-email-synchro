@@ -13,6 +13,8 @@ abstract class MailInboxBase extends cmdbAbstractObject
 {
 	protected static $aExcludeAttachments = null; // list of attachment types (MimeTypes) that should not be attached to a ticket
 	protected $iNextAction;
+	protected $iMaxAttachmentSize;
+	protected $sBigFilesDir;
 	
 	public static function Init()
 	{
@@ -44,6 +46,14 @@ abstract class MailInboxBase extends cmdbAbstractObject
 		MetaModel::Init_SetZListItems('list', array('server', 'mailbox','protocol')); // Attributes to be displayed for a list
 	}
 	
+	public function __construct($aRow = null, $sClassAlias = '', $aAttToLoad = null, $aExtendedDataSpec = null)
+	{
+		parent::__construct($aRow, $sClassAlias, $aAttToLoad, $aExtendedDataSpec);
+		$aData = CMDBSource::QueryToArray('SELECT @@global.max_allowed_packet');
+		$this->iMaxAttachmentSize = (int)$aData[0]['@@global.max_allowed_packet'] - 500; // Keep some room for the rest of the SQL query
+		$this->sBigFilesDir = MetaModel::GetModuleSetting('combodo-email-synchro', 'big_files_dir', '');
+	}
+	
 	/**
 	 * Add an extra tab showing the content of the mailbox...
 	 * @see cmdbAbstractObject::DisplayBareRelations()
@@ -54,7 +64,8 @@ abstract class MailInboxBase extends cmdbAbstractObject
 		if (!$bEditMode)
 		{
 			$oPage->SetCurrentTab(Dict::S('MailInbox:MailboxContent'));
-			$oPage->add('<p><button type="button" id="mailbox_content_refresh">'.Dict::S(Dict::S('UI:Button:Refresh')).'</button></p>');
+			$sForm = Dict::Format('MailInbox:Display_X_eMailsStartingFrom_Y', '<input type="text" size="3" id="mailbox_count" value="10"/>', '<input type="text" size="3" id="mailbox_start_index" value="0"/>');
+			$oPage->add('<p><form onsubmit="return false;">'.$sForm.'&nbsp;<button type="submit" id="mailbox_content_refresh">'.Dict::S(Dict::S('UI:Button:Refresh')).'</button></form></p>');
 			$oPage->add('<div id="mailbox_content_output"></div>');
 			$sAjaxUrl = addslashes(utils::GetAbsoluteUrlModulesRoot().basename(dirname(__FILE__)).'/ajax.php');
 			$iId = $this->GetKey();
@@ -62,10 +73,15 @@ abstract class MailInboxBase extends cmdbAbstractObject
 <<<EOF
 $('#mailbox_content_refresh').click(function() {
 	$('#mailbox_content_output').html('<img src="../images/indicator.gif"/>');
-	$.post('$sAjaxUrl', {operation: 'mailbox_content', id: $iId }, function(data) {
+	var iStart = $('#mailbox_start_index').val();
+	var iCount = $('#mailbox_count').val();
+	$('#mailbox_content_refresh').attr('disabled', 'disabled');
+	$.post('$sAjaxUrl', {operation: 'mailbox_content', id: $iId, start: iStart, count: iCount }, function(data) {
 		$('#mailbox_content_output').html(data);
+		$('#mailbox_content_refresh').removeAttr('disabled');
 		$("#mailbox_content_output .listResults").tablesorter( { widgets: ['myZebra']} ); // sortable and zebra tables
 	});
+	return false;
 });
 $('#mailbox_content_refresh').trigger('click');
 EOF
@@ -273,12 +289,13 @@ EOF
 	
 	/**
 	 * Error handler... what to do in case of error ??
-	 * @param EmailMessage $oEmail
+	 * @param EmailMessage $oEmail can be null in case of decoding error (like message too big)
 	 * @param string $sErrorCode
 	 * @param RawEmailMessage $oRawEmail In case decoding failed or null
+	 * @param string $sAdditionalErrorMessage More information about the error (optional)
 	 * @return int Next action: action code of the next action to execute
 	 */
-	public function HandleError(EmailMessage $oEmail, $sErrorCode, $oRawEmail = null)
+	public function HandleError($oEmail, $sErrorCode, $oRawEmail = null, $sAdditionalErrorMessage = '')
 	{
 		$this->SetNextAction(EmailProcessor::NO_ACTION); // Ignore faulty emails
 	}
@@ -297,6 +314,7 @@ EOF
 	{
 		// Process attachments (if any)
 		$aPreviousAttachments = array();
+		$aRejectedAttachments = array();
 		if ($bNoDuplicates)
 		{
 			$sOQL = "SELECT Attachment WHERE item_class = :class AND item_id = :id";
@@ -327,40 +345,50 @@ EOF
 				{
 					// Check if an attachment with the same name/type/size/md5 already exists
 					$iSize = strlen($aAttachment['content']);
-					$sMd5 = md5($aAttachment['content']);
-					foreach($aPreviousAttachments as $aPrevious)
+					if ($iSize > $this->iMaxAttachmentSize)
 					{
-						if (($aAttachment['filename'] == $aPrevious['filename']) &&
-						    ($aAttachment['mimeType'] == $aPrevious['mimeType']) &&
-						    ($iSize == $aPrevious['size']) &&
-						    ($sMd5 == $aPrevious['md5']) )
+						// The attachment is too big, reject it, and replace it by a text message, explaining what happened
+						$aAttachment = $this->RejectBigAttachment($aAttachment, $oTicket);
+						$aRejectedAttachments[] = $aAttachment['content'];
+						MailInboxesEmailProcessor::Trace("Info: ".$aAttachment['content']);
+					}
+					else
+					{
+						$sMd5 = md5($aAttachment['content']);
+						foreach($aPreviousAttachments as $aPrevious)
 						{
-							// Skip this attachment
-							MailInboxesEmailProcessor::Trace("Info: Attachment {$aAttachment['filename']} skipped, already attached to the ticket.");
-							$bIgnoreAttachment = true;
-							break;
+							if (($aAttachment['filename'] == $aPrevious['filename']) &&
+							    ($aAttachment['mimeType'] == $aPrevious['mimeType']) &&
+							    ($iSize == $aPrevious['size']) &&
+							    ($sMd5 == $aPrevious['md5']) )
+							{
+								// Skip this attachment
+								MailInboxesEmailProcessor::Trace("Info: Attachment {$aAttachment['filename']} skipped, already attached to the ticket.");
+								$bIgnoreAttachment = true;
+								break;
+							}
+							
+							// Remember this attachment to avoid adding it twice (in case it is contained two times in the message)
+							$aPreviousAttachments[] = array(
+								'filename' => $aAttachment['filename'],
+								'mimeType' => $aAttachment['mimeType'],
+								'size' => $iSize,
+								'md5' => $sMd5,
+							);
 						}
-						
-						// Remember this attachment to avoid adding it twice (in case it is contained two times in the message)
-						$aPreviousAttachments[] = array(
-							'filename' => $aAttachment['filename'],
-							'mimeType' => $aAttachment['mimeType'],
-							'size' => $iSize,
-							'md5' => $sMd5,
-						);
 					}
 				}
 				if ($this->ContainsViruses($aAttachment))
 				{
 					// Skip this attachment
 					MailInboxesEmailProcessor::Trace("Info: Attachment {$aAttachment['filename']} is reported as containing a virus, skipped.");
+					$aRejectedAttachments[] = "Attachment {$aAttachment['filename']} was reported as containing a virus, it has been skipped.";
 					$bIgnoreAttachment = true;
 				}
 				if (!$bIgnoreAttachment)
 				{
 					$oAttachment = new Attachment;
-					$oAttachment->Set('item_class', get_class($oTicket));
-					$oAttachment->Set('item_id', $oTicket->GetKey());
+					$oAttachment->SetItem($oTicket);
 					$oBlob = new ormDocument($aAttachment['content'], $aAttachment['mimeType'], $aAttachment['filename']);
 					$oAttachment->Set('contents', $oBlob);
 					$oAttachment->DBInsert();
@@ -377,6 +405,11 @@ EOF
 			{
 				MailInboxesEmailProcessor::Trace("Info: The attachment {$aAttachment['filename']} was NOT added to the ticket because its type '{$aAttachment['mimeType']}' is excluded according to the configuration");
 			}
+		}
+		if (count($aRejectedAttachments) > 0)
+		{
+			// Report the problem to the administrator...
+			$this->HandleError($oEmail, 'rejected_attachments', null, implode("\n", $aRejectedAttachments));
 		}
 	}
 	
@@ -425,6 +458,58 @@ EOF
 		MailInboxesEmailProcessor::Trace($sText);
 	}
 	
+	/**
+	 * Truncates the text, if needed, to fit into the given the maximum length and:
+	 * 1) Takes care of replacing line endings by \r\n since the browser produces this kind of line endings inside a TEXTAREA
+	 * 2) Trims the result to emulate the behavior of iTop's inputs
+	 * @param string $sInputText
+	 * @param int $iMaxLength
+	 * @return string The fitted text
+	 */
+	protected function FitTextIn($sInputText, $iMaxLength)
+	{
+		$sInputText = trim($sInputText);
+		$sInputText = str_replace("\r\n", "\r", $sInputText);
+		$sInputText = str_replace("\n", "\r", $sInputText);
+		$sInputText = str_replace("\r", "\r\n", $sInputText);
+		if (strlen($sInputText) > $iMaxLength)
+		{
+			$sInputText = trim(substr($sInputText, 0, $iMaxLength-3)).'...';
+		}
+		return $sInputText;
+	}
+	
+	protected function RejectBigAttachment($aAttachment, $oObj)
+	{
+		$sMessage = "The attachment {$aAttachment['filename']} (".strlen($aAttachment['content'])." bytes) is bigger than the maximum possible size ({$this->iMaxAttachmentSize}).";
+		if ($this->sBigFilesDir == '')
+		{
+			$sMessage .= "The attachment was deleted. In order to keep such attachments in the future, contact your administrator to:\n";
+			$sMessage .= "- either increase the 'max_allowed_packet' size in the configuration of the MySQL server to be able to store them in iTop\n";
+			$sMessage .= "- or configure the parameter 'big_files_dir' in the iTop configuration file, so that such attachments can be kept on the web server.\n";
+		}
+		else if (!is_writable($this->sBigFilesDir))
+		{
+			$sMessage .= "The attachment was deleted, since the directory where to save such files on the web server ({$this->sBigFilesDir}) is NOT writable to iTop.\n";
+		}
+		else
+		{
+			$sExtension = '.'.pathinfo($aAttachment['filename'], PATHINFO_EXTENSION);
+			$idx = 1;
+			$sFileName = 'attachment_'.(get_class($oObj)).'_'.($oObj->GetKey()).'_';
+			$hFile = false;
+			while(($hFile = fopen($this->sBigFilesDir.'/'.$sFileName.$idx.$sExtension, 'x')) === false)
+			{
+				$idx++;
+			}
+			fwrite($hFile, $aAttachment['content']);
+			fclose($hFile);
+			$sMessage .= "The attachment was saved as '{$sFileName}{$idx}{$sExtension}' on the web server in the directory '{$this->sBigFilesDir}'.\n";
+			$sMessage .= "In order to get such attachments into iTop, increase the 'max_allowed_packet' size in the configuration of the MySQL server.\n";
+		}
+		$aReplacement = array('content' => $sMessage, 'mimeType' => 'text/plain', 'filename' => 'warning.txt');
+		return $aReplacement;
+	}
 	/**
 	 * Initializes an object from default values
 	 * Each default value must be a valid value for the given field
