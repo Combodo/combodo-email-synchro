@@ -488,7 +488,7 @@ class EmailMessage {
 				foreach($aLines as $index => $sLine)
 				{
 					$sLine = trim($sLine);
-					$bStopNow = $this->IsNewPartLine($sLine, $aDelimiterPatterns);
+					$bStopNow = $this->IsNewPartLine($sLine, $aDelimiterPatterns); // returns true, false or null (if no match)
 					if ($bStopNow !== null)
 					{
 						// Check if the line above contains one of the introductory pattern
@@ -511,7 +511,10 @@ class EmailMessage {
 							break;
 						}
 					}
-					$aKeptLines[] = $sLine;
+					else // null => no match, keep the line
+					{
+						$aKeptLines[$index] = $sLine;
+					}
 				}
 				$sNewText = trim(implode("\n", $aKeptLines));
 			}
