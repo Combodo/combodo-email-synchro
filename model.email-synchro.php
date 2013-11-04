@@ -365,7 +365,8 @@ class EmailMessage {
 	public $aAttachments;
 	public $oRelatedObject;
 	public $sDecodeStatus;
-	public $aHeaders;		
+	public $aHeaders;
+	public $sTrace;	
 	
 	public function __construct($sUIDL, $sMessageId, $sSubject, $sCallerEmail, $sCallerName, $sRecipient, $aReferences, $sThreadIndex, $sBodyText, $sBodyFormat, $aAttachments, $oRelatedObject, $aHeaders, $sDecodeStatus)
 	{
@@ -382,7 +383,8 @@ class EmailMessage {
 		$this->aAttachments = $aAttachments;
 		$this->oRelatedObject = $oRelatedObject;
 		$this->sDecodeStatus = $sDecodeStatus;		
-		$this->aHeaders = $aHeaders;		
+		$this->aHeaders = $aHeaders;
+		$this->sTrace = '';	
 	}
 
 	/**
@@ -442,6 +444,8 @@ class EmailMessage {
 	 */
 	public function GetNewPart()
 	{
+		$this->sTrace .= "Beginning of GetNewPart:\n";
+		$this->sTrace .= "=== eMail body ({$this->sBodyFormat}): ===\n{$this->sBodyText}\n=============\n";
 		$aIntroductoryPatterns = MetaModel::GetModuleSetting('combodo-email-synchro', 'introductory-patterns',
 			array(
 				'/^De : .+$/', // Outlook French
@@ -461,64 +465,94 @@ class EmailMessage {
 				'/^>.*$/' => false, // Old fashioned mail clients: continue processing the lines, each of them is preceded by >
 			)
 		);
-		
+		$sBodyText = $this->sBodyText;
 		if ($this->sBodyFormat == 'text/html')
 		{
 			// In HTML the "quoted" text is supposed to be inside "<blockquote....>.....</blockquote>"
-			$sNewText = preg_replace("|<blockquote.+</blockquote>|iU", '', $this->sBodyText);
+			$this->sTrace .= 'Processing the HTML body (removing blockquotes)'."\n";
+			$sBodyText = preg_replace("|<blockquote.+</blockquote>|iU", '', $this->sBodyText);
+			$this->sTrace .= 'Converting the HTML body to plain text'."\n";
+			$sBodyText = preg_replace("@<head[^>]*?>.*?</head>@siU", '', $sBodyText);
+			$sBodyText = preg_replace("@<style[^>]*?>.*?</style>@siU", '', $sBodyText);
+			$sBodyText = trim(html_entity_decode(strip_tags($sBodyText), ENT_COMPAT, 'UTF-8'));
 		}
-		else // assume text/plain
+		// Treat everything as if in text/plain
+		$sUTF8NonBreakingSpace = pack("H*" , 'c2a0'); // hex2bin does not exist until PHP 5.4.0
+		$sBodyText = str_replace($sUTF8NonBreakingSpace, ' ', $sBodyText); // Replace UTF-8 non-breaking spaces by "normal" spaces to ease pattern matching
+																		   // since PHP/PCRE does not understand MBCS so 0xc2 0xa0 is seen as two characters whereas it displays as a single (non-breaking) space!!
+		$aLines = explode("\n", $sBodyText);
+		$sPrevLine = '';
+		$bGlobalPattern = false;
+		$iStartPos = null; // New part position if global pattern is found
+		foreach($aGlobalDelimiterPatterns as $sPattern)
 		{
-			// In plain text mode, exclude all lines starting with >
-			$aLines = explode("\n", $this->sBodyText);
-			$sPrevLine = '';
-			$bGlobalPattern = false;
-			foreach($aGlobalDelimiterPatterns as $sPattern)
+			$this->sTrace .= 'Processing the body; trying the global pattern: "'.$sPattern.'"'."\n";
+			$ret = preg_match($sPattern, $sBodyText, $aMatches, PREG_OFFSET_CAPTURE);
+			if ($ret === 1)
 			{
-				if (preg_match($sPattern, $this->sBodyText, $aMatches, PREG_OFFSET_CAPTURE))
+				if ($bGlobalPattern)
 				{
-					$sNewText = substr($this->sBodyText, 0, $aMatches[0][1]);
-					$bGlobalPattern = true;
-					break;
+					// Another pattern was already found, keep only the min of the two
+					$iStartPos = min($aMatches[0][1], $iStartPos);
 				}
-			}
-			if (!$bGlobalPattern)
-			{
-				$aKeptLines = array();
-				foreach($aLines as $index => $sLine)
+				else
 				{
-					$sLine = trim($sLine);
-					$bStopNow = $this->IsNewPartLine($sLine, $aDelimiterPatterns); // returns true, false or null (if no match)
-					if ($bStopNow !== null)
+					$iStartPos = $aMatches[0][1];
+				}
+				$this->sTrace .= 'Found a match with the global pattern: "'.$sPattern.'"'."\n";
+				$bGlobalPattern = true;
+				// continue the loop to find if another global pattern is present BEFORE this one in the message
+			}
+			else if ($ret === false)
+			{
+				$iErrCode = preg_last_error();
+				$this->sTrace .= 'An error occurred with global pattern: "'.$sPattern.'"'." (errCode = $iErrCode)\n";
+			}
+		}
+		if ($bGlobalPattern)
+		{
+			$sNewText = substr($sBodyText, 0, $iStartPos);
+		}
+		else
+		{
+			$aKeptLines = array();
+			foreach($aLines as $index => $sLine)
+			{
+				$sLine = trim($sLine);
+				$bStopNow = $this->IsNewPartLine($sLine, $aDelimiterPatterns); // returns true, false or null (if no match)
+				if ($bStopNow !== null)
+				{
+					$this->sTrace .= 'Processing the text/plain body; line #'.$index.' contains the delimiter pattern, will be removed (stop = '.($bStopNow ? 'true' : 'false').')'."\n";
+					// Check if the line above contains one of the introductory pattern
+					// like: On 10/09/2010 john.doe@test.com wrote:
+					if (($index > 0) && isset($aLines[$index-1]))
 					{
-						// Check if the line above contains one of the introductory pattern
-						// like: On 10/09/2010 john.doe@test.com wrote:
-						if (($index > 0) && isset($aLines[$index-1]))
+						$sPrevLine = trim($aLines[$index-1]);
+						foreach($aIntroductoryPatterns as $sPattern)
 						{
-							$sPrevLine = trim($aLines[$index-1]);
-							foreach($aIntroductoryPatterns as $sPattern)
+							if (preg_match($sPattern, trim($sPrevLine)))
 							{
-								if (preg_match($sPattern, trim($sPrevLine)))
-								{
-									// remove the introductory line
-									unset($aKeptLines[$index-1]);
-									break;
-								}
+								// remove the introductory line
+								unset($aKeptLines[$index-1]);
+								$this->sTrace .= 'Processing the text/plain body; line #'.($index-1).' contains the introductory pattern, will be removed.'."\n";
+								break;
 							}
 						}
-						if ($bStopNow === true)
-						{
-							break;
-						}
 					}
-					else // null => no match, keep the line
+					if ($bStopNow === true)
 					{
-						$aKeptLines[$index] = $sLine;
+						break;
 					}
 				}
-				$sNewText = trim(implode("\n", $aKeptLines));
+				else // null => no match, keep the line
+				{
+					$aKeptLines[$index] = $sLine;
+				}
 			}
+			$sNewText = trim(implode("\n", $aKeptLines));
 		}
+		$sNewText = trim($sNewText);
+		$this->sTrace .= "=== GetNewPart returns: ===\n$sNewText\n=============\n";
 		return $sNewText;
 	}
 	

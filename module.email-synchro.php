@@ -57,12 +57,16 @@ SetupWebPage::AddModule(
 				'/^on .+ wrote:$/i', // Thunderbird English
 				'|^[0-9]{4}/[0-9]{1,2}/[0-9]{1,2} .+:$|', // Gmail style
 			),
-			// Patterns which delimit the previous message in case of a Reply
+			// Some patterns which delimit the previous message in case of a Reply
 			// The "new" part of the message is the text before the pattern
-			// Add your own multi-line patterns (use \R for a line break)
+			// Add your own multi-line patterns (use \\R for a line break)
+			// These patterns depend on the mail client/server used... feel free to add your own discoveries to the list
 			'multiline-delimiter-patterns' => array(
-				"/\RFrom: .+\RSent: .+\R/m", 		// Outlook English
-				"/\RDe : .+\REnvoyé : .+\R/m",		// Outlook French
+            	'/\\RFrom: .+\\RSent: .+\\R/m', // Outlook English
+                '/\\R_+\\R/m', // A whole line made only of underscore characters
+                '/\\RDe : .+\\R\\R?Envoyé : /m', // Outlook French, HTML and rich text
+                '/\\RDe : .+\\RDate d\'envoi : .+\\R/m', // Outlook French, plain text
+                '/\\R-----Message d\'origine-----\\R/m',
 			)
 		),
 	)

@@ -225,7 +225,7 @@ class RawEmailMessage
 	 * @param string $sFilePath The path to the file to write into (the file will be overwritten if it exists)
 	 * @return void
 	 */
-	public Function ToFile($sFilePath)
+	public Function SaveToFile($sFilePath)
 	{
 		//TODO: improve error handling in case the file does not exist or cannot be written...
 		file_put_contents($sFilePath, $this->sRawContent);
