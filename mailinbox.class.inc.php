@@ -107,6 +107,7 @@ function MailboxRefresh(data)
 	$('#mailbox_delete_messages').click(function() {
 		MailboxDeleteMessages();
 	});
+	MailboxUpdateActionButtons();
 }
 
 function MailboxResetStatus()
