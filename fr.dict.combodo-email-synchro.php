@@ -38,11 +38,17 @@ Dict::Add('FR FR', 'French', 'Français', array(
 	'MailInbox:Status' => 'Etat',
 	'MailInbox:Subject' => 'Objet',
 	'MailInbox:From' => 'De',
+	'MailInbox:Date' => 'Date',
 	'MailInbox:RelatedTicket' => 'Ticket Lié',
+	'MailInbox:ErrorMessage' => 'Message d\'Erreur',
 	'MailInbox:Status/Processed' => 'Déjà Traité',
 	'MailInbox:Status/New' => 'Nouveau',
-
+	'MailInbox:Status/Error' => 'Erreur',
+		
 	'MailInbox:Login/ServerMustBeUnique' => 'La combinaison Identifiant (%1$s) et Serveur (%2$s) est déjà utilisée par une Boîte Mail.',
 	'MailInbox:Login/Server/MailboxMustBeUnique' => 'La combinaison Identifiant (%1$s), Serveur (%2$s) et boîte mail (%3$s) est déjà utilisée par une Boîte Mail.',
 	'MailInbox:Display_X_eMailsStartingFrom_Y' => 'Afficher %1$s eMail(s), à partir du numéro %2$s',
+	'MailInbox:WithSelectedDo' => 'Pour les éléments sélectionnés : ',
+	'MailInbox:ResetStatus' => 'RàZ de l\'état',
+	'MailInbox:DeleteMessage' => 'Effacer l\'email',
 ));

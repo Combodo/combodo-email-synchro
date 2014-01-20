@@ -81,8 +81,10 @@ class MessageFromMailbox extends RawEmailMessage
 		$aAttachments = $this->GetAttachments();
 		$sDecodeStatus = '';
 		$oRelatedObject = $this->GetRelatedObject();
+		$iTime = strtotime($this->GetHeader('date'), 0); // Parse the RFC822 date format
+ 		$sDate = date('Y-m-d H:i:s', $iTime);
 		
-		return new EmailMessage($this->sUIDL, $sMessageId, $sSubject, $sCallerEmail, $sCallerName, $sRecipient, $aReferences, $sThreadIndex, $sBodyText, $sBodyFormat, $aAttachments, $oRelatedObject, $this->GetHeaders(), $sDecodeStatus);
+		return new EmailMessage($this->sUIDL, $sMessageId, $sSubject, $sCallerEmail, $sCallerName, $sRecipient, $aReferences, $sThreadIndex, $sBodyText, $sBodyFormat, $aAttachments, $oRelatedObject, $this->GetHeaders(), $sDecodeStatus, $sDate);
 	}
 	
 	/**
@@ -227,6 +229,9 @@ class EmailReplica extends DBObject
 			"db_table" => "email_replica",
 			"db_key_field" => "id",
 			"db_finalclass_field" => "",
+			'indexes' => array(
+					array('uidl'), // Index on UIDLs for faster search
+			),		
 		);
 		MetaModel::Init_Params($aParams);
 
@@ -237,6 +242,9 @@ class EmailReplica extends DBObject
 		MetaModel::Init_AddAttribute(new AttributeText("references", array("allowed_values"=>null, "sql"=>"references", "default_value"=>null, "is_null_allowed"=>true, "depends_on"=>array())));
 		MetaModel::Init_AddAttribute(new AttributeText("thread_index", array("allowed_values"=>null, "sql"=>"thread_index", "default_value"=>null, "is_null_allowed"=>true, "depends_on"=>array())));
 		MetaModel::Init_AddAttribute(new AttributeDateTime("message_date", array("allowed_values"=>null, "sql"=>"message_date", "default_value"=>null, "is_null_allowed"=>true, "depends_on"=>array())));
+		MetaModel::Init_AddAttribute(new AttributeEnum("status", array("allowed_values"=>new ValueSetEnum('ok,error'), "sql"=>"status", "default_value"=>'ok', "is_null_allowed"=>false, "depends_on"=>array())));
+		MetaModel::Init_AddAttribute(new AttributeText("error_message", array("allowed_values"=>null, "sql"=>"error_message", "default_value"=>null, "is_null_allowed"=>true, "depends_on"=>array())));
+		
 	}
 	
 	/**
@@ -366,9 +374,10 @@ class EmailMessage {
 	public $oRelatedObject;
 	public $sDecodeStatus;
 	public $aHeaders;
-	public $sTrace;	
+	public $sTrace;
+	public $sDate;
 	
-	public function __construct($sUIDL, $sMessageId, $sSubject, $sCallerEmail, $sCallerName, $sRecipient, $aReferences, $sThreadIndex, $sBodyText, $sBodyFormat, $aAttachments, $oRelatedObject, $aHeaders, $sDecodeStatus)
+	public function __construct($sUIDL, $sMessageId, $sSubject, $sCallerEmail, $sCallerName, $sRecipient, $aReferences, $sThreadIndex, $sBodyText, $sBodyFormat, $aAttachments, $oRelatedObject, $aHeaders, $sDecodeStatus, $sDate = '')
 	{
 		$this->sUIDL = $sUIDL;
 		$this->sMessageId = $sMessageId;
@@ -384,7 +393,8 @@ class EmailMessage {
 		$this->oRelatedObject = $oRelatedObject;
 		$this->sDecodeStatus = $sDecodeStatus;		
 		$this->aHeaders = $aHeaders;
-		$this->sTrace = '';	
+		$this->sTrace = '';
+		$this->sDate = $sDate;
 	}
 
 	/**

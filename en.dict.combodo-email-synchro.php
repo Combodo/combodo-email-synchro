@@ -37,11 +37,17 @@ Dict::Add('EN US', 'English', 'English', array(
 	'MailInbox:Status' => 'Status',
 	'MailInbox:Subject' => 'Subject',
 	'MailInbox:From' => 'From',
+	'MailInbox:Date' => 'Date',
 	'MailInbox:RelatedTicket' => 'Related Ticket',
+	'MailInbox:ErrorMessage' => 'Error Message',
 	'MailInbox:Status/Processed' => 'Already Processed',
 	'MailInbox:Status/New' => 'New',
-
+	'MailInbox:Status/Error' => 'Error',
+		
 	'MailInbox:Login/ServerMustBeUnique' => 'The combination Login (%1$s) and Server (%2$s) is already configured for another Mail Inbox.',
 	'MailInbox:Login/Server/MailboxMustBeUnique' => 'The combination Login (%1$s), Server (%2$s) and Mailbox (%3$s) is already configured for another Mail Inbox',
 	'MailInbox:Display_X_eMailsStartingFrom_Y' => 'Display %1$s eMail(s), starting from %2$s.',
+	'MailInbox:WithSelectedDo' => 'With the selected emails: ',
+	'MailInbox:ResetStatus' => 'Reset status',
+	'MailInbox:DeleteMessage' => 'Delete email',
 ));

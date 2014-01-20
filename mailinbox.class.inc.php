@@ -15,6 +15,7 @@ abstract class MailInboxBase extends cmdbAbstractObject
 	protected $iNextAction;
 	protected $iMaxAttachmentSize;
 	protected $sBigFilesDir;
+	public $sLastError;
 	
 	public static function Init()
 	{
@@ -52,6 +53,7 @@ abstract class MailInboxBase extends cmdbAbstractObject
 		$aData = CMDBSource::QueryToArray('SELECT @@global.max_allowed_packet');
 		$this->iMaxAttachmentSize = (int)$aData[0]['@@global.max_allowed_packet'] - 500; // Keep some room for the rest of the SQL query
 		$this->sBigFilesDir = MetaModel::GetModuleSetting('combodo-email-synchro', 'big_files_dir', '');
+		$this->sLastError = '';
 	}
 	
 	/**
@@ -69,18 +71,94 @@ abstract class MailInboxBase extends cmdbAbstractObject
 			$oPage->add('<div id="mailbox_content_output"></div>');
 			$sAjaxUrl = addslashes(utils::GetAbsoluteUrlModulesRoot().basename(dirname(__FILE__)).'/ajax.php');
 			$iId = $this->GetKey();
+			$oPage->add_script(
+<<<EOF
+function MailboxUpdateActionButtons()
+{
+	if( $(".mailbox_item:checked").length > 0 )
+	{
+		$('.mailbox_button').prop('disabled', false);
+	}
+	else
+	{
+		$('.mailbox_button').prop('disabled', true);
+	}	
+}
+					
+function MailboxRefresh(data)
+{
+	$('#mailbox_content_output').html(data);
+	$('#mailbox_content_refresh').removeAttr('disabled');
+	$("#mailbox_content_output .listResults").tablesorter( { headers: { 0: {sorter: false}}, widgets: ['myZebra']} ); // sortable and zebra tables
+	$("#mailbox_checkall").click(function() {
+		var bChecked = $(this).prop('checked');
+		$(".mailbox_item").each(function() {
+			$(this).prop('checked', bChecked);
+		});
+		MailboxUpdateActionButtons();
+	});
+	$('.mailbox_button').prop('disabled', false);
+	$(".mailbox_item").bind('change', function() {
+		MailboxUpdateActionButtons();
+	});
+	$('#mailbox_reset_status').click(function() {
+		MailboxResetStatus();
+	});
+	$('#mailbox_delete_messages').click(function() {
+		MailboxDeleteMessages();
+	});
+}
+
+function MailboxResetStatus()
+{
+	var aUIDLs = [];
+	$(".mailbox_item:checked").each(function() {
+		aUIDLs.push(this.value);
+	});
+					
+	$('#mailbox_content_output').html('<img src="../images/indicator.gif"/>');
+	$('#mailbox_content_refresh').attr('disabled', 'disabled');
+	var iStart = $('#mailbox_start_index').val();
+	var iCount = $('#mailbox_count').val();
+					
+	$.post('$sAjaxUrl', {operation: 'mailbox_reset_status', id: $iId, start: iStart, count: iCount, aUIDLs: aUIDLs }, function(data) {
+		 MailboxRefresh(data);
+	});
+	return false;
+}
+
+function MailboxDeleteMessages()
+{
+	var aUIDLs = [];
+	$(".mailbox_item:checked").each(function() {
+		aUIDLs.push(this.value);
+	});
+					
+	$('#mailbox_content_output').html('<img src="../images/indicator.gif"/>');
+	$('#mailbox_content_refresh').attr('disabled', 'disabled');
+	var iStart = $('#mailbox_start_index').val();
+	var iCount = $('#mailbox_count').val();
+					
+	$.post('$sAjaxUrl', {operation: 'mailbox_delete_messages', id: $iId, start: iStart, count: iCount, aUIDLs: aUIDLs }, function(data) {
+		 MailboxRefresh(data);
+	});
+	return false;	
+}
+EOF
+			);
 			$oPage->add_ready_script(
 <<<EOF
 $('#mailbox_content_refresh').click(function() {
+					
 	$('#mailbox_content_output').html('<img src="../images/indicator.gif"/>');
+	$('#mailbox_content_refresh').attr('disabled', 'disabled');
 	var iStart = $('#mailbox_start_index').val();
 	var iCount = $('#mailbox_count').val();
-	$('#mailbox_content_refresh').attr('disabled', 'disabled');
+					
 	$.post('$sAjaxUrl', {operation: 'mailbox_content', id: $iId, start: iStart, count: iCount }, function(data) {
-		$('#mailbox_content_output').html(data);
-		$('#mailbox_content_refresh').removeAttr('disabled');
-		$("#mailbox_content_output .listResults").tablesorter( { widgets: ['myZebra']} ); // sortable and zebra tables
+		MailboxRefresh(data);
 	});
+					
 	return false;
 });
 $('#mailbox_content_refresh').trigger('click');
@@ -139,13 +217,13 @@ EOF
 
 	/**
 	 * Initial dispatching of an incoming email: determines what to do with the email
-	 * @param EmailReplica $oEmailReplica The EmailReplica associated with the email. null for a new (unread) mail
+	 * @param EmailReplica $oEmailReplica The EmailReplica associated with the email. A new replica (i.e. not yet in DB) one for new emails
 	 * @return int An action code from EmailProcessor
 	 */
-	public function DispatchEmail($oEmailReplica = null)
+	public function DispatchEmail(EmailReplica $oEmailReplica)
 	{
 		$this->SetNextAction(EmailProcessor::NO_ACTION);
-		if ($oEmailReplica == null)
+		if ($oEmailReplica->IsNew())
 		{
 			// New (unread) message, let's process it
 			$this->SetNextAction(EmailProcessor::PROCESS_MESSAGE);
@@ -196,6 +274,7 @@ EOF
 			// Here decide what to do ? Create a new user, assign the ticket to a 'fixed' Unknown Caller, reject the ticket...
 			// For now: let's do nothing, just ignore the ticket, it will be processed again later... in case the caller gets created
 			$this->Trace('No contact found for the email address ('.$oEmail->sCallerEmail.'), the ticket will NOT be created');
+			$this->sLastError = 'No contact found for the email address ('.$oEmail->sCallerEmail.')';
 			break;
 			
 			default:
