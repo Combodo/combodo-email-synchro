@@ -295,10 +295,7 @@ class EmailMessage {
 		$sBodyText = preg_replace($sStyleExpr, '', $sText);
 
 		// Preserve new lines inside <pre>...</pre> tags
-		$sBodyText = preg_replace_callback('|<pre>(.*)</pre>|isU', function($aMatches) {
-			$sText = str_replace(array("\n", "\r"), self::NEW_LINE_MARKER, $aMatches[1]);
-			return self::NEW_LINE_MARKER.strip_tags($sText).self::NEW_LINE_MARKER; // Each <pre>...<pre> causes a line break before and after
-		}, $sBodyText);
+		$sBodyText = preg_replace_callback('|<pre>(.*)</pre>|isU', array($this, 'PregReplaceCallback'), $sBodyText);
 
 		// Process line breaks: remove carriage returns / line feeds that have no meaning in HTML => replace them by a plain space
 		$sBodyText = str_replace(array("\n", "\r"), ' ',$sBodyText);
@@ -322,6 +319,17 @@ class EmailMessage {
 		return trim($sBodyText, " \r\n\t".chr(0xC2).chr(0xA0)); // c2a0 is the UTF-8 non-breaking space character
 	}
 	
+	/**
+	 * Function used with preg_replace_callback to replace the newlines inside the <pre>...</pre> tags
+	 * @param hash $aMatches
+	 * @return string
+	 */
+	protected function PregReplaceCallback($aMatches)
+	{
+		$sText = str_replace(array("\n", "\r"), EmailMessage::NEW_LINE_MARKER, $aMatches[1]);
+		return EmailMessage::NEW_LINE_MARKER.strip_tags($sText).EmailMessage::NEW_LINE_MARKER; // Each <pre>...<pre> causes a line break before and after
+	}
+		
 	/**
 	 * When the message is a reply or forward of another message, this method
 	 * (tries to) extract the "new" part of the body
