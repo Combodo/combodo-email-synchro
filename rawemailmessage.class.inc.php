@@ -188,7 +188,16 @@ class RawEmailMessage
 				{
 					// generate a name based on the type of the file...
 					$aTypes = explode('/', $sType);
-					$sFileName = sprintf('%s%03d.%s', $aTypes[0], $index, $aTypes[1]); // i.e. image001.jpg 
+					$sFileExtension = $aTypes[1];
+					// map the type to a useful extension if needed
+					switch($aTypes[1])
+					{
+						case 'rfc822':
+						// Special case for messages: use the .eml extension
+						$sFileExtension = 'eml';
+						break;
+					}
+					$sFileName = sprintf('%s%03d.%s', $aTypes[0], $index, $sFileExtension); // i.e. image001.jpg 
 				}
 				$aAttachments['part_'.$aPart['part_id']] = array(
 					'filename' => $sFileName,
@@ -466,22 +475,25 @@ class RawEmailMessage
 		$sCurrentHeader = '';
 
 		$idx = 0;
+		$aRawBody = array();
 		foreach ($aLines as $sLine)
 		{
 			if(self::IsNewLine($sLine))
 			{
 				// end of headers
-				$aRawBody = array_slice($aLines, $idx);
+				$aRawBody = array_slice($aLines, 1+$idx);
 				break;
 			}
 
 			if (self::IsLineStartingWithPrintableChar($sLine)) // start of new header
 			{
-				preg_match('/([^:]+): ?(.*)$/', $sLine, $aMatches);
-				$sNewHeader = strtolower($aMatches[1]);
-				$sValue = $aMatches[2];
-				$aRawFields[$sNewHeader] = $sValue;
-				$sCurrentHeader = $sNewHeader;
+				if (preg_match('/([^:]+): ?(.*)$/', $sLine, $aMatches))
+				{
+					$sNewHeader = strtolower($aMatches[1]);
+					$sValue = $aMatches[2];
+					$aRawFields[$sNewHeader] = $sValue;
+					$sCurrentHeader = $sNewHeader;
+				}
 			}
 			else // the current header continues on this line
 			{
@@ -596,6 +608,11 @@ class RawEmailMessage
 		{
 			case 'base64':
 			$sBody = base64_decode(implode("\n", $aLines));
+			if ($sBody === false)
+			{
+				// Failed to decode, try as-is
+				$sBody = implode("\n", $aLines);
+			}
 			break;
 
 			case 'quoted-printable':

@@ -65,6 +65,8 @@ $idx = 1;
 foreach($oEmail->aAttachments as $aAttachment)
 {
 	echo "\t$idx. {$aAttachment['filename']} - {$aAttachment['mimeType']}, ".strlen($aAttachment['content'])." bytes\n";
+	// Uncomment the line below to dump the attachments as separate files
+	//file_put_contents('/tmp/'.$aAttachment['filename'], $aAttachment['content']);
 	$idx++;
 }
 echo "Body Format: {$oEmail->sBodyFormat}\n";
