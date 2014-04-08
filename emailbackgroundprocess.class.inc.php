@@ -310,7 +310,7 @@ class EmailBackgroundProcess implements iBackgroundProcess
 						}
 						
 						// Cleanup the unused replicas based on the pattern of their UIDL, unfortunately this is not possible in NON multi-source mode
-						$sOQL = "SELECT EmailReplica WHERE uidl LIKE '".$oSource->GetName()."_%' AND id NOT IN (".implode(',', CMDBSource::Quote($aIDs)).')';
+						$sOQL = "SELECT EmailReplica WHERE uidl LIKE ".CMDBSource::Quote($oSource->GetName().'_%')." AND id NOT IN (".implode(',', CMDBSource::Quote($aIDs)).')';
 						$this->Trace("Searching for unused EmailReplicas: '$sOQL'");
 						$oUnusedReplicaSet = new DBObjectSet(DBObjectSearch::FromOQL($sOQL));
 						$oUnusedReplicaSet->OptimizeColumnLoad(array('EmailReplica' => array('uidl')));
