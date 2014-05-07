@@ -5,3 +5,4 @@ log
 test.php
 readme.txt
 decoding-test.php
+mailbox-debug.php
