@@ -50,4 +50,7 @@ Dict::Add('DE DE', 'German', 'Deutsch', array(
 	'MailInbox:WithSelectedDo' => 'Für die ausgewählten EMails: ',
 	'MailInbox:ResetStatus' => 'Status zurücksetzen',
 	'MailInbox:DeleteMessage' => 'Löschen',
+
+	'Class:TriggerOnMailUpdate' => 'Trigger (beim Mail-Update)',
+	'Class:TriggerOnMailUpdate+' => '',
 ));
