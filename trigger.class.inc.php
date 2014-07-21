@@ -8,7 +8,7 @@ class TriggerOnMailUpdate extends TriggerOnObject
 	{
 		$aParams = array
 		(
-			"category" => "core/cmdb",
+			"category" => "core/cmdb,application", // "application" category => admins can perform a CSV import
 			"key_type" => "autoincrement",
 			"name_attcode" => "description",
 			"state_attcode" => "",
