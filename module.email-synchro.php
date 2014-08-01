@@ -3,7 +3,7 @@
 
 SetupWebPage::AddModule(
 	__FILE__, // Path to the current file, all other file names are relative to the directory containing this file
-	'combodo-email-synchro/2.6.3',
+	'combodo-email-synchro/2.6.4',
 	array(
 		// Identification
 		//
@@ -67,7 +67,8 @@ SetupWebPage::AddModule(
                 '/\\RDe : .+\\R\\R?Envoyé : /m', // Outlook French, HTML and rich text
                 '/\\RDe : .+\\RDate d\'envoi : .+\\R/m', // Outlook French, plain text
                 '/\\R-----Message d\'origine-----\\R/m',
-			)
+			),
+			'use_message_id_as_uid' => false, // Do NOT change this unless you known what you are doing!!
 		),
 	)
 );
