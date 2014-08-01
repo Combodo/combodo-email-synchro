@@ -549,13 +549,27 @@ class IMAPEmailSource extends EmailSource
         if ($oInfo !== false)
         {
         	$sRange = "1:".$oInfo->Nmsgs;
+		// Workaround for some email servers (like gMail!) where the UID may change between two sessions, so let's use the
+		// MessageID as a replacement for the UID.
+		// Note that it is possible to receive two times a message with the same MessageID, but since the content of the message
+		// will be the same, it's safe to process such messages only once...
+		// BEWARE: Make sure that you empty the mailbox before toggling this setting in the config file, since all the messages
+		// present in the mailbox at the time of the toggle will be considered as "new" and thus processed again.
+        	$bUseMessageId = (bool)MetaModel::GetModuleSetting('combodo-email-synchro', 'use_message_id_as_uid', false);
 
         	$ret = array();
 			$aResponse = imap_fetch_overview($this->rImapConn,$sRange);
 			
 			foreach ($aResponse as $aMessage)
 			{
-				$ret[] = array('msg_id' => $aMessage->msgno, 'uidl' => $aMessage->uid);
+				if ($bUseMessageId)
+				{
+					$ret[] = array('msg_id' => $aMessage->msgno, 'uidl' => $aMessage->message_id);
+				}
+				else
+				{
+					$ret[] = array('msg_id' => $aMessage->msgno, 'uidl' => $aMessage->uid);
+				}
 			}
         }
         
