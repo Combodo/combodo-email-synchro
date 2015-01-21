@@ -281,7 +281,7 @@ class EmailMessage {
 	}
 	
 	/**
-	 * Produce a plain-text version of the body of the message
+	 * Produce a plain-text version of the body of the message by stripping the HTML tags but preserving the visual line breaks
 	 * @return string The plain-text version of the text
 	 */
 	public function StripTags($sText = null)
@@ -291,21 +291,28 @@ class EmailMessage {
 			$sText = $this->sBodyText;
 		}
 		
+		// Completely remove the <head>...</head> tags, including their contents
+		$sStyleExpr = '|<head>(.*)</head>|iUs';
+		$sBodyText = preg_replace($sStyleExpr, '', $sText);
+		
 		// Completely remove the <style>...</style> tags, including their contents
 		$sStyleExpr = '|<style>(.*)</style>|iUs';
 		$sBodyText = preg_replace($sStyleExpr, '', $sText);
-
+		
 		// Preserve new lines inside <pre>...</pre> tags
 		$sBodyText = preg_replace_callback('|<pre>(.*)</pre>|isU', array($this, 'PregReplaceCallback'), $sBodyText);
 
 		// Process line breaks: remove carriage returns / line feeds that have no meaning in HTML => replace them by a plain space
-		$sBodyText = str_replace(array("\n", "\r"), ' ',$sBodyText);
+		$sBodyText = str_ireplace(array("\n", "\r"), ' ',$sBodyText);
 		// Replace <p...>...</p> and <br/> by a carriage return
-		$sBodyText = preg_replace('/<p[^>]*>/', '', $sBodyText);
-		$sBodyText = str_replace(array('</br>', '<br/>', '<br>', '</p>'), self::NEW_LINE_MARKER, $sBodyText);
+		$sBodyText = preg_replace('/<p[^>]*>/i', '', $sBodyText);
+		$sBodyText = str_ireplace(array('</br>', '<br/>', '<br>', '</p>'), self::NEW_LINE_MARKER, $sBodyText);
+		
+		// <tr> tags usually start a "new line"
+		$sBodyText = str_ireplace('<tr ', self::NEW_LINE_MARKER.'<tr ', $sBodyText);
 		
 		// <div> tags usually start a "new line" (since by default display-style == block)
-		$sBodyText = str_replace('<div ', self::NEW_LINE_MARKER.'<div ', $sBodyText);
+		$sBodyText = str_ireplace('<div ', self::NEW_LINE_MARKER.'<div ', $sBodyText);
 		// remove tags (opening and ending tags MUST match!)
 		$sBodyText = strip_tags($sBodyText);
 		// Process some usual entities
@@ -335,10 +342,18 @@ class EmailMessage {
 	 * When the message is a reply or forward of another message, this method
 	 * (tries to) extract the "new" part of the body
 	 */
-	public function GetNewPart()
+	public function GetNewPart($sBodyText = null, $sBodyFormat = null)
 	{
+		if ($sBodyText === null)
+		{
+			$sBodyText == $this->sBodyText;
+		}
+		if ($sBodyFormat === null)
+		{
+			$sBodyFormat == $this->sBodyFormat;
+		}
 		$this->sTrace .= "Beginning of GetNewPart:\n";
-		$this->sTrace .= "=== eMail body ({$this->sBodyFormat}): ===\n{$this->sBodyText}\n=============\n";
+		$this->sTrace .= "=== eMail body ({$sBodyFormat}): ===\n{$sBodyText}\n=============\n";
 		$aIntroductoryPatterns = MetaModel::GetModuleSetting('combodo-email-synchro', 'introductory-patterns',
 			array(
 				'/^De : .+$/', // Outlook French
@@ -358,16 +373,13 @@ class EmailMessage {
 				'/^>.*$/' => false, // Old fashioned mail clients: continue processing the lines, each of them is preceded by >
 			)
 		);
-		$sBodyText = $this->sBodyText;
-		if ($this->sBodyFormat == 'text/html')
+		if ($sBodyFormat == 'text/html')
 		{
 			// In HTML the "quoted" text is supposed to be inside "<blockquote....>.....</blockquote>"
 			$this->sTrace .= 'Processing the HTML body (removing blockquotes)'."\n";
-			$sBodyText = preg_replace("|<blockquote.+</blockquote>|iU", '', $this->sBodyText);
+			$sBodyText = preg_replace("|<blockquote.+</blockquote>|iU", '', $sBodyText);
 			$this->sTrace .= 'Converting the HTML body to plain text'."\n";
-			$sBodyText = preg_replace("@<head[^>]*?>.*?</head>@siU", '', $sBodyText);
-			$sBodyText = preg_replace("@<style[^>]*?>.*?</style>@siU", '', $sBodyText);
-			$sBodyText = trim(html_entity_decode(strip_tags($sBodyText), ENT_COMPAT, 'UTF-8'));
+			$sBodyText = $this->StripTags($sBodyText);
 		}
 		// Treat everything as if in text/plain
 		$sUTF8NonBreakingSpace = pack("H*" , 'c2a0'); // hex2bin does not exist until PHP 5.4.0

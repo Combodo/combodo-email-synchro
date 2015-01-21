@@ -174,12 +174,16 @@ class RawEmailMessage
 				}
 				
 				$sType = '';
+				$sContentId = $this->GetHeader('content-id', $aPart['headers']);
+				if (($sContentId != '') && (preg_match('/^<(.+)>$/', $sContentId, $aMatches)))
+				{
+					$sContentId = $aMatches[1];
+				}
 				$sContentType = $this->GetHeader('content-type', $aPart['headers']);
 				if (($sContentType != '') && (preg_match('/^([^;]+)/', $sContentType, $aMatches)))
 				{
 					$sType = $aMatches[1];
 				}
-				
 				if (empty($sFileName) && preg_match('/name="([^"]+)"/', $sContentType, $aMatches))
 				{
 					$sFileName = $aMatches[1];
@@ -202,6 +206,7 @@ class RawEmailMessage
 				$aAttachments['part_'.$aPart['part_id']] = array(
 					'filename' => $sFileName,
 					'mimeType' => $sType,
+					'content-id' => $sContentId,
 					'content' => $this->DecodePart($aPart['headers'], $aPart['body']),
 				);
 			}
