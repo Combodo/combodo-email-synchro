@@ -12,6 +12,10 @@
 abstract class MailInboxBase extends cmdbAbstractObject
 {
 	protected static $aExcludeAttachments = null; // list of attachment types (MimeTypes) that should not be attached to a ticket
+	protected static $iMinImageWidth = null;
+	protected static $iMinImageHeight = null;
+	protected static $iMaxImageWidth = null;
+	protected static $iMaxImageHeight = null;
 	protected $iNextAction;
 	protected $iMaxAttachmentSize;
 	protected $sBigFilesDir;
@@ -388,10 +392,57 @@ EOF
 	 * @param EmailMessage $oEmail
 	 * @param CMDBChange $oMyChange The current change used to record the modifications (for iTop 1.x compatibility)
 	 * @param bool $bNoDuplicates If true, don't add attachment that seem already attached to the ticket (same type, same name, same size, same md5 checksum)
-	 * @return void
+	 * @return an array of cid => attachment_id
 	 */
 	protected function AddAttachments(Ticket $oTicket, EmailMessage $oEmail, CMDBChange $oMyChange, $bNoDuplicates = true)
 	{
+			if (self::$iMinImageWidth === null)
+		{
+			$sMinImagesSize = MetaModel::GetModuleSetting('combodo-email-synchro', 'images_minimum_size','0x0');
+			if (preg_match('/^([0-9]+)x([0-9]+)$/i', $sMinImagesSize, $aMatches))
+			{
+				self::$iMinImageWidth = (int)$aMatches[1];
+				self::$iMinImageHeight = (int)$aMatches[2];
+				MailInboxesEmailProcessor::Trace("Info: minimum dimensions for attachment images: ".self::$iMinImageWidth."x".self::$iMinImageHeight." px. Images smaller than these dimensions will be ignored.");
+			}
+			else
+			{
+				MailInboxesEmailProcessor::Trace("Warning: incorrect format for the configuration value: 'images_minimum_size'. Expecting a value dddxddd (where ddd are digits), like 100x100, but got: '$sMinImagesSize'. No minimum value will be set.");
+			}
+		}
+		if (self::$iMaxImageWidth === null)
+		{
+			if (function_exists('imagecopyresampled'))
+			{
+				$sMaxImagesSize = MetaModel::GetModuleSetting('combodo-email-synchro', 'images_maximum_size', '');
+				if ($sMaxImagesSize != '')
+				{
+					if (preg_match('/^([0-9]+)x([0-9]+)$/i', $sMaxImagesSize, $aMatches))
+					{
+						self::$iMaxImageWidth = (int)$aMatches[1];
+						self::$iMaxImageHeight = (int)$aMatches[2];
+						MailInboxesEmailProcessor::Trace("Info: maximum dimensions for attachment images: ".self::$iMaxImageWidth."x".self::$iMaxImageHeight." px. Images bigger than these dimensions will be resized.");
+					}
+					else
+					{
+						MailInboxesEmailProcessor::Trace("Warning: incorrect format for the configuration value: 'images_maximum_size'. Expecting a value dddxddd (where ddd are digits), like 1000x1000, but got: '$sMaxImagesSize'. No maximum value will be set.");
+						self::$iMaxImageWidth = 0;
+					}
+				}
+				else
+				{
+					MailInboxesEmailProcessor::Trace("Info: no maximum dimensions configured for attachment images.");
+					self::$iMaxImageWidth = 0;
+				}
+			}
+			else
+			{
+				MailInboxesEmailProcessor::Trace("Info: GD not installed, cannot resize big images.");
+				self::$iMaxImageWidth = 0;
+			}
+			
+		}
+		$aAddedAttachments = array();
 		// Process attachments (if any)
 		$aPreviousAttachments = array();
 		$aRejectedAttachments = array();
@@ -408,6 +459,7 @@ EOF
 					'mimeType' => $oDoc->GetMimeType(),
 					'size' => strlen($data),
 					'md5' => md5($data),
+					'object' => $oPrevAttachment,
 				);
 			}
 		}
@@ -421,7 +473,26 @@ EOF
 			}
 			if (!in_array($aAttachment['mimeType'], self::$aExcludeAttachments))
 			{
-				if ($bNoDuplicates)
+				if ($this->IsImage($aAttachment['mimeType']))
+				{
+					$aImgInfo = array();
+					if (((self::$iMinImageWidth > 0) || (self::$iMaxImageWidth > 0)) && (($aImgInfo = $this->GetImageSize($aAttachment['content'], $aImgInfo)) !== false))
+					{
+						$iWidth = $aImgInfo[0];
+						$iHeight = $aImgInfo[1];
+						if (($iWidth < self::$iMinImageWidth) || ($iHeight < self::$iMinImageHeight))
+						{
+							$bIgnoreAttachment = true;
+							MailInboxesEmailProcessor::Trace("Info: Attachment '{$aAttachment['filename']}': $iWidth x $iHeight px rejected because it is too small (probably a signature). The minimum size is configured to ".self::$iMinImageWidth." x ".self::$iMinImageHeight." px");
+						}
+						else if ((self::$iMaxImageWidth > 0) && ($iWidth > self::$iMaxImageWidth) || ($iHeight > self::$iMaxImageHeight))
+						{
+							MailInboxesEmailProcessor::Trace("Info: Attachment '{$aAttachment['filename']}': $iWidth x $iHeight px will be resized to fit into ".self::$iMaxImageWidth." x ".self::$iMaxImageHeight." px");
+							$aAttachment = self::ResizeImageToFit($aAttachment, $iWidth, $iHeight, self::$iMaxImageWidth, self::$iMaxImageHeight);
+						}
+					}
+				}
+				if (!$bIgnoreAttachment && $bNoDuplicates)
 				{
 					// Check if an attachment with the same name/type/size/md5 already exists
 					$iSize = strlen($aAttachment['content']);
@@ -430,7 +501,7 @@ EOF
 						// The attachment is too big, reject it, and replace it by a text message, explaining what happened
 						$aAttachment = $this->RejectBigAttachment($aAttachment, $oTicket);
 						$aRejectedAttachments[] = $aAttachment['content'];
-						MailInboxesEmailProcessor::Trace("Info: ".$aAttachment['content']);
+						MailInboxesEmailProcessor::Trace("Info: Attachment '{$aAttachment['filename']}' too big (size = $iSize > max size = {$this->iMaxAttachmentSize} bytes)");
 					}
 					else
 					{
@@ -444,21 +515,14 @@ EOF
 							{
 								// Skip this attachment
 								MailInboxesEmailProcessor::Trace("Info: Attachment {$aAttachment['filename']} skipped, already attached to the ticket.");
+								$aAddedAttachments[$aAttachment['content-id']] = $aPrevious['object']; // Still remember it for processing inline images
 								$bIgnoreAttachment = true;
 								break;
 							}
-							
-							// Remember this attachment to avoid adding it twice (in case it is contained two times in the message)
-							$aPreviousAttachments[] = array(
-								'filename' => $aAttachment['filename'],
-								'mimeType' => $aAttachment['mimeType'],
-								'size' => $iSize,
-								'md5' => $sMd5,
-							);
 						}
 					}
 				}
-				if ($this->ContainsViruses($aAttachment))
+				if (!$bIgnoreAttachment && $this->ContainsViruses($aAttachment))
 				{
 					// Skip this attachment
 					MailInboxesEmailProcessor::Trace("Info: Attachment {$aAttachment['filename']} is reported as containing a virus, skipped.");
@@ -468,7 +532,14 @@ EOF
 				if (!$bIgnoreAttachment)
 				{
 					$oAttachment = new Attachment;
-					$oAttachment->SetItem($oTicket);
+					if ($oTicket->IsNew())
+					{
+						$oAttachment->Set('item_class', get_class($oTicket));
+					}
+					else
+					{
+						$oAttachment->SetItem($oTicket);
+					}
 					$oBlob = new ormDocument($aAttachment['content'], $aAttachment['mimeType'], $aAttachment['filename']);
 					$oAttachment->Set('contents', $oBlob);
 					$oAttachment->DBInsert();
@@ -479,6 +550,7 @@ EOF
 					$oMyChangeOp->Set("description", Dict::Format('Attachments:History_File_Added', $aAttachment['filename']));
 					$iId = $oMyChangeOp->DBInsertNoReload();
 					MailInboxesEmailProcessor::Trace("Info: Attachment {$aAttachment['filename']} added to the ticket.");
+					$aAddedAttachments[$aAttachment['content-id']] = $oAttachment;
 				}
 			}
 			else
@@ -491,13 +563,84 @@ EOF
 			// Report the problem to the administrator...
 			$this->HandleError($oEmail, 'rejected_attachments', null, implode("\n", $aRejectedAttachments));
 		}
+		
+		return $aAddedAttachments;
+	}
+	
+	/**
+	 *
+	 * Update the item_class, item_id and item_org_id of the Attachments to match the values of the suplied ticket
+	 * To be called if the attachments were created BEFORE the actual creation of the ticket in the database
+	 * @param array $aAttachments An array of Attachment objects
+	 * @param Ticket $oTicket
+	 * @return an array of cid => Attachment
+	 */
+	protected function UpdateAttachments($aAttachments, Ticket $oTicket)
+	{
+		foreach($aAttachments as $oAttachment)
+		{
+			$oAttachment->SetItem($oTicket);
+			$oAttachment->DBUpdate();
+		}
+	}
+	
+	/**
+	 * Check if an the given mimeType is an image that can be processed by the system
+	 * @param string $sMimeType
+	 * @return boolean
+	 */
+	protected function IsImage($sMimeType)
+	{
+		if (!function_exists('gd_info')) return false; // no image processing capability on this system
+		
+		$bRet = false;
+		$aInfo = gd_info(); // What are the capabilities
+		switch($sMimeType)
+		{
+			case 'image/gif':
+			return $aInfo['GIF Read Support'];
+			break;
+			
+			case 'image/jpeg':
+			return $aInfo['JPEG Support'];
+			break;
+			
+			case 'image/png':
+			return $aInfo['PNG Support'];
+			break;
+
+		}
+		return $bRet;
+	}
+	
+	protected function GetImageSize($sImageData)
+	{
+		if (function_exists('getimagesizefromstring')) // PHP 5.4.0 or higher
+		{
+			$aRet = @getimagesizefromstring($sImageData);
+		}
+		else if(ini_get('allow_url_fopen'))
+		{
+			// work around to avoid creating a tmp file
+			$sUri = 'data://application/octet-stream;base64,'.base64_encode($sImageData);
+			$aRet = @getimagesize($sUri);
+		}
+		else
+		{
+			// Damned, need to create a tmp file
+			$sTempFile = tempnam(SetupUtils::GetTmpDir(), 'img-');
+			@file_put_contents($sTempFile, $sImageData);
+			$aRet = @getimagesize($sTempFile);
+			@unlink($sTempFile);
+		}
+		return $aRet;
 	}
 	
 	/**
 	 * Check if the supplied attachment contains a virus: implement you own methods based on your antivirus...
 	 * The following (inactive) code is just provided as an example
 	 * @param hash $aAttachment
-	 * @return bool True if the attachment contains a virus (and should be attached to the ticket), false otherwise
+	 * @return bool True if the attachment contains a virus (and should NOT be attached to the ticket), false otherwise
 	 */
 	protected function ContainsViruses($aAttachment)
 	{
@@ -734,5 +877,83 @@ EOF
 			self::Trace("Error: unsupported protocol: $sProtocol - please use one of: pop3, imap.");	
 		}
 		return $oSource;
+	}
+	
+	/**
+	 * Resize an image attachment so that it fits in the given dimensions
+	 * @param array $aAttachment The original image stored as an attached array (content / mimetype / filename)
+	 * @param int $iWidth Image's original width
+	 * @param int $iHeight Image's original height
+	 * @param int $iMaxImageWidth Maximum width for the resized image
+	 * @param int $iMaxImageHeight Maximum height for the resized image
+	 * @return array The modified attachment array with the resample image in the 'content'
+	 */
+	protected static function ResizeImageToFit($aAttachment, $iWidth, $iHeight, $iMaxImageWidth, $iMaxImageHeight)
+	{
+		$img = false;
+		switch($aAttachment['mimeType'])
+		{
+			case 'image/gif':
+			case 'image/jpeg':
+			case 'image/png':
+			$img = @imagecreatefromstring($aAttachment['content']);
+			break;
+			
+			default:
+			// Unsupported image type, return the image as-is
+			self::Trace("Warning: unsupported image type: '{$aAttachment['mimeType']}'. Cannot resize the image.");
+			return $aAttachment;
+		}
+		if ($img === false)
+		{
+			self::Trace("Warning: corrupted image: '{$aAttachment['filename']} / {$aAttachment['mimeType']}'. Cannot resize the image.");
+			return $aAttachment;
+		}
+		else
+		{
+			// Let's scale the image, preserving the transparency for GIFs and PNGs
+			
+			$fScale = min($iMaxImageWidth / $iWidth, $iMaxImageHeight / $iHeight);
+
+			$iNewWidth = $iWidth * $fScale;
+			$iNewHeight = $iHeight * $fScale;
+			
+			self::Trace("Info: resizing image from $iWidth x $iHeight to $iNewWidth x $iNewHeight px");
+			$new = imagecreatetruecolor($iNewWidth, $iNewHeight);
+			
+			// Preserve transparency
+			if(($aAttachment['mimeType'] == "image/gif") || ($aAttachment['mimeType'] == "image/png"))
+			{
+				imagecolortransparent($new, imagecolorallocatealpha($new, 0, 0, 0, 127));
+				imagealphablending($new, false);
+				imagesavealpha($new, true);
+			}
+			
+			imagecopyresampled($new, $img, 0, 0, 0, 0, $iNewWidth, $iNewHeight, $iWidth, $iHeight);
+			
+			ob_start();
+			switch ($aAttachment['mimeType'])
+			{
+				case 'image/gif':
+				imagegif($new); // send image to output buffer
+				break;
+				
+				case 'image/jpeg':
+				imagejpeg($new, null, 80); // null = send image to output buffer, 80 = good quality
+				break;
+				 
+				case 'image/png':
+				imagepng($new, null, 5); // null = send image to output buffer, 5 = medium compression
+				break;
+			}
+			$aAttachment['content'] = ob_get_contents();
+			ob_end_clean();
+			
+			imagedestroy($img);
+			imagedestroy($new);
+			
+			return $aAttachment;
+		}
+				
 	}
 }

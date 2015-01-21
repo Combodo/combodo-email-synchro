@@ -3,7 +3,7 @@
 
 SetupWebPage::AddModule(
 	__FILE__, // Path to the current file, all other file names are relative to the directory containing this file
-	'combodo-email-synchro/2.6.4',
+	'combodo-email-synchro/2.6.5',
 	array(
 		// Identification
 		//
@@ -69,6 +69,8 @@ SetupWebPage::AddModule(
                 '/\\R-----Message d\'origine-----\\R/m',
 			),
 			'use_message_id_as_uid' => false, // Do NOT change this unless you known what you are doing!!
+			'images_minimum_size' => '100x20', // Images smaller that these dimensions will be ignored (signatures...)
+			'images_maximum_size' => '', // Images bigger that these dimensions will be resized before uploading into iTop
 		),
 	)
 );
