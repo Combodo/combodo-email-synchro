@@ -3,7 +3,7 @@
 
 SetupWebPage::AddModule(
 	__FILE__, // Path to the current file, all other file names are relative to the directory containing this file
-	'combodo-email-synchro/2.6.5',
+	'combodo-email-synchro/2.6.6',
 	array(
 		// Identification
 		//
@@ -45,7 +45,7 @@ SetupWebPage::AddModule(
 			'notify_errors_from' => '', // mandatory as well (can be set at the same value as notify_errors_to)
 			'debug' => false,  			// Set to true to turn on debugging
 			'periodicity' => 30,		// interval at which to check for incoming emails (in s)
-			'body_parts_order' => 'text/plain,text/html', // Order in which to read the parts of the incoming emails
+			'body_parts_order' => 'text/html,text/plain', // Order in which to read the parts of the incoming emails
 			'pop3_auth_option' => 'USER',
 			'imap_options' => array('imap'),
 			'maximum_email_size' => '10M', // Maximum allowed size for incoming emails

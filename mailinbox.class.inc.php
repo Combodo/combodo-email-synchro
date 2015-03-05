@@ -394,7 +394,7 @@ EOF
 	 * @param bool $bNoDuplicates If true, don't add attachment that seem already attached to the ticket (same type, same name, same size, same md5 checksum)
 	 * @return an array of cid => attachment_id
 	 */
-	protected function AddAttachments(Ticket $oTicket, EmailMessage $oEmail, CMDBChange $oMyChange, $bNoDuplicates = true)
+	protected function AddAttachments(Ticket $oTicket, EmailMessage $oEmail, CMDBChange $oMyChange, $bNoDuplicates = true, &$aIgnoredAttachments = array())
 	{
 			if (self::$iMinImageWidth === null)
 		{
@@ -483,6 +483,7 @@ EOF
 						if (($iWidth < self::$iMinImageWidth) || ($iHeight < self::$iMinImageHeight))
 						{
 							$bIgnoreAttachment = true;
+							$aIgnoredAttachments[$aAttachment['content-id']] = true;
 							MailInboxesEmailProcessor::Trace("Info: Attachment '{$aAttachment['filename']}': $iWidth x $iHeight px rejected because it is too small (probably a signature). The minimum size is configured to ".self::$iMinImageWidth." x ".self::$iMinImageHeight." px");
 						}
 						else if ((self::$iMaxImageWidth > 0) && ($iWidth > self::$iMaxImageWidth) || ($iHeight > self::$iMaxImageHeight))
@@ -901,12 +902,12 @@ EOF
 			
 			default:
 			// Unsupported image type, return the image as-is
-			self::Trace("Warning: unsupported image type: '{$aAttachment['mimeType']}'. Cannot resize the image.");
+			self::Trace("Warning: unsupported image type: '{$aAttachment['mimeType']}'. Cannot resize the image, original image will be used.");
 			return $aAttachment;
 		}
 		if ($img === false)
 		{
-			self::Trace("Warning: corrupted image: '{$aAttachment['filename']} / {$aAttachment['mimeType']}'. Cannot resize the image.");
+			self::Trace("Warning: corrupted image: '{$aAttachment['filename']} / {$aAttachment['mimeType']}'. Cannot resize the image, original image will be used.");
 			return $aAttachment;
 		}
 		else
@@ -918,7 +919,7 @@ EOF
 			$iNewWidth = $iWidth * $fScale;
 			$iNewHeight = $iHeight * $fScale;
 			
-			self::Trace("Info: resizing image from $iWidth x $iHeight to $iNewWidth x $iNewHeight px");
+			self::Trace("Info: resizing image from ($iWidth x $iHeight) to ($iNewWidth x $iNewHeight) px");
 			$new = imagecreatetruecolor($iNewWidth, $iNewHeight);
 			
 			// Preserve transparency
@@ -947,11 +948,13 @@ EOF
 				break;
 			}
 			$aAttachment['content'] = ob_get_contents();
-			ob_end_clean();
+			@ob_end_clean();
 			
 			imagedestroy($img);
 			imagedestroy($new);
 			
+			self::Trace("Info: resized image is ".strlen($aAttachment['content'])." bytes long.");
+				
 			return $aAttachment;
 		}
 				
