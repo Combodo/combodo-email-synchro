@@ -377,7 +377,7 @@ class EmailMessage {
 		{
 			// In HTML the "quoted" text is supposed to be inside "<blockquote....>.....</blockquote>"
 			$this->sTrace .= 'Processing the HTML body (removing blockquotes)'."\n";
-			$sBodyText = preg_replace("|<blockquote.+</blockquote>|iU", '', $sBodyText);
+			$sBodyText = preg_replace("|<blockquote.+</blockquote>|iUms", '', $sBodyText);
 			$this->sTrace .= 'Converting the HTML body to plain text'."\n";
 			$sBodyText = $this->StripTags($sBodyText);
 		}
