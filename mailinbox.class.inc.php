@@ -486,7 +486,7 @@ EOF
 							$aIgnoredAttachments[$aAttachment['content-id']] = true;
 							MailInboxesEmailProcessor::Trace("Info: Attachment '{$aAttachment['filename']}': $iWidth x $iHeight px rejected because it is too small (probably a signature). The minimum size is configured to ".self::$iMinImageWidth." x ".self::$iMinImageHeight." px");
 						}
-						else if ((self::$iMaxImageWidth > 0) && ($iWidth > self::$iMaxImageWidth) || ($iHeight > self::$iMaxImageHeight))
+						else if ((self::$iMaxImageWidth > 0) && (($iWidth > self::$iMaxImageWidth) || ($iHeight > self::$iMaxImageHeight)))
 						{
 							MailInboxesEmailProcessor::Trace("Info: Attachment '{$aAttachment['filename']}': $iWidth x $iHeight px will be resized to fit into ".self::$iMaxImageWidth." x ".self::$iMaxImageHeight." px");
 							$aAttachment = self::ResizeImageToFit($aAttachment, $iWidth, $iHeight, self::$iMaxImageWidth, self::$iMaxImageHeight);
