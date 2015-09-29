@@ -818,6 +818,19 @@ EOF
 				 				}
 				 			}
 				 		}
+				 		else if ($oAttDef instanceof AttributeEnum)
+				 		{
+				 			// For enums the allowed values are value => label
+				 			foreach($aValues as $allowedValue => $sLocalizedLabel)
+				 			{
+				 				if (($allowedValue == $value) || ($sLocalizedLabel == $value))
+				 				{
+				 					$bFound = true;
+				 					$oObj->Set($sAttCode, $value);
+				 					break;
+				 				}
+				 			}
+				 		}
 				 		else if($oAttDef->IsScalar())
 				 		{
 				 			foreach($aValues as $allowedValue)
