@@ -269,7 +269,7 @@ class EmailMessage {
 	
 	public function IsValid()
 	{
-		$bValid = !empty($this->sUIDL) && !empty($this->sSubject) && !empty($this->sCallerEmail) && !empty($this->sCallerName);
+		$bValid = !empty($this->sUIDL) && !empty($this->sCallerEmail) && !empty($this->sCallerName);
 
 		foreach($this->aAttachments as $aAttachment)
 		{
