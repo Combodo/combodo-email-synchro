@@ -346,11 +346,11 @@ class EmailMessage {
 	{
 		if ($sBodyText === null)
 		{
-			$sBodyText == $this->sBodyText;
+			$sBodyText = $this->sBodyText;
 		}
 		if ($sBodyFormat === null)
 		{
-			$sBodyFormat == $this->sBodyFormat;
+			$sBodyFormat = $this->sBodyFormat;
 		}
 		$this->sTrace .= "Beginning of GetNewPart:\n";
 		$this->sTrace .= "=== eMail body ({$sBodyFormat}): ===\n{$sBodyText}\n=============\n";
