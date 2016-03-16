@@ -172,6 +172,12 @@ class RawEmailMessage
 				{
 					$sFileName = $aMatches[1];
 				}
+				$bInline = true;
+				if (stripos($sContentDisposition, 'attachment;') !== false)
+				{
+					$bInline = false;
+				}
+				
 				
 				$sType = '';
 				$sContentId = $this->GetHeader('content-id', $aPart['headers']);
@@ -208,6 +214,7 @@ class RawEmailMessage
 					'mimeType' => $sType,
 					'content-id' => $sContentId,
 					'content' => $this->DecodePart($aPart['headers'], $aPart['body']),
+					'inline' => $bInline,
 				);
 			}
 		}
@@ -644,6 +651,16 @@ class RawEmailMessage
 				else
 				{
 					$sBody = $sOriginalBody; // Pass it as-is !!!
+				}
+			}
+			if (preg_match('/^([^;]+)/', $sHeader, $aMatches))
+			{
+				$sPartMimeType = $aMatches[1];
+				if (strcasecmp($sPartMimeType, 'text/html') == 0)
+				{
+					// Right now the part is converted to UTF-8, so let's remove <meta charset=xxx> tags
+					// which may fool further attemps at parsing the HTML (for example with DOMXML)
+					$sBody = preg_replace('/<meta [^>]*charset=[^>]+>/i', '', $sBody);
 				}
 			}
 		}

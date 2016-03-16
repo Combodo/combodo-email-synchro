@@ -65,7 +65,8 @@ $idx = 1;
 $aCIDToImage = array();
 foreach($oEmail->aAttachments as $aAttachment)
 {
-	echo "\t$idx {$aAttachment['filename']} - {$aAttachment['mimeType']}, ".strlen($aAttachment['content'])." bytes, CID: ".$aAttachment['content-id']."\n";
+	$sInline = $aAttachment['inline'] ? 'yes' : 'no';
+	echo "\t$idx {$aAttachment['filename']} - {$aAttachment['mimeType']}, ".strlen($aAttachment['content'])." bytes, CID: ".$aAttachment['content-id'].", Inline ?: $sInline\n";
 	// Uncomment the line below to dump the attachments as separate files
 	//file_put_contents('/tmp/'.$aAttachment['filename'], $aAttachment['content']);
 	if ($aAttachment['content-id'] != '')
@@ -121,6 +122,10 @@ echo "=================\n";
 	}
 	echo "Plain Text Version:\n$sBodyText\n";
 }
+echo "===============================\n";
+echo "GetNewPart() returned:\n";
+echo "===============================\n";
+echo $oEmail->GetNewPart($oEmail->sBodyText, 'text/html');
 echo "===============================\n";
 
 

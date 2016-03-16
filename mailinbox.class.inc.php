@@ -396,7 +396,7 @@ EOF
 	 */
 	protected function AddAttachments(Ticket $oTicket, EmailMessage $oEmail, CMDBChange $oMyChange, $bNoDuplicates = true, &$aIgnoredAttachments = array())
 	{
-			if (self::$iMinImageWidth === null)
+		if (self::$iMinImageWidth === null)
 		{
 			$sMinImagesSize = MetaModel::GetModuleSetting('combodo-email-synchro', 'images_minimum_size','0x0');
 			if (preg_match('/^([0-9]+)x([0-9]+)$/i', $sMinImagesSize, $aMatches))
@@ -455,12 +455,32 @@ EOF
 				$oDoc = $oPrevAttachment->Get('contents');
 				$data = $oDoc->GetData();
 				$aPreviousAttachments[] = array(
+					'class' => 'Attachment',
 					'filename' => $oDoc->GetFileName(),
 					'mimeType' => $oDoc->GetMimeType(),
 					'size' => strlen($data),
 					'md5' => md5($data),
 					'object' => $oPrevAttachment,
 				);
+			}
+			// same processing for InlineImages
+			if (class_exists('InlineImage'))
+			{
+				$sOQL = "SELECT InlineImage WHERE item_class = :class AND item_id = :id";
+				$oAttachments = new DBObjectSet(DBObjectSearch::FromOQL($sOQL), array(), array('class' => get_class($oTicket), 'id' => $oTicket->GetKey()));
+				while($oPrevAttachment = $oAttachments->Fetch())
+				{
+					$oDoc = $oPrevAttachment->Get('contents');
+					$data = $oDoc->GetData();
+					$aPreviousAttachments[] = array(
+						'class' => 'InlineImage',
+						'filename' => $oDoc->GetFileName(),
+						'mimeType' => $oDoc->GetMimeType(),
+						'size' => strlen($data),
+						'md5' => md5($data),
+						'object' => $oPrevAttachment,
+					);
+				}
 			}
 		}
 		foreach($oEmail->aAttachments as $aAttachment)
@@ -484,11 +504,11 @@ EOF
 						{
 							$bIgnoreAttachment = true;
 							$aIgnoredAttachments[$aAttachment['content-id']] = true;
-							MailInboxesEmailProcessor::Trace("Info: Attachment '{$aAttachment['filename']}': $iWidth x $iHeight px rejected because it is too small (probably a signature). The minimum size is configured to ".self::$iMinImageWidth." x ".self::$iMinImageHeight." px");
+							MailInboxesEmailProcessor::Trace("Info: attachment '{$aAttachment['filename']}': $iWidth x $iHeight px rejected because it is too small (probably a signature). The minimum size is configured to ".self::$iMinImageWidth." x ".self::$iMinImageHeight." px");
 						}
 						else if ((self::$iMaxImageWidth > 0) && (($iWidth > self::$iMaxImageWidth) || ($iHeight > self::$iMaxImageHeight)))
 						{
-							MailInboxesEmailProcessor::Trace("Info: Attachment '{$aAttachment['filename']}': $iWidth x $iHeight px will be resized to fit into ".self::$iMaxImageWidth." x ".self::$iMaxImageHeight." px");
+							MailInboxesEmailProcessor::Trace("Info: attachment '{$aAttachment['filename']}': $iWidth x $iHeight px will be resized to fit into ".self::$iMaxImageWidth." x ".self::$iMaxImageHeight." px");
 							$aAttachment = self::ResizeImageToFit($aAttachment, $iWidth, $iHeight, self::$iMaxImageWidth, self::$iMaxImageHeight);
 						}
 					}
@@ -502,7 +522,7 @@ EOF
 						// The attachment is too big, reject it, and replace it by a text message, explaining what happened
 						$aAttachment = $this->RejectBigAttachment($aAttachment, $oTicket);
 						$aRejectedAttachments[] = $aAttachment['content'];
-						MailInboxesEmailProcessor::Trace("Info: Attachment '{$aAttachment['filename']}' too big (size = $iSize > max size = {$this->iMaxAttachmentSize} bytes)");
+						MailInboxesEmailProcessor::Trace("Info: attachment '{$aAttachment['filename']}' too big (size = $iSize > max size = {$this->iMaxAttachmentSize} bytes)");
 					}
 					else
 					{
@@ -515,7 +535,7 @@ EOF
 							    ($sMd5 == $aPrevious['md5']) )
 							{
 								// Skip this attachment
-								MailInboxesEmailProcessor::Trace("Info: Attachment {$aAttachment['filename']} skipped, already attached to the ticket.");
+								MailInboxesEmailProcessor::Trace("Info: attachment {$aAttachment['filename']} skipped, already attached to the ticket.");
 								$aAddedAttachments[$aAttachment['content-id']] = $aPrevious['object']; // Still remember it for processing inline images
 								$bIgnoreAttachment = true;
 								break;
@@ -526,13 +546,23 @@ EOF
 				if (!$bIgnoreAttachment && $this->ContainsViruses($aAttachment))
 				{
 					// Skip this attachment
-					MailInboxesEmailProcessor::Trace("Info: Attachment {$aAttachment['filename']} is reported as containing a virus, skipped.");
-					$aRejectedAttachments[] = "Attachment {$aAttachment['filename']} was reported as containing a virus, it has been skipped.";
+					MailInboxesEmailProcessor::Trace("Info: attachment {$aAttachment['filename']} is reported as containing a virus, skipped.");
+					$aRejectedAttachments[] = "attachment {$aAttachment['filename']} was reported as containing a virus, it has been skipped.";
 					$bIgnoreAttachment = true;
 				}
 				if (!$bIgnoreAttachment)
 				{
-					$oAttachment = new Attachment;
+					if (class_exists('InlineImage') && $aAttachment['inline'])
+					{
+						$oAttachment = new InlineImage();
+						MailInboxesEmailProcessor::Trace("Info: email attachment {$aAttachment['filename']} will be stored as an InlineImage.");
+						$oAttachment->Set('secret', sprintf ('%06x', mt_rand(0, 0xFFFFFF))); // something not easy to guess
+					}
+					else
+					{
+						MailInboxesEmailProcessor::Trace("Info: email attachment {$aAttachment['filename']} will be stored as an Attachment.");
+						$oAttachment = new Attachment();
+					}
 					if ($oTicket->IsNew())
 					{
 						$oAttachment->Set('item_class', get_class($oTicket));
