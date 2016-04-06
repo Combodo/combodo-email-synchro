@@ -302,19 +302,6 @@ EOF
 			$oTicket = null;
 		}
 		
-		if ($oTicket == null)
-		{
-			// No associated ticket found by parsing the headers, check
-			// if the subject does not match a specific pattern
-			if(preg_match($this->sTitlePattern, $oEmail->sSubject, $aMatches))
-			{
-				$iTicketId = 0;
-				sscanf($aMatches[1], '%d', $iTicketId);
-				$this->Trace("iTop Simple Email Synchro: Retrieving ticket ".$iTicketId." (match by subject pattern)...");
-				$oTicket = MetaModel::GetObject('Ticket', $iTicketId, false);
-			}
-		}
-		
 		if ($this->bCreateOnly || !is_object($oTicket))
 		{
 			// No ticket associated with the incoming email, let's create a new ticket
