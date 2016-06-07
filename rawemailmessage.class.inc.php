@@ -159,6 +159,7 @@ class RawEmailMessage
 	 */
 	public function GetAttachments(&$aAttachments = null, $aPart = null, &$index = 1)
 	{
+		static $iAttachmentCount = 0;
 		if ($aAttachments === null) $aAttachments = array();
 		if ($aPart === null) $aPart = $this->aParts; //Init for recursion
 		
@@ -178,6 +179,11 @@ class RawEmailMessage
 				if (($sContentId != '') && (preg_match('/^<(.+)>$/', $sContentId, $aMatches)))
 				{
 					$sContentId = $aMatches[1];
+				}
+				else
+				{
+					$sContentId = 'itop_'.$iAttachmentCount;
+					$iAttachmentCount++;
 				}
 				$sContentType = $this->GetHeader('content-type', $aPart['headers']);
 				if (($sContentType != '') && (preg_match('/^([^;]+)/', $sContentType, $aMatches)))

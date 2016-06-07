@@ -60,7 +60,20 @@ abstract class MailInboxBase extends cmdbAbstractObject
 		$this->sLastError = '';
 	}
 	
+	
 	/**
+	 * Make sure that only administrators can see/export the password
+	 */
+	public function Get($sAttCode)
+	{
+		if (($sAttCode == 'password') && (!UserRights::IsAdministrator()))
+		{
+			return '*****';
+		}
+		return parent::Get($sAttCode);
+	}
+
+	/*
 	 * Add an extra tab showing the content of the mailbox...
 	 * @see cmdbAbstractObject::DisplayBareRelations()
 	 */
