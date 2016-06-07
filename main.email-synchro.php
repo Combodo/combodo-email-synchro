@@ -299,6 +299,9 @@ class EmailMessage {
 		$sStyleExpr = '|<style>(.*)</style>|iUs';
 		$sBodyText = preg_replace($sStyleExpr, '', $sText);
 		
+		// Preserve hyperlinks <pre>...</pre> tags
+		$sBodyText = preg_replace_callback('|<a([^>]*)>(.*)</a>|isU', array($this, 'AnchorsReplaceCallback'), $sBodyText);
+		
 		// Preserve new lines inside <pre>...</pre> tags
 		$sBodyText = preg_replace_callback('|<pre>(.*)</pre>|isU', array($this, 'PregReplaceCallback'), $sBodyText);
 
@@ -325,6 +328,36 @@ class EmailMessage {
 		$sBodyText = str_replace(self::NEW_LINE_MARKER, "\n", $sBodyText);
 	
 		return trim($sBodyText, " \r\n\t".chr(0xC2).chr(0xA0)); // c2a0 is the UTF-8 non-breaking space character
+	}
+	
+	/**
+	 * Function used with preg_replace_callback to replace the anchors/hyperlinks tags <a ...>...</a>
+	 * @param hash $aMatches
+	 * @return string
+	 */
+	protected function AnchorsReplaceCallback($aMatches)
+	{
+		$sAttributes = $aMatches[1];
+		if(preg_match('/href="([^"]+)"/', $sAttributes, $aHrefMatches))
+		{
+			// Hyperlinks
+			if (substr($aHrefMatches[1], 0, 7) == 'mailto:')
+			{
+				// "mailto:" hyperlinks: keep only the email address (will not be clickable in iTop anyhow)
+				$sText = substr($aHrefMatches[1], 7);
+			}
+			else
+			{
+				// Other type of hyperlink, keep as-is, the display in iTop will turn it back into a clickable hyperlink
+				$sText = $aHrefMatches[1];
+			}
+		}
+		else
+		{
+			// No hyperlink, just keep the text of the anchor
+			$sText = $aMatches[2];
+		}
+		return $sText;
 	}
 	
 	/**
