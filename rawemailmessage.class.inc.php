@@ -173,6 +173,10 @@ class RawEmailMessage
 				{
 					$sFileName = $aMatches[1];
 				}
+				else if (($sContentDisposition != '') && (preg_match('/filename=([^"]+)/', $sContentDisposition, $aMatches))) // same but without quotes
+				{
+					$sFileName = $aMatches[1];
+				}
 				
 				$sType = '';
 				$sContentId = $this->GetHeader('content-id', $aPart['headers']);
@@ -508,7 +512,10 @@ class RawEmailMessage
 			}
 			else // the current header continues on this line
 			{
-				$aRawFields[$sCurrentHeader] .= substr($sLine, 1);
+				if (isset($aRawFields[$sCurrentHeader]))
+				{
+					$aRawFields[$sCurrentHeader] .= substr($sLine, 1);
+				}
 			}
 			$idx++;
 		}
