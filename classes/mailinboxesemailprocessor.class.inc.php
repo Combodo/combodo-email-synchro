@@ -1,166 +1,23 @@
 <?php
-///////////////////////////////////////////////////////////////////////////////////////
+// Copyright (C) 2012-2016 Combodo SARL
+//
+//   This program is free software; you can redistribute it and/or modify
+//   it under the terms of the GNU Lesser General Public License as published by
+//   the Free Software Foundation; version 3 of the License.
+//
+//   This program is distributed in the hope that it will be useful,
+//   but WITHOUT ANY WARRANTY; without even the implied warranty of
+//   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//   GNU General Public License for more details.
+//
+//   You should have received a copy of the GNU General Public License
+//   along with this program; if not, write to the Free Software
+//   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 /**
- * Abstract class which serves as a skeleton for implementing your own processor of emails
- *
+ * @copyright   Copyright (C) 2012-2016 Combodo SARL
+ * @license     http://opensource.org/licenses/AGPL-3.0
  */
-abstract class EmailProcessor
-{
-	const NO_ACTION = 0;
-	const DELETE_MESSAGE = 1;
-	const PROCESS_MESSAGE = 2;
-	const PROCESS_ERROR = 3;
-	const MARK_MESSAGE_AS_ERROR = 4;
-	
-	abstract public function ListEmailSources();
-	
-	abstract public function DispatchMessage(EmailSource $oSource, $index, $sUIDL, $oEmailReplica = null);
 
-	/**
-	 * Process the email downloaded from the mailbox.
-	 * This implementation delegates the processing the MailInbox instances
-	 * The caller (identified by its email) must already exists in the database
-	 * @param EmailSource $oSource The source from which the email was read
-	 * @param integer $index The index of the message in the mailbox
-	 * @param EmailMessage $oEmail The downloaded/decoded email message
-	 * @param EmailReplica $oEmailReplica The information associating a ticket to the email. This replica is new (i.e. not yet in DB for new messages)
-	 * @return integer Next Action Code
-	 */
-	abstract public function ProcessMessage(EmailSource $oSource, $index, EmailMessage $oEmail, EmailReplica $oEmailReplica);
-		
-	/**
-	 * Called, before deleting the message from the source when the decoding fails
-	 * $oEmail can be null
-	 * @return integer Next Action Code
-	 */
-	public function OnDecodeError(EmailSource $oSource, $sUIDL, $oEmail, RawEmailMessage $oRawEmail)
-	{
-		$sSubject = "iTop ticket creation or update from mail FAILED";
-		$sEMailSubject = '';
-		if ($oEmail != null)
-		{
-			$sEMailSubject = $oEmail->sSubject;
-		}
-		$sMessage = "The message (".$sUIDL."), subject: '$sEMailSubject', was not decoded properly and therefore was not processed.\n";
-		$sMessage .= "The original message is attached to this message.\n";
-		$this->Trace($sMessage);
-		EmailBackgroundProcess::ReportError($sSubject, $sMessage, $oRawEmail);
-		return self::MARK_MESSAGE_AS_ERROR;		
-	}
-	
-	/**
-	 * @var string To be set by ProcessMessage in case of error
-	 */
-	protected $sLastErrorSubject;
-	/**
-	 * @var string To be set by ProcessMessage in case of error
-	 */
-	protected $sLastErrorMessage;
-	 
-	/**
-	 * Returns the subject for the last error when process ProcessMessage returns PROCESS_ERROR
-	 * @return string The subject for the error message email
-	 */
-	public function GetLastErrorSubject()
-	{
-		return $this->sLastErrorSubject;
-	}
-	/**
-	 * Returns the body of the message for the last error when process ProcessMessage returns PROCESS_ERROR
-	 * @return string The body for the error message email
-	 */
-	public function GetLastErrorMessage()
-	{
-		return $this->sLastErrorMessage;
-	}
-}
-
-/////////////////////////////////////////////////////////////////////////////
-/**
- * Used for the unit test of the EmailMessage class
- * Simulates incoming messages by reading from a directory './log) containing .eml files
- * and processes them to check the decoding of the messages
- *
- */
-class TestEmailProcessor extends EmailProcessor
-{
-	public function ListEmailSources()
-	{
-//		return array( 0 => new IMAPEmailSource('ssl0.ovh.net', 993, 'tickets@combodo.com', 'c8mb0do', '', array('imap', 'ssl', 'novalidate-cert')));
-		return array( 0 => new TestEmailSource(dirname(__FILE__).'/log', 'test'));
-	}
-	
-	public function DispatchMessage(EmailSource $oSource, $index, $sUIDL, $oEmailReplica = null)
-	{
-		return EmailProcessor::PROCESS_MESSAGE;
-	}
-	
-	/**
-	 * Process the email downloaded from the mailbox.
-	 * This implementation delegates the processing the MailInbox instances
-	 * The caller (identified by its email) must already exists in the database
-	 * @param EmailSource $oSource The source from which the email was read
-	 * @param integer $index The index of the message in the mailbox
-	 * @param EmailMessage $oEmail The downloaded/decoded email message
-	 * @param EmailReplica $oEmailReplica The information associating a ticket to the email. This replica is new (i.e. not yet in DB for new messages)
-	 * @return integer Next Action Code
-	 */
-	public function ProcessMessage(EmailSource $oSource, $index, EmailMessage $oEmail, EmailReplica $oEmailReplica)
-	{
-		$sMessage = "[$index] ".$oEmail->sMessageId.' - From: '.$oEmail->sCallerEmail.' ['.$oEmail->sCallerName.']'.' Subject: '.$oEmail->sSubject.' - '.count($oEmail->aAttachments).' attachment(s)';
-		if (empty($oEmail->sSubject))
-		{
-			$sMessage .= "\n=====================================\nERROR: Empty subject for the message.\n";
-		}
-		if (empty($oEmail->sBodyText))
-		{
-			$sMessage .= "\n=====================================\nERROR: Empty body for the message.\n";
-		}
-		else
-		{
-			$sNewPart = $oEmail->GetNewPart();
-			$sMessage .= "\n=====================================\nFormat:{$oEmail->sBodyFormat} \nNewpart:\n{$sNewPart}\n============================================.\n";
-		}
-		$index = 0;
-		foreach($oEmail->aAttachments as $aAttachment)
-		{
-			$sMessage .= "\n\tAttachment #$index\n";
-			if (empty($aAttachment['mimeType']))
-			{
-				$sMessage .= "\n=====================================\nERROR: Empty mimeType for attachment #$index of the message.\n";
-			}
-			else
-			{
-				$sMessage .= "\t\tType: {$aAttachment['mimeType']}\n";
-			}
-			if (empty($aAttachment['filename']))
-			{
-				$sMessage .= "\n=====================================\nERROR: Empty filename for attachment #$index of the message.\n";
-			}
-			else
-			{
-				$sMessage .= "\t\tName: {$aAttachment['filename']}\n";
-			}
-			if (empty($aAttachment['content']))
-			{
-				$sMessage .= "\n=====================================\nERROR: Empty CONTENT for attachment #$index of the message.\n";
-			}
-			else
-			{
-				$sMessage .= "\t\tContent: ".strlen($aAttachment['content'])." bytes\n";
-			}
-			$index++;
-		}
-		if (!utils::IsModeCLI())
-		{
-			$sMessage = '<p>'.htmlentities($sMessage, ENT_QUOTES, 'UTF-8').'</p>';
-		}
-		echo $sMessage."\n";
-		return EmailProcessor::NO_ACTION;	
-	}	
-}
-
-/////////////////////////////////////////////////////////////////////////////
 /**
  * Processes messages coming from email sources corresponding to instances
  * of MailInbox (and derived) classes. 1 instance = 1 email source
@@ -225,7 +82,7 @@ class MailInboxesEmailProcessor extends EmailProcessor
 			catch(Exception $e)
 			{
 				// Don't use Trace, always output the error so that the log file can be monitored for errors
-				echo "Error - Failed to initialize the mailbox: ".$oInbox->GetName().", the mailbox will not be polled. Reason (".$e->getMessage().")";
+				echo "Error - Failed to initialize the mailbox: ".$oInbox->GetName().", the mailbox will not be polled. Reason (".$e->getMessage().")\n";
 			}
 		}
 
@@ -250,11 +107,11 @@ class MailInboxesEmailProcessor extends EmailProcessor
 	}
 	
 	/**
-	 * Returns a text message corresponding to the given action code
+	 * Returns a action (string) corresponding to the given action code
 	 * @param int $iRetCode The action code from EmailProcessor
 	 * @return string The textual code of the action
 	 */
-	protected function GetMessageFromCode($iRetCode)
+	protected function GetActionFromCode($iRetCode)
 	{
 		$sRetCode = 'Unknown Code '.$iRetCode;
 		switch($iRetCode)
@@ -292,7 +149,7 @@ class MailInboxesEmailProcessor extends EmailProcessor
 
 		$oInbox = $this->GetInboxFromSource($oSource);
 		$iRetCode = $oInbox->DispatchEmail($oEmailReplica);
-		$sRetCode = $this->GetMessageFromCode($iRetCode);
+		$sRetCode = $this->GetActionFromCode($iRetCode);
 
 		self::Trace("Combodo Email Synchro: MailInboxesEmailProcessor: dispatch of the message $index ($sUIDL) returned $iRetCode ($sRetCode)");
 		return $iRetCode;
@@ -346,7 +203,7 @@ class MailInboxesEmailProcessor extends EmailProcessor
 					$oInbox->ReprocessOldEmail($oSource, $index, $oEmail, $oEmailReplica);		
 			}
 			$iRetCode = $oInbox->GetNextAction();
-			$sRetCode = $this->GetMessageFromCode($iRetCode);
+			$sRetCode = $this->GetActionFromCode($iRetCode);
 			self::Trace("Combodo Email Synchro: MailInboxesEmailProcessor: End of processing of the new message $index ({$oEmail->sUIDL}) retCode: ($iRetCode) $sRetCode");
 		}
 		catch(Exception $e)
@@ -374,3 +231,6 @@ class MailInboxesEmailProcessor extends EmailProcessor
 		return $oInbox->GetNextAction();
 	}
 }
+
+// Register the background action for asynchronous execution in cron.php
+EmailBackgroundProcess::RegisterEmailProcessor('MailInboxesEmailProcessor');

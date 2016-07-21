@@ -3,7 +3,7 @@
 
 SetupWebPage::AddModule(
 	__FILE__, // Path to the current file, all other file names are relative to the directory containing this file
-	'combodo-email-synchro/2.6.11',
+	'combodo-email-synchro/3.0.0',
 	array(
 		// Identification
 		//
@@ -14,17 +14,14 @@ SetupWebPage::AddModule(
 		//
 		'dependencies' => array(
 		),
-		'mandatory' => true,
-		'visible' => false,
+		'mandatory' => false,
+		'visible' => true,
 
 		// Components
 		//
 		'datamodel' => array(
-			'model.email-synchro.php',
-			'mailinbox.class.inc.php',
-			'emailprocessor.class.inc.php',
-			'emailbackgroundprocess.class.inc.php',
-			'trigger.class.inc.php',
+			'classes/autoload.php',	
+			'model.combodo-email-synchro.php',
 		),
 		'dictionary' => array(
 		),

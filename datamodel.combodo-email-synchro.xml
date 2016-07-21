@@ -1,83 +1,125 @@
-<?php
-/////////////////////////////////////////////////////////////////////////////
-
-/**
+<?xml version="1.0" encoding="UTF-8"?>
+<itop_design xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.0">
+  <classes>
+    <class id="MailInboxBase" _delta="define">
+      <parent>cmdbAbstractObject</parent>
+      <properties>
+        <comment>/**
  * Default object for parametrization of the Ticket creation from eMails within
  * the standard iTop user interface.
  * Derive from this class to implement MailInboxes with a specific processing of
  * the messages, and also a additional configuration options linked with this behavior.
  *
  * @package     combodo-email-synchro
- */
-abstract class MailInboxBase extends cmdbAbstractObject
-{
-	protected static $aExcludeAttachments = null; // list of attachment types (MimeTypes) that should not be attached to a ticket
-	protected static $iMinImageWidth = null;
-	protected static $iMinImageHeight = null;
-	protected static $iMaxImageWidth = null;
-	protected static $iMaxImageHeight = null;
-	protected $iNextAction;
-	protected $iMaxAttachmentSize;
-	protected $sBigFilesDir;
-	public $sLastError;
-	
-	public static function Init()
-	{
-		$aParams = array
-		(
-			"category" => "core/cmdb",
-			"key_type" => "autoincrement",
-			"name_attcode" => array("login"),
-			"state_attcode" => "",
-			"reconc_keys" => array('server', 'login', 'protocol', 'mailbox', 'port'),
-			"db_table" => "mailinbox_base",
-			"db_key_field" => "id",
-			"db_finalclass_field" => "realclass",
-			"display_template" => "",
-			'icon' => utils::GetAbsoluteUrlModulesRoot().basename(dirname(__FILE__)).'/images/mailbox.png',
-		);
-		MetaModel::Init_Params($aParams);
-		//MetaModel::Init_InheritAttributes();
-		MetaModel::Init_AddAttribute(new AttributeString("server", array("allowed_values"=>null, "sql"=>"server", "default_value"=>null, "is_null_allowed"=>false, "depends_on"=>array())));
-		MetaModel::Init_AddAttribute(new AttributeString("mailbox", array("allowed_values"=>null, "sql"=>"mailbox", "default_value"=>null, "is_null_allowed"=>true, "depends_on"=>array())));
-		MetaModel::Init_AddAttribute(new AttributeString("login", array("allowed_values"=>null, "sql"=>"login", "default_value"=>null, "is_null_allowed"=>false, "depends_on"=>array())));
-		MetaModel::Init_AddAttribute(new AttributePassword("password", array("allowed_values"=>null, "sql"=>"password", "default_value"=>null, "is_null_allowed"=>true, "depends_on"=>array())));
-		MetaModel::Init_AddAttribute(new AttributeEnum("protocol", array("allowed_values"=>new ValueSetEnum('pop3,imap'), "sql"=>"protocol", "default_value"=>'pop3', "is_null_allowed"=>false, "depends_on"=>array())));
-		MetaModel::Init_AddAttribute(new AttributeInteger("port", array("allowed_values"=>null, "sql"=>"port", "default_value"=>null, "is_null_allowed"=>true, "depends_on"=>array())));
-		MetaModel::Init_AddAttribute(new AttributeEnum("active", array("allowed_values"=>new ValueSetEnum('yes,no'), "sql"=>"active", "default_value"=>'yes', "is_null_allowed"=>false, "depends_on"=>array())));
-		
-		// Display lists
-		MetaModel::Init_SetZListItems('details', array('server', 'mailbox', 'login', 'password', 'protocol', 'port')); // Attributes to be displayed for the complete details
-		MetaModel::Init_SetZListItems('list', array('server', 'mailbox','protocol')); // Attributes to be displayed for a list
-	}
-	
-	public function __construct($aRow = null, $sClassAlias = '', $aAttToLoad = null, $aExtendedDataSpec = null)
+ */</comment>
+        <category>searchable,view_in_gui,bizmodel</category>
+        <abstract>true</abstract>
+        <key_type>autoincrement</key_type>
+        <db_table>mailinbox_base</db_table>
+        <db_key_field>id</db_key_field>
+        <db_final_class_field>realclass</db_final_class_field>
+        <naming>
+          <format>%1$s</format>
+          <attributes>
+            <attribute id="login"/>
+          </attributes>
+        </naming>
+        <display_template/>
+        <icon>images/mailbox.png</icon>
+        <reconciliation>
+          <attributes>
+            <attribute id="server"/>
+            <attribute id="login"/>
+            <attribute id="protocol"/>
+            <attribute id="mailbox"/>
+            <attribute id="port"/>
+          </attributes>
+        </reconciliation>
+      </properties>
+      <fields>
+        <field id="server" xsi:type="AttributeString">
+          <sql>server</sql>
+          <default_value/>
+          <is_null_allowed>false</is_null_allowed>
+        </field>
+        <field id="mailbox" xsi:type="AttributeString">
+          <sql>mailbox</sql>
+          <default_value/>
+          <is_null_allowed>true</is_null_allowed>
+        </field>
+        <field id="login" xsi:type="AttributeString">
+          <sql>login</sql>
+          <default_value/>
+          <is_null_allowed>false</is_null_allowed>
+        </field>
+        <field id="password" xsi:type="AttributePassword">
+          <sql>password</sql>
+          <default_value/>
+          <is_null_allowed>true</is_null_allowed>
+        </field>
+        <field id="protocol" xsi:type="AttributeEnum">
+          <values>
+            <value>pop3</value>
+            <value>imap</value>
+          </values>
+          <sql>protocol</sql>
+          <default_value>pop3</default_value>
+          <is_null_allowed>false</is_null_allowed>
+        </field>
+        <field id="port" xsi:type="AttributeInteger">
+          <sql>port</sql>
+          <default_value/>
+          <is_null_allowed>true</is_null_allowed>
+        </field>
+        <field id="active" xsi:type="AttributeEnum">
+          <values>
+            <value>yes</value>
+            <value>no</value>
+          </values>
+          <sql>active</sql>
+          <default_value>yes</default_value>
+          <is_null_allowed>false</is_null_allowed>
+        </field>
+      </fields>
+      <methods>
+        <method id="__construct">
+          <static>false</static>
+          <access>public</access>
+          <type>OQLMenuNode</type>
+          <code><![CDATA[	public function __construct($aRow = null, $sClassAlias = '', $aAttToLoad = null, $aExtendedDataSpec = null)
 	{
 		parent::__construct($aRow, $sClassAlias, $aAttToLoad, $aExtendedDataSpec);
 		$aData = CMDBSource::QueryToArray('SELECT @@global.max_allowed_packet');
 		$this->iMaxAttachmentSize = (int)$aData[0]['@@global.max_allowed_packet'] - 500; // Keep some room for the rest of the SQL query
 		$this->sBigFilesDir = MetaModel::GetModuleSetting('combodo-email-synchro', 'big_files_dir', '');
 		$this->sLastError = '';
-	}
-	
-	
-	/**
+	}]]></code>
+        </method>
+        <method id="Get">
+          <comment>/**
 	 * Make sure that only administrators can see/export the password
-	 */
-	public function Get($sAttCode)
+	 */</comment>
+          <static>false</static>
+          <access>public</access>
+          <type>Overload-DBObject</type>
+          <code><![CDATA[	public function Get($sAttCode)
 	{
 		if (($sAttCode == 'password') && (!UserRights::IsAdministrator()))
 		{
 			return '*****';
 		}
 		return parent::Get($sAttCode);
-	}
-	
-	/**
+	}]]></code>
+        </method>
+        <method id="DisplayBareRelations">
+          <comment>/**
 	 * Add an extra tab showing the content of the mailbox...
 	 * @see cmdbAbstractObject::DisplayBareRelations()
-	 */
-	function DisplayBareRelations(WebPage $oPage, $bEditMode = false)
+	 */</comment>
+          <static>false</static>
+          <access>public</access>
+          <type>Overload-cmdbAbstractObject</type>
+          <code><![CDATA[	function DisplayBareRelations(WebPage $oPage, $bEditMode = false)
 	{
 		parent::DisplayBareRelations($oPage, $bEditMode);
 		if (!$bEditMode)
@@ -183,15 +225,19 @@ $('#mailbox_content_refresh').trigger('click');
 EOF
 			);
 		}
-	}
-
-	/**
+	}]]></code>
+        </method>
+        <method id="DoCheckToWrite">
+          <comment>/**
 	 * Overload the standard behavior to guarantee the unicity of either:
 	 * login / server (pop3) or
 	 * login / server / mailbox (imap)
 	 * @see cmdbAbstractObject::DoCheckToWrite()
-	 */
-	public function DoCheckToWrite()
+	 */</comment>
+          <static>false</static>
+          <access>public</access>
+          <type>Overload-DBObject</type>
+          <code><![CDATA[	public function DoCheckToWrite()
 	{
 		parent::DoCheckToWrite();
 
@@ -221,24 +267,36 @@ EOF
 				}
 			}
 		}		
-	}	
-
-	protected function SetNextAction($iNextAction)
+	}	]]></code>
+        </method>
+        <method id="SetNextAction">
+          <static>false</static>
+          <access>protected</access>
+          <type>Overload-DBObject</type>
+          <code><![CDATA[	protected function SetNextAction($iNextAction)
 	{
 		return $this->iNextAction = $iNextAction;
-	}
-	
-	public function GetNextAction()
+	}]]></code>
+        </method>
+        <method id="GetNextAction">
+          <static>false</static>
+          <access>public</access>
+          <type>Overload-DBObject</type>
+          <code><![CDATA[	public function GetNextAction()
 	{
 		return $this->iNextAction;
-	}
-
-	/**
+	}]]></code>
+        </method>
+        <method id="DispatchEmail">
+          <comment>/**
 	 * Initial dispatching of an incoming email: determines what to do with the email
 	 * @param EmailReplica $oEmailReplica The EmailReplica associated with the email. A new replica (i.e. not yet in DB) one for new emails
 	 * @return int An action code from EmailProcessor
-	 */
-	public function DispatchEmail(EmailReplica $oEmailReplica)
+	 */</comment>
+          <static>false</static>
+          <access>public</access>
+          <type>Overload-DBObject</type>
+          <code><![CDATA[	public function DispatchEmail(EmailReplica $oEmailReplica)
 	{
 		$this->SetNextAction(EmailProcessor::NO_ACTION);
 		if ($oEmailReplica->IsNew())
@@ -265,19 +323,63 @@ EOF
 			}
 		}
 		return $this->GetNextAction();
-	}
-	
-	/**
+	}]]></code>
+        </method>
+        <method id="ProcessNewEmail">
+          <comment>/**
 	 * Process an new (unread) incoming email
 	 * @param EmailSource $oSource The source from which this email was read
 	 * @param int $index The index of the message in the source
 	 * @param EmailMessage $oEmail The decoded email
 	 * @return Ticket The ticket created or updated in response to the email
-	 */
-	public function ProcessNewEmail(EmailSource $oSource, $index, EmailMessage $oEmail)
+	 */</comment>
+          <static>false</static>
+          <access>public</access>
+          <type>Overload-DBObject</type>
+          <code><![CDATA[	public function ProcessNewEmail(EmailSource $oSource, $index, EmailMessage $oEmail)
 	{
 		$oTicket = null;
 		$this->SetNextAction(EmailProcessor::NO_ACTION);
+		
+		// Search if the caller email is an existing contact in iTop
+		$oCaller = $this->FindCaller($Email);
+		
+		// Check whether we need to create a new ticket or to update an existing one
+		// First check if there are any iTop object mentioned in the headers of the eMail
+		$oTicket = $this->GetRelatedTicket($oEmail);
+		
+		if (($oCaller == null) && ($oTicket == null))
+		{
+			// Cannot create a ticket without a caller
+			return null;
+		}
+		
+		if ($this->bCreateOnly || !is_object($oTicket))
+		{
+			// No ticket associated with the incoming email, let's create a new ticket
+			$oTicket = $this->CreateTicketFromEmail($oEmail, $oCaller);
+		}
+		else
+		{
+			// Update the ticket with the incoming eMail
+			$this->UpdateTicketFromEmail($oTicket, $oEmail, $oCaller);
+		}
+		
+		return $oTicket;
+	}]]></code>
+        </method>
+        <method id="FindCaller">
+          <comment>/**
+	 * Search if the caller email is an existing contact in iTop
+	 * @param EmailMessage $oEmail
+	 * @return Contact | null
+	 */</comment>
+          <static>false</static>
+          <access>protected</access>
+          <type>Overload-DBObject</type>
+          <code><![CDATA[	protected function FindCaller(EmailMessage $oEmail)
+	{
+		$oCaller = null;
 		$sContactQuery = 'SELECT Contact WHERE email = :email';
 		$oSet = new DBObjectSet(DBObjectSearch::FromOQL($sContactQuery), array(), array('email' => $oEmail->sCallerEmail));
 		$sAdditionalDescription = '';
@@ -302,11 +404,42 @@ EOF
 			$sAdditionalDescription = ".\nThe ticket was assigned to the first one found (at random).\n\n";
 			$oCaller = $oSet->Fetch();
 		}
-		
-		// Check whether we need to create a new ticket or to update an existing one
-		// First check if there are any iTop object mentioned in the headers of the eMail
+		return $oCaller;
+	}]]></code>
+        </method>
+        <method id="ReprocessOldEmail">
+          <comment>/**
+	 * If DispatchMessage tells to reprocess an email, this method is called
+	 * @param EmailSource $oSource The source from which this email was read
+	 * @param int $index The index of the message in the source
+	 * @param EmailMessage $oEmail The decoded email
+	 * @param EmailReplica $oEmailReplica The replica associated with this email
+	 * @return void
+	 */</comment>
+          <static>false</static>
+          <access>public</access>
+          <type>Overload-DBObject</type>
+          <code><![CDATA[	public function ReprocessOldEmail(EmailSource $oSource, $index, EmailMessage $oEmail, EmailReplica $oEmailReplica)
+	{
+		// Should not be called in this implementation, does nothing
+		$this->SetNextAction(EmailProcessor::NO_ACTION);
+	}]]></code>
+        </method>
+        <method id="GetRelatedTicket">
+          <comment><![CDATA[/**
+	 * Get the iTop object related to this email, if any.
+	 * The default implementation is based on the patterns in the headers
+	 * 'in-reply-to' or 'references' automatically set in iTop notifications
+	 * @param EmailMessage $oEmail
+	 * @return DBObject | null
+	 */]]></comment>
+          <static>false</static>
+          <access>protected</access>
+          <type>Overload-DBObject</type>
+          <code><![CDATA[	protected function GetRelatedTicket(EmailMessage $oEmail)
+	{
 		$oTicket = $oEmail->oRelatedObject;
-		
+			
 		if (($oTicket != null) && !($oTicket instanceof Ticket))
 		{
 			// The object referenced by the email is not a ticket !!
@@ -315,86 +448,74 @@ EOF
 			$oTicket = null;
 		}
 		
-		if ($this->bCreateOnly || !is_object($oTicket))
-		{
-			// No ticket associated with the incoming email, let's create a new ticket
-			$oTicket = $this->CreateTicketFromEmail($oEmail, $oCaller);
-		}
-		else
-		{
-			// Update the ticket with the incoming eMail
-			$this->UpdateTicketFromEmail($oTicket, $oEmail, $oCaller);
-		}
-		
 		return $oTicket;
-	}
-	
-	
-	/**
-	 * If DispatchMessage tells to reprocess an email, this method is called
-	 * @param EmailSource $oSource The source from which this email was read
-	 * @param int $index The index of the message in the source
-	 * @param EmailMessage $oEmail The decoded email
-	 * @param EmailReplica $oEmailReplica The replica associated with this email
-	 * @return void
-	 */
-	public function ReprocessOldEmail(EmailSource $oSource, $index, EmailMessage $oEmail, EmailReplica $oEmailReplica)
-	{
-		// Should not be called in this implementation, does nothing
-		$this->SetNextAction(EmailProcessor::NO_ACTION);
-	}
-	
-	/**
+	}]]></code>
+        </method>
+        <method id="CreateTicketFromEmail">
+          <comment><![CDATA[/**
 	 * Actual creation of the ticket from the incoming email. Overload this method
 	 * to implement your own behavior, if needed
 	 * @param EmailMessage $oEmail The decoded incoming email
 	 * @param Contact $oCaller The contact corresponding to the "From" email address
 	 * @return Ticket the created ticket or null in case of failure
-	 */
-	public function CreateTicketFromEmail(EmailMessage $oEmail, Contact $oCaller)
+	 */]]></comment>
+          <static>false</static>
+          <access>public</access>
+          <type>Overload-DBObject</type>
+          <code>	public function CreateTicketFromEmail(EmailMessage $oEmail, Contact $oCaller)
 	{
 		$oTicket = null;
 		return $oTicket;
-	}
-	
-	
-	/**
+	}</code>
+        </method>
+        <method id="UpdateTicketFromEmail">
+          <comment><![CDATA[/**
 	 * Actual update of a ticket from the incoming email. Overload this method
 	 * to implement your own behavior, if needed
 	 * @param Ticket $oTicket The ticket to update
 	 * @param EmailMessage $oEmail The decoded incoming email
 	 * @param Contact $oCaller The contact corresponding to the "From" email address
 	 * @return void
-	 */
-	public function UpdateTicketFromEmail(Ticket $oTicket, EmailMessage $oEmail, Contact $oCaller)
+	 */]]></comment>
+          <static>false</static>
+          <access>public</access>
+          <type>Overload-DBObject</type>
+          <code>	public function UpdateTicketFromEmail(Ticket $oTicket, EmailMessage $oEmail, Contact $oCaller)
 	{
 		
-	}
-	
-	/**
+	}</code>
+        </method>
+        <method id="HandleError">
+          <comment>/**
 	 * Error handler... what to do in case of error ??
 	 * @param EmailMessage $oEmail can be null in case of decoding error (like message too big)
 	 * @param string $sErrorCode
 	 * @param RawEmailMessage $oRawEmail In case decoding failed or null
 	 * @param string $sAdditionalErrorMessage More information about the error (optional)
 	 * @return int Next action: action code of the next action to execute
-	 */
-	public function HandleError($oEmail, $sErrorCode, $oRawEmail = null, $sAdditionalErrorMessage = '')
+	 */</comment>
+          <static>false</static>
+          <access>public</access>
+          <type>Overload-DBObject</type>
+          <code><![CDATA[	public function HandleError($oEmail, $sErrorCode, $oRawEmail = null, $sAdditionalErrorMessage = '')
 	{
 		$this->SetNextAction(EmailProcessor::NO_ACTION); // Ignore faulty emails
-	}
-	
-	/**
+	}]]></code>
+        </method>
+        <method id="AddAttachments">
+          <comment><![CDATA[/**
 	 * 
 	 * Add the eMail's attachments to the given Ticket. Avoid duplicates (based on name/size/md5),
 	 * avoid attaching blacklisted file types, and can potentially call an AntiVirus before adding the attachment
 	 * @param Ticket $oTicket
 	 * @param EmailMessage $oEmail
-	 * @param CMDBChange $oMyChange The current change used to record the modifications (for iTop 1.x compatibility)
 	 * @param bool $bNoDuplicates If true, don't add attachment that seem already attached to the ticket (same type, same name, same size, same md5 checksum)
 	 * @return an array of cid => attachment_id
-	 */
-	protected function AddAttachments(Ticket $oTicket, EmailMessage $oEmail, CMDBChange $oMyChange, $bNoDuplicates = true, &$aIgnoredAttachments = array())
+	 */]]></comment>
+          <static>false</static>
+          <access>protected</access>
+          <type>Overload-DBObject</type>
+          <code><![CDATA[	protected function AddAttachments(Ticket $oTicket, EmailMessage $oEmail, $bNoDuplicates = true, &$aIgnoredAttachments = array())
 	{
 		if (self::$iMinImageWidth === null)
 		{
@@ -575,6 +696,7 @@ EOF
 					$oAttachment->Set('contents', $oBlob);
 					$oAttachment->DBInsert();
 					$oMyChangeOp = MetaModel::NewObject("CMDBChangeOpPlugin");
+					$oMyChange = CMDBObject::GetCurrentChange();
 					$oMyChangeOp->Set("change", $oMyChange->GetKey());
 					$oMyChangeOp->Set("objclass", get_class($oTicket));
 					$oMyChangeOp->Set("objkey", $oTicket->GetKey());
@@ -596,31 +718,39 @@ EOF
 		}
 		
 		return $aAddedAttachments;
-	}
-	
-	/**
+	}]]></code>
+        </method>
+        <method id="UpdateAttachments">
+          <comment><![CDATA[/**
 	 *
 	 * Update the item_class, item_id and item_org_id of the Attachments to match the values of the suplied ticket
 	 * To be called if the attachments were created BEFORE the actual creation of the ticket in the database
 	 * @param array $aAttachments An array of Attachment objects
 	 * @param Ticket $oTicket
 	 * @return an array of cid => Attachment
-	 */
-	protected function UpdateAttachments($aAttachments, Ticket $oTicket)
+	 */]]></comment>
+          <static>false</static>
+          <access>protected</access>
+          <type>Overload-DBObject</type>
+          <code><![CDATA[	protected function UpdateAttachments($aAttachments, Ticket $oTicket)
 	{
 		foreach($aAttachments as $oAttachment)
 		{
 			$oAttachment->SetItem($oTicket);
 			$oAttachment->DBUpdate();
 		}
-	}
-	
-	/**
+	}]]></code>
+        </method>
+        <method id="IsImage">
+          <comment>/**
 	 * Check if an the given mimeType is an image that can be processed by the system
 	 * @param string $sMimeType
 	 * @return boolean
-	 */
-	protected function IsImage($sMimeType)
+	 */</comment>
+          <static>false</static>
+          <access>protected</access>
+          <type>Overload-DBObject</type>
+          <code><![CDATA[	protected function IsImage($sMimeType)
 	{
 		if (!function_exists('gd_info')) return false; // no image processing capability on this system
 		
@@ -642,9 +772,13 @@ EOF
 
 		}
 		return $bRet;
-	}
-	
-	protected function GetImageSize($sImageData)
+	}]]></code>
+        </method>
+        <method id="GetImageSize">
+          <static>false</static>
+          <access>protected</access>
+          <type>Overload-DBObject</type>
+          <code><![CDATA[	protected function GetImageSize($sImageData)
 	{
 		if (function_exists('getimagesizefromstring')) // PHP 5.4.0 or higher
 		{
@@ -665,15 +799,19 @@ EOF
 			@unlink($sTempFile);
 		}
 		return $aRet;
-	}
-	
-	/**
+	}]]></code>
+        </method>
+        <method id="ContainsViruses">
+          <comment>/**
 	 * Check if the supplied attachment contains a virus: implement you own methods based on your antivirus...
 	 * The following (inactive) code is just provided as an example
 	 * @param hash $aAttachment
 	 * @return bool True if the attachment contains a virus (and should NOT be attached to the ticket), false otherwise
-	 */
-	protected function ContainsViruses($aAttachment)
+	 */</comment>
+          <static>false</static>
+          <access>protected</access>
+          <type>Overload-DBObject</type>
+          <code><![CDATA[	protected function ContainsViruses($aAttachment)
 	{
 		// Not implemented, depends on your antivirus solution...
 		$bResult = false;
@@ -701,26 +839,34 @@ EOF
 		}
 		*/
 		return $bResult;
-	}
-
-	/**
+	}]]></code>
+        </method>
+        <method id="Trace">
+          <comment>/**
 	 * Debug trace: activated/disabled by the configuration flag set for the base module...
 	 * @param string $sText
-	 */
-	protected function Trace($sText)
+	 */</comment>
+          <static>false</static>
+          <access>protected</access>
+          <type>Overload-DBObject</type>
+          <code>	protected function Trace($sText)
 	{
 		MailInboxesEmailProcessor::Trace($sText);
-	}
-	
-	/**
+	}</code>
+        </method>
+        <method id="FitTextIn">
+          <comment><![CDATA[/**
 	 * Truncates the text, if needed, to fit into the given the maximum length and:
 	 * 1) Takes care of replacing line endings by \r\n since the browser produces this kind of line endings inside a TEXTAREA
 	 * 2) Trims the result to emulate the behavior of iTop's inputs
 	 * @param string $sInputText
 	 * @param int $iMaxLength
 	 * @return string The fitted text
-	 */
-	protected function FitTextIn($sInputText, $iMaxLength)
+	 */]]></comment>
+          <static>false</static>
+          <access>protected</access>
+          <type>Overload-DBObject</type>
+          <code><![CDATA[	protected function FitTextIn($sInputText, $iMaxLength)
 	{
 		$sInputText = trim($sInputText);
 		$sInputText = str_replace("\r\n", "\r", $sInputText);
@@ -731,9 +877,13 @@ EOF
 			$sInputText = trim(substr($sInputText, 0, $iMaxLength-3)).'...';
 		}
 		return $sInputText;
-	}
-	
-	protected function RejectBigAttachment($aAttachment, $oObj)
+	}]]></code>
+        </method>
+        <method id="RejectBigAttachment">
+          <static>false</static>
+          <access>protected</access>
+          <type>Overload-DBObject</type>
+          <code><![CDATA[	protected function RejectBigAttachment($aAttachment, $oObj)
 	{
 		$sMessage = "The attachment {$aAttachment['filename']} (".strlen($aAttachment['content'])." bytes) is bigger than the maximum possible size ({$this->iMaxAttachmentSize}).";
 		if ($this->sBigFilesDir == '')
@@ -763,14 +913,19 @@ EOF
 		}
 		$aReplacement = array('content' => $sMessage, 'mimeType' => 'text/plain', 'filename' => 'warning.txt');
 		return $aReplacement;
-	}
-	/**
+	}]]></code>
+        </method>
+        <method id="InitObjectFromDefaultValues">
+          <comment><![CDATA[/**
 	 * Initializes an object from default values
 	 * Each default value must be a valid value for the given field
 	 * @param DBObject $oObj The object to update
 	 * @param hash $aValues The values to set attcode => value
-	 */
-	protected function InitObjectFromDefaultValues($oObj, $aValues)
+	 */]]></comment>
+          <static>false</static>
+          <access>protected</access>
+          <type>Overload-DBObject</type>
+          <code><![CDATA[	protected function InitObjectFromDefaultValues($oObj, $aValues)
 	{
 		foreach($aValues as $sAttCode => $value)
 		{
@@ -887,14 +1042,18 @@ EOF
 				}
 			}
 		}
-	}
-	
-	/**
+	}]]></code>
+        </method>
+        <method id="GetEmailSource">
+          <comment>/**
 	 * Get an EmailSource instance initialized according to the MailInbox configuration
 	 * @throws Exception
 	 * @return EmailSource The initialized EmailSource or an exception if the conneciton fails
-	 */
-	public function GetEmailSource()
+	 */</comment>
+          <static>false</static>
+          <access>public</access>
+          <type>Overload-DBObject</type>
+          <code><![CDATA[	public function GetEmailSource()
 	{
 		$sProtocol = $this->Get('protocol');
 		$sServer = $this->Get('server');
@@ -921,9 +1080,10 @@ EOF
 			self::Trace("Error: unsupported protocol: $sProtocol - please use one of: pop3, imap.");	
 		}
 		return $oSource;
-	}
-	
-	/**
+	}]]></code>
+        </method>
+        <method id="ResizeImageToFit">
+          <comment><![CDATA[/**
 	 * Resize an image attachment so that it fits in the given dimensions
 	 * @param array $aAttachment The original image stored as an attached array (content / mimetype / filename)
 	 * @param int $iWidth Image's original width
@@ -931,8 +1091,11 @@ EOF
 	 * @param int $iMaxImageWidth Maximum width for the resized image
 	 * @param int $iMaxImageHeight Maximum height for the resized image
 	 * @return array The modified attachment array with the resample image in the 'content'
-	 */
-	protected static function ResizeImageToFit($aAttachment, $iWidth, $iHeight, $iMaxImageWidth, $iMaxImageHeight)
+	 */]]></comment>
+          <static>true</static>
+          <access>protected</access>
+          <type>Overload-DBObject</type>
+          <code><![CDATA[	protected static function ResizeImageToFit($aAttachment, $iWidth, $iHeight, $iMaxImageWidth, $iMaxImageHeight)
 	{
 		$img = false;
 		switch($aAttachment['mimeType'])
@@ -1001,5 +1164,46 @@ EOF
 			return $aAttachment;
 		}
 				
-	}
-}
+	}]]></code>
+        </method>
+      </methods>
+      <presentation>
+        <details>
+          <items>
+            <item id="server">
+              <rank>10</rank>
+            </item>
+            <item id="mailbox">
+              <rank>20</rank>
+            </item>
+            <item id="login">
+              <rank>30</rank>
+            </item>
+            <item id="password">
+              <rank>40</rank>
+            </item>
+            <item id="protocol">
+              <rank>50</rank>
+            </item>
+            <item id="port">
+              <rank>60</rank>
+            </item>
+          </items>
+        </details>
+        <list>
+          <items>
+            <item id="server">
+              <rank>10</rank>
+            </item>
+            <item id="mailbox">
+              <rank>20</rank>
+            </item>
+            <item id="protocol">
+              <rank>30</rank>
+            </item>
+          </items>
+        </list>
+      </presentation>
+    </class>
+  </classes>
+</itop_design>

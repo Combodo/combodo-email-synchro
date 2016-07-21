@@ -1,5 +1,5 @@
 <?php
-require_once('rawemailmessage.class.inc.php');
+require_once('../classes/rawemailmessage.class.inc.php');
 
 function print_addr($aAddresses)
 {
@@ -63,7 +63,7 @@ echo "\n\n\n********************************************************************
 echo "> > > > > > > > > > > > > > >  S T A R T I N G  ".date('H:i:s')." < < < < < < < < < < < < < < <\n";
 echo "*************************************************************************************\n\n";
 
-$rDir = opendir('./log');
+$rDir = opendir('../log');
 $index = 0;
 $aErrors = array();
 $aWarnings = array();
@@ -75,9 +75,7 @@ $aWarnings = array();
 //foreach(array('email_017.eml', 'email_125.eml', 'email_109.eml', 'email_127.eml') as $sFile)
 while($sFile = readdir($rDir))
 {
-	$sFileName = './log/'.$sFile;
-
-	$sFileName = './log/'.$sFile;
+	$sFileName = '../log/'.$sFile;
 	if (!is_dir($sFileName))
 	{
 		$oEmail = RawEmailMessage::FromFile($sFileName);

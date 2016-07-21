@@ -6,7 +6,7 @@
  * Usage: php mailbox-debug.php [--debug] [--noprogress]
  *
  */
-require_once('../approot.inc.php');
+require_once('../../../approot.inc.php');
 require_once(APPROOT.'/application/application.inc.php');
 require_once(APPROOT.'/application/startup.inc.php');
 
@@ -318,6 +318,39 @@ class MailboxDebug
 			echo "A total of $iPotentialProblems potential problems were found for this mailbox.\n";
 		}
 	}
+}
+
+try
+{
+	utils::UseParamFile();
+}
+catch(Exception $e)
+{
+	$oP->p("Error: ".$e->GetMessage());
+	$oP->output();
+	exit -2;
+}
+
+if (utils::IsModeCLI())
+{
+	// Next steps:
+	//   specific arguments: 'csvfile'
+	//   
+	$sAuthUser = utils::ReadParam('auth_user', '', true, 'raw_data');
+	$sAuthPwd = utils::ReadParam('auth_pwd', '', true, 'raw_data');
+	if (UserRights::CheckCredentials($sAuthUser, $sAuthPwd))
+	{
+		UserRights::Login($sAuthUser); // Login & set the user's language
+	}
+	else
+	{
+		echo "Access restricted or wrong credentials ('$sAuthUser')\n";
+		exit -1;
+	}
+}
+else
+{
+	LoginWebPage::DoLogin(true);
 }
 
 $oTest = new MailboxDebug();

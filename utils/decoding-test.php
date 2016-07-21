@@ -19,8 +19,7 @@
 // Usage: php decoding-test.php <eml.file>
 //
 
-require_once('rawemailmessage.class.inc.php');
-require_once('main.email-synchro.php');
+require_once('../classes/autoload.php');
 
 date_default_timezone_set('Europe/Paris');
 
@@ -123,9 +122,9 @@ echo "=================\n";
 	echo "Plain Text Version:\n$sBodyText\n";
 }
 echo "===============================\n";
-echo "GetNewPart() returned:\n";
+echo "GetNewPartHTML() returned:\n";
 echo "===============================\n";
-echo $oEmail->GetNewPart($oEmail->sBodyText, 'text/html');
+echo $oEmail->GetNewPartHTML($oEmail->sBodyText);
 echo "===============================\n";
 
 
