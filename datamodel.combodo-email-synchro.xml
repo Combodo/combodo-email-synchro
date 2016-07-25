@@ -2,6 +2,9 @@
 <itop_design xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.0">
   <classes>
     <class id="MailInboxBase" _delta="define">
+      <php_parent>
+        <name>_MailInboxBase</name>
+      </php_parent>
       <parent>cmdbAbstractObject</parent>
       <properties>
         <comment>/**

@@ -34,6 +34,7 @@ if (interface_exists('iBackgroundProcess'))
 if (class_exists('DBObject'))
 {
 	// When running the stand-alone decoding of a message (from a file) we don't need this
+	require_once(__DIR__.'/_mailinboxbase.class.inc.php');
 	require_once(__DIR__.'/emailreplica.class.inc.php');
 	require_once(__DIR__.'/triggeronmailupdate.class.inc.php');
 }
