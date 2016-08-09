@@ -34,7 +34,9 @@ class POP3EmailSource extends EmailSource
 		$this->sLastErrorMessage = '';
 		
 		require_once(dirname(__FILE__).'/net_pop3.class.inc.php'); //Include this file only if needed since PEAR desactivates the error reporting
-		
+
+		if(!class_exists('Net_POP3')) throw new Exception('The class Net_POP3 is missing. Did you forget to install the PEAR prerequisistes on the server?');
+
 		$this->oPop3 = new Net_POP3();
 		$this->sServer = $sServer;
 		$this->sLogin = $sLogin;

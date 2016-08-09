@@ -59,6 +59,8 @@ echo "Date: {$oEmail->sDate}\n";
 echo "Recipient: {$oEmail->sRecipient}\n";
 echo "Caller (eMail): {$oEmail->sCallerEmail}\n";
 echo "Caller (name): {$oEmail->sCallerName}\n";
+echo 'To: '.print_r($oEmail->aTos, true)."\n";
+echo 'CC: '.print_r($oEmail->aCCs, true)."\n";
 echo "Attachments:".count($oEmail->aAttachments)."\n";
 $idx = 1;
 $aCIDToImage = array();
