@@ -43,6 +43,8 @@ class IMAPEmailSource extends EmailSource
 			$sOptions = '/'.implode('/',$aOptions);
 		}
 		
+		if (!function_exists('imap_open')) throw new Exception('The imap_open function is missing. Did you forget to install the PHP module "IMAP" on the server?');
+
 		$sIMAPConnStr = "{{$sServer}:{$iPort}$sOptions}$sMailbox";
 		$this->rImapConn = imap_open($sIMAPConnStr, $sLogin, $sPwd );
 		if ($this->rImapConn === false)

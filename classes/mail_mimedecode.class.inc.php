@@ -62,9 +62,13 @@
  *
  * This package depends on PEAR to raise errors.
  */
-require_once 'PEAR.php';
+if (!class_exists('PEAR'))
+{
+	@include('PEAR.php');
+}
 
-
+if (class_exists('PEAR'))
+{
 /**
  * The Mail_mimeDecode class is used to decode mail/mime messages
  *
@@ -871,3 +875,4 @@ class Mail_mimeDecode extends PEAR
     }
 
 } // End of class
+} // End of if(class_exists('PEAR'))

@@ -38,9 +38,13 @@
 // Commented out because we cannot afford masking catchable fatal errors
 // for all the application !!!
 //error_reporting(E_ERROR);
+if (!class_exists('Net_Socket'))
+{
+	@include('Net/Socket.php');
+}
 
-require_once 'Net/Socket.php';
-
+if (class_exists('Net_Socket'))
+{
 /**
  * Ugly workaround to avoid the static calls to PEAR's non-static methods...
  * @author Denis Flaven <denis.flaven@combodo.com>
@@ -1267,5 +1271,4 @@ echo "_checkResponse failed: ".$ret."\n";
     }
 
 }
-
-?>
+}
