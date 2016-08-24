@@ -346,17 +346,17 @@ EOF
 		
 		// Search if the caller email is an existing contact in iTop
 		$oCaller = $this->FindCaller($Email);
-		
+		if ($oCaller === null)
+		{
+			// Cannot create/update a ticket if the caller is unknown
+			return null;
+		}
+
+
 		// Check whether we need to create a new ticket or to update an existing one
 		// First check if there are any iTop object mentioned in the headers of the eMail
 		$oTicket = $this->GetRelatedTicket($oEmail);
-		
-		if (($oCaller == null) && ($oTicket == null))
-		{
-			// Cannot create a ticket without a caller
-			return null;
-		}
-		
+
 		if ($this->bCreateOnly || !is_object($oTicket))
 		{
 			// No ticket associated with the incoming email, let's create a new ticket
@@ -396,7 +396,7 @@ EOF
 			case 0:
 			// Here decide what to do ? Create a new user, assign the ticket to a 'fixed' Unknown Caller, reject the ticket...
 			// For now: let's do nothing, just ignore the ticket, it will be processed again later... in case the caller gets created
-			$this->Trace('No contact found for the email address ('.$oEmail->sCallerEmail.'), the ticket will NOT be created');
+			$this->Trace('No contact found for the email address ('.$oEmail->sCallerEmail.'), the email will not be processed');
 			$this->sLastError = 'No contact found for the email address ('.$oEmail->sCallerEmail.')';
 			break;
 			
