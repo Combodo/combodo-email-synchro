@@ -179,12 +179,13 @@ class MailInboxesEmailProcessor extends EmailProcessor
 					if (EmailBackgroundProcess::IsMultiSourceMode())
 					{
 				
-						$oEmailReplica->Set('uidl', $oSource->GetName().'_'.$oEmail->sUIDL);
+						$oEmailReplica->Set('uidl', $oSource->GetName() . '_' . $oEmail->sUIDL);
 					}
 					else
 					{
 						$oEmailReplica->Set('uidl', $oEmail->sUIDL);	
 					}
+					$oEmailReplica->Set('mailbox_path', $oSource->GetMailbox());
 					$oEmailReplica->Set('message_id', $oEmail->sMessageId);
 					$oEmailReplica->Set('ticket_id', $oTicket->GetKey());
 					$oEmailReplica->DBInsert();

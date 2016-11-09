@@ -111,7 +111,7 @@ class EmailBackgroundProcess implements iBackgroundProcess
 				{
 					$aMessages = $oSource->GetListing();
 					$iMsgCount = count($aMessages);
-
+					
 					// Get the corresponding EmailReplica object for each message
 					$aUIDLs = array();
 					for($iMessage = 0; $iMessage < $iMsgCount; $iMessage++)
@@ -125,7 +125,7 @@ class EmailBackgroundProcess implements iBackgroundProcess
 							$aUIDLs[] = $aMessages[$iMessage]['uidl'];
 						}
 					}
-					$sOQL = 'SELECT EmailReplica WHERE uidl IN ('.implode(',', CMDBSource::Quote($aUIDLs)).')';
+					$sOQL = 'SELECT EmailReplica WHERE uidl IN (' . implode(',', CMDBSource::Quote($aUIDLs)) . ') AND mailbox_path = ' . CMDBSource::Quote($oSource->GetMailbox());
 					$this->Trace("Searching EmailReplicas: '$sOQL'");
 					$oReplicaSet = new DBObjectSet(DBObjectSearch::FromOQL($sOQL));
 					$aReplicas = array();
@@ -133,7 +133,7 @@ class EmailBackgroundProcess implements iBackgroundProcess
 					{
 						$aReplicas[$oReplica->Get('uidl')] = $oReplica;
 					}				 
-					for($iMessage = 0; $iMessage < $iMsgCount; $iMessage++)
+					for ($iMessage = 0; $iMessage < $iMsgCount; $iMessage++)
 					{
 						$iTotalMessages++;
 						if (self::IsMultiSourceMode())
@@ -144,7 +144,7 @@ class EmailBackgroundProcess implements iBackgroundProcess
 						{
 							$sUIDL = $aMessages[$iMessage]['uidl'];
 						}
-						
+
 						$oEmailReplica = array_key_exists($sUIDL, $aReplicas) ? $aReplicas[$sUIDL] : null;
 	
 						if ($oEmailReplica == null)
@@ -152,7 +152,8 @@ class EmailBackgroundProcess implements iBackgroundProcess
 							$this->Trace("\nDispatching new message: uidl=$sUIDL index=$iMessage");
 							// Create a replica to keep track that we've processed this email
 							$oEmailReplica = new EmailReplica();
-							$oEmailReplica->Set('uidl', $sUIDL);	
+							$oEmailReplica->Set('uidl', $sUIDL);
+							$oEmailReplica->Set('mailbox_path', $oSource->GetMailbox());
 							$oEmailReplica->Set('message_id', $iMessage);
 						}
 						else if($oEmailReplica->Get('status') == 'error')
@@ -235,7 +236,7 @@ class EmailBackgroundProcess implements iBackgroundProcess
 							{
 								$oEmail = $oRawEmail->Decode($oSource->GetPartsOrder());
 								if (!$oEmail->IsValid())
-								{
+									{
 									$iNextActionCode = $oProcessor->OnDecodeError($oSource, $sUIDL, null, $oRawEmail);
 									switch($iNextActionCode)
 									{
@@ -328,7 +329,7 @@ class EmailBackgroundProcess implements iBackgroundProcess
 						}
 						
 						// Cleanup the unused replicas based on the pattern of their UIDL, unfortunately this is not possible in NON multi-source mode
-						$sOQL = "SELECT EmailReplica WHERE uidl LIKE ".CMDBSource::Quote($oSource->GetName().'_%')." AND id NOT IN (".implode(',', CMDBSource::Quote($aIDs)).')';
+						$sOQL = "SELECT EmailReplica WHERE uidl LIKE " . CMDBSource::Quote($oSource->GetName() . '_%') . " AND mailbox_path = " . CMDBSource::Quote($oSource->GetMailbox()) . " AND id NOT IN (" . implode(',', CMDBSource::Quote($aIDs)) . ')';
 						$this->Trace("Searching for unused EmailReplicas: '$sOQL'");
 						$oUnusedReplicaSet = new DBObjectSet(DBObjectSearch::FromOQL($sOQL));
 						$oUnusedReplicaSet->OptimizeColumnLoad(array('EmailReplica' => array('uidl')));

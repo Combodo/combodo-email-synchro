@@ -38,8 +38,9 @@ class EmailReplica extends DBObject
 		);
 		MetaModel::Init_Params($aParams);
 
-		MetaModel::Init_AddAttribute(new AttributeInteger("ticket_id", array("allowed_values"=>null, "sql"=>"ticket_id", "default_value"=>0, "is_null_allowed"=>true, "depends_on"=>array())));
-		MetaModel::Init_AddAttribute(new AttributeString("uidl", array("allowed_values"=>null, "sql"=>"uidl", "default_value"=>null, "is_null_allowed"=>true, "depends_on"=>array())));
+		MetaModel::Init_AddAttribute(new AttributeInteger("ticket_id", array("allowed_values" => null, "sql" => "ticket_id", "default_value" => 0, "is_null_allowed" => true, "depends_on" => array())));
+		MetaModel::Init_AddAttribute(new AttributeString("uidl", array("allowed_values" => null, "sql" => "uidl", "default_value" => null, "is_null_allowed" => true, "depends_on" => array())));
+		MetaModel::Init_AddAttribute(new AttributeString("mailbox_path", array("allowed_values" => null, "sql" => "mailbox_path", "default_value" => null, "is_null_allowed" => true, "depends_on" => array())));
 		MetaModel::Init_AddAttribute(new AttributeString("message_id", array("allowed_values"=>null, "sql"=>"message_id", "default_value"=>null, "is_null_allowed"=>true, "depends_on"=>array())));
 		MetaModel::Init_AddAttribute(new AttributeText("message_text", array("allowed_values"=>null, "sql"=>"message_text", "default_value"=>null, "is_null_allowed"=>true, "depends_on"=>array())));
 		MetaModel::Init_AddAttribute(new AttributeText("references", array("allowed_values"=>null, "sql"=>"references", "default_value"=>null, "is_null_allowed"=>true, "depends_on"=>array())));

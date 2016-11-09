@@ -56,11 +56,20 @@ abstract class EmailSource
 	/**
 	 * Name of the eMail source
 	 */
-	 abstract public function GetName();
+	abstract public function GetName();
+
+	/**
+	 * Mailbox path of the eMail source
+	 */
+	public function GetMailbox()
+	{
+		return '';
+	}
+
 	/**
 	 * Disconnect from the server
 	 */
-	 abstract public function Disconnect();
+	abstract public function Disconnect();
 
 	public function GetLastErrorSubject()
 	{
