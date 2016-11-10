@@ -128,8 +128,8 @@ class IMAPEmailSource extends EmailSource
 	 	$ret = null;
 	 	
 	 	$oInfo = imap_check($this->rImapConn);
-        if ($oInfo !== false)
-        {
+        if (($oInfo !== false) && ($oInfo->Nmsgs > 0))
+		{
         	$sRange = "1:".$oInfo->Nmsgs;
 		// Workaround for some email servers (like gMail!) where the UID may change between two sessions, so let's use the
 		// MessageID as a replacement for the UID.
