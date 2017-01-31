@@ -58,7 +58,32 @@ class EmailBackgroundProcess implements iBackgroundProcess
 			echo $sText."\n";
 		}
 	}
-	
+
+	/**
+	 * Tries to set the error message from the $oProcessor. Sets a default error message in case of failure.
+	 *
+	 * @param EmailReplica $oEmailReplica
+	 * @param EmailProcessor $oProcessor
+	 */
+	protected function SetErrorOnEmailReplica(&$oEmailReplica, $oProcessor)
+	{
+		try
+		{
+			$oEmailReplica->Set('status', 'error');
+			$oEmailReplica->Set('error_message', $oProcessor->GetLastErrorSubject() . " - " . $oProcessor->GetLastErrorMessage());
+			$oEmailReplica->DBWrite();
+		}
+		catch (Exception $e)
+		{
+			$this->Trace('Error: ' . $oProcessor->GetLastErrorSubject() . " - " . $oProcessor->GetLastErrorMessage());
+			IssueLog::Error('Email not processed for email replica of uidl "' . $oEmailReplica->Get('uidl') . '" and message_id "' . $oEmailReplica->Get('message_id') . '" : ' . $oProcessor->GetLastErrorSubject() . " - " . $oProcessor->GetLastErrorMessage());
+
+			$oEmailReplica->Set('status', 'error');
+			$oEmailReplica->Set('error_message', 'An error occured during the processing of this email that could not be displayed here. Process this email again through CRON with debug trace activated for more informations.');
+			$oEmailReplica->DBWrite();
+		}
+	}
+
 	public function GetPeriodicity()
 	{	
 		return (int)MetaModel::GetModuleSetting('combodo-email-synchro', 'periodicity', 30); // seconds
@@ -173,12 +198,10 @@ class EmailBackgroundProcess implements iBackgroundProcess
 						switch($iActionCode)
 						{
 							case EmailProcessor::MARK_MESSAGE_AS_ERROR:
-							$iTotalMarkedAsError++;
-							$this->Trace("Marking the message (and replica): uidl=$sUIDL index=$iMessage as in error.");
-							$oEmailReplica->Set('status', 'error');
-							$oEmailReplica->Set('error_message', $oProcessor->GetLastErrorSubject()." - ".$oProcessor->GetLastErrorMessage());
-							$oEmailReplica->DBWrite();
-							break;
+								$iTotalMarkedAsError++;
+								$this->Trace("Marking the message (and replica): uidl=$sUIDL index=$iMessage as in error.");
+								$this->SetErrorOnEmailReplica($oEmailReplica, $oProcessor);
+								break;
 							
 							case EmailProcessor::DELETE_MESSAGE:
 							$iTotalDeleted++;
@@ -213,13 +236,11 @@ class EmailBackgroundProcess implements iBackgroundProcess
 								switch($iNextActionCode)
 								{
 									case EmailProcessor::MARK_MESSAGE_AS_ERROR:
-									$iTotalMarkedAsError++;
-									$this->Trace("Email too big, marking the message (and replica): uidl=$sUIDL index=$iMessage as in error.");
-									$oEmailReplica->Set('status', 'error');
-									$oEmailReplica->Set('error_message', $oProcessor->GetLastErrorSubject()." - ".$oProcessor->GetLastErrorMessage());
-									$oEmailReplica->DBWrite();
-									$aReplicas[$sUIDL] = $oEmailReplica; // Remember this new replica, don't delete it later as "unused"
-									break;
+											$iTotalMarkedAsError++;
+											$this->Trace("Email too big, marking the message (and replica): uidl=$sUIDL index=$iMessage as in error.");
+											$this->SetErrorOnEmailReplica($oEmailReplica, $oProcessor);
+											$aReplicas[$sUIDL] = $oEmailReplica; // Remember this new replica, don't delete it later as "unused"
+											break;
 						
 									case EmailProcessor::DELETE_MESSAGE:
 									$iTotalDeleted++;
@@ -241,13 +262,11 @@ class EmailBackgroundProcess implements iBackgroundProcess
 									switch($iNextActionCode)
 									{
 										case EmailProcessor::MARK_MESSAGE_AS_ERROR:
-										$iTotalMarkedAsError++;
-										$this->Trace("Failed to decode the message, marking the message (and replica): uidl=$sUIDL index=$iMessage as in error.");
-										$oEmailReplica->Set('status', 'error');
-										$oEmailReplica->Set('error_message', $oProcessor->GetLastErrorSubject()." - ".$oProcessor->GetLastErrorMessage());
-										$oEmailReplica->DBWrite();
-										$aReplicas[$sUIDL] = $oEmailReplica; // Remember this new replica, don't delete it later as "unused"
-										break;
+												$iTotalMarkedAsError++;
+												$this->Trace("Failed to decode the message, marking the message (and replica): uidl=$sUIDL index=$iMessage as in error.");
+												$this->SetErrorOnEmailReplica($oEmailReplica, $oProcessor);
+												$aReplicas[$sUIDL] = $oEmailReplica; // Remember this new replica, don't delete it later as "unused"
+												break;
 							
 										case EmailProcessor::DELETE_MESSAGE:
 										$iTotalDeleted++;
@@ -266,13 +285,11 @@ class EmailBackgroundProcess implements iBackgroundProcess
 									switch($iNextActionCode)
 									{
 										case EmailProcessor::MARK_MESSAGE_AS_ERROR:
-										$iTotalMarkedAsError++;
-										$this->Trace("Marking the message (and replica): uidl=$sUIDL index=$iMessage as in error.");
-										$oEmailReplica->Set('status', 'error');
-										$oEmailReplica->Set('error_message', $oProcessor->GetLastErrorSubject()." - ".$oProcessor->GetLastErrorMessage());
-										$oEmailReplica->DBWrite();
-										$aReplicas[$sUIDL] = $oEmailReplica; // Remember this new replica, don't delete it later as "unused"
-										$this->Trace("EmailReplica ID: ".$oEmailReplica->GetKey());
+												$iTotalMarkedAsError++;
+												$this->Trace("Marking the message (and replica): uidl=$sUIDL index=$iMessage as in error.");
+												$this->SetErrorOnEmailReplica($oEmailReplica, $oProcessor);
+												$aReplicas[$sUIDL] = $oEmailReplica; // Remember this new replica, don't delete it later as "unused"
+												$this->Trace("EmailReplica ID: ".$oEmailReplica->GetKey());
 										break;
 							
 										case EmailProcessor::DELETE_MESSAGE:
