@@ -345,7 +345,7 @@ EOF
 		$this->SetNextAction(EmailProcessor::NO_ACTION);
 		
 		// Search if the caller email is an existing contact in iTop
-		$oCaller = $this->FindCaller($Email);
+		$oCaller = $this->FindCaller($oEmail);
 		if ($oCaller === null)
 		{
 			// Cannot create/update a ticket if the caller is unknown
