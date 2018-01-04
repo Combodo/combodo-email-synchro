@@ -28,8 +28,9 @@ abstract class EmailProcessor
 	const DELETE_MESSAGE = 1;
 	const PROCESS_MESSAGE = 2;
 	const PROCESS_ERROR = 3;
-	const MARK_MESSAGE_AS_ERROR = 4;
-	
+    const MARK_MESSAGE_AS_ERROR = 4;
+    const MARK_MESSAGE_AS_UNDESIRED = 5;
+
 	abstract public function ListEmailSources();
 	
 	abstract public function DispatchMessage(EmailSource $oSource, $index, $sUIDL, $oEmailReplica = null);

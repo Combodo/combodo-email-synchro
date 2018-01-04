@@ -135,6 +135,10 @@ class MailInboxesEmailProcessor extends EmailProcessor
 			case EmailProcessor::MARK_MESSAGE_AS_ERROR:
 			$sRetCode = 'MARK_MESSAGE_AS_ERROR';
 			break;
+
+            case EmailProcessor::MARK_MESSAGE_AS_UNDESIRED:
+            $sRetCode = 'MARK_MESSAGE_AS_UNDESIRED';
+            break;
 		}
 		return $sRetCode;		
 	}
