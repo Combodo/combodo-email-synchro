@@ -507,13 +507,20 @@ EOF
         </method>
         <method id="AddAttachments">
           <comment><![CDATA[/**
-	 * 
 	 * Add the eMail's attachments to the given Ticket. Avoid duplicates (based on name/size/md5),
 	 * avoid attaching blacklisted file types, and can potentially call an AntiVirus before adding the attachment
+	 *
 	 * @param Ticket $oTicket
 	 * @param EmailMessage $oEmail
 	 * @param bool $bNoDuplicates If true, don't add attachment that seem already attached to the ticket (same type, same name, same size, same md5 checksum)
-	 * @return an array of cid => attachment_id
+	 * @param array $aIgnoredAttachments
+	 *
+	 * @return array array of cid => attachment_id
+	 * @throws \CoreException
+	 * @throws \CoreUnexpectedValue
+	 * @throws \CoreWarning
+	 * @throws \Exception
+	 * @throws \OQLException
 	 */]]></comment>
           <static>false</static>
           <access>protected</access>
