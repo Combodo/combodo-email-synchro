@@ -683,7 +683,7 @@ EOF
 				}
 				if (!$bIgnoreAttachment)
 				{
-					if (class_exists('InlineImage') && $aAttachment['inline'])
+					if ($this->IsImage($aAttachment['mimeType']) && class_exists('InlineImage') && $aAttachment['inline'])
 					{
 						$oAttachment = new InlineImage();
 						MailInboxesEmailProcessor::Trace("Info: email attachment {$aAttachment['filename']} will be stored as an InlineImage.");
