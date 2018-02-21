@@ -1,0 +1,5 @@
+#
+# The log directory contains test emails for testing the decoding process
+#
+testemailsource.class.inc.php
+testemailprocessor.class.inc.php

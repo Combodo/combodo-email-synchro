@@ -9,7 +9,6 @@ class TestEmailProcessor extends EmailProcessor
 {
 	public function ListEmailSources()
 	{
-//		return array( 0 => new IMAPEmailSource('ssl0.ovh.net', 993, 'tickets@combodo.com', 'c8mb0do', '', array('imap', 'ssl', 'novalidate-cert')));
 		return array( 0 => new TestEmailSource(dirname(__FILE__).'/log', 'test'));
 	}
 	
