@@ -625,7 +625,7 @@ class RawEmailMessage
 		$sHeader = $this->GetHeader('Content-Transfer-Encoding', $aHeaders);
 		if (!empty($sHeader))
 		{
-			$sContentTransferEncoding = $sHeader;
+			$sContentTransferEncoding = strtolower($sHeader);
 		}
 		
 		$sHeader = $this->GetHeader('Content-Type', $aHeaders);
