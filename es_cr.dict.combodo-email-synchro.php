@@ -45,7 +45,7 @@ Dict::Add('ES CR', 'Spanish', 'Español, Castellano', array(
 	'MailInbox:Status/Error' => 'Error',
 		
 	'MailInbox:Login/ServerMustBeUnique' => 'La combinación de usuario (%1$s) y Servidor (%2$s) ya está configurado para otro buzón.',
-	'MailInbox:Login/Server/MailboxMustBeUnique' => 'La combinación de usuario (%1$s), Servidor (%2$s) and buzón (%3$s) ya está configurado para otra cuenta',
+	'MailInbox:Login/Server/MailboxMustBeUnique' => 'La combinación de usuario (%1$s), Servidor (%2$s) y buzón (%3$s) ya está configurado para otra cuenta',
 	'MailInbox:Display_X_eMailsStartingFrom_Y' => 'Mostrar %1$s mensaje(s), iniciando desde %2$s.',
 	'MailInbox:WithSelectedDo' => 'Con mensajes seleccionados: ',
 	'MailInbox:ResetStatus' => 'Resetear estatus',
