@@ -129,7 +129,7 @@
 		{
 			$oPage->SetCurrentTab(Dict::S('MailInbox:MailboxContent'));
 			$sForm = Dict::Format('MailInbox:Display_X_eMailsStartingFrom_Y', '<input type="text" size="3" id="mailbox_count" value="10"/>', '<input type="text" size="3" id="mailbox_start_index" value="0"/>');
-			$oPage->add('<p><form onsubmit="return false;">'.$sForm.'&nbsp;<button type="submit" id="mailbox_content_refresh">'.Dict::S(Dict::S('UI:Button:Refresh')).'</button></form></p>');
+			$oPage->add('<p><form onsubmit="return false;">'.$sForm.'&nbsp;<button type="submit" id="mailbox_content_refresh">'.Dict::S('UI:Button:Refresh').'</button></form></p>');
 			$oPage->add('<div id="mailbox_content_output"></div>');
 			$sAjaxUrl = addslashes(utils::GetAbsoluteUrlModulesRoot().basename(dirname(__FILE__)).'/ajax.php');
 			$iId = $this->GetKey();
