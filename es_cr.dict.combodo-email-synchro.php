@@ -1,5 +1,5 @@
 <?php
-// Copyright (C) 2010-2013 Combodo SARL
+// Copyright (C) 2010-2018 Combodo SARL
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Lesser General Public License as published by
@@ -14,15 +14,15 @@
 //   along with this program; if not, write to the Free Software
 //   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-Dict::Add('ES CR', 'Spanish', 'Español, Castellano', array(
+Dict::Add('ES CR', 'Spanish', 'EspaÃ±ol, Castellano', array(
 	// Dictionary entries go here
-	'Class:MailInboxBase' => 'Buzón de Correo',
+	'Class:MailInboxBase' => 'BuzÃ³n de Correo',
 	'Class:MailInboxBase+' => 'Fuente de mensajes entrantes',
 
 	'Class:MailInboxBase/Attribute:server' => 'Servidor de Correo',
-	'Class:MailInboxBase/Attribute:mailbox' => 'Buzón (para IMAP)',
+	'Class:MailInboxBase/Attribute:mailbox' => 'BuzÃ³n (para IMAP)',
 	'Class:MailInboxBase/Attribute:login' => 'Usuario',
-	'Class:MailInboxBase/Attribute:password' => 'Contraseña',
+	'Class:MailInboxBase/Attribute:password' => 'ContraseÃ±a',
 	'Class:MailInboxBase/Attribute:protocol' => 'Protocolo',
 	'Class:MailInboxBase/Attribute:protocol/Value:pop3' => 'POP3',
 	'Class:MailInboxBase/Attribute:protocol/Value:imap' => 'IMAP',
@@ -31,9 +31,9 @@ Dict::Add('ES CR', 'Spanish', 'Español, Castellano', array(
 	'Class:MailInboxBase/Attribute:active/Value:yes' => 'Si',
 	'Class:MailInboxBase/Attribute:active/Value:no' => 'No',
 
-	'MailInbox:MailboxContent' => 'Contenido de Buzón',
-	'MailInbox:EmptyMailbox' => 'El buzón está vacío',
-	'MailInbox:Z_DisplayedThereAre_X_Msg_Y_NewInTheMailbox' => '%1$d mensajes mostrados. Existen %2$d mensaje(s) en el buzón (%3$d new).',
+	'MailInbox:MailboxContent' => 'Contenido de BuzÃ³n',
+	'MailInbox:EmptyMailbox' => 'El buzÃ³n estÃ¡ vacÃ­o',
+	'MailInbox:Z_DisplayedThereAre_X_Msg_Y_NewInTheMailbox' => '%1$d mensajes mostrados. Existen %2$d mensaje(s) en el buzÃ³n (%3$d new).',
 	'MailInbox:Status' => 'Estatus',
 	'MailInbox:Subject' => 'Asunto',
 	'MailInbox:From' => 'De',
@@ -44,8 +44,8 @@ Dict::Add('ES CR', 'Spanish', 'Español, Castellano', array(
 	'MailInbox:Status/New' => 'Nuevo',
 	'MailInbox:Status/Error' => 'Error',
 		
-	'MailInbox:Login/ServerMustBeUnique' => 'La combinación de usuario (%1$s) y Servidor (%2$s) ya está configurado para otro buzón.',
-	'MailInbox:Login/Server/MailboxMustBeUnique' => 'La combinación de usuario (%1$s), Servidor (%2$s) y buzón (%3$s) ya está configurado para otra cuenta',
+	'MailInbox:Login/ServerMustBeUnique' => 'La combinaciÃ³n de usuario (%1$s) y Servidor (%2$s) ya estÃ¡ configurado para otro buzÃ³n.',
+	'MailInbox:Login/Server/MailboxMustBeUnique' => 'La combinaciÃ³n de usuario (%1$s), Servidor (%2$s) y buzÃ³n (%3$s) ya estÃ¡ configurado para otra cuenta',
 	'MailInbox:Display_X_eMailsStartingFrom_Y' => 'Mostrar %1$s mensaje(s), iniciando desde %2$s.',
 	'MailInbox:WithSelectedDo' => 'Con mensajes seleccionados: ',
 	'MailInbox:ResetStatus' => 'Resetear estatus',
