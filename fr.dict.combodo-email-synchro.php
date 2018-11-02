@@ -13,11 +13,10 @@
 //   You should have received a copy of the GNU General Public License
 //   along with this program; if not, write to the Free Software
 //   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-
 Dict::Add('FR FR', 'French', 'Français', array(
 	// Dictionary entries go here
 	'Class:MailInboxBase' => 'Boîte Mail',
-	'Class:MailInboxBase+' => 'Source d\eMails',
+	'Class:MailInboxBase+' => 'Source d\\eMails',
 
 	'Class:MailInboxBase/Attribute:server' => 'Serveur d\'eMails',
 	'Class:MailInboxBase/Attribute:mailbox' => 'Boîte Mail (pour IMAP)',
@@ -31,7 +30,6 @@ Dict::Add('FR FR', 'French', 'Français', array(
 	'Class:MailInboxBase/Attribute:active/Value:yes' => 'Oui',
 	'Class:MailInboxBase/Attribute:active/Value:no' => 'Non',
 
-
 	'MailInbox:MailboxContent' => 'Contenu de la boîte mail',
 	'MailInbox:EmptyMailbox' => 'La boîte mail est vide.',
 	'MailInbox:Z_DisplayedThereAre_X_Msg_Y_NewInTheMailbox' => '%1$d eMails affichés. Il y a au total %2$d eMail(s) dans la boîte (dont %3$d nouveaux).',
@@ -43,7 +41,7 @@ Dict::Add('FR FR', 'French', 'Français', array(
 	'MailInbox:ErrorMessage' => 'Message d\'Erreur',
 	'MailInbox:Status/Processed' => 'Déjà Traité',
 	'MailInbox:Status/New' => 'Nouveau',
-	'MailInbox:Status/Error' => 'Erreur',
+    'MailInbox:Status/Error' => 'Erreur',
     'MailInbox:Status/Undesired' => 'Indésirable',
 
 	'MailInbox:Login/ServerMustBeUnique' => 'La combinaison Identifiant (%1$s) et Serveur (%2$s) est déjà utilisée par une Boîte Mail.',
