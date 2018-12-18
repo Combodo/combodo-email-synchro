@@ -13,8 +13,7 @@
 //   You should have received a copy of the GNU General Public License
 //   along with this program; if not, write to the Free Software
 //   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-
-Dict::Add('ES CR', 'Spanish', 'Español, Castellano', array(
+Dict::Add('ES CR', 'Spanish', 'Español, Castellaño', array(
 	// Dictionary entries go here
 	'Class:MailInboxBase' => 'Buzón de Correo',
 	'Class:MailInboxBase+' => 'Fuente de mensajes entrantes',
@@ -42,8 +41,9 @@ Dict::Add('ES CR', 'Spanish', 'Español, Castellano', array(
 	'MailInbox:ErrorMessage' => 'Mensaje de Error',
 	'MailInbox:Status/Processed' => 'Ya Procesado',
 	'MailInbox:Status/New' => 'Nuevo',
-	'MailInbox:Status/Error' => 'Error',
-		
+    'MailInbox:Status/Error' => 'Error',
+    'MailInbox:Status/Undesired' => 'Undesired~~',
+
 	'MailInbox:Login/ServerMustBeUnique' => 'La combinación de usuario (%1$s) y Servidor (%2$s) ya está configurado para otro buzón.',
 	'MailInbox:Login/Server/MailboxMustBeUnique' => 'La combinación de usuario (%1$s), Servidor (%2$s) y buzón (%3$s) ya está configurado para otra cuenta',
 	'MailInbox:Display_X_eMailsStartingFrom_Y' => 'Mostrar %1$s mensaje(s), iniciando desde %2$s.',

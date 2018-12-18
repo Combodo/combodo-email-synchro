@@ -13,7 +13,6 @@
 //   You should have received a copy of the GNU General Public License
 //   along with this program; if not, write to the Free Software
 //   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-
 Dict::Add('DE DE', 'German', 'Deutsch', array(
 	// Dictionary entries go here
 	'Class:MailInboxBase' => 'Posteingang',
@@ -42,8 +41,9 @@ Dict::Add('DE DE', 'German', 'Deutsch', array(
 	'MailInbox:ErrorMessage' => 'Fehlermeldung',
 	'MailInbox:Status/Processed' => 'bereits abgearbeitet',
 	'MailInbox:Status/New' => 'Neu',
-	'MailInbox:Status/Error' => 'Fehler',
-		
+    'MailInbox:Status/Error' => 'Fehler',
+    'MailInbox:Status/Undesired' => 'Undesired~~',
+
 	'MailInbox:Login/ServerMustBeUnique' => 'Diese Kombination aus Login (%1$s) und Server (%2$s) ist bereits für einen anderen Posteingang konfiguriert.',
 	'MailInbox:Login/Server/MailboxMustBeUnique' => 'Diese Kombination aus Login (%1$s), Server (%2$s) und Mailbox (%3$s) ist bereits für eine anderen Posteingang konfiguriert.',
 	'MailInbox:Display_X_eMailsStartingFrom_Y' => 'Anzeige von %1$s EMail(s), beginnend von %2$s.',
