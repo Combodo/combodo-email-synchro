@@ -63,7 +63,8 @@ echo "\n\n\n********************************************************************
 echo "> > > > > > > > > > > > > > >  S T A R T I N G  ".date('H:i:s')." < < < < < < < < < < < < < < <\n";
 echo "*************************************************************************************\n\n";
 
-$rDir = opendir('../log');
+$sBaseDirPath = '../log';
+$rDir = opendir($sBaseDirPath);
 $index = 0;
 $aErrors = array();
 $aWarnings = array();
@@ -75,7 +76,7 @@ $aWarnings = array();
 //foreach(array('email_017.eml', 'email_125.eml', 'email_109.eml', 'email_127.eml') as $sFile)
 while($sFile = readdir($rDir))
 {
-	$sFileName = '../log/'.$sFile;
+	$sFileName = $sBaseDirPath.'/'.$sFile;
 	if (!is_dir($sFileName))
 	{
 		$oEmail = RawEmailMessage::FromFile($sFileName);
