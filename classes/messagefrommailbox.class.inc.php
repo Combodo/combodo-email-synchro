@@ -50,7 +50,7 @@ class MessageFromMailbox extends RawEmailMessage
 		if (count($aCallers) > 0)
 		{
 			$sCallerEmail = $aCallers[0]['email'];
-			$sCallerName = $this->GetCallerName($aCallers[0]);
+			$sCallerName = $this->GetCallerName();
 		}
 		$sSubject = $this->GetSubject();
 
