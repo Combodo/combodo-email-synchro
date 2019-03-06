@@ -38,9 +38,12 @@ class MessageFromMailbox extends RawEmailMessage
 		//TODO: improve error handling in case the file does not exist or is corrupted...
 		return new MessageFromMailbox(basename($sFilePath), file_get_contents($sFilePath), '');
 	}
-	
+
 	/**
 	 * Decodes an email from its parts
+	 *
+	 * @param string $sPreferredDecodingOrder
+	 *
 	 * @return EmailMessage
 	 */
 	public function Decode($sPreferredDecodingOrder = 'text/plain,text/html')
@@ -51,6 +54,11 @@ class MessageFromMailbox extends RawEmailMessage
 		{
 			$sCallerEmail = $aCallers[0]['email'];
 			$sCallerName = $this->GetCallerName();
+		}
+		else
+		{
+			$sCallerEmail = '';
+			$sCallerName = '';
 		}
 		$sSubject = $this->GetSubject();
 

@@ -48,7 +48,9 @@ class EmailReplica extends DBObject
 		MetaModel::Init_AddAttribute(new AttributeDateTime("message_date", array("allowed_values"=>null, "sql"=>"message_date", "default_value"=>null, "is_null_allowed"=>true, "depends_on"=>array())));
 		MetaModel::Init_AddAttribute(new AttributeEnum("status", array("allowed_values"=>new ValueSetEnum('ok,error,undesired'), "sql"=>"status", "default_value"=>'ok', "is_null_allowed"=>false, "depends_on"=>array())));
 		MetaModel::Init_AddAttribute(new AttributeText("error_message", array("allowed_values"=>null, "sql"=>"error_message", "default_value"=>null, "is_null_allowed"=>true, "depends_on"=>array())));
-		
+		MetaModel::Init_AddAttribute(new AttributeHTML("error_trace", array("allowed_values"=>null, "sql"=>'error_trace', "default_value"=>'', "is_null_allowed"=>true, "depends_on"=>array(), "always_load_in_tables"=>false)));
+		MetaModel::Init_AddAttribute(new AttributeBlob("contents", array("is_null_allowed"=>true, "depends_on"=>array(), "always_load_in_tables"=>false)));
+
 	}
 	
 	/**
@@ -72,12 +74,18 @@ class EmailReplica extends DBObject
 		// For example: AciTop000f100000UserRequest means UserRequest ticket id = 0xf1 = 241
 		return sprintf("AciTop%05x%'0-16s", $oObject->GetKey(), get_class($oObject));
 	}
-	
+
 	/**
 	 * Get a valid Thread-index header for the ticket
-	 * @param $iTicketId integer The identifier of the ticket
-	 * @param $sTicketClass string The class of the ticket
+	 *
+	 * @param $oTicket
+	 *
 	 * @return string The content of the thread-index header
+	 * @throws \CoreException
+	 * @throws \CoreUnexpectedValue
+	 * @throws \MissingQueryArgument
+	 * @throws \MySQLException
+	 * @throws \MySQLHasGoneAwayException
 	 */
 	public static function GetNextMSThreadIndex($oTicket)
 	{

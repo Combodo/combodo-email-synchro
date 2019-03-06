@@ -58,10 +58,14 @@ class MailInboxesEmailProcessor extends EmailProcessor
 			echo $sText."\n";
 		}
 	}
+
 	/**
 	 * Initializes the email sources: one source is created and associated with each MailInboxBase instance
-	 * @param void
+	 *
 	 * @return array An array of EmailSource objects
+	 * @throws \CoreException
+	 * @throws \CoreUnexpectedValue
+	 * @throws \MySQLException
 	 */
 	public function ListEmailSources()
 	{		
@@ -165,12 +169,16 @@ class MailInboxesEmailProcessor extends EmailProcessor
 	 * Process the email downloaded from the mailbox.
 	 * This implementation delegates the processing the MailInbox instances
 	 * The caller (identified by its email) must already exists in the database
+	 *
 	 * @param EmailSource $oSource The source from which the email was read
 	 * @param integer $index The index of the message in the mailbox
 	 * @param EmailMessage $oEmail The downloaded/decoded email message
 	 * @param EmailReplica $oEmailReplica The information associating a ticket to the email. This replica is new (i.e. not yet in DB for new messages)
+	 * @param array $aErrors
+	 *
+	 * @return int
 	 */
-	public function ProcessMessage(EmailSource $oSource, $index, EmailMessage $oEmail, EmailReplica $oEmailReplica)
+	public function ProcessMessage(EmailSource $oSource, $index, EmailMessage $oEmail, EmailReplica $oEmailReplica, &$aErrors = array())
 	{
 		try
 		{			
@@ -200,6 +208,7 @@ class MailInboxesEmailProcessor extends EmailProcessor
 					{
 						$this->sLastErrorSubject = "Error during ticket update";
 						$this->sLastErrorMessage = $oInbox->sLastError;
+						$aErrors[] = $oInbox->sLastError;
 					}
 				}
 				else
@@ -207,7 +216,10 @@ class MailInboxesEmailProcessor extends EmailProcessor
 					// Error ???
 					$this->sLastErrorSubject = "Failed to create a ticket for the incoming email";
 					$this->sLastErrorMessage = $oInbox->sLastError;
-					self::Trace("Combodo Email Synchro: MailInboxesEmailProcessor: Failed to create a ticket for the incoming email $index ({$oEmail->sUIDL})");
+					$sMessage = "Combodo Email Synchro: MailInboxesEmailProcessor: Failed to create a ticket for the incoming email $index ({$oEmail->sUIDL})";
+					$aErrors[] = $sMessage;
+					$aErrors[] = $oInbox->sLastError;
+					self::Trace($sMessage);
 				}	
 			}
 			else
@@ -224,21 +236,34 @@ class MailInboxesEmailProcessor extends EmailProcessor
 			$iRetCode = $oInbox->GetNextAction();
 			$this->sLastErrorSubject = "Failed to process email $index ({$oEmail->sUIDL})";
 			$this->sLastErrorMessage = "Email Synchro: Failed to create a ticket for the incoming email $index ({$oEmail->sUIDL}), reason: exception: ".$e->getMessage();
+			$aErrors[] = $this->sLastErrorMessage;
 			self::Trace("Combodo Email Synchro: MailInboxesEmailProcessor: Failed to create a ticket for the incoming email $index ({$oEmail->sUIDL}), reason: exception: ".$e->getMessage()."\n".$e->getTraceAsString());
 		}
 
 		return $iRetCode;
 	}
-	
+
 	/**
 	 * Called, before deleting the message from the source when the decoding fails
 	 * $oEmail can be null
+	 *
+	 * @param \EmailSource $oSource
+	 * @param string $sUIDL
+	 * @param \EmailMessage $oEmail
+	 * @param \RawEmailMessage $oRawEmail
+	 * @param array $aErrors
+	 *
 	 * @return integer Next action code
+	 * @throws \Exception
 	 */
-	public function OnDecodeError(EmailSource $oSource, $sUIDL, $oEmail, RawEmailMessage $oRawEmail)
+	public function OnDecodeError(EmailSource $oSource, $sUIDL, $oEmail, RawEmailMessage $oRawEmail, &$aErrors = array())
 	{
 		$oInbox = $this->GetInboxFromSource($oSource);
-		self::Trace("Combodo Email Synchro: MailInboxesEmailProcessor: failed to decode the message ($sUIDL})");
+		$aErrors[] = "Combodo Email Synchro: MailInboxesEmailProcessor: failed to decode the message ({$sUIDL})";
+		if (isset($oEmail))
+		{
+			$aErrors = array_merge($aErrors, $oEmail->GetInvalidReasons());
+		}
 		$oInbox->HandleError($oEmail, 'decode_failed', $oRawEmail);
 		// message will be deleted from the source or marked as error...
 		return $oInbox->GetNextAction();

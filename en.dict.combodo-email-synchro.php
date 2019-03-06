@@ -59,6 +59,10 @@ Dict::Add('EN US', 'English', 'English', array(
 	'MailInbox:ResetStatus' => 'Reset status',
 	'MailInbox:DeleteMessage' => 'Delete email',
 
+	'MailInbox:MessageDetails' => 'Message details',
+	'MailInbox:DownloadEml' => 'Download eml file',
+
+
 	'Class:TriggerOnMailUpdate' => 'Trigger (when updated by mail)',
 	'Class:TriggerOnMailUpdate+' => 'Trigger activated when a ticket is updated by processing an incoming email',
 ));

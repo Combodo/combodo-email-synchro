@@ -51,6 +51,10 @@ Dict::Add('FR FR', 'French', 'Français', array(
 	'MailInbox:ResetStatus' => 'RàZ de l\'état',
 	'MailInbox:DeleteMessage' => 'Effacer l\'email',
 
+	'MailInbox:MessageDetails' => 'Details du message',
+	'MailInbox:DownloadEml' => 'Télécharger l\'eml',
+
+
 	'Class:TriggerOnMailUpdate' => 'Déclencheur sur mise à jour par mail',
 	'Class:TriggerOnMailUpdate+' => 'Déclencheur activé sur la mise à jour de tickets par mail',
 ));

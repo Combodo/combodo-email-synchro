@@ -31,6 +31,9 @@ abstract class EmailProcessor
     const MARK_MESSAGE_AS_ERROR = 4;
     const MARK_MESSAGE_AS_UNDESIRED = 5;
 
+	/**
+	 * @return \EmailSource[]
+	 */
 	abstract public function ListEmailSources();
 	
 	abstract public function DispatchMessage(EmailSource $oSource, $index, $sUIDL, $oEmailReplica = null);
@@ -39,32 +42,49 @@ abstract class EmailProcessor
 	 * Process the email downloaded from the mailbox.
 	 * This implementation delegates the processing the MailInbox instances
 	 * The caller (identified by its email) must already exists in the database
+	 *
 	 * @param EmailSource $oSource The source from which the email was read
 	 * @param integer $index The index of the message in the mailbox
 	 * @param EmailMessage $oEmail The downloaded/decoded email message
 	 * @param EmailReplica $oEmailReplica The information associating a ticket to the email. This replica is new (i.e. not yet in DB for new messages)
+	 * @param array $aErrors
+	 *
 	 * @return integer Next Action Code
 	 */
-	abstract public function ProcessMessage(EmailSource $oSource, $index, EmailMessage $oEmail, EmailReplica $oEmailReplica);
-		
+	abstract public function ProcessMessage(EmailSource $oSource, $index, EmailMessage $oEmail, EmailReplica $oEmailReplica, &$aErrors = array());
+
+	/**
+	 * Outputs some debug text if debugging is enabled from the configuration
+	 * @param string $sText The text to output
+	 * @return void
+	 */
+	public static function Trace($sText)
+	{
+		echo "$sText\n";
+	}
+
 	/**
 	 * Called, before deleting the message from the source when the decoding fails
 	 * $oEmail can be null
+	 *
+	 * @param \EmailSource $oSource
+	 * @param $sUIDL
+	 * @param \EmailMessage $oEmail
+	 * @param \RawEmailMessage $oRawEmail
+	 * @param array $aErrors
+	 *
 	 * @return integer Next Action Code
 	 */
-	public function OnDecodeError(EmailSource $oSource, $sUIDL, $oEmail, RawEmailMessage $oRawEmail)
+	public function OnDecodeError(EmailSource $oSource, $sUIDL, $oEmail, RawEmailMessage $oRawEmail, &$aErrors = array())
 	{
-		$sSubject = "iTop ticket creation or update from mail FAILED";
 		$sEMailSubject = '';
 		if ($oEmail != null)
 		{
 			$sEMailSubject = $oEmail->sSubject;
+			$aErrors = $oEmail->GetInvalidReasons();
 		}
-		$sMessage = "The message (".$sUIDL."), subject: '$sEMailSubject', was not decoded properly and therefore was not processed.\n";
-		$sMessage .= "The original message is attached to this message.\n";
-		$this->Trace($sMessage);
-		EmailBackgroundProcess::ReportError($sSubject, $sMessage, $oRawEmail);
-		return self::MARK_MESSAGE_AS_ERROR;		
+		$aErrors[] = "The message (".$sUIDL."), subject: '$sEMailSubject', was not decoded properly and therefore was not processed.";
+		return self::MARK_MESSAGE_AS_ERROR;
 	}
 	
 	/**
