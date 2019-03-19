@@ -45,6 +45,10 @@ Dict::Add('RU RU', 'Russian', 'Русский', array(
 	'MailInbox:ResetStatus' => 'Сбросить статус',
 	'MailInbox:DeleteMessage' => 'Удалить',
 
+	'MailInbox:MessageDetails' => 'Message details~~',
+	'MailInbox:DownloadEml' => 'Download eml file~~',
+
+
 	'Class:TriggerOnMailUpdate' => 'Trigger (when updated by mail)~~',
 	'Class:TriggerOnMailUpdate+' => 'Trigger activated when a ticket is updated by processing an incoming email~~',
 ));
