@@ -20,7 +20,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with iTop. If not, see <http://www.gnu.org/licenses/>
  */
-
 Dict::Add('NL NL', 'Dutch', 'Nederlands', array(
 	// Dictionary entries go here
 	'Class:MailInboxBase' => 'Mail Inbox~~',
@@ -58,6 +57,10 @@ Dict::Add('NL NL', 'Dutch', 'Nederlands', array(
 	'MailInbox:WithSelectedDo' => 'With the selected emails: ~~',
 	'MailInbox:ResetStatus' => 'Reset status~~',
 	'MailInbox:DeleteMessage' => 'Delete email~~',
+
+	'MailInbox:MessageDetails' => 'Message details~~',
+	'MailInbox:DownloadEml' => 'Download eml file~~',
+
 
 	'Class:TriggerOnMailUpdate' => 'Trigger (when updated by mail)~~',
 	'Class:TriggerOnMailUpdate+' => 'Trigger activated when a ticket is updated by processing an incoming email~~',

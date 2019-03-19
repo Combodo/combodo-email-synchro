@@ -51,6 +51,10 @@ Dict::Add('ES CR', 'Spanish', 'Español, Castellaño', array(
 	'MailInbox:ResetStatus' => 'Resetear estatus',
 	'MailInbox:DeleteMessage' => 'Borrar mensaje',
 
+	'MailInbox:MessageDetails' => 'Message details~~',
+	'MailInbox:DownloadEml' => 'Download eml file~~',
+
+
 	'Class:TriggerOnMailUpdate' => 'Disparador (cuando sea actualizado por mensaje)',
 	'Class:TriggerOnMailUpdate+' => 'Disparador activado cuanto un ticket es actualiado por el procesameinto de mensaje entrante',
 ));

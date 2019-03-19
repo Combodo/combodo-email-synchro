@@ -51,6 +51,10 @@ Dict::Add('DE DE', 'German', 'Deutsch', array(
 	'MailInbox:ResetStatus' => 'Status zurücksetzen',
 	'MailInbox:DeleteMessage' => 'Löschen',
 
+	'MailInbox:MessageDetails' => 'Message details~~',
+	'MailInbox:DownloadEml' => 'Download eml file~~',
+
+
 	'Class:TriggerOnMailUpdate' => 'Trigger (beim Mail-Update)',
 	'Class:TriggerOnMailUpdate+' => '',
 ));

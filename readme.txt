@@ -24,7 +24,7 @@ Now an EmailReplica object is ALWAYS passed, but for new emails this EmailReplic
 
 OnDecodeError
 -------------
-OnDecodeError(EmailSource $oSource, $sUIDL, $oEmail, RawEmailMessage $oRawEmail)
+OnDecodeError(EmailSource $oSource, $sUIDL, $oEmail, RawEmailMessage $oRawEmail, &$aErrors = array())
 
 Is now expected to return the "next action code": either: DELETE_MESSAGE or MARK_MESSAGE_AS_ERROR.
 
