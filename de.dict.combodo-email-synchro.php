@@ -33,6 +33,7 @@ Dict::Add('DE DE', 'German', 'Deutsch', array(
 	'MailInbox:MailboxContent' => 'Mailbox Inhalt',
 	'MailInbox:EmptyMailbox' => 'Die Mailbox ist leer',
 	'MailInbox:Z_DisplayedThereAre_X_Msg_Y_NewInTheMailbox' => '%1$d Mails angezeigt. Es sind %2$d EMail(s) in der Mailbox (%3$d neu).',
+	'MailInbox:MaxAllowedPacketTooSmall' => 'MySQL parameter max_allowed_packet in "my.ini" is too small: %1$s. The recommended value is at least: %2$s~~',
 	'MailInbox:Status' => 'Status',
 	'MailInbox:Subject' => 'Betreff',
 	'MailInbox:From' => 'Von',
