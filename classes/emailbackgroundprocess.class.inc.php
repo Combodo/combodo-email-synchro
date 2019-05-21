@@ -423,7 +423,14 @@ class EmailBackgroundProcess implements iBackgroundProcess
 
 												default:
 												case EmailProcessor::NO_ACTION:
-													$this->Trace("No action for EmailReplica ID: ".$oEmailReplica->GetKey());
+													$this->Trace("No more action for EmailReplica ID: ".$oEmailReplica->GetKey());
+													// Save eml
+													$oDoc = $oEmailReplica->Get('contents');
+													if ($oDoc->IsEmpty())
+													{
+														$oEmailReplica->Set('contents', new ormDocument($oRawEmail->GetRawContent(), 'message/rfc822', 'email.eml'));
+														$oEmailReplica->DBUpdate();
+													}
 													$aReplicas[$sUIDL] = $oEmailReplica; // Remember this new replica, don't delete it later as "unused"
 													break;
 											}
