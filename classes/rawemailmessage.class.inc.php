@@ -641,7 +641,11 @@ class RawEmailMessage
 					if ($sExcludeDispositionPattern != null)
 					{
 						$sContentDisposition = $this->getHeader('Content-Disposition', $aPart['headers']);
-						if (($sContentDisposition == '') || (preg_match($sExcludeDispositionPattern, $sContentDisposition) == 0))
+						$sSmimeType = array();
+						preg_match('/smime\-type=([a-zA-Z0-9\-]*);?/',$sContentType, $sSmimeType);
+						if (   ($sContentDisposition == '') 
+							|| (preg_match($sExcludeDispositionPattern, $sContentDisposition) == 0) 
+							|| ($sPartMimeType === 'application/pkcs7-mime' && count($sSmimeType) > 0 && $sSmimeType[1] === 'signed-data'))
 						{
 							$aRetPart = array();
 							$aRetPart['headers'] = $aPart['headers'];

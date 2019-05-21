@@ -38,7 +38,7 @@ if ($argc != 2)
 ///////////////////////////////////////////////////////////////
 
 $sFilePath = $argv[1];
-$sPartsOrder = 'text/html,text/plain';
+$sPartsOrder = 'text/html,text/plain,application/pkcs7-mime';
 
 echo "Decoding test for file '$sFilePath'\n";
 if (!file_exists($sFilePath))
