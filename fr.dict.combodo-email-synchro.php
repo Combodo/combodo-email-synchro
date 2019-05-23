@@ -44,6 +44,7 @@ Dict::Add('FR FR', 'French', 'Français', array(
 	'MailInbox:Status/New' => 'Nouveau',
     'MailInbox:Status/Error' => 'Erreur',
     'MailInbox:Status/Undesired' => 'Indésirable',
+	'MailInbox:Status/Ignored' => 'Ignoré',
 
 	'MailInbox:Login/ServerMustBeUnique' => 'La combinaison Identifiant (%1$s) et Serveur (%2$s) est déjà utilisée par une Boîte Mail.',
 	'MailInbox:Login/Server/MailboxMustBeUnique' => 'La combinaison Identifiant (%1$s), Serveur (%2$s) et boîte mail (%3$s) est déjà utilisée par une Boîte Mail.',

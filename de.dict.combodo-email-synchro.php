@@ -44,6 +44,7 @@ Dict::Add('DE DE', 'German', 'Deutsch', array(
 	'MailInbox:Status/New' => 'Neu',
     'MailInbox:Status/Error' => 'Fehler',
     'MailInbox:Status/Undesired' => 'Undesired~~',
+	'MailInbox:Status/Ignored' => 'Ignored~~',
 
 	'MailInbox:Login/ServerMustBeUnique' => 'Diese Kombination aus Login (%1$s) und Server (%2$s) ist bereits für einen anderen Posteingang konfiguriert.',
 	'MailInbox:Login/Server/MailboxMustBeUnique' => 'Diese Kombination aus Login (%1$s), Server (%2$s) und Mailbox (%3$s) ist bereits für eine anderen Posteingang konfiguriert.',

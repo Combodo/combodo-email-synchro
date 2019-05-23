@@ -115,15 +115,11 @@ class EmailBackgroundProcess implements iBackgroundProcess
 
 			$oEmailReplica->DBWrite();
 		}
-		catch (MySQLException $e)
-		{
-			IssueLog::Error('Email not processed for email replica of uidl "' . $oEmailReplica->Get('uidl') . '" and message_id "' . $oEmailReplica->Get('message_id') . '" : ' . $oProcessor->GetLastErrorSubject() . " - " . $oProcessor->GetLastErrorMessage());
-			IssueLog::Error($e->getMessage());
-		}
 		catch (Exception $e)
 		{
 			$this->Trace('Error: ' . $oProcessor->GetLastErrorSubject() . " - " . $oProcessor->GetLastErrorMessage());
 			IssueLog::Error('Email not processed for email replica of uidl "' . $oEmailReplica->Get('uidl') . '" and message_id "' . $oEmailReplica->Get('message_id') . '" : ' . $oProcessor->GetLastErrorSubject() . " - " . $oProcessor->GetLastErrorMessage());
+			IssueLog::Error($e->getMessage());
 
 			$oEmailReplica->Set('status', 'error');
 			$oEmailReplica->Set('error_message', 'An error occurred during the processing of this email that could not be displayed here. Consult application error log for details.');
@@ -239,6 +235,12 @@ class EmailBackgroundProcess implements iBackgroundProcess
 								if ($oEmailReplica->Get('status') == 'error')
 								{
 									$this->Trace("\nSkipping old (already processed) message: uidl=$sUIDL index=$iMessage marked as 'error'");
+									$iTotalSkipped++;
+									continue;
+								}
+								elseif ($oEmailReplica->Get('status') == 'ignored')
+								{
+									$this->Trace("\nSkipping old (already processed) message: uidl=$sUIDL index=$iMessage marked as 'ignored'");
 									$iTotalSkipped++;
 									continue;
 								}
@@ -502,8 +504,11 @@ class EmailBackgroundProcess implements iBackgroundProcess
 	}
 
 	/**
-	 * @param $oEmailReplica
+	 * @param \EmailReplica $oEmailReplica
 	 * @param $oRawEmail
+	 *
+	 * @throws \CoreException
+	 * @throws \CoreUnexpectedValue
 	 */
 	protected function SaveEml(&$oEmailReplica, $oRawEmail)
 	{

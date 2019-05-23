@@ -27,6 +27,18 @@ require_once(APPROOT.'/application/application.inc.php');
 require_once(APPROOT.'/application/webpage.class.inc.php');
 require_once(APPROOT.'/application/ajaxwebpage.class.inc.php');
 
+/**
+ * @param \ajax_page $oPage
+ * @param \MailInboxBase $oInbox
+ *
+ * @throws \ArchivedObjectException
+ * @throws \CoreException
+ * @throws \CoreUnexpectedValue
+ * @throws \MissingQueryArgument
+ * @throws \MySQLException
+ * @throws \MySQLHasGoneAwayException
+ * @throws \OQLException
+ */
 function GetMailboxContent($oPage, $oInbox)
 {
 	if(is_object($oInbox))
@@ -36,6 +48,7 @@ function GetMailboxContent($oPage, $oInbox)
 		$iMsgCount = 0;
 		try
 		{
+			/** @var \EmailSource $oSource */
 			$oSource = $oInbox->GetEmailSource();
 			$iTotalMsgCount = $oSource->GetMessagesCount();
 			$iStart = min($iStartIndex, $iTotalMsgCount);
@@ -46,6 +59,7 @@ function GetMailboxContent($oPage, $oInbox)
 		catch(Exception $e)
 		{
 			$oPage->p("Failed to initialize the mailbox: ".$oInbox->GetName().". Reason: ".$e->getMessage());
+			return;
 		}
 
 		if ($iMsgCount > 0)
@@ -107,9 +121,13 @@ function GetMailboxContent($oPage, $oInbox)
                         $sStatus = Dict::S('MailInbox:Status/Error');
                         break;
 
-                        case 'undesired':
-                        $sStatus = Dict::S('MailInbox:Status/Undesired');
-                        break;
+					    case 'undesired':
+						$sStatus = Dict::S('MailInbox:Status/Undesired');
+						break;
+
+					    case 'ignored':
+						$sStatus = Dict::S('MailInbox:Status/Ignored');
+						break;
 
                     }
 					$sErrorMsg = $aProcessed[$sUIDLs]['error_message'];
@@ -135,7 +153,7 @@ function GetMailboxContent($oPage, $oInbox)
 			}
 			$oPage->p(Dict::Format('MailInbox:Z_DisplayedThereAre_X_Msg_Y_NewInTheMailbox', $iMsgCount, $iTotalMsgCount, ($iTotalMsgCount - $iProcessedCount)));
 			$oPage->table($aTableConfig, $aData);
-			$oPage->add('<div><img src="../images/tv-item-last.gif" style="vertical-align:bottom;margin-left:10px;"/>&nbsp;'.Dict::S('MailInbox:WithSelectedDo').'&nbsp;&nbsp<button class="mailbox_button" id="mailbox_reset_status">'.Dict::S('MailInbox:ResetStatus').'</button>&nbsp;&nbsp;<button class="mailbox_button" id="mailbox_delete_messages">'.Dict::S('MailInbox:DeleteMessage').'</button></div>');
+			$oPage->add('<div><img alt="" src="../images/tv-item-last.gif" style="vertical-align:bottom;margin-left:10px;"/>&nbsp;'.Dict::S('MailInbox:WithSelectedDo').'&nbsp;&nbsp<button class="mailbox_button" id="mailbox_reset_status">'.Dict::S('MailInbox:ResetStatus').'</button>&nbsp;&nbsp;<button class="mailbox_button" id="mailbox_delete_messages">'.Dict::S('MailInbox:DeleteMessage').'</button>&nbsp;&nbsp;<button class="mailbox_button" id="mailbox_ignore_messages">'.Dict::S('MailInbox:IgnoreMessage').'</button></div>');
 		}
 		else
 		{
@@ -188,6 +206,7 @@ try
 	}
 	else
 	{
+		/** @var MailInboxBase $oInbox */
 		$oInbox = MetaModel::GetObject('MailInboxBase', $iMailInboxId, false);
 	}
 
@@ -240,6 +259,53 @@ try
 		}
 		GetMailboxContent($oPage, $oInbox);
 		break;
+
+		case 'mailbox_ignore_messages':
+		$aUIDLs = utils::ReadParam('aUIDLs', array(), false, 'raw_data');
+		if (count($aUIDLs) > 0)
+		{
+			$sOQL = 'SELECT EmailReplica WHERE uidl IN ('.implode(',', CMDBSource::Quote($aUIDLs)).')';
+			$oReplicaSet = new DBObjectSet(DBObjectSearch::FromOQL($sOQL));
+			$aReplicas = array();
+			/** @var \DBObject $oReplica */
+			while ($oReplica = $oReplicaSet->Fetch())
+			{
+				$oReplica->Set('status', 'ignored');
+				$oReplica->DBUpdate();
+				$aReplicas[$oReplica->Get('uidl')] = true;
+			}
+		}
+		if (count($aReplicas) < count($aUIDLs))
+		{
+			// Some "New" messages are marked as ignore
+			// Add them to the database
+			$oSource = $oInbox->GetEmailSource();
+			$aMessages = $oSource->GetListing();
+			foreach ($aUIDLs as $sUIDL)
+			{
+				if (isset($aReplicas[$sUIDL]))
+				{
+					// Already processed
+					continue;
+				}
+				$oEmailReplica = new EmailReplica();
+				$oEmailReplica->Set('uidl', $sUIDL);
+				$oEmailReplica->Set('status', 'ignored');
+				$oEmailReplica->Set('mailbox_path', $oSource->GetMailbox());
+				foreach ($aMessages as $iMessage => $aMessage)
+				{
+					if ($oSource->GetName().'_'.$aMessage['uidl'] == $sUIDL)
+					{
+						$oEmailReplica->Set('message_id', $iMessage);
+						break;
+					}
+				}
+				$oEmailReplica->DBInsert();
+			}
+		}
+		GetMailboxContent($oPage, $oInbox);
+		break;
+
 	}
 	$oPage->output();
 }

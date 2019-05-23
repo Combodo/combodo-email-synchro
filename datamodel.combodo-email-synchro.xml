@@ -188,6 +188,9 @@ function MailboxRefresh(data)
 	$('#mailbox_delete_messages').click(function() {
 		MailboxDeleteMessages();
 	});
+	$('#mailbox_ignore_messages').click(function() {
+		MailboxIgnoreMessages();
+	});
 	MailboxUpdateActionButtons();
 }
 
@@ -226,6 +229,25 @@ function MailboxDeleteMessages()
 	});
 	return false;	
 }
+
+function MailboxIgnoreMessages()
+{
+	var aUIDLs = [];
+	$(".mailbox_item:checked").each(function() {
+		aUIDLs.push(this.value);
+	});
+
+	$('#mailbox_content_output').html('<img src="../images/indicator.gif"/>');
+	$('#mailbox_content_refresh').prop('disabled', true);
+	var iStart = $('#mailbox_start_index').val();
+	var iCount = $('#mailbox_count').val();
+
+	$.post('$sAjaxUrl', {operation: 'mailbox_ignore_messages', id: $iId, start: iStart, count: iCount, aUIDLs: aUIDLs }, function(data) {
+		 MailboxRefresh(data);
+	});
+	return false;
+}
+
 EOF
 			);
 			$oPage->add_ready_script(
