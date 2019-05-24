@@ -297,10 +297,10 @@ try
 					if ($oSource->GetName().'_'.$aMessage['uidl'] == $sUIDL)
 					{
 						$oEmailReplica->Set('message_id', $iMessage);
+						$oEmailReplica->DBInsert();
 						break;
 					}
 				}
-				$oEmailReplica->DBInsert();
 			}
 		}
 		GetMailboxContent($oPage, $oInbox);

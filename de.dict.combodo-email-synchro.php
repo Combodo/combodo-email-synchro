@@ -52,6 +52,7 @@ Dict::Add('DE DE', 'German', 'Deutsch', array(
 	'MailInbox:WithSelectedDo' => 'Für die ausgewählten EMails: ',
 	'MailInbox:ResetStatus' => 'Status zurücksetzen',
 	'MailInbox:DeleteMessage' => 'Löschen',
+	'MailInbox:IgnoreMessage' => 'Ignore email~~',
 
 	'MailInbox:MessageDetails' => 'Message details~~',
 	'MailInbox:DownloadEml' => 'Download eml file~~',

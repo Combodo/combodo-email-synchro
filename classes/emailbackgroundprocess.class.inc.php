@@ -119,12 +119,20 @@ class EmailBackgroundProcess implements iBackgroundProcess
 		{
 			$this->Trace('Error: ' . $oProcessor->GetLastErrorSubject() . " - " . $oProcessor->GetLastErrorMessage());
 			IssueLog::Error('Email not processed for email replica of uidl "' . $oEmailReplica->Get('uidl') . '" and message_id "' . $oEmailReplica->Get('message_id') . '" : ' . $oProcessor->GetLastErrorSubject() . " - " . $oProcessor->GetLastErrorMessage());
-			IssueLog::Error($e->getMessage());
+			$sMessage = $e->getMessage();
+			if (strlen($sMessage) > 10*1024)
+			{
+				$sMessage = "Truncated message: \n".substr($sMessage, 0, 8*1024)."\n[...]\n".substr($sMessage, -2*1024);
+			}
+			IssueLog::Error($sMessage);
 
-			$oEmailReplica->Set('status', 'error');
-			$oEmailReplica->Set('error_message', 'An error occurred during the processing of this email that could not be displayed here. Consult application error log for details.');
-			$oEmailReplica->Set('error_trace', '');
-			$oEmailReplica->DBWrite();
+			if (strpos($e->getMessage(), 'MySQL server has gone away') === false)
+			{
+				$oEmailReplica->Set('status', 'error');
+				$oEmailReplica->Set('error_message', 'An error occurred during the processing of this email that could not be displayed here. Consult application error log for details.');
+				$oEmailReplica->Set('error_trace', '');
+				$oEmailReplica->DBWrite();
+			}
 		}
 	}
 
