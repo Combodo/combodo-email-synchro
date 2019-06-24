@@ -37,6 +37,7 @@ class EmailBackgroundProcess implements iBackgroundProcess
 	 * @var EmailSource
 	 */
 	private $oCurrentSource;
+	private $sBigFilesDir;
 	
 	/**
 	 * Activates the given EmailProcessor specified by its class name
@@ -50,6 +51,7 @@ class EmailBackgroundProcess implements iBackgroundProcess
 	public function __construct()
 	{
 		$this->bDebug = MetaModel::GetModuleSetting('combodo-email-synchro', 'debug', false);
+		$this->sBigFilesDir = MetaModel::GetModuleSetting('combodo-email-synchro', 'big_files_dir', '');
 		self::$sSaveErrorsTo = MetaModel::GetModuleSetting('combodo-email-synchro', 'save_errors_to', '');
 		self::$sNotifyErrorsTo = MetaModel::GetModuleSetting('combodo-email-synchro', 'notify_errors_to', '');
 		self::$sNotifyErrorsFrom = MetaModel::GetModuleSetting('combodo-email-synchro', 'notify_errors_from', '');
@@ -528,7 +530,23 @@ class EmailBackgroundProcess implements iBackgroundProcess
 		}
 		else
 		{
-			$this->Trace("EML too big ($iContentSize bytes) max is ($iMaxServerSize bytes), not saved in database.");
+			$sMessage = "EML too big ($iContentSize bytes) max is ($iMaxServerSize bytes), not saved in database.\r\n";
+			if (!empty($this->sBigFilesDir) && is_writable($this->sBigFilesDir))
+			{
+				$sExtension = '.eml';
+				$idx = 1;
+				$sFileName = 'email_'.$oEmailReplica->Get('uidl').'_';
+				while(($hFile = fopen($this->sBigFilesDir.'/'.$sFileName.$idx.$sExtension, 'x')) === false)
+				{
+					$idx++;
+				}
+				fwrite($hFile, $oRawEmail->GetRawContent());
+				fclose($hFile);
+				$sMessage .= "The email was saved as '{$sFileName}{$idx}{$sExtension}' on the web server in the directory '{$this->sBigFilesDir}'.\r\n";
+				$sMessage .= "In order to get such email saved into iTop, increase the 'max_allowed_packet' size in the configuration of the MySQL server.\r\n";
+			}
+
+			$this->Trace($sMessage);
 			$oEmailReplica->Set('error_trace', $this->GetMessageTrace());
 		}
 	}
