@@ -753,6 +753,16 @@ class RawEmailMessage
 				}
 			}
 		}
+		else if ($sCharset == 'UTF-8' && preg_match('/text\/html/', $aHeaders['content-type']))
+		{
+			// Remove badly encoded non breaking space
+			$sBody = preg_replace('~\xc2\xa0~', '&nbsp;', $sBody);
+		}
+		else if ($sCharset == 'UTF-8' && preg_match('/text\//', $aHeaders['content-type']))
+		{
+			// Remove badly encoded non breaking space
+			$sBody = preg_replace('~\xc2\xa0~', ' ', $sBody);
+		}
 
 		return $sBody;
 	}
