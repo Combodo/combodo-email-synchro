@@ -80,7 +80,7 @@ echo "Body Format: {$oEmail->sBodyFormat}\n\n";
 echo "Body Text:\n{$oEmail->sBodyText}\n\n";
 if ($oEmail->sBodyFormat == 'text/html')
 {
-	if(preg_match_all('/<img[^>]+src="cid:([^"]+)"/i', $oEmail->sBodyText, $aMatches, PREG_OFFSET_CAPTURE))
+	if(preg_match_all('/<img[^>]+src=(?:"cid:([^"]+)"|cid:([^ >]+))[^>]*>/i', $oEmail->sBodyText, $aMatches, PREG_OFFSET_CAPTURE))
 	{
 		//print_r($aMatches);
 		$aInlineImages = array();
