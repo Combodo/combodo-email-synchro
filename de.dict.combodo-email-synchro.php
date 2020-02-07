@@ -43,7 +43,7 @@ Dict::Add('DE DE', 'German', 'Deutsch', array(
 	'MailInbox:Status/Processed' => 'bereits abgearbeitet',
 	'MailInbox:Status/New' => 'Neu',
     'MailInbox:Status/Error' => 'Fehler',
-    'MailInbox:Status/Undesired' => 'Undesired~~',
+	'MailInbox:Status/Undesired' => 'Undesired~~',
 	'MailInbox:Status/Ignored' => 'Ignored~~',
 
 	'MailInbox:Login/ServerMustBeUnique' => 'Diese Kombination aus Login (%1$s) und Server (%2$s) ist bereits für einen anderen Posteingang konfiguriert.',
