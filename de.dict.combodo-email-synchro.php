@@ -33,7 +33,7 @@ Dict::Add('DE DE', 'German', 'Deutsch', array(
 	'MailInbox:MailboxContent' => 'Mailbox Inhalt',
 	'MailInbox:EmptyMailbox' => 'Die Mailbox ist leer',
 	'MailInbox:Z_DisplayedThereAre_X_Msg_Y_NewInTheMailbox' => '%1$d Mails angezeigt. Es sind %2$d EMail(s) in der Mailbox (%3$d neu).',
-	'MailInbox:MaxAllowedPacketTooSmall' => 'MySQL parameter max_allowed_packet in "my.ini" is too small: %1$s. The recommended value is at least: %2$s~~',
+	'MailInbox:MaxAllowedPacketTooSmall' => 'Der MySQL-Parameter max_allowed_packet in "my.ini" ist zu klein: %1$s. Der empfohlene Wert ist mindestens: %2$s',
 	'MailInbox:Status' => 'Status',
 	'MailInbox:Subject' => 'Betreff',
 	'MailInbox:From' => 'Von',
@@ -43,8 +43,8 @@ Dict::Add('DE DE', 'German', 'Deutsch', array(
 	'MailInbox:Status/Processed' => 'bereits abgearbeitet',
 	'MailInbox:Status/New' => 'Neu',
     'MailInbox:Status/Error' => 'Fehler',
-	'MailInbox:Status/Undesired' => 'Undesired~~',
-	'MailInbox:Status/Ignored' => 'Ignored~~',
+    'MailInbox:Status/Undesired' => 'Unerwünscht',
+	'MailInbox:Status/Ignored' => 'Ignoriert',
 
 	'MailInbox:Login/ServerMustBeUnique' => 'Diese Kombination aus Login (%1$s) und Server (%2$s) ist bereits für einen anderen Posteingang konfiguriert.',
 	'MailInbox:Login/Server/MailboxMustBeUnique' => 'Diese Kombination aus Login (%1$s), Server (%2$s) und Mailbox (%3$s) ist bereits für eine anderen Posteingang konfiguriert.',
@@ -52,10 +52,10 @@ Dict::Add('DE DE', 'German', 'Deutsch', array(
 	'MailInbox:WithSelectedDo' => 'Für die ausgewählten EMails: ',
 	'MailInbox:ResetStatus' => 'Status zurücksetzen',
 	'MailInbox:DeleteMessage' => 'Löschen',
-	'MailInbox:IgnoreMessage' => 'Ignore email~~',
+	'MailInbox:IgnoreMessage' => 'EMail ignorieren',
 
-	'MailInbox:MessageDetails' => 'Message details~~',
-	'MailInbox:DownloadEml' => 'Download eml file~~',
+	'MailInbox:MessageDetails' => 'Nachrichtendetails',
+	'MailInbox:DownloadEml' => 'EML-Datei herunterladen',
 
 
 	'Class:TriggerOnMailUpdate' => 'Trigger (beim Mail-Update)',
