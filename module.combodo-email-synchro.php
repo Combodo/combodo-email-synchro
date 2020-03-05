@@ -74,9 +74,17 @@ if (!class_exists('EmailSynchroInstaller'))
 
 		/**
 		 * Handler called after the creation/update of the database schema
+		 *
 		 * @param $oConfiguration Config The new configuration of the application
 		 * @param $sPreviousVersion string Previous version number of the module (empty string in case of first install)
 		 * @param $sCurrentVersion string Current version number of the module
+		 *
+		 * @throws \ArchivedObjectException
+		 * @throws \CoreException
+		 * @throws \CoreUnexpectedValue
+		 * @throws \DictExceptionMissingString
+		 * @throws \MySQLException
+		 * @throws \MySQLHasGoneAwayException
 		 */
 		public static function AfterDatabaseCreation(Config $oConfiguration, $sPreviousVersion, $sCurrentVersion)
 		{
