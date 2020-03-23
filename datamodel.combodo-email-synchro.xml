@@ -152,8 +152,9 @@
 			$oPage->add('<div id="mailbox_content_output"></div>');
 			$sAjaxUrl = addslashes(utils::GetAbsoluteUrlModulesRoot().basename(dirname(__FILE__)).'/ajax.php');
 			$iId = $this->GetKey();
+			$sConfirmMessage = Dict::S('MailInbox:MailboxContent:ConfirmMessage');
 			$oPage->add_script(
-<<<EOF
+<<<JS
 function MailboxUpdateActionButtons()
 {
 	if( $(".mailbox_item:checked").length > 0 )
@@ -183,12 +184,15 @@ function MailboxRefresh(data)
 		MailboxUpdateActionButtons();
 	});
 	$('#mailbox_reset_status').click(function() {
+		if (!window.confirm("$sConfirmMessage")) { return;}
 		MailboxResetStatus();
 	});
 	$('#mailbox_delete_messages').click(function() {
+		if (!window.confirm("$sConfirmMessage")) { return;}
 		MailboxDeleteMessages();
 	});
 	$('#mailbox_ignore_messages').click(function() {
+		if (!window.confirm("$sConfirmMessage")) { return;}
 		MailboxIgnoreMessages();
 	});
 	MailboxUpdateActionButtons();
@@ -248,10 +252,10 @@ function MailboxIgnoreMessages()
 	return false;
 }
 
-EOF
+JS
 			);
 			$oPage->add_ready_script(
-<<<EOF
+<<<JS
 $('#mailbox_content_refresh').click(function() {
 					
 	$('#mailbox_content_output').html('<img src="../images/indicator.gif"/>');
@@ -266,7 +270,7 @@ $('#mailbox_content_refresh').click(function() {
 	return false;
 });
 $('#mailbox_content_refresh').trigger('click');
-EOF
+JS
 			);
 		}
 	}]]></code>

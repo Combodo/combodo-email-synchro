@@ -31,6 +31,7 @@ Dict::Add('ES CR', 'Spanish', 'Español, Castellaño', array(
 	'Class:MailInboxBase/Attribute:active/Value:no' => 'No',
 
 	'MailInbox:MailboxContent' => 'Contenido de Buzón',
+	'MailInbox:MailboxContent:ConfirmMessage' => 'Are you sure ?~~',
 	'MailInbox:EmptyMailbox' => 'El buzón está vacío',
 	'MailInbox:Z_DisplayedThereAre_X_Msg_Y_NewInTheMailbox' => '%1$d mensajes mostrados. Existen %2$d mensaje(s) en el buzón (%3$d new).',
 	'MailInbox:MaxAllowedPacketTooSmall' => 'MySQL parameter max_allowed_packet in "my.ini" is too small: %1$s. The recommended value is at least: %2$s~~',
