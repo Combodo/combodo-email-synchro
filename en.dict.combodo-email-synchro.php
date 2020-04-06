@@ -39,8 +39,10 @@ Dict::Add('EN US', 'English', 'English', array(
 	'Class:MailInboxBase/Attribute:active/Value:no' => 'No',
 
 	'MailInbox:MailboxContent' => 'Mailbox Content',
+	'MailInbox:MailboxContent:ConfirmMessage' => 'Are you sure ?',
 	'MailInbox:EmptyMailbox' => 'The mailbox is empty',
 	'MailInbox:Z_DisplayedThereAre_X_Msg_Y_NewInTheMailbox' => '%1$d eMails displayed. There are %2$d email(s) in the mailbox (%3$d new).',
+	'MailInbox:MaxAllowedPacketTooSmall' => 'MySQL parameter max_allowed_packet in "my.ini" is too small: %1$s. The recommended value is at least: %2$s',
 	'MailInbox:Status' => 'Status',
 	'MailInbox:Subject' => 'Subject',
 	'MailInbox:From' => 'From',
@@ -50,7 +52,8 @@ Dict::Add('EN US', 'English', 'English', array(
 	'MailInbox:Status/Processed' => 'Already Processed',
 	'MailInbox:Status/New' => 'New',
     'MailInbox:Status/Error' => 'Error',
-    'MailInbox:Status/Undesired' => 'Undesired',
+	'MailInbox:Status/Undesired' => 'Undesired',
+	'MailInbox:Status/Ignored' => 'Ignored',
 
 	'MailInbox:Login/ServerMustBeUnique' => 'The combination Login (%1$s) and Server (%2$s) is already configured for another Mail Inbox.',
 	'MailInbox:Login/Server/MailboxMustBeUnique' => 'The combination Login (%1$s), Server (%2$s) and Mailbox (%3$s) is already configured for another Mail Inbox',
@@ -58,6 +61,7 @@ Dict::Add('EN US', 'English', 'English', array(
 	'MailInbox:WithSelectedDo' => 'With the selected emails: ',
 	'MailInbox:ResetStatus' => 'Reset status',
 	'MailInbox:DeleteMessage' => 'Delete email',
+	'MailInbox:IgnoreMessage' => 'Ignore email',
 
 	'MailInbox:MessageDetails' => 'Message details',
 	'MailInbox:DownloadEml' => 'Download eml file',

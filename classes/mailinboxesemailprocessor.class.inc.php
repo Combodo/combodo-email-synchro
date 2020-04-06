@@ -181,7 +181,9 @@ class MailInboxesEmailProcessor extends EmailProcessor
 	public function ProcessMessage(EmailSource $oSource, $index, EmailMessage $oEmail, EmailReplica $oEmailReplica, &$aErrors = array())
 	{
 		try
-		{			
+		{
+			$this->sLastErrorSubject = null;
+			$this->sLastErrorMessage = null;
 			$oInbox = $this->GetInboxFromSource($oSource);
 			self::Trace("Combodo Email Synchro: MailInboxesEmailProcessor: Processing message $index ({$oEmail->sUIDL})");
 			if ($oEmailReplica->IsNew())
@@ -224,8 +226,7 @@ class MailInboxesEmailProcessor extends EmailProcessor
 			}
 			else
 			{
-
-					$oInbox->ReprocessOldEmail($oSource, $index, $oEmail, $oEmailReplica);		
+				$oInbox->ReprocessOldEmail($oSource, $index, $oEmail, $oEmailReplica);
 			}
 			$iRetCode = $oInbox->GetNextAction();
 			$sRetCode = $this->GetActionFromCode($iRetCode);

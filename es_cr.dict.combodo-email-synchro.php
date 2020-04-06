@@ -31,8 +31,10 @@ Dict::Add('ES CR', 'Spanish', 'Español, Castellaño', array(
 	'Class:MailInboxBase/Attribute:active/Value:no' => 'No',
 
 	'MailInbox:MailboxContent' => 'Contenido de Buzón',
+	'MailInbox:MailboxContent:ConfirmMessage' => 'Are you sure ?~~',
 	'MailInbox:EmptyMailbox' => 'El buzón está vacío',
 	'MailInbox:Z_DisplayedThereAre_X_Msg_Y_NewInTheMailbox' => '%1$d mensajes mostrados. Existen %2$d mensaje(s) en el buzón (%3$d new).',
+	'MailInbox:MaxAllowedPacketTooSmall' => 'MySQL parameter max_allowed_packet in "my.ini" is too small: %1$s. The recommended value is at least: %2$s~~',
 	'MailInbox:Status' => 'Estatus',
 	'MailInbox:Subject' => 'Asunto',
 	'MailInbox:From' => 'De',
@@ -42,7 +44,8 @@ Dict::Add('ES CR', 'Spanish', 'Español, Castellaño', array(
 	'MailInbox:Status/Processed' => 'Ya Procesado',
 	'MailInbox:Status/New' => 'Nuevo',
     'MailInbox:Status/Error' => 'Error',
-    'MailInbox:Status/Undesired' => 'Undesired~~',
+	'MailInbox:Status/Undesired' => 'Undesired~~',
+	'MailInbox:Status/Ignored' => 'Ignored~~',
 
 	'MailInbox:Login/ServerMustBeUnique' => 'La combinación de usuario (%1$s) y Servidor (%2$s) ya está configurado para otro buzón.',
 	'MailInbox:Login/Server/MailboxMustBeUnique' => 'La combinación de usuario (%1$s), Servidor (%2$s) y buzón (%3$s) ya está configurado para otra cuenta',
@@ -50,6 +53,7 @@ Dict::Add('ES CR', 'Spanish', 'Español, Castellaño', array(
 	'MailInbox:WithSelectedDo' => 'Con mensajes seleccionados: ',
 	'MailInbox:ResetStatus' => 'Resetear estatus',
 	'MailInbox:DeleteMessage' => 'Borrar mensaje',
+	'MailInbox:IgnoreMessage' => 'Ignore email~~',
 
 	'MailInbox:MessageDetails' => 'Message details~~',
 	'MailInbox:DownloadEml' => 'Download eml file~~',

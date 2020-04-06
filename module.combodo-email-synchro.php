@@ -2,7 +2,7 @@
 
 SetupWebPage::AddModule(
 	__FILE__, // Path to the current file, all other file names are relative to the directory containing this file
-	'combodo-email-synchro/3.1.3',
+	'combodo-email-synchro/3.2.1',
     array(
         // Identification
         'label' => 'Tickets synchronization via e-mail',
@@ -59,6 +59,7 @@ SetupWebPage::AddModule(
 		'use_message_id_as_uid' => false, // Do NOT change this unless you known what you are doing!!
 		'images_minimum_size' => '100x20', // Images smaller that these dimensions will be ignored (signatures...)
 		'images_maximum_size' => '', // Images bigger that these dimensions will be resized before uploading into iTop
+		'recommended_max_allowed_packet' => 10*1024*1024, // MySQL parameter for attachments
 	),
 	)
 );
@@ -73,9 +74,17 @@ if (!class_exists('EmailSynchroInstaller'))
 
 		/**
 		 * Handler called after the creation/update of the database schema
+		 *
 		 * @param $oConfiguration Config The new configuration of the application
 		 * @param $sPreviousVersion string Previous version number of the module (empty string in case of first install)
 		 * @param $sCurrentVersion string Current version number of the module
+		 *
+		 * @throws \ArchivedObjectException
+		 * @throws \CoreException
+		 * @throws \CoreUnexpectedValue
+		 * @throws \DictExceptionMissingString
+		 * @throws \MySQLException
+		 * @throws \MySQLHasGoneAwayException
 		 */
 		public static function AfterDatabaseCreation(Config $oConfiguration, $sPreviousVersion, $sCurrentVersion)
 		{

@@ -25,8 +25,10 @@ Dict::Add('RU RU', 'Russian', 'Русский', array(
 	'Class:MailInboxBase/Attribute:active/Value:no' => 'Нет',
 
 	'MailInbox:MailboxContent' => 'Содержимое ящика',
+	'MailInbox:MailboxContent:ConfirmMessage' => 'Are you sure ?~~',
 	'MailInbox:EmptyMailbox' => 'Ящик пуст',
 	'MailInbox:Z_DisplayedThereAre_X_Msg_Y_NewInTheMailbox' => '%1$d сообщений показано. Всего %2$d сообщений в ящике (%3$d новых).',
+	'MailInbox:MaxAllowedPacketTooSmall' => 'MySQL parameter max_allowed_packet in "my.ini" is too small: %1$s. The recommended value is at least: %2$s~~',
 	'MailInbox:Status' => 'Статус',
 	'MailInbox:Subject' => 'Тема',
 	'MailInbox:From' => 'От',
@@ -36,7 +38,8 @@ Dict::Add('RU RU', 'Russian', 'Русский', array(
 	'MailInbox:Status/Processed' => 'Обработано',
 	'MailInbox:Status/New' => 'Новое',
     'MailInbox:Status/Error' => 'Ошибка',
-    'MailInbox:Status/Undesired' => 'Undesired~~',
+	'MailInbox:Status/Undesired' => 'Undesired~~',
+	'MailInbox:Status/Ignored' => 'Ignored~~',
 
 	'MailInbox:Login/ServerMustBeUnique' => 'Эта комбинация Логина (%1$s) и Сервера (%2$s) уже используется для другого Почтового ящика.',
 	'MailInbox:Login/Server/MailboxMustBeUnique' => 'Эта комбинация Логина (%1$s), Сервера (%2$s) и Папки (%3$s) уже используется для другого Почтового ящика',
@@ -44,6 +47,7 @@ Dict::Add('RU RU', 'Russian', 'Русский', array(
 	'MailInbox:WithSelectedDo' => 'С выбранными сообщениями: ',
 	'MailInbox:ResetStatus' => 'Сбросить статус',
 	'MailInbox:DeleteMessage' => 'Удалить',
+	'MailInbox:IgnoreMessage' => 'Ignore email~~',
 
 	'MailInbox:MessageDetails' => 'Message details~~',
 	'MailInbox:DownloadEml' => 'Download eml file~~',

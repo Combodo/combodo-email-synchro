@@ -31,8 +31,10 @@ Dict::Add('FR FR', 'French', 'Français', array(
 	'Class:MailInboxBase/Attribute:active/Value:no' => 'Non',
 
 	'MailInbox:MailboxContent' => 'Contenu de la boîte mail',
+	'MailInbox:MailboxContent:ConfirmMessage' => 'Etes-vous sûr(e) ?',
 	'MailInbox:EmptyMailbox' => 'La boîte mail est vide.',
 	'MailInbox:Z_DisplayedThereAre_X_Msg_Y_NewInTheMailbox' => '%1$d eMails affichés. Il y a au total %2$d eMail(s) dans la boîte (dont %3$d nouveaux).',
+	'MailInbox:MaxAllowedPacketTooSmall' => 'Le paramètre MySQL max_allowed_packet dans le fichier "my.ini" est trop petit : %1$s. La valeur recommandée est au moins : %2$s',
 	'MailInbox:Status' => 'Etat',
 	'MailInbox:Subject' => 'Objet',
 	'MailInbox:From' => 'De',
@@ -42,7 +44,8 @@ Dict::Add('FR FR', 'French', 'Français', array(
 	'MailInbox:Status/Processed' => 'Déjà Traité',
 	'MailInbox:Status/New' => 'Nouveau',
     'MailInbox:Status/Error' => 'Erreur',
-    'MailInbox:Status/Undesired' => 'Indésirable',
+	'MailInbox:Status/Undesired' => 'Indésirable',
+	'MailInbox:Status/Ignored' => 'Ignoré',
 
 	'MailInbox:Login/ServerMustBeUnique' => 'La combinaison Identifiant (%1$s) et Serveur (%2$s) est déjà utilisée par une Boîte Mail.',
 	'MailInbox:Login/Server/MailboxMustBeUnique' => 'La combinaison Identifiant (%1$s), Serveur (%2$s) et boîte mail (%3$s) est déjà utilisée par une Boîte Mail.',
@@ -50,6 +53,7 @@ Dict::Add('FR FR', 'French', 'Français', array(
 	'MailInbox:WithSelectedDo' => 'Pour les éléments sélectionnés : ',
 	'MailInbox:ResetStatus' => 'RàZ de l\'état',
 	'MailInbox:DeleteMessage' => 'Effacer l\'email',
+	'MailInbox:IgnoreMessage' => 'Ignorer l\'email',
 
 	'MailInbox:MessageDetails' => 'Details du message',
 	'MailInbox:DownloadEml' => 'Télécharger l\'eml',
