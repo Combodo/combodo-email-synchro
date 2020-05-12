@@ -533,5 +533,3 @@ class EmailBackgroundProcess implements iBackgroundProcess
 		}
 	}
 }
-
-//EmailBackgroundProcess::RegisterEmailProcessor('TestEmailProcessor');

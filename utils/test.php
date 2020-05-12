@@ -77,7 +77,7 @@ $aWarnings = array();
 while($sFile = readdir($rDir))
 {
 	$sFileName = $sBaseDirPath.'/'.$sFile;
-	if (!is_dir($sFileName))
+	if (!is_dir($sFileName) && ($sFile != 'readme.txt'))
 	{
 		$oEmail = RawEmailMessage::FromFile($sFileName);
 

@@ -100,7 +100,7 @@ class TestEmailProcessor extends EmailProcessor
 		try
 		{
 			$oInbox = $this->GetInboxFromSource($oSource);
-			self::Trace("Combodo Email Synchro: MailInboxesEmailProcessor: Processing message $index ({$oEmail->sUIDL})");
+			self::Trace("Test Email Synchro: MailInboxesEmailProcessor: Processing message $index ({$oEmail->sUIDL})");
 			if ($oEmailReplica->IsNew())
 			{
 				$oTicket = $oInbox->ProcessNewEmail($oSource, $index, $oEmail);
@@ -135,7 +135,7 @@ class TestEmailProcessor extends EmailProcessor
 					$this->sLastErrorMessage = $oInbox->sLastError;
 					$aErrors[] = $oInbox->sLastError;
 					self::Trace($oInbox->sLastError);
-					self::Trace("Combodo Email Synchro: MailInboxesEmailProcessor: Failed to create a ticket for the incoming email $index ({$oEmail->sUIDL})");
+					self::Trace("Test Email Synchro: MailInboxesEmailProcessor: Failed to create a ticket for the incoming email $index ({$oEmail->sUIDL})");
 				}
 			}
 			else
@@ -145,14 +145,14 @@ class TestEmailProcessor extends EmailProcessor
 			}
 			$iRetCode = $oInbox->GetNextAction();
 			$sRetCode = $this->GetActionFromCode($iRetCode);
-			self::Trace("Combodo Email Synchro: MailInboxesEmailProcessor: End of processing of the new message $index ({$oEmail->sUIDL}) retCode: ($iRetCode) $sRetCode");
+			self::Trace("Test Email Synchro: MailInboxesEmailProcessor: End of processing of the new message $index ({$oEmail->sUIDL}) retCode: ($iRetCode) $sRetCode");
 		}
 		catch(Exception $e)
 		{
 			$iRetCode = $oInbox->GetNextAction();
 			$this->sLastErrorSubject = "Failed to process email $index ({$oEmail->sUIDL})";
 			$this->sLastErrorMessage = "Email Synchro: Failed to create a ticket for the incoming email $index ({$oEmail->sUIDL}), reason: exception: ".$e->getMessage();
-			self::Trace("Combodo Email Synchro: MailInboxesEmailProcessor: Failed to create a ticket for the incoming email $index ({$oEmail->sUIDL}), reason: exception: ".$e->getMessage()."\n".$e->getTraceAsString());
+			self::Trace("Test Email Synchro: MailInboxesEmailProcessor: Failed to create a ticket for the incoming email $index ({$oEmail->sUIDL}), reason: exception: ".$e->getMessage()."\n".$e->getTraceAsString());
 		}
 
 		return $iRetCode;
@@ -201,3 +201,5 @@ class TestEmailProcessor extends EmailProcessor
 	}
 
 }
+
+EmailBackgroundProcess::RegisterEmailProcessor('TestEmailProcessor');
