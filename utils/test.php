@@ -63,7 +63,7 @@ echo "\n\n\n********************************************************************
 echo "> > > > > > > > > > > > > > >  S T A R T I N G  ".date('H:i:s')." < < < < < < < < < < < < < < <\n";
 echo "*************************************************************************************\n\n";
 
-$sBaseDirPath = '../log';
+$sBaseDirPath = '../test/emailsSample';
 $rDir = opendir($sBaseDirPath);
 $index = 0;
 $aErrors = array();

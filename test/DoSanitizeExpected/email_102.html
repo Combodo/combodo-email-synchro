@@ -1,0 +1,42 @@
+<div>
+<p><span>Ciao,<br></span></p>
+<p><span><br></span></p>
+<p><span>I am starting to do my homework to understand how much I learn from the training course. <br></span></p>
+<p><span>The problem is on UserRequest and supporting team<br></span></p>
+<p><span><br></span></p>
+<p><span>I would like that if a request is open by a portal user, he can NOT choose to which workgroup/team should solve , as in in the standard version,<br></span></p>
+<p><span>on the other hand if a request is opened by a support agent or  Service Desk Agent, he can choose the workgroup/team.<br></span></p>
+<p><span><br></span></p>
+<p><span>I found in standard version:<br></span></p>
+<p><span>itop-tickets-1.0.0/model.itop-tickets.php:              MetaModel::Init_AddAttribute(new AttributeExternalKey("workgroup_id", array("targetclass"=&gt;"Team", "jointype"=&gt;null, "allowed_values"=&gt;new ValueSetObjects('SELECT Team AS t JOIN CustomerContract AS cc ON cc.support_team_id=t.id JOIN lnkContractToSLA AS ln ON ln.contract_id=cc.id JOIN SLA AS sla ON ln.sla_id=sla.id WHERE sla.service_id = :this-&gt;service_id AND cc.org_id = :this-&gt;org_id'), "sql"=&gt;"workgroup_id", "is_null_allowed"=&gt;false, "on_target_delete"=&gt;DEL_MANUAL, "depends_on"=&gt;array("org_id","service_id"))));<br></span></p>
+<p><span><br></span></p>
+<p>that I changed in :<br></p>
+<p><span>              MetaModel::Init_AddAttribute(new AttributeExternalKey("workgroup_id", array("targetclass"=&gt;"Team", "jointype"=&gt;null, "allowed_values"=&gt;new ValueSetObjects('SELECT Team AS t WHERE t.org_id = :this-&gt;org_id') ), "sql"=&gt;"workgroup_id", "is_null_allowed"=&gt;false, "on_target_delete"=&gt;DEL_MANUAL, "depends_on"=&gt;array("org_id","service_id"))));<br></span></p>
+<p><span><br></span></p>
+<p><span>to open this possibility<br></span></p>
+<p><span><br></span></p>
+<p><span>then in portal/index.php<br></span></p>
+<p><span>I found in function RequestCreationForm($oP, $oUserOrg)<br></span></p>
+<p><span>$aList = array('title','description','workgroup_id');<br></span></p>
+<p><span>And here I would like to set a restriction, but how?<br></span></p>
+<p><span>I tried with:<br></span></p>
+<p><span><br></span></p>
+<p><span>$sOQL = 'SELECT Team AS t JOIN CustomerContract AS cc ON cc.support_team_id=t.id JOIN lnkContractToSLA AS ln ON ln.contract_id=cc.id JOIN SLA AS sla ON ln.sla_id=sla.id WHERE sla.service_id = :this-&gt;service_id AND cc.org_id = :this-&gt;org_id';<br></span></p>
+<p><span>                $oSearch = DBObjectSearch::FromOQL($sOQL);<br></span></p>
+<p><span>                $oSet = new CMDBObjectSet($oSearch, array(), array('org_id' =&gt; $oUserOrg-&gt;GetKey()));<br></span></p>
+<p><span>I do not know how insert the result of the query for the workgroup_id  the $aList = array('title','description','workgroup_id');<br></span></p>
+<p><span><br></span></p>
+<p>Thanks for help<br></p>
+<p>Ciao<br></p>
+<p>Laura<br></p>
+<p><br></p>
+<p>                <br></p>
+<p><br></p>
+<p><br></p>
+<p><span style='font-size:9.0pt;font-family:"Tahoma","sans-serif";color:navy'><br></span></p>
+<p><span style='font-size:9.0pt;font-family:"Tahoma","sans-serif";color:navy'><br></span></p>
+<p><span style='font-size:9.0pt;font-family:"Tahoma","sans-serif";color:navy'>PhD. Marialaura COLANTONI</span><span style='font-size:7.5pt;font-family:"Tahoma","sans-serif";color:navy'><br></span><b><span style='font-size:8.0pt;font-family:"Tahoma","sans-serif";color:#FF6600'>Direzione Tecnica</span></b><b><span style='font-size:7.5pt;font-family:"Tahoma","sans-serif";color:#FF6600'><br></span></b><span style='font-size:7.5pt;font-family:"Tahoma","sans-serif";color:navy'>_____________________________________________</span><span style='font-size:7.0pt;font-family:"Tahoma","sans-serif";color:navy'><br></span></p>
+<p><b><span style='font-size:10.0pt;font-family:"Tahoma","sans-serif";color:#FF6600'>Qinet s.r.l</span></b><b><span style='font-size:7.5pt;font-family:"Tahoma","sans-serif";color:#FF6600'> </span></b><span style='font-size:7.0pt;font-family:"Tahoma","sans-serif";color:#FF6600'>a s. u.</span><span style="color:#FF6600"><br></span></p>
+<p><span style='font-size:7.5pt;font-family:"Tahoma","sans-serif";color:#FF6600'>www.qinet.it  -  www.qinet.tel</span><span style='font-size:8.0pt;font-family:"Tahoma","sans-serif";color:#FF6600'> </span><span style='font-size:7.5pt;font-family:"Tahoma","sans-serif";color:navy'><br></span><span style='font-size:8.0pt;font-family:"Tahoma","sans-serif";color:navy'>Via Cardinal Fossati 5  - 10141 – Torino (IT)<br>Tel.  +39 011-19703500<br>Fax. +39 011-19703509</span><span style="color:navy"><br></span></p>
+<p><br></p>
+</div>

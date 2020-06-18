@@ -1,0 +1,51 @@
+Return-Path: <bounce-id=d027=u145594.60gp.ovh.net=1296129940347195271@50.mail-out.ovh.net>
+Delivered-To: tickets@combodo.com
+Received: from b0.ovh.net (HELO queue) (213.186.33.50)
+	by b0.ovh.net with SMTP; 27 Jan 2011 14:05:44 +0200
+Received: from localhost (HELO mail502.ha.ovh.net) (127.0.0.1)
+  by localhost with SMTP; 27 Jan 2011 14:05:44 +0200
+Received: from b0.ovh.net (HELO queueout) (213.186.33.50)
+	by b0.ovh.net with SMTP; 27 Jan 2011 14:05:44 +0200
+Delivered-To: combodo.com-contact@combodo.com
+Received: from b0.ovh.net (HELO queue) (213.186.33.50)
+	by b0.ovh.net with SMTP; 27 Jan 2011 14:05:44 +0200
+Received: from 50.mail-out.ovh.net (188.165.45.9)
+  by mx1.ovh.net with SMTP; 27 Jan 2011 14:05:42 +0200
+Received: (qmail 19630 invoked by uid 0); 27 Jan 2011 12:05:42 -0000
+Received: from unknown (HELO 60gp.ovh.net) (213.251.189.204)
+  by 50.mail-out.ovh.net with SMTP; 27 Jan 2011 12:05:40 -0000
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by localhost.domain.tld (Postfix) with ESMTP id 740C137304
+	for <contact@combodo.com>; Thu, 27 Jan 2011 13:05:40 +0100 (CET)
+Received: by 60gp.ovh.net (Postfix, from userid 145594)
+	id 51AC53731F; Thu, 27 Jan 2011 13:05:40 +0100 (CET)
+To: contact@combodo.com
+Subject: Formulaire de contact - Demande d'information sur iTop
+From: karlawil@yahoo.com (karlawil at yahoo.com)
+Reply-To: karlawil@yahoo.com (karlawil at yahoo.com)
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
+MIME-Version: 1.0
+Message-Id: <20110127120540.51AC53731F@60gp.ovh.net>
+Date: Thu, 27 Jan 2011 13:05:40 +0100 (CET)
+X-Ovh-Tracer-Id: 6887129731435991229
+X-Ovh-Tracer-Id: 6887692680523146173
+X-Ovh-Remote: 188.165.45.9 (50.mail-out.ovh.net)
+X-Ovh-Local: 213.186.33.29 (mx1.ovh.net)
+X-Spam-Check: DONE|U 0.5/N
+
+Nom: Williams
+Prenom: Karl
+Societe: 
+Language (of the form): English
+Fonction: 
+Telephone: 
+eMail: karlawil@yahoo.com
+
+Message: Greetings. First let me say I love your product. It has a very
+rich feature set. What I was wondering is if there is a standard way to
+skin the interface? I get alot of flicker using Firefox and IE8. It comes
+from the Ajax stuff I think. If I could change the look and feel, to
+something simpler that would be great. If there is no standard way to do
+this, perhaps I could come up with some type of theme templating for iTop
+and contribute to your project. Let me know

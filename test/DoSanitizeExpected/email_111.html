@@ -1,0 +1,53 @@
+<div>
+<p>Hello<span> Everybody</span>,<br></p>
+<p><br></p>
+<p><span>from the course I understood that it is not possible a relationship 1-&gt; n between the network interface, but only 1-&gt;1.<br></span></p>
+<p><span>Please have a look to the screenshot-1, it seems that both printer and server are connected to  switch through  the same switch network interface :-\<br></span></p>
+<p><span>I defined these 3 device with one network interface each.<br></span></p>
+<p><span>Then the other strange think appended , please look to screenshot-2, is no network interface is associated to any device. I showed only one case, but it is the same also for switch_1 and server_1.<br></span></p>
+<p><span>I did not modify the code for the moment, I just inserted some echo to try to understand how it works:<br></span></p>
+<p><b><span>protected function UpdateConnectedInterface()<br></span></b></p>
+<p><span>                {<br></span></p>
+<p><span>                               $oConnIf = MetaModel::GetObject('NetworkInterface', $this-&gt;Get('connected_if'), false /* no exception if not found */);<br></span></p>
+<p><span>                               if (!is_null($oConnIf))<br></span></p>
+<p><span>                               {<br></span></p>
+<p><span>                                               $sLink = $this-&gt;Get('link_type');<br></span></p>
+<p><span>                                               $sConnLink = ($sLink == 'uplink') ? 'downlink' : 'uplink';<br></span></p>
+<p><span>                                               <i><span style="color:#1F497D">//laura<br></span></i></span></p>
+<p><i><span style="color:#1F497D">                                               $sLinkType = $this-&gt;Get('logical_type');<br></span></i></p>
+<p><i><span style="color:#1F497D">                                               echo "**************$sLinkType *** $sLink\n";<br></span></i></p>
+<p><i><span style="color:#1F497D">                                               $tmp = $this-&gt;GetKey();<br></span></i></p>
+<p><i><span style="color:#1F497D">                                               $tmp2 = $this-&gt;Get('connected_if');<br></span></i></p>
+<p><i><span style="color:#1F497D">                                               $tmp3 = $oConnIf-&gt;Get('connected_if');<br></span></i></p>
+<p><i><span style="color:#1F497D">                                               echo "************** $tmp ^^^---^^^ $tmp2 ^^^ +++^^^ $tmp3 ^^^\n";<br></span></i></p>
+<p><span>                                               if (($oConnIf-&gt;Get('connected_if') != $this-&gt;GetKey()) || ($sConnLink != $oConnIf-&gt;Get('link_type')))<br></span></p>
+<p><span>                                               {<br></span></p>
+<p><span>                                                               <i><span style="color:#1F497D">echo "primo if \n";<br></span></i></span></p>
+<p><span>                                                               // Something has to be changed on the connected interface...<br></span></p>
+<p><span>                                                               if ($oConnIf-&gt;Get('connected_if') != $this-&gt;GetKey())<br></span></p>
+<p><span>                                                               {<br></span></p>
+<p><span>                                                                              <span style="color:#1F497D">echo "secondo if \n";<br></span></span></p>
+<p><span>                                                                              // It is connected to another interface: reset that third one...<br></span></p>
+<p><span>                                                                              $oThirdIf = MetaModel::GetObject('NetworkInterface', $oConnIf-&gt;Get('connected_if'), false);<br></span></p>
+<p><span>                                                                              if (!is_null($oThirdIf))<br></span></p>
+<p><span>                                                                              {<br></span></p>
+<p><span>                                                                                ….<br></span></p>
+<p><span>                                                                              }<br></span></p>
+<p><span>                                                               }<br></span></p>
+<p><span>}<br></span></p>
+<p><span><br></span></p>
+<p><span>                               }<br></span></p>
+<p><span>}<br></span></p>
+<p><span><br></span></p>
+<p><span>                               <br></span></p>
+<p><span><br></span></p>
+<p><span>Any suggestion?<br></span></p>
+<p><span><br></span></p>
+<p><span><br></span></p>
+<p><span style='font-size:9.0pt;font-family:"Tahoma","sans-serif";color:navy'><br></span></p>
+<p><span style='font-size:9.0pt;font-family:"Tahoma","sans-serif";color:navy'><br></span></p>
+<p><span style='font-size:9.0pt;font-family:"Tahoma","sans-serif";color:navy'>PhD. Marialaura COLANTONI</span><span style='font-size:7.5pt;font-family:"Tahoma","sans-serif";color:navy'><br></span><b><span style='font-size:8.0pt;font-family:"Tahoma","sans-serif";color:#FF6600'>Direzione Tecnica</span></b><b><span style='font-size:7.5pt;font-family:"Tahoma","sans-serif";color:#FF6600'><br></span></b><span style='font-size:7.5pt;font-family:"Tahoma","sans-serif";color:navy'>_____________________________________________</span><span style='font-size:7.0pt;font-family:"Tahoma","sans-serif";color:navy'><br></span></p>
+<p><b><span style='font-size:10.0pt;font-family:"Tahoma","sans-serif";color:#FF6600'>Qinet s.r.l</span></b><b><span style='font-size:7.5pt;font-family:"Tahoma","sans-serif";color:#FF6600'> </span></b><span style='font-size:7.0pt;font-family:"Tahoma","sans-serif";color:#FF6600'>a s. u.</span><span style="color:#FF6600"><br></span></p>
+<p><span style='font-size:7.5pt;font-family:"Tahoma","sans-serif";color:#FF6600'>www.qinet.it  -  www.qinet.tel</span><span style='font-size:8.0pt;font-family:"Tahoma","sans-serif";color:#FF6600'> </span><span style='font-size:7.5pt;font-family:"Tahoma","sans-serif";color:navy'><br></span><span style='font-size:8.0pt;font-family:"Tahoma","sans-serif";color:navy'>Via Cardinal Fossati 5  - 10141 – Torino (IT)<br>Tel.  +39 011-19703500<br>Fax. +39 011-19703509</span><span style="color:navy"><br></span></p>
+<p><br></p>
+</div>

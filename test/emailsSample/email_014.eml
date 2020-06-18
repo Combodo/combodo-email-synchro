@@ -1,0 +1,82 @@
+Return-Path: <shebisalam10@gmail.com>
+Delivered-To: tickets@combodo.com
+Received: from b0.ovh.net (HELO queue) (213.186.33.50)
+	by b0.ovh.net with SMTP; 11 Feb 2011 09:27:23 +0200
+Received: from localhost (HELO mail536.ha.ovh.net) (127.0.0.1)
+  by localhost with SMTP; 11 Feb 2011 09:27:23 +0200
+Received: from b0.ovh.net (HELO queueout) (213.186.33.50)
+	by b0.ovh.net with SMTP; 11 Feb 2011 09:27:22 +0200
+Delivered-To: combodo.com-support@combodo.com
+Received: from b0.ovh.net (HELO queue) (213.186.33.50)
+	by b0.ovh.net with SMTP; 11 Feb 2011 09:27:22 +0200
+Received: from mail-ww0-f53.google.com (74.125.82.53)
+  by mx1.ovh.net with SMTP; 11 Feb 2011 09:27:21 +0200
+Received: by wwi18 with SMTP id 18so2138220wwi.34
+        for <support@combodo.com>; Thu, 10 Feb 2011 23:27:21 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:mime-version:date:message-id:subject:from:to
+         :content-type;
+        bh=l6IrDkd2Vynr7ucky0ty4x4l4jmZguSLmq/5Zakx+nE=;
+        b=ZvMj7kG8PUwb1aPA3kYLfyjRmfEaqAqNkkZe1nkFUZWyqej7H1UCVLffnVVVxvbL2k
+         Mpy4BS5DCjfnBC+ZZTSPpKNWwBXTUvMMe2aiUDEmsadoB7LwDdvV3OG8DCLo1Cvu54yn
+         MEsy1wruWBQAlGrRkgitxgrnK6pBKY8VgsX8w=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=mime-version:date:message-id:subject:from:to:content-type;
+        b=AV+QUs77SUH/biTEQLDfp6DmRzANHDjf+RcV/SxoGrTy5j0FiMj2dHcHnVNABSvFYP
+         TLqeChvQx2fPRUSxswgAkguLwDJy/Efts98P9LU2joD00q+HKpRIy7UMYHpfVpQdIpjp
+         ovZ+ld+qPCffPbsTdtoHwDXj0CXh6wwnOkjHI=
+MIME-Version: 1.0
+Received: by 10.216.24.207 with SMTP id x57mr117342wex.89.1297409241105; Thu,
+ 10 Feb 2011 23:27:21 -0800 (PST)
+Received: by 10.216.4.68 with HTTP; Thu, 10 Feb 2011 23:27:21 -0800 (PST)
+Date: Fri, 11 Feb 2011 12:57:21 +0530
+Message-ID: <AANLkTimYxse2ePys6jezzvLbRER7iUXSANB0YVAg2OLR@mail.gmail.com>
+Subject: how to give access too the users
+From: shebi salam <shebisalam10@gmail.com>
+To: support@combodo.com
+Content-Type: multipart/alternative; boundary=0016e6dd975bf1c459049bfca080
+X-Ovh-Tracer-Id: 16490211511846539534
+X-Ovh-Remote: 74.125.82.53 (mail-ww0-f53.google.com)
+X-Ovh-Local: 213.186.33.29 (mx1.ovh.net)
+X-Spam-Check: DONE|U 0.5/N
+
+--0016e6dd975bf1c459049bfca080
+Content-Type: text/plain; charset=ISO-8859-1
+
+Hi Support,
+
+Am Shebi from India. this is regarding my Itop administration.I successfully
+installed Itop & create a organisation.Please let me know how to give access
+to the users or any tool to integrated with Active directory users & groups
+for windows authentication.
+
+quick response is appreciated.
+
+-- 
+Thanks & Regards
+
+Shebi salam
+91+09847065298
+
+--0016e6dd975bf1c459049bfca080
+Content-Type: text/html; charset=ISO-8859-1
+Content-Transfer-Encoding: quoted-printable
+
+Hi Support,<div><br></div><div>Am Shebi from=A0India. this is regarding my =
+Itop=A0administration.I successfully installed Itop &amp; create a organisa=
+tion.Please let me know how to give access to the users or any tool to inte=
+grated with Active directory users &amp; groups for windows authentication.=
+</div>
+<div><br></div><div>quick response is=A0appreciated.<br clear=3D"all"><br>-=
+- <br><div><font color=3D"#ff0000" face=3D"comic sans ms,sans-serif">Thanks=
+ &amp; Regards</font></div>
+<div><font color=3D"#ff0000" face=3D"comic sans ms,sans-serif"></font>=A0</=
+div>
+<div><font color=3D"#ff0000" face=3D"comic sans ms,sans-serif">Shebi salam<=
+/font></div><div><font color=3D"#ff0000" face=3D"comic sans ms,sans-serif">=
+91+09847065298</font></div><br>
+</div>
+
+--0016e6dd975bf1c459049bfca080--

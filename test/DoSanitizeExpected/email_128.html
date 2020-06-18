@@ -1,0 +1,28 @@
+<p>CRON-APT RUN [/etc/cron-apt/config]: Sat Mar 23 04:00:01 CET 2013
+CRON-APT SLEEP: 1127, Sat Mar 23 04:18:48 CET 2013
+CRON-APT ACTION: 3-download
+CRON-APT LINE: /usr/bin/apt-get upgrade -u -y
+Reading package lists...
+Building dependency tree...
+Reading state information...
+The following packages have been kept back:
+  linux-image-generic
+0 upgraded, 0 newly installed, 0 to remove and 1 not upgraded.
+1 not fully installed or removed.
+After this operation, 0B of additional disk space will be used.
+Setting up mysql-server-5.1 (5.1.67-0ubuntu0.10.04.1) ...
+
+Configuration file `/etc/apparmor.d/usr.sbin.mysqld'
+ ==&gt; Modified (by you or by a script) since installation.
+ ==&gt; Package distributor has shipped an updated version.
+   What would you like to do about it ?  Your options are:
+    Y or I  : install the package maintainer's version
+    N or O  : keep your currently-installed version
+      D     : show the differences between the versions
+      Z     : background this process to examine the situation
+ The default action is to keep your current version.
+*** usr.sbin.mysqld (Y/I/N/O/D/Z) [default=N] ? dpkg: error processing mysql-server-5.1 (--configure):
+ EOF on stdin at conffile prompt
+Errors were encountered while processing:
+ mysql-server-5.1
+E: Sub-process /usr/bin/dpkg returned an error code (1)</p>

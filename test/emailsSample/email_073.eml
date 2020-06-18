@@ -1,0 +1,55 @@
+Return-Path: <bounce-id=d171=u145594.60gp.ovh.net=1308587700347143231@86.mail-out.ovh.net>
+Delivered-To: tickets@combodo.com
+Received: from b0.ovh.net (HELO queue) (213.186.33.50)
+	by b0.ovh.net with SMTP; 20 Jun 2011 18:35:14 +0200
+Received: from localhost (HELO mail214.ha.ovh.net) (127.0.0.1)
+  by localhost with SMTP; 20 Jun 2011 18:35:14 +0200
+Received: from b0.ovh.net (HELO queueout) (213.186.33.50)
+	by b0.ovh.net with SMTP; 20 Jun 2011 18:35:14 +0200
+Delivered-To: combodo.com-contact@combodo.com
+Received: from b0.ovh.net (HELO queue) (213.186.33.50)
+	by b0.ovh.net with SMTP; 20 Jun 2011 18:35:14 +0200
+Received: from 86.mail-out.ovh.net (178.32.118.31)
+  by mx1.ovh.net with SMTP; 20 Jun 2011 18:35:12 +0200
+Received: (qmail 14377 invoked by uid 0); 20 Jun 2011 16:35:01 -0000
+Received: from gw4.ovh.net (HELO 60gp.ovh.net) (213.251.189.204)
+  by 86.mail-out.ovh.net with SMTP; 20 Jun 2011 16:35:00 -0000
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by localhost.domain.tld (Postfix) with ESMTP id CA6F6313B9
+	for <contact@combodo.com>; Mon, 20 Jun 2011 18:35:11 +0200 (CEST)
+Received: by 60gp.ovh.net (Postfix, from userid 145594)
+	id 8FD0D313BA; Mon, 20 Jun 2011 18:35:11 +0200 (CEST)
+To: contact@combodo.com
+Subject: Formulaire de contact - Demande d'information sur iTop
+From: wp64@rocketmail.com (wp64 at rocketmail.com)
+Reply-To: wp64@rocketmail.com (wp64 at rocketmail.com)
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
+MIME-Version: 1.0
+Message-Id: <20110620163511.8FD0D313BA@60gp.ovh.net>
+Date: Mon, 20 Jun 2011 18:35:11 +0200 (CEST)
+X-Ovh-Tracer-Id: 8553461593222025405
+X-Ovh-Tracer-Id: 8556839292969147837
+X-Ovh-Remote: 178.32.118.31 (86.mail-out.ovh.net)
+X-Ovh-Local: 213.186.33.29 (mx1.ovh.net)
+X-Spam-Check: DONE|U 0.5/N
+
+Nom: Peters
+Prenom: Wolfgang
+Societe: GAF
+Language (of the form): English
+Fonction: Chief Service Desk
+Telephone: 00496762125082069
+eMail: wp64@rocketmail.com
+
+Message: Hi,
+I am realy impressed about this great work. I have installed Itop on a
+system without sample data. Now on every new incidet no Team or Person are
+in the dropdownlist. If I add them via the plus sign they will appear in
+the Teamlist or overwiew but not available to new incidents if you create a
+new one. Do you have any idea why my dropdownlist are empty even if the
+teams, location, Persons are in the system and showing up in the overwiew ?
+ Thanks
+
+Regards
+Wolfgang
