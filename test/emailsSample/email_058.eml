@@ -1,0 +1,42 @@
+Return-Path: <test@combodo.com>
+Delivered-To: tickets@combodo.com
+Received: from b0.ovh.net (HELO queue) (213.186.33.50)
+	by b0.ovh.net with SMTP; 25 May 2011 15:51:31 +0200
+Received: from localhost (HELO mail193.ha.ovh.net) (127.0.0.1)
+  by localhost with SMTP; 25 May 2011 15:51:31 +0200
+Received: from b0.ovh.net (HELO queueout) (213.186.33.50)
+	by b0.ovh.net with SMTP; 25 May 2011 15:51:31 +0200
+Delivered-To: combodo.com-support@combodo.com
+Received: from b0.ovh.net (HELO queue) (213.186.33.50)
+	by b0.ovh.net with SMTP; 25 May 2011 15:51:31 +0200
+Received: from localhost (HELO mail193.ha.ovh.net) (127.0.0.1)
+  by localhost with SMTP; 25 May 2011 15:51:31 +0200
+Received: from b0.ovh.net (HELO queueout) (213.186.33.50)
+	by b0.ovh.net with SMTP; 25 May 2011 15:51:31 +0200
+Received: from llagny-156-35-50-129.w217-128.abo.wanadoo.fr (HELO erwan-Linux.leconcorde.net) (erwan.taloc@combodo.com@217.128.93.129)
+  by ns0.ovh.net with SMTP; 25 May 2011 15:51:29 +0200
+Received: by erwan-Linux.leconcorde.net (sSMTP sendmail emulation); Wed, 25 May 2011 15:51:28 +0200
+Date: Wed, 25 May 2011 15:51:28 +0200
+To: support@combodo.com
+Subject: The ticket I-000044, priority Medium has been assigned to the workgroup Hardware support
+X-PHP-Originating-Script: 1000:email.class.inc.php
+MIME-Version: 1.0
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+From: test@combodo.com
+References: <iTop/Incident/44@127.0.0.1>
+X-Ovh-Tracer-Id: 675821421020049422
+Message-ID: <217.128.93.129.1306331489.29588@ns0.ovh.net>
+X-Ovh-Remote: 217.128.93.129 (llagny-156-35-50-129.w217-128.abo.wanadoo.fr)
+X-Ovh-Local: 213.186.33.20 (ns0.ovh.net)
+X-Spam-Check: DONE|U 0.5/N
+
+<html>
+<body>
+<p>The ticket I-000044 has been assigned to the workgroup Hardware support.</p>
+<p>Description: The service HTTP is in state CRITICAL</p>
+<p>Title: The service HTTP is in state CRITICAL</p>
+<hr/>
+<p>for more information on this ticket, click here: <a href="http://localhost/itop-110-RC/webservices/../pages/UI.php?operation=details&class=Incident&id=44&" title="Incident::44">I-000044</a></p>
+</body>
+</html>

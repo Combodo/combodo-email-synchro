@@ -1,0 +1,114 @@
+Received: from uranus.e-liance.net (195.189.64.19) by PISRV0001.proxival.local
+ (192.168.69.11) with Microsoft SMTP Server id 8.3.245.1; Wed, 27 Jun 2012
+ 15:50:17 +0200
+Received: from mx1.emilehenry.com ([93.95.234.118])	by uranus.e-liance.net
+ (8.13.8/8.13.8) with ESMTP id q5RDoH9R018981	for <eh@proxival.com>; Wed, 27
+ Jun 2012 15:50:17 +0200
+Received: from PISRV17004.emilehenry ([fe80::797f:4dd0:f156:e61e]) by
+ PISRV17004.emilehenry ([fe80::797f:4dd0:f156:e61e%10]) with mapi id
+ 14.01.0255.000; Wed, 27 Jun 2012 15:50:17 +0200
+From: "Boutique Emile HENRY, Lyon" <boutique-lyon@emilehenry.com>
+To: BAL Emile Henry <eh@proxival.com>
+Date: Wed, 27 Jun 2012 15:50:16 +0200
+Subject: parametrage du ticket de caisse
+Thread-Topic: parametrage du ticket de caisse
+Thread-Index: Ac1Ua4vhpt+4reLeR2yLCh6cFsEXzg==
+Message-ID: <9E7DBA149421164380BEBB09BCA030EC2D05C806@PISRV17004.emilehenry>
+Accept-Language: fr-FR, en-US
+Content-Language: fr-FR
+X-MS-Exchange-Organization-AuthAs: Anonymous
+X-MS-Exchange-Organization-AuthSource: PISRV0001.proxival.local
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+acceptlanguage: fr-FR, en-US
+x-originating-ip: [192.168.0.4]
+Content-Type: multipart/alternative;
+	boundary="_000_9E7DBA149421164380BEBB09BCA030EC2D05C806PISRV17004emile_"
+MIME-Version: 1.0
+
+--_000_9E7DBA149421164380BEBB09BCA030EC2D05C806PISRV17004emile_
+Content-Type: text/plain; charset="Windows-1252"
+Content-Transfer-Encoding: quoted-printable
+
+Bonjour,
+Nous souhaitons modifier les horaires d=92ouverture sur le ticket de caisse=
+ que nous remettons aux clients :
+Il faut SUPPRIMER la ligne qui indique que nous sommes ouverts le lundi et =
+laisser seulement :
+Ouvert du mardi au samedi de 10h =E0 19h.
+Est-ce bien =E0 vous qu=92il faut nous adresser ?
+Si oui, merci de faire la modification au plus vite !!
+Marie
+
+--_000_9E7DBA149421164380BEBB09BCA030EC2D05C806PISRV17004emile_
+Content-Type: text/html; charset="Windows-1252"
+Content-Transfer-Encoding: quoted-printable
+
+<html xmlns:v=3D"urn:schemas-microsoft-com:vml" xmlns:o=3D"urn:schemas-micr=
+osoft-com:office:office" xmlns:w=3D"urn:schemas-microsoft-com:office:word" =
+xmlns:m=3D"http://schemas.microsoft.com/office/2004/12/omml" xmlns=3D"http:=
+//www.w3.org/TR/REC-html40"><head>
+<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3DWindows-1=
+252">
+<meta name=3D"Generator" content=3D"Microsoft Word 14 (filtered medium)">
+<style><!--
+/* Font Definitions */
+@font-face
+	{font-family:Calibri;
+	panose-1:2 15 5 2 2 2 4 3 2 4;}
+/* Style Definitions */
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:11.0pt;
+	font-family:"Calibri","sans-serif";
+	mso-fareast-language:EN-US;}
+a:link, span.MsoHyperlink
+	{mso-style-priority:99;
+	color:blue;
+	text-decoration:underline;}
+a:visited, span.MsoHyperlinkFollowed
+	{mso-style-priority:99;
+	color:purple;
+	text-decoration:underline;}
+span.EmailStyle17
+	{mso-style-type:personal-compose;
+	font-family:"Calibri","sans-serif";
+	color:windowtext;}
+.MsoChpDefault
+	{mso-style-type:export-only;
+	font-family:"Calibri","sans-serif";
+	mso-fareast-language:EN-US;}
+@page WordSection1
+	{size:612.0pt 792.0pt;
+	margin:70.85pt 70.85pt 70.85pt 70.85pt;}
+div.WordSection1
+	{page:WordSection1;}
+--></style><!--[if gte mso 9]><xml>
+<o:shapedefaults v:ext=3D"edit" spidmax=3D"1026" />
+</xml><![endif]--><!--[if gte mso 9]><xml>
+<o:shapelayout v:ext=3D"edit">
+<o:idmap v:ext=3D"edit" data=3D"1" />
+</o:shapelayout></xml><![endif]-->
+</head>
+<body lang=3D"FR" link=3D"blue" vlink=3D"purple">
+<div class=3D"WordSection1">
+<p class=3D"MsoNormal">Bonjour,<o:p></o:p></p>
+<p class=3D"MsoNormal">Nous souhaitons modifier les horaires d=92ouverture =
+sur le ticket de caisse que nous remettons aux clients&nbsp;:<o:p></o:p></p=
+>
+<p class=3D"MsoNormal">Il faut SUPPRIMER la ligne qui indique que nous somm=
+es ouverts le lundi et laisser seulement&nbsp;:<o:p></o:p></p>
+<p class=3D"MsoNormal"><b><u>Ouvert du mardi au samedi de 10h =E0 19h</u></=
+b>.<o:p></o:p></p>
+<p class=3D"MsoNormal">Est-ce bien =E0 vous qu=92il faut nous adresser&nbsp=
+;?<o:p></o:p></p>
+<p class=3D"MsoNormal">Si oui, merci de faire la modification au plus vite&=
+nbsp;!!<o:p></o:p></p>
+<p class=3D"MsoNormal">Marie<o:p></o:p></p>
+</div>
+</body>
+</html>
+
+--_000_9E7DBA149421164380BEBB09BCA030EC2D05C806PISRV17004emile_--
+

@@ -1,0 +1,133 @@
+Return-Path: <bernt.sandstad@basis-consulting.no>
+Delivered-To: tickets@combodo.com
+Received: from b0.ovh.net (HELO queue) (213.186.33.50)
+	by b0.ovh.net with SMTP; 21 Mar 2011 09:41:35 +0200
+Received: from localhost (HELO mail484.ha.ovh.net) (127.0.0.1)
+  by localhost with SMTP; 21 Mar 2011 09:41:35 +0200
+Received: from b0.ovh.net (HELO queueout) (213.186.33.50)
+	by b0.ovh.net with SMTP; 21 Mar 2011 09:41:35 +0200
+Delivered-To: combodo.com-contact@combodo.com
+Received: from b0.ovh.net (HELO queue) (213.186.33.50)
+	by b0.ovh.net with SMTP; 21 Mar 2011 09:41:35 +0200
+Received: from smtp.plugg.no (217.65.233.11)
+  by mx1.ovh.net with SMTP; 21 Mar 2011 09:41:33 +0200
+Received: from apaex14.plugg.no (10.1.5.109) by apaex15.plugg.no (172.31.1.1)
+ with Microsoft SMTP Server (TLS) id 8.2.254.0; Mon, 21 Mar 2011 08:41:24
+ +0100
+Received: from APAEXV5.plugg.no ([10.1.5.106]) by apaex14.plugg.no
+ ([10.1.5.109]) with mapi; Mon, 21 Mar 2011 08:41:33 +0100
+From: Bernt Sandstad <Bernt.Sandstad@basis-consulting.no>
+To: "contact@combodo.com" <contact@combodo.com>
+Date: Mon, 21 Mar 2011 08:41:28 +0100
+Subject: Itop Mustang and features
+Thread-Topic: Itop Mustang and features
+Thread-Index: Acvnm2OH4WSr/b2ISUeCKhRxooOTvw==
+Message-ID: <538BC39D6F27AD4AA38094A6CC0482B624DAA34920@APAEXV5.plugg.no>
+Accept-Language: nb-NO
+Content-Language: nb-NO
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+acceptlanguage: nb-NO
+Content-Type: multipart/alternative;
+	boundary="_000_538BC39D6F27AD4AA38094A6CC0482B624DAA34920APAEXV5pluggn_"
+MIME-Version: 1.0
+Return-Path: Bernt.Sandstad@basis-consulting.no
+X-Ovh-Tracer-Id: 84723969953475517
+X-Ovh-Remote: 217.65.233.11 (smtp.plugg.no)
+X-Ovh-Local: 213.186.33.29 (mx1.ovh.net)
+X-Spam-Check: DONE|U 0.502741/N
+
+--_000_538BC39D6F27AD4AA38094A6CC0482B624DAA34920APAEXV5pluggn_
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+
+Hi,
+
+We are a Norwegian hosting company that have just started looking into iTop=
+.
+Our main objective is to move all monitoring templates and monitoring confi=
+guration data into a CMDB.
+We will then use various tools for monitoring and performance analysis, all=
+ getting their configuration from the CMDB.
+
+
+I saw this note saying that "Mustang" would have such features and would be=
+ released Q1 2011.
+Would  you please give us some more info on this ?
+
+
+--
+Regards,
+Bernt Sandstad
+Basis Consulting
+
+--_000_538BC39D6F27AD4AA38094A6CC0482B624DAA34920APAEXV5pluggn_
+Content-Type: text/html; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+
+<html xmlns:v=3D"urn:schemas-microsoft-com:vml" xmlns:o=3D"urn:schemas-micr=
+osoft-com:office:office" xmlns:w=3D"urn:schemas-microsoft-com:office:word" =
+xmlns:m=3D"http://schemas.microsoft.com/office/2004/12/omml" xmlns=3D"http:=
+//www.w3.org/TR/REC-html40"><head><meta http-equiv=3DContent-Type content=
+=3D"text/html; charset=3Dus-ascii"><meta name=3DGenerator content=3D"Micros=
+oft Word 12 (filtered medium)"><style><!--
+/* Font Definitions */
+@font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+@font-face
+	{font-family:Calibri;
+	panose-1:2 15 5 2 2 2 4 3 2 4;}
+/* Style Definitions */
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:11.0pt;
+	font-family:"Calibri","sans-serif";}
+a:link, span.MsoHyperlink
+	{mso-style-priority:99;
+	color:blue;
+	text-decoration:underline;}
+a:visited, span.MsoHyperlinkFollowed
+	{mso-style-priority:99;
+	color:purple;
+	text-decoration:underline;}
+span.EpostStil17
+	{mso-style-type:personal-compose;
+	font-family:"Calibri","sans-serif";
+	color:windowtext;}
+.MsoChpDefault
+	{mso-style-type:export-only;}
+@page WordSection1
+	{size:612.0pt 792.0pt;
+	margin:70.85pt 70.85pt 70.85pt 70.85pt;}
+div.WordSection1
+	{page:WordSection1;}
+--></style><!--[if gte mso 9]><xml>
+<o:shapedefaults v:ext=3D"edit" spidmax=3D"1026" />
+</xml><![endif]--><!--[if gte mso 9]><xml>
+<o:shapelayout v:ext=3D"edit">
+<o:idmap v:ext=3D"edit" data=3D"1" />
+</o:shapelayout></xml><![endif]--></head><body lang=3DNO-BOK link=3Dblue vl=
+ink=3Dpurple><div class=3DWordSection1><p class=3DMsoNormal>Hi,<o:p></o:p><=
+/p><p class=3DMsoNormal><o:p>&nbsp;</o:p></p><p class=3DMsoNormal><span lan=
+g=3DEN-US>We are a Norwegian hosting company that have just started looking=
+ into iTop.<o:p></o:p></span></p><p class=3DMsoNormal><span lang=3DEN-US>Ou=
+r main objective is to move all monitoring templates and monitoring configu=
+ration data into a CMDB.<o:p></o:p></span></p><p class=3DMsoNormal><span la=
+ng=3DEN-US>We will then use various tools for monitoring and performance an=
+alysis, all getting their configuration from the CMDB.<o:p></o:p></span></p=
+><p class=3DMsoNormal><span lang=3DEN-US><o:p>&nbsp;</o:p></span></p><p cla=
+ss=3DMsoNormal><span lang=3DEN-US><o:p>&nbsp;</o:p></span></p><p class=3DMs=
+oNormal><span lang=3DEN-US>I saw this note saying that &#8220;Mustang&#8221=
+; would have such features and would be released Q1 2011.<o:p></o:p></span>=
+</p><p class=3DMsoNormal><span lang=3DEN-US>Would &nbsp;you please give us =
+some more info on this ?<o:p></o:p></span></p><p class=3DMsoNormal><span la=
+ng=3DEN-US><o:p>&nbsp;</o:p></span></p><p class=3DMsoNormal><span lang=3DEN=
+-US><o:p>&nbsp;</o:p></span></p><p class=3DMsoNormal><span lang=3DEN-US>--<=
+o:p></o:p></span></p><p class=3DMsoNormal><span lang=3DEN-US>Regards,<o:p><=
+/o:p></span></p><p class=3DMsoNormal><span lang=3DEN-US>Bernt Sandstad<o:p>=
+</o:p></span></p><p class=3DMsoNormal><span lang=3DEN-US>Basis Consulting<o=
+:p></o:p></span></p></div></body></html>=
+
+--_000_538BC39D6F27AD4AA38094A6CC0482B624DAA34920APAEXV5pluggn_--

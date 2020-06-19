@@ -1,0 +1,23 @@
+<p>Hi team,
+
+I would appreciate if I can get your help on customize itop.
+I'm trying add a new filed "Type" into PC CI class to address the type
+of PC, like laptop or desktop etc.
+I added following line into  model.itop-config-mgmt.php :
+
+MetaModel::Init_AddAttribute(new AttributeBoolean("Type",
+array("allowed_values"=&gt;new ValueSetEnum('Laptop, Desktop, Blade'),
+"sql"=&gt;"result", "default_value"=&gt;null, "is_null_allowed"=&gt;true,
+"depends_on"=&gt;array())))
+
+Then I deployed the change via the Toolkit for modifying the data
+model. And after check with the toolkit, no problem was found in DB.
+However when I try create a new PC CI, the new field did not show up
+as my expected. I checked the DB with PHPMyadmin and the field already
+be insert into the table.
+
+Do you have any suggestion what else I need to do?
+
+Thanks,
+
+Forest</p>

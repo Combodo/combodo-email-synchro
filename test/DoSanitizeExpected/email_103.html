@@ -1,0 +1,80 @@
+<p>Dear Sir or Madam,
+
+my name is Tobias Glemser, I work as a security consultant at
+Tele-Consulting GmbH, Germany. While searching for a CMDB for our very own
+purposes, we discovered multiple vulnerabilities in in iTop version
+1.1.181.
+
+According to our disclosure policy, we inform you hereby about the
+vulnerabilities in detail before disclosing any information to the public.
+Due to the experiences in the past, we will stick to the following time
+schedule:
+ - no response from you until 2011/09/03: disclosure to the public
+ - response from you: disclosure to the public after a security fix is
+released, but latest on 2011/11/29 (maybe extended according to further
+agreements during the disclosure process)
+
+We respect your work and do support open source projects, so feel free to
+ask us for more information of you need one.
+
+I just saw you published 1.2-beta today. It seems you have the same
+problems here, as this one works on 1.1 and 1.2-beta:
+http://www.combodo.com/itop12-beta/pages/UI.php?auth_user=admin"&gt;alert("Help Me")"
+	  - add a database server named "XSS "
+	  - import a CSV-File where one cell contains "XSS
+"
+	  - copy&amp;paste data (which does the same as CSV-import) using
+	    1;Test 1
+        2;Test 2
+        3;Test 3"
+
+    reflected XSS (un-authenticated):
+
+http://$domain/iTop/pages/UI.php?auth_user=admin"&gt;alert("Help
+Me")"
+
+http://$domain/iTop/pages/UI.php?c%5bmenu%5d=60&amp;class=Note&amp;currentId=Searc
+hFormToAdd_document_list\
+	   &amp;description=""&amp;dosearch=1&amp;name=Acunetix&amp;open=1&amp;operation=search\
+	   _form&amp;org_id=3&amp;status=draft&amp;type=contract
+
+http://domain/iTop/pages/audit.php?category=%22%3Cscript%3Ealert%281%29%3C
+/script%3E%22&amp;operation=errors&amp;rule=1
+
+Possible solutions:
+    - sanitize all input
+
+Disclosure Timeline:
+    2011/08/09 vendor contacted via contact@combodo.com
+    2011/0X/XX public disclosure
+
+Credits:
+    Tobias Glemser (tglemser@tele-consulting.com)
+    Tele-Consulting security networking training GmbH, Germany
+    www.tele-consulting.com
+
+Disclaimer:
+    All information is provided without warranty. The intent is to
+    provide information to secure infrastructure and/or systems, not
+    to be able to attack or damage. Therefore Tele-Consulting shall
+    not be liable for any direct or indirect damages that might be
+    caused by using this information.
+
+##################
+
+Regards/Mit freundlichen Grüßen
+
+Tobias Glemser
+
+07032/9758-15 (Telefon)
+07032/9758-30 (Fax)
+--
+Tele-Consulting security | networking | training  GmbH
+Siedlerstraße 22-24
+71126 Gäufelden
+www.tele-consulting.com
+--
+Registergericht: Amtsgericht Stuttgart HRB 241704
+Geschäftsführung: Reto Lorenz (Geschäftsführer),
+Tobias Glemser (Prokurist)
+</p>

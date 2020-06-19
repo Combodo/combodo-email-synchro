@@ -1,0 +1,47 @@
+Return-Path: <bounce-id=d055=u145594.60gp.ovh.net=1298558861347305391@50.mail-out.ovh.net>
+Delivered-To: tickets@combodo.com
+Received: from b0.ovh.net (HELO queue) (213.186.33.50)
+	by b0.ovh.net with SMTP; 24 Feb 2011 16:47:47 +0200
+Received: from localhost (HELO mail502.ha.ovh.net) (127.0.0.1)
+  by localhost with SMTP; 24 Feb 2011 16:47:47 +0200
+Received: from b0.ovh.net (HELO queueout) (213.186.33.50)
+	by b0.ovh.net with SMTP; 24 Feb 2011 16:47:47 +0200
+Delivered-To: combodo.com-contact@combodo.com
+Received: from b0.ovh.net (HELO queue) (213.186.33.50)
+	by b0.ovh.net with SMTP; 24 Feb 2011 16:47:47 +0200
+Received: from 50.mail-out.ovh.net (188.165.45.9)
+  by mx1.ovh.net with SMTP; 24 Feb 2011 16:47:46 +0200
+Received: (qmail 30718 invoked by uid 0); 24 Feb 2011 14:47:46 -0000
+Received: from unknown (HELO 60gp.ovh.net) (213.251.189.204)
+  by 50.mail-out.ovh.net with SMTP; 24 Feb 2011 14:47:41 -0000
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by localhost.domain.tld (Postfix) with ESMTP id 9AFB05489
+	for <contact@combodo.com>; Thu, 24 Feb 2011 15:47:41 +0100 (CET)
+Received: by 60gp.ovh.net (Postfix, from userid 145594)
+	id 4E37C548A; Thu, 24 Feb 2011 15:47:41 +0100 (CET)
+To: contact@combodo.com
+Subject: Formulaire de contact - Autre demande
+From: flash@open-source.com (flash at open-source.com)
+Reply-To: flash@open-source.com (flash at open-source.com)
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
+MIME-Version: 1.0
+Message-Id: <20110224144741.4E37C548A@60gp.ovh.net>
+Date: Thu, 24 Feb 2011 15:47:41 +0100 (CET)
+X-Ovh-Tracer-Id: 8038080911927546045
+X-Ovh-Tracer-Id: 8039488285809740477
+X-Ovh-Remote: 188.165.45.9 (50.mail-out.ovh.net)
+X-Ovh-Local: 213.186.33.29 (mx1.ovh.net)
+X-Spam-Check: DONE|U 0.5/N
+
+Nom: flash
+Prenom: open-source
+Societe: 
+Language (of the form): English
+Fonction: 
+Telephone: 
+eMail: flash@open-source.com
+
+Message: Hi,
+
+Flash is not really Open-Source, or?

@@ -1,0 +1,25 @@
+<p>Nom: machado
+Prenom: marcos
+Societe: ifpr
+Language (of the form): English
+Fonction: network admin
+Telephone: 
+eMail: marcos.machado@ifpr.edu.br
+
+Message: hi,
+
+i install itop, i use mysql 5.1.49 and have a problem with this SQL:
+SELECT Service AS s JOIN SLA AS sla ON sla.service_id=s.id JOIN
+lnkContractToSLA AS ln ON ln.sla_id=sla.id JOIN CustomerContract AS cc ON
+ln.contract_id=cc.id WHERE cc.org_id = 2
+
+sql in select services from catalog.
+
+the error: #1064 - You have an error in your SQL syntax; check the manual
+that corresponds to your MySQL server version for the right syntax to use
+near 'JOIN SLA AS sla ON sla.service_id=s.id JOIN lnkContractToSLA AS ln ON
+ln.sla_id=' at line 1
+
+need update mysql?
+thanks :)
+</p>

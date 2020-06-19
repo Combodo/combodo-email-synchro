@@ -2,6 +2,7 @@
 # The log directory contains test emails for testing the decoding process
 #
 log
+test
 utils
 readme.txt
 decoding-test.php

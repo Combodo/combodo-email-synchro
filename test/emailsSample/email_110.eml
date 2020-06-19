@@ -1,0 +1,280 @@
+Return-Path: <marialaura.colantoni@qinet.it>
+Delivered-To: tickets@combodo.com
+Received: from b0.ovh.net (HELO queue) (213.186.33.50)
+	by b0.ovh.net with SMTP; 22 Aug 2011 15:44:52 +0200
+Received: from localhost (HELO mail204.ha.ovh.net) (127.0.0.1)
+  by localhost with SMTP; 22 Aug 2011 15:44:52 +0200
+Received: from b0.ovh.net (HELO queueout) (213.186.33.50)
+	by b0.ovh.net with SMTP; 22 Aug 2011 15:44:51 +0200
+Delivered-To: combodo.com-support@combodo.com
+Received: from b0.ovh.net (HELO queue) (213.186.33.50)
+	by b0.ovh.net with SMTP; 22 Aug 2011 15:44:51 +0200
+Received: from mail.sk-it.com (81.208.64.95)
+  by mx1.ovh.net with SMTP; 22 Aug 2011 15:44:50 +0200
+Received: from UTENTEPC (81-208-30-42.ip.fastwebnet.it [81.208.30.42])
+	by mail.sk-it.com (Postfix) with ESMTP id 7C82A121F5C
+	for <support@combodo.com>; Mon, 22 Aug 2011 15:44:49 +0200 (CEST)
+Return-Receipt-To: "Laura Colantoni" <marialaura.colantoni@qinet.it>
+From: "Laura Colantoni" <marialaura.colantoni@qinet.it>
+To: <support@combodo.com>
+Subject: Itil profile
+Date: Mon, 22 Aug 2011 15:45:48 +0200
+Message-ID: <!&!AAAAAAAAAAAYAAAAAAAAAAF7iLyiziNMmHwgX/Zk5orCgAAAEAAAAFGcMWZdbflBnlMsmMxwI6IBAAAAAA==@qinet.it>
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="----=_NextPart_000_004F_01CC60E2.90667190"
+X-Mailer: Microsoft Outlook 14.0
+thread-index: Acxg0cTIVnG4EnNeTjWg4ASdlL+bWA==
+Content-Language: it
+Disposition-Notification-To: "Laura Colantoni" <marialaura.colantoni@qinet.it>
+X-Ovh-Tracer-Id: 6724437193818628110
+X-Ovh-Remote: 81.208.64.95 (mail.sk-it.com)
+X-Ovh-Local: 213.186.33.29 (mx1.ovh.net)
+X-Spam-Check: DONE|U 0.5/N
+
+This is a multipart message in MIME format.
+
+------=_NextPart_000_004F_01CC60E2.90667190
+Content-Type: text/plain;
+	charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+
+Hello everybody,
+
+ 
+
+I am still doing exercizes according to the course attended.
+
+I would like to introduce a new profile that is able only to read all data.
+
+ 
+
+I modified the file /itop/web/modules/itop-profiles-itil/
+module.itop-profiles-itil.php
+
+adding at the very end:
+
+ 
+
+..
+
+'Document author' => array(
+
+'description' => 'Any person who could contribute to documentation',
+
+'write_modules' => 'Documentation',
+
+'delete_modules' => 'Documentation,LnkTickets',
+
+'stimuli' => array(
+
+),
+
+),
+
+//laura
+
+'Reporter' => array(
+
+'description' => 'Person responsible for reporting',
+
+'write_modules' => '',
+
+'delete_modules' => '',
+
+'stimuli' => array(
+
+),
+
+),
+
+//laura
+
+);
+
+}
+
+}
+
+?>
+
+but i was  not able to see this new profile in the Admin Tools -> Profiles
+
+What did I miss?
+
+ 
+
+Thanks for help
+
+Ciao 
+
+Laura
+
+ 
+
+ 
+
+PhD. Marialaura COLANTONI
+Direzione Tecnica
+_____________________________________________
+
+Qinet s.r.l a s. u.
+
+www.qinet.it  -  www.qinet.tel 
+Via Cardinal Fossati 5  - 10141 - Torino (IT)
+Tel.  +39 011-19703500
+Fax. +39 011-19703509
+
+ 
+
+
+------=_NextPart_000_004F_01CC60E2.90667190
+Content-Type: text/html;
+	charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+
+<html xmlns:v=3D"urn:schemas-microsoft-com:vml" =
+xmlns:o=3D"urn:schemas-microsoft-com:office:office" =
+xmlns:w=3D"urn:schemas-microsoft-com:office:word" =
+xmlns:m=3D"http://schemas.microsoft.com/office/2004/12/omml" =
+xmlns=3D"http://www.w3.org/TR/REC-html40"><head><meta =
+http-equiv=3DContent-Type content=3D"text/html; =
+charset=3Dus-ascii"><meta name=3DGenerator content=3D"Microsoft Word 14 =
+(filtered medium)"><style><!--
+/* Font Definitions */
+@font-face
+	{font-family:Calibri;
+	panose-1:2 15 5 2 2 2 4 3 2 4;}
+@font-face
+	{font-family:Tahoma;
+	panose-1:2 11 6 4 3 5 4 4 2 4;}
+/* Style Definitions */
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:11.0pt;
+	font-family:"Calibri","sans-serif";
+	mso-fareast-language:EN-US;}
+a:link, span.MsoHyperlink
+	{mso-style-priority:99;
+	color:blue;
+	text-decoration:underline;}
+a:visited, span.MsoHyperlinkFollowed
+	{mso-style-priority:99;
+	color:purple;
+	text-decoration:underline;}
+span.StileMessaggioDiPostaElettronica17
+	{mso-style-type:personal-compose;
+	font-family:"Calibri","sans-serif";
+	color:windowtext;}
+.MsoChpDefault
+	{mso-style-type:export-only;
+	font-family:"Calibri","sans-serif";
+	mso-fareast-language:EN-US;}
+@page WordSection1
+	{size:612.0pt 792.0pt;
+	margin:70.85pt 2.0cm 2.0cm 2.0cm;}
+div.WordSection1
+	{page:WordSection1;}
+--></style><!--[if gte mso 9]><xml>
+<o:shapedefaults v:ext=3D"edit" spidmax=3D"1026" />
+</xml><![endif]--><!--[if gte mso 9]><xml>
+<o:shapelayout v:ext=3D"edit">
+<o:idmap v:ext=3D"edit" data=3D"1" />
+</o:shapelayout></xml><![endif]--></head><body lang=3DIT link=3Dblue =
+vlink=3Dpurple><div class=3DWordSection1><p class=3DMsoNormal>Hello =
+everybody,<o:p></o:p></p><p class=3DMsoNormal><o:p>&nbsp;</o:p></p><p =
+class=3DMsoNormal><span lang=3DEN-US>I am still doing exercizes =
+according to the course attended.<o:p></o:p></span></p><p =
+class=3DMsoNormal><span lang=3DEN-US>I would like to introduce a new =
+profile that is able only to read all data.<o:p></o:p></span></p><p =
+class=3DMsoNormal><span lang=3DEN-US><o:p>&nbsp;</o:p></span></p><p =
+class=3DMsoNormal><span lang=3DEN-US>I modified the file =
+/itop/web/modules/itop-profiles-itil/ =
+module.itop-profiles-itil.php<o:p></o:p></span></p><p =
+class=3DMsoNormal><span lang=3DEN-US>adding at the very =
+end:<o:p></o:p></span></p><p class=3DMsoNormal><span =
+lang=3DEN-US><o:p>&nbsp;</o:p></span></p><p class=3DMsoNormal><span =
+lang=3DEN-US>&#8230;.<o:p></o:p></span></p><p class=3DMsoNormal><span =
+lang=3DEN-US>'Document author' =3D&gt; array(<o:p></o:p></span></p><p =
+class=3DMsoNormal><span lang=3DEN-US>'description' =3D&gt; 'Any person =
+who could contribute to documentation',<o:p></o:p></span></p><p =
+class=3DMsoNormal><span lang=3DEN-US>'write_modules' =3D&gt; =
+'Documentation',<o:p></o:p></span></p><p class=3DMsoNormal><span =
+lang=3DEN-US>'delete_modules' =3D&gt; =
+'Documentation,LnkTickets',<o:p></o:p></span></p><p =
+class=3DMsoNormal><span lang=3DEN-US>'stimuli' =3D&gt; =
+array(<o:p></o:p></span></p><p class=3DMsoNormal><span =
+lang=3DEN-US>),<o:p></o:p></span></p><p class=3DMsoNormal><span =
+lang=3DEN-US>),<o:p></o:p></span></p><p class=3DMsoNormal><span =
+lang=3DEN-US>//laura<o:p></o:p></span></p><p class=3DMsoNormal><span =
+lang=3DEN-US>'Reporter' =3D&gt; array(<o:p></o:p></span></p><p =
+class=3DMsoNormal><span lang=3DEN-US>'description' =3D&gt; 'Person =
+responsible for reporting',<o:p></o:p></span></p><p =
+class=3DMsoNormal><span lang=3DEN-US>'write_modules' =3D&gt; =
+'',<o:p></o:p></span></p><p class=3DMsoNormal><span =
+lang=3DEN-US>'delete_modules' =3D&gt; '',<o:p></o:p></span></p><p =
+class=3DMsoNormal><span lang=3DEN-US>'stimuli' =3D&gt; =
+array(<o:p></o:p></span></p><p class=3DMsoNormal><span =
+lang=3DEN-US>),<o:p></o:p></span></p><p class=3DMsoNormal><span =
+lang=3DEN-US>),<o:p></o:p></span></p><p =
+class=3DMsoNormal>//laura<o:p></o:p></p><p =
+class=3DMsoNormal>);<o:p></o:p></p><p =
+class=3DMsoNormal>}<o:p></o:p></p><p =
+class=3DMsoNormal>}<o:p></o:p></p><p =
+class=3DMsoNormal>?&gt;<o:p></o:p></p><p =
+class=3DMsoNormal><o:p></o:p></p><p class=3DMsoNormal><span =
+lang=3DEN-US>but i was &nbsp;not able to see this new profile in the =
+Admin Tools -&gt; Profiles<o:p></o:p></span></p><p =
+class=3DMsoNormal><span lang=3DEN-US>What did I =
+miss?<o:p></o:p></span></p><p class=3DMsoNormal><span =
+lang=3DEN-US><o:p>&nbsp;</o:p></span></p><p class=3DMsoNormal><span =
+lang=3DEN-US>Thanks for help<o:p></o:p></span></p><p =
+class=3DMsoNormal><span lang=3DEN-US>Ciao <o:p></o:p></span></p><p =
+class=3DMsoNormal><span lang=3DEN-US>Laura<o:p></o:p></span></p><p =
+class=3DMsoNormal><span lang=3DEN-US =
+style=3D'font-size:9.0pt;font-family:"Tahoma","sans-serif";color:navy;mso=
+-fareast-language:IT'><o:p>&nbsp;</o:p></span></p><p =
+class=3DMsoNormal><span lang=3DEN-US =
+style=3D'font-size:9.0pt;font-family:"Tahoma","sans-serif";color:navy;mso=
+-fareast-language:IT'><o:p>&nbsp;</o:p></span></p><p =
+class=3DMsoNormal><span =
+style=3D'font-size:9.0pt;font-family:"Tahoma","sans-serif";color:navy;mso=
+-fareast-language:IT'>PhD. Marialaura COLANTONI</span><span =
+style=3D'font-size:7.5pt;font-family:"Tahoma","sans-serif";color:navy;mso=
+-fareast-language:IT'><br></span><b><span =
+style=3D'font-size:8.0pt;font-family:"Tahoma","sans-serif";color:#FF6600;=
+mso-fareast-language:IT'>Direzione Tecnica</span></b><b><span =
+style=3D'font-size:7.5pt;font-family:"Tahoma","sans-serif";color:#FF6600;=
+mso-fareast-language:IT'><br></span></b><span =
+style=3D'font-size:7.5pt;font-family:"Tahoma","sans-serif";color:navy;mso=
+-fareast-language:IT'>_____________________________________________</span=
+><span =
+style=3D'font-size:7.0pt;font-family:"Tahoma","sans-serif";color:navy;mso=
+-fareast-language:IT'><o:p></o:p></span></p><p =
+class=3DMsoNormal><b><span =
+style=3D'font-size:10.0pt;font-family:"Tahoma","sans-serif";color:#FF6600=
+;mso-fareast-language:IT'>Qinet s.r.l</span></b><b><span =
+style=3D'font-size:7.5pt;font-family:"Tahoma","sans-serif";color:#FF6600;=
+mso-fareast-language:IT'> </span></b><span =
+style=3D'font-size:7.0pt;font-family:"Tahoma","sans-serif";color:#FF6600;=
+mso-fareast-language:IT'>a s. u.</span><span =
+style=3D'color:#FF6600;mso-fareast-language:IT'><o:p></o:p></span></p><p =
+class=3DMsoNormal><span =
+style=3D'font-size:7.5pt;font-family:"Tahoma","sans-serif";color:#FF6600;=
+mso-fareast-language:IT'>www.qinet.it&nbsp; -&nbsp; w</span><span =
+lang=3DEN-US =
+style=3D'font-size:7.5pt;font-family:"Tahoma","sans-serif";color:#FF6600;=
+mso-fareast-language:IT'>ww.qinet.tel</span><span lang=3DEN-US =
+style=3D'font-size:8.0pt;font-family:"Tahoma","sans-serif";color:#FF6600;=
+mso-fareast-language:IT'> </span><span lang=3DEN-US =
+style=3D'font-size:7.5pt;font-family:"Tahoma","sans-serif";color:navy;mso=
+-fareast-language:IT'><br></span><span lang=3DEN-US =
+style=3D'font-size:8.0pt;font-family:"Tahoma","sans-serif";color:navy;mso=
+-fareast-language:IT'>Via&nbsp;Cardinal Foss</span><span =
+style=3D'font-size:8.0pt;font-family:"Tahoma","sans-serif";color:navy;mso=
+-fareast-language:IT'>ati 5&nbsp; - 10141 &#8211; Torino =
+(IT)<br>Tel.&nbsp; +39 011-19703500<br>Fax. +39 011-19703509</span><span =
+style=3D'color:navy;mso-fareast-language:IT'><o:p></o:p></span></p><p =
+class=3DMsoNormal><o:p>&nbsp;</o:p></p></div></body></html>
+------=_NextPart_000_004F_01CC60E2.90667190--

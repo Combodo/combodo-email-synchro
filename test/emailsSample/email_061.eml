@@ -1,0 +1,67 @@
+Return-Path: <forestshi@gmail.com>
+Delivered-To: tickets@combodo.com
+Received: from b0.ovh.net (HELO queue) (213.186.33.50)
+	by b0.ovh.net with SMTP; 6 Jun 2011 15:07:54 +0200
+Received: from localhost (HELO mail454.ha.ovh.net) (127.0.0.1)
+  by localhost with SMTP; 6 Jun 2011 15:07:54 +0200
+Received: from b0.ovh.net (HELO queueout) (213.186.33.50)
+	by b0.ovh.net with SMTP; 6 Jun 2011 15:07:54 +0200
+Delivered-To: combodo.com-support@combodo.com
+Received: from b0.ovh.net (HELO queue) (213.186.33.50)
+	by b0.ovh.net with SMTP; 6 Jun 2011 15:07:54 +0200
+Received: from mail-vw0-f41.google.com (209.85.212.41)
+  by mx1.ovh.net with SMTP; 6 Jun 2011 15:07:52 +0200
+Received: by vws4 with SMTP id 4so2874791vws.28
+        for <support@combodo.com>; Mon, 06 Jun 2011 06:07:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:mime-version:date:message-id:subject:from:to
+         :content-type;
+        bh=wXrcYMdGUIwF03UKU4Umo/DeyRa2tYvn1KN3gjk/7dY=;
+        b=dEXQ1A9yzaJtBbyvZi60Q+hNWbZhZGMPjevrvWeCU+BFUCyzhqg8yeTdMWJIV8dQRz
+         25UnIJIPf2ifxWPmni/JryrJDDCXmkyzDYWuJuqhxvIp4pJ0cbVU9wB3XtRmsKHjbo6n
+         HJ4lEeqadpJUiqLnTibfxIOtyGa1BkJA0Nj34=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=mime-version:date:message-id:subject:from:to:content-type;
+        b=bUZU9+rNsZ3nVU09S0N1S2qOYWpyrOwtAq9hin+bxDA5XWA2pVFh5KhpkB1RoxRZF/
+         t5yenTjptfuP20zkRVEsNWj+vCuPE7/G0TB6Qux7Vb7hK6HfxdWillbZcxSydiQlcOb1
+         Fi7GMGE6g3vOTmTKKcphsaaYaThyussaNdKbI=
+MIME-Version: 1.0
+Received: by 10.52.96.33 with SMTP id dp1mr6785626vdb.20.1307365671923; Mon,
+ 06 Jun 2011 06:07:51 -0700 (PDT)
+Received: by 10.52.165.226 with HTTP; Mon, 6 Jun 2011 06:07:51 -0700 (PDT)
+Date: Mon, 6 Jun 2011 21:07:51 +0800
+Message-ID: <BANLkTik30ixtYo9VAB2niyqxJPwsDoQi2w@mail.gmail.com>
+Subject: add a filed into existing class
+From: Shi Lin <forestshi@gmail.com>
+To: support@combodo.com
+Content-Type: text/plain; charset=ISO-8859-1
+X-Ovh-Tracer-Id: 15071296153931968014
+X-Ovh-Remote: 209.85.212.41 (mail-vw0-f41.google.com)
+X-Ovh-Local: 213.186.33.29 (mx1.ovh.net)
+X-Spam-Check: DONE|U 0.5/N
+
+Hi team,
+
+I would appreciate if I can get your help on customize itop.
+I'm trying add a new filed "Type" into PC CI class to address the type
+of PC, like laptop or desktop etc.
+I added following line into  model.itop-config-mgmt.php :
+
+MetaModel::Init_AddAttribute(new AttributeBoolean("Type",
+array("allowed_values"=>new ValueSetEnum('Laptop, Desktop, Blade'),
+"sql"=>"result", "default_value"=>null, "is_null_allowed"=>true,
+"depends_on"=>array())))
+
+Then I deployed the change via the Toolkit for modifying the data
+model. And after check with the toolkit, no problem was found in DB.
+However when I try create a new PC CI, the new field did not show up
+as my expected. I checked the DB with PHPMyadmin and the field already
+be insert into the table.
+
+Do you have any suggestion what else I need to do?
+
+Thanks,
+
+Forest
