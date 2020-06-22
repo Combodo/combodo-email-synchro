@@ -44,10 +44,10 @@ class HTMLDOMSanitizerTest extends ItopTestCase
 	/**
 	 * Test the fix for ticket N°2556
 	 *
-	 * @dataProvider PreserveBlackListedTagContentProvider
+	 * @dataProvider RemoveBlackListedTagContentProvider
 	 *
 	 */
-	public function testDoSanitizePreserveBlackListedTagContent($sFileName, $expected)
+	public function testDoSanitizeRemoveBlackListedTagContent($sFileName, $expected)
 	{
 //		if (basename($sFileName) == 'TEST failure notice.eml') {$this->markTestSkipped('TEST failure notice.eml takes too much time!'); return;}
 
@@ -77,7 +77,7 @@ class HTMLDOMSanitizerTest extends ItopTestCase
 	}
 
 
-	public function PreserveBlackListedTagContentProvider()
+	public function RemoveBlackListedTagContentProvider()
 	{
 		parent::setUp();
 
