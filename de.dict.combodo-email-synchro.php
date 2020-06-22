@@ -31,6 +31,7 @@ Dict::Add('DE DE', 'German', 'Deutsch', array(
 	'Class:MailInboxBase/Attribute:active/Value:no' => 'Nein',
 
 	'MailInbox:MailboxContent' => 'Mailbox Inhalt',
+	'MailInbox:MailboxContent:ConfirmMessage' => 'Are you sure ?~~',
 	'MailInbox:EmptyMailbox' => 'Die Mailbox ist leer',
 	'MailInbox:Z_DisplayedThereAre_X_Msg_Y_NewInTheMailbox' => '%1$d Mails angezeigt. Es sind %2$d EMail(s) in der Mailbox (%3$d neu).',
 	'MailInbox:MaxAllowedPacketTooSmall' => 'Der MySQL-Parameter max_allowed_packet in "my.ini" ist zu klein: %1$s. Der empfohlene Wert ist mindestens: %2$s',
@@ -43,7 +44,7 @@ Dict::Add('DE DE', 'German', 'Deutsch', array(
 	'MailInbox:Status/Processed' => 'bereits abgearbeitet',
 	'MailInbox:Status/New' => 'Neu',
     'MailInbox:Status/Error' => 'Fehler',
-    'MailInbox:Status/Undesired' => 'Unerwünscht',
+	'MailInbox:Status/Undesired' => 'Unerwünscht',
 	'MailInbox:Status/Ignored' => 'Ignoriert',
 
 	'MailInbox:Login/ServerMustBeUnique' => 'Diese Kombination aus Login (%1$s) und Server (%2$s) ist bereits für einen anderen Posteingang konfiguriert.',
