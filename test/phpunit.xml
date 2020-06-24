@@ -1,0 +1,8 @@
+<phpunit bootstrap="unittestautoload.php" backupGlobals="false" verbose="true">
+  <testsuites>
+    <testsuite name="testsU">
+      <file>./HTMLDOMSanitizerTest.php</file>
+      <file>./RawEmailMessageTest.php</file>
+    </testsuite>
+  </testsuites>
+</phpunit>
