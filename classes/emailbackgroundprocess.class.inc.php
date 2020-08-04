@@ -214,6 +214,14 @@ class EmailBackgroundProcess implements iBackgroundProcess
 					}				 
 					for ($iMessage = 0; $iMessage < $iMsgCount; $iMessage++)
 					{
+						// N°3218 initialize a new CMDBChange for each message
+						/** @var \CMDBChange $oCurrentMessageChange */
+						$oCurrentMessageChange = MetaModel::NewObject('CMDBChange');
+						$oCurrentMessageChange->Set('date', time());
+						$oCurrentMessageChange->Set('userinfo', 'Mail to ticket automation (background process)');
+						$oCurrentMessageChange->Set('origin', 'custom-extension');
+						CMDBObject::SetCurrentChange($oCurrentMessageChange);
+
 						try
 						{
 							$this->InitMessageTrace($oSource, $iMessage);
