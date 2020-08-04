@@ -2,18 +2,17 @@
 
 SetupWebPage::AddModule(
 	__FILE__, // Path to the current file, all other file names are relative to the directory containing this file
-	'combodo-email-synchro/3.2.2',
-    array(
-        // Identification
-        'label' => 'Tickets synchronization via e-mail',
-        'category' => 'business',
-        // Setup
-        'dependencies' => array(
-	),
-	'mandatory' => false,
-	'visible' => true,
-	'installer' => 'EmailSynchroInstaller',
-	// Components
+	'combodo-email-synchro/3.3.0',
+	array(
+		// Identification
+		'label' => 'Tickets synchronization via e-mail',
+		'category' => 'business',
+		// Setup
+		'dependencies' => array(),
+		'mandatory' => false,
+		'visible' => true,
+		'installer' => 'EmailSynchroInstaller',
+		// Components
 	'datamodel' => array(
 		'classes/autoload.php',
 		'model.combodo-email-synchro.php',
