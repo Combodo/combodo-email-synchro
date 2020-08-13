@@ -1,4 +1,4 @@
-<phpunit bootstrap="unittestautoload.php" backupGlobals="false" verbose="true">
+<phpunit bootstrap="../unittestautoload.php" backupGlobals="false" verbose="true">
   <testsuites>
     <testsuite name="testsU">
       <file>./HTMLDOMSanitizerTest.php</file>
