@@ -220,6 +220,7 @@ class EmailBackgroundProcess implements iBackgroundProcess
 						$oCurrentMessageChange->Set('date', time());
 						$oCurrentMessageChange->Set('userinfo', 'Mail to ticket automation (background process)');
 						$oCurrentMessageChange->Set('origin', 'custom-extension');
+						$oCurrentMessageChange->DBInsert(); // mandatory so that CMDBChangeOp objects could link to this CMDBChange
 						CMDBObject::SetCurrentChange($oCurrentMessageChange);
 
 						try
