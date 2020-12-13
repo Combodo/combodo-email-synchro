@@ -225,6 +225,13 @@ class EmailBackgroundProcess implements iBackgroundProcess
 
 						try
 						{
+							
+							if($oSource instanceof IMAPEmailSource)
+							{
+								// Prevents IMAP email messages that were marked for deletion before (but restored through recovered items) from being deleted again
+								$ret = $oSource->UndeleteMessage($iMessage);
+							}
+							
 							$this->InitMessageTrace($oSource, $iMessage);
 							$iTotalMessages++;
 							if (self::IsMultiSourceMode())

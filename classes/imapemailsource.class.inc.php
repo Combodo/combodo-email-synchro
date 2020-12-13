@@ -109,8 +109,18 @@ class IMAPEmailSource extends EmailSource
 	 public function GetName()
 	 {
 	 	return $this->sLogin;
-	 }
-
+	 
+	 
+	/**
+	 * Marks the message for undeletion (IMAP-flag) of the given index [0..Count] from the mailbox.
+	 * @param $index integer The index between zero and count
+	 */
+	public function UndeleteMessage($index)
+	{
+		$ret = imap_undelete($this->rImapConn, (1+$index).':'.(1+$index));
+		return $ret;
+	}
+	
 	/**
 	 * Mailbox path of the eMail source
 	 */
