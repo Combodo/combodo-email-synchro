@@ -582,7 +582,8 @@ class RawEmailMessage
 			{
 				if (isset($aRawFields[$sCurrentHeader]))
 				{
-					$aRawFields[$sCurrentHeader] .= substr($sLine, 1);
+					// Fix for long subjects where spaces get lost on split header lines.
+					$aRawFields[$sCurrentHeader] .= (in_array($sCurrentHeader, array('references', 'subject')) ? $sLine : substr($sLine, 1));
 				}
 			}
 			$idx++;
