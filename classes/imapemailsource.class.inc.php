@@ -79,7 +79,20 @@ class IMAPEmailSource extends EmailSource
 	 */
 	public function GetMessage($index)
 	{
-		$sRawHeaders = imap_fetchheader($this->rImapConn, 1+$index);
+		$sRawHeaders = imap_fetchheader($this->rImapConn, 1+$index);        
+		// Rare occurrence of e-mails from 2010/2011, from VirginMedia, sent by an unknown client.
+		// To: <Undisclosed-Recipient:;>
+		$sLastError = imap_last_error();
+		if($sLastError !== false)
+		{
+			if(preg_match('/Unexpected characters at end of address: <(.*)>/', $sLastError, $aMatches))
+			{
+				// Exception occurred while parsing From, To, CC headers.
+				// It's not necessarily critical, because the problem can be located just in one single address.
+				// Drop this warning.
+				imap_errors();
+			}
+		}
 		$sBody = imap_body($this->rImapConn, 1+$index, FT_PEEK);
 		$aOverviews = imap_fetch_overview($this->rImapConn, 1+$index);
 		$oOverview = array_pop($aOverviews);
