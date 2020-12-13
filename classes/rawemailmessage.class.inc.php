@@ -912,6 +912,16 @@ class RawEmailMessage
 			$sName = trim($aMatches[1], ' "');
 			$sEmail = $aMatches[2];
 		}
+		// In a rare circumstance, an email From: header looked like this:
+		// From: "Firstname Lastname" <firstname.lastname@domain.com >
+		// The client was Windows Live Mail, but it seems the email address was somehow misconfigured while still able to send emails.
+		// This fix still processes invalid From: headers where there are spaces before or after the email address.
+		// This regex is quite strict to prevent other issues from occurring because of this fix.
+		elseif(preg_match('/^(.*)<([ ]{0,})([^ ]+@[^ ]+\.[^ ]+)([ ]{0,})>$/', $sAddress, $aMatches))
+		{
+			$sName = trim($aMatches[1], ' "');
+			$sEmail = $aMatches[3];
+		}
 		else
 		{
 			if (preg_match('/^([^ ]+) ?\((.*)\)$/', $sAddress, $aMatches))
