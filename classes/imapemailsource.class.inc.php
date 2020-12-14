@@ -79,7 +79,7 @@ class IMAPEmailSource extends EmailSource
 	 */
 	public function GetMessage($index)
 	{
-		$sRawHeaders = imap_fetchheader($this->rImapConn, 1+$index);        
+		$sRawHeaders = imap_fetchheader($this->rImapConn, 1+$index);
 		// Rare occurrence of e-mails from 2010/2011, from VirginMedia, sent by an unknown client.
 		// To: <Undisclosed-Recipient:;>
 		$sLastError = imap_last_error();
