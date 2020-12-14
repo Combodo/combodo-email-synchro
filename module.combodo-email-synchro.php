@@ -56,6 +56,7 @@ SetupWebPage::AddModule(
 			'/\\RDe : .+\\RDate d\'envoi : .+\\R/m', // Outlook French, plain text
 			'/\\R-----Message d\'origine-----\\R/m',
 		),
+		'delimit_html_message' => true, // Delimit the previous message also in the case of HTML messages
 		'use_message_id_as_uid' => false, // Do NOT change this unless you known what you are doing!!
 		'images_minimum_size' => '100x20', // Images smaller that these dimensions will be ignored (signatures...)
 		'images_maximum_size' => '', // Images bigger that these dimensions will be resized before uploading into iTop

@@ -248,7 +248,11 @@ class EmailMessage {
 		{
 			$aTagsToRemove = MetaModel::GetModuleSetting('combodo-email-synchro', 'html-tags-to-remove', $aTagsToRemove);
 			$aGlobalDelimiterPatterns = MetaModel::GetModuleSetting('combodo-email-synchro', 'multiline-delimiter-patterns', $aGlobalDelimiterPatterns);
-		}		
+
+			// Reset the configuration if HTML delimit is not wanted. (default old behaviour)
+			if (!MetaModel::GetModuleSetting('combodo-email-synchro', 'delimit_html_message', false))
+				$aGlobalDelimiterPatterns = array();
+		}
 		
 		$this->oDoc = new DOMDocument();
 		$this->oDoc->preserveWhitespace = true;
