@@ -38,8 +38,15 @@ SetupWebPage::AddModule(
 		'maximum_email_size' => '10M', // Maximum allowed size for incoming emails
 		'big_files_dir' => '',
 		'exclude_attachment_types' => array('application/exe'), // Example: 'application/exe', 'application/x-winexe', 'application/msdos-windows'
+		// Default tags to remove: array of tag_name => array of class names
+		'html_tags_to_remove' => array(
+			'blockquote' => array(),
+			'div' => array('gmail_quote', 'moz-cite-prefix'),
+			'pre' => array('moz-signature')
+		),
 		// Lines to be removed just above the 'new part' in a reply-to message... add your own patterns below
-		'introductory-patterns' => array(
+		'introductory_patterns' => array(
+			'/^De : .+$/', // Outlook French
 			'/^le .+ a écrit :$/i', // Thunderbird French
 			'/^on .+ wrote:$/i', // Thunderbird English
 			'|^[0-9]{4}/[0-9]{1,2}/[0-9]{1,2} .+:$|', // Gmail style
@@ -48,12 +55,15 @@ SetupWebPage::AddModule(
 		// The "new" part of the message is the text before the pattern
 		// Add your own multi-line patterns (use \\R for a line break)
 		// These patterns depend on the mail client/server used... feel free to add your own discoveries to the list
-		'multiline-delimiter-patterns' => array(
+		'multiline_delimiter_patterns' => array(
 			'/\\RFrom: .+\\RSent: .+\\R/m', // Outlook English
 			'/\\R_+\\R/m', // A whole line made only of underscore characters
 			'/\\RDe : .+\\R\\R?Envoyé : /m', // Outlook French, HTML and rich text
 			'/\\RDe : .+\\RDate d\'envoi : .+\\R/m', // Outlook French, plain text
 			'/\\R-----Message d\'origine-----\\R/m',
+		),
+		'delimiter_patterns' => array(
+			'/^>.*$/' => false, // Old fashioned mail clients: continue processing the lines, each of them is preceded by >
 		),
 		'use_message_id_as_uid' => false, // Do NOT change this unless you known what you are doing!!
 		'images_minimum_size' => '100x20', // Images smaller that these dimensions will be ignored (signatures...)
@@ -102,8 +112,6 @@ if (!class_exists('EmailSynchroInstaller'))
 			$oMailboxAttDef = MetaModel::GetAttributeDef('EmailReplica', 'mailbox_path');
 			$sMailboxColName = $oMailboxAttDef->Get('sql');
 
-			$sFrienlynameAttCode = MetaModel::GetFriendlyNameAttributeCode('EmailReplica');
-
 			// Looping on inboxes to update
 			$oSet = new DBObjectSet($oSearch);
 			while ($oInbox = $oSet->Fetch())
@@ -113,6 +121,50 @@ if (!class_exists('EmailSynchroInstaller'))
 				$iRet = CMDBSource::Query($sUpdateQuery); // Throws an exception in case of error
 				SetupPage::log_info("Updated $iRet rows.");
 			}
+			
+		}
+		
+		/**
+		 * Handler called before the creation/update of the database schema
+		 *
+		 * @param $oConfiguration Config The new configuration of the application
+		 * @param $sPreviousVersion string Previous version number of the module (empty string in case of first install)
+		 * @param $sCurrentVersion string Current version number of the module
+		 *
+		 * @throws \ArchivedObjectException
+		 * @throws \CoreException
+		 * @throws \CoreUnexpectedValue
+		 * @throws \DictExceptionMissingString
+		 * @throws \MySQLException
+		 * @throws \MySQLHasGoneAwayException
+		 */
+		public static function BeforeDatabaseCreation(Config $oConfiguration, $sPreviousVersion, $sCurrentVersion)
+		{
+			
+			// In previous versions, these parameters were not named in a consistent way. Rename.
+			$aSettings = array(
+				'html_tags_to_remove', 
+				'introductory_patterns',
+				'multiline_delimiter_patterns',
+				'delimiter_patterns'
+			);
+			
+			foreach($aSettings as $sSetting)
+			{
+				
+				$aNewSettingValue = $oConfiguration->GetModuleSetting('combodo-email-synchro', $sSetting, null);
+				
+				if($aNewSettingValue === null) {
+					
+					$aDeprecatedSettingValue = $oConfiguration->GetModuleSetting('combodo-email-synchro', str_replace('_', '-', $sSetting), null);
+					if($aValue !== null) {
+						$oConfiguration->SetModuleSetting('combodo-email-synchro', $sSetting, $aDeprecatedSettingValue);
+					}
+			}
+			
+			// Necessary?
+			$oConfiguration->WriteToFile();
+			
 		}
 
 	}

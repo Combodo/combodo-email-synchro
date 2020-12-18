@@ -217,7 +217,7 @@ class EmailMessage {
 	/**
 	 * When the message is a reply or forward of another message, this method
 	 * (tries to) extract the "new" part of the body in HTML, producing some HTML
-	 * as the output. The filtering is based on a list of tags/classes to remove (overrideable by 'html-tags-to-remove' in the config)
+	 * as the output. The filtering is based on a list of tags/classes to remove (overrideable by 'html_tags_to_remove' in the config)
 	 */
 	public function GetNewPartHTML($sBodyText = null)
 	{
@@ -242,7 +242,7 @@ class EmailMessage {
 
 		if (class_exists('MetaModel'))
 		{
-			$aTagsToRemove = MetaModel::GetModuleSetting('combodo-email-synchro', 'html-tags-to-remove', $aTagsToRemove);	
+			$aTagsToRemove = MetaModel::GetModuleSetting('combodo-email-synchro', 'html_tags_to_remove', $aTagsToRemove);	
 		}		
 		
 		$this->oDoc = new DOMDocument();
@@ -366,9 +366,9 @@ class EmailMessage {
 
 		if (class_exists('MetaModel'))
 		{
-			$aIntroductoryPatterns = MetaModel::GetModuleSetting('combodo-email-synchro', 'introductory-patterns', $aIntroductoryPatterns);	
-			$aGlobalDelimiterPatterns = MetaModel::GetModuleSetting('combodo-email-synchro', 'multiline-delimiter-patterns', $aGlobalDelimiterPatterns);
-			$aDelimiterPatterns = MetaModel::GetModuleSetting('combodo-email-synchro', 'delimiter-patterns', $aDelimiterPatterns);
+			$aIntroductoryPatterns = MetaModel::GetModuleSetting('combodo-email-synchro', 'introductory_patterns', $aIntroductoryPatterns);	
+			$aGlobalDelimiterPatterns = MetaModel::GetModuleSetting('combodo-email-synchro', 'multiline_delimiter_patterns', $aGlobalDelimiterPatterns);
+			$aDelimiterPatterns = MetaModel::GetModuleSetting('combodo-email-synchro', 'delimiter_patterns', $aDelimiterPatterns);
 		}
 		
 		if ($sBodyFormat == 'text/html')
