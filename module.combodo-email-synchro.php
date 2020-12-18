@@ -157,7 +157,7 @@ if (!class_exists('EmailSynchroInstaller'))
 				if($aNewSettingValue === null) {
 					
 					$aDeprecatedSettingValue = $oConfiguration->GetModuleSetting('combodo-email-synchro', str_replace('_', '-', $sSetting), null);
-					if($aValue !== null) {
+					if($aDeprecatedSettingValue !== null) {
 						$oConfiguration->SetModuleSetting('combodo-email-synchro', $sSetting, $aDeprecatedSettingValue);
 					}
 			}
