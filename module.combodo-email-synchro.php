@@ -128,43 +128,38 @@ if (!class_exists('EmailSynchroInstaller'))
 		 * Handler called before the creation/update of the database schema
 		 *
 		 * @param $oConfiguration Config The new configuration of the application
-		 * @param $sPreviousVersion string Previous version number of the module (empty string in case of first install)
-		 * @param $sCurrentVersion string Current version number of the module
 		 *
-		 * @throws \ArchivedObjectException
-		 * @throws \CoreException
-		 * @throws \CoreUnexpectedValue
-		 * @throws \DictExceptionMissingString
-		 * @throws \MySQLException
-		 * @throws \MySQLHasGoneAwayException
+		 * @returns \Config $oConfiguration The new configuration of the application
+		 *
 		 */
-		public static function BeforeDatabaseCreation(Config $oConfiguration, $sPreviousVersion, $sCurrentVersion)
+		public static function BeforeWritingConfig(Config $oConfiguration)
 		{
 			
-			// In previous versions, these parameters were not named in a consistent way. Rename.
-			$aSettings = array(
-				'html_tags_to_remove', 
-				'introductory_patterns',
-				'multiline_delimiter_patterns',
-				'delimiter_patterns'
-			);
-			
-			foreach($aSettings as $sSetting)
-			{
+			//if($sPreviousVersion != '' && version_compare($sPreviousVersion, '2.6.201218', '<=')) {
 				
-				$aNewSettingValue = $oConfiguration->GetModuleSetting('combodo-email-synchro', $sSetting, null);
+				// In previous versions, these parameters were not named in a consistent way. Rename.
+				$aSettings = array(
+					'html_tags_to_remove', 
+					'introductory_patterns',
+					'multiline_delimiter_patterns',
+					'delimiter_patterns'
+				);
 				
-				if($aNewSettingValue === null) {
+				$sTargetEnvironment = 'production';
+				$sConfigFile = APPCONF.$sTargetEnvironment.'/'.ITOP_CONFIG_FILE;
+				$oExistingConfig = new Config($sConfigFile);
+				
+				foreach($aSettings as $sSetting) {
 					
-					$aDeprecatedSettingValue = $oConfiguration->GetModuleSetting('combodo-email-synchro', str_replace('_', '-', $sSetting), null);
+					$aDeprecatedSettingValue = $oExistingConfig->GetModuleSetting('combodo-email-synchro', str_replace('_', '-', $sSetting), null);
 					if($aDeprecatedSettingValue !== null) {
 						$oConfiguration->SetModuleSetting('combodo-email-synchro', $sSetting, $aDeprecatedSettingValue);
 					}
-			}
+					
+				}
+				
 			
-			// Necessary?
-			$oConfiguration->WriteToFile();
-			
+			//}
 		}
 
 	}
