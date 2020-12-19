@@ -122,20 +122,8 @@ if (!class_exists('EmailSynchroInstaller'))
 				SetupPage::log_info("Updated $iRet rows.");
 			}
 			
-		}
-		
-		/**
-		 * Handler called before the creation/update of the database schema
-		 *
-		 * @param $oConfiguration Config The new configuration of the application
-		 *
-		 * @returns \Config $oConfiguration The new configuration of the application
-		 *
-		 */
-		public static function BeforeWritingConfig(Config $oConfiguration)
-		{
-			
-			//if($sPreviousVersion != '' && version_compare($sPreviousVersion, '2.6.201218', '<=')) {
+			// Workaround for BeforeWritingConfig() not having $sPreviousVersion
+			if($sPreviousVersion != '' && version_compare($sPreviousVersion, '3.3.1', '<=')) {
 				
 				// In previous versions, these parameters were not named in a consistent way. Rename.
 				$aSettings = array(
@@ -153,13 +141,30 @@ if (!class_exists('EmailSynchroInstaller'))
 					
 					$aDeprecatedSettingValue = $oExistingConfig->GetModuleSetting('combodo-email-synchro', str_replace('_', '-', $sSetting), null);
 					if($aDeprecatedSettingValue !== null) {
-						$oConfiguration->SetModuleSetting('combodo-email-synchro', $sSetting, $aDeprecatedSettingValue);
+						$oExistingConfig->SetModuleSetting('combodo-email-synchro', $sSetting, $aDeprecatedSettingValue);
 					}
 					
 				}
 				
+				// Update existing configuration PRIOR to iTop installation actually processing this.
+				$oExistingConfig->WriteToFile();
+				
+			}
 			
-			//}
+		}
+		
+		/**
+		 * Handler called before the creation/update of the database schema
+		 *
+		 * @param $oConfiguration Config The new configuration of the application
+		 *
+		 * @returns \Config $oConfiguration The new configuration of the application
+		 *
+		 */
+		public static function BeforeWritingConfig(Config $oConfiguration)
+		{
+			
+			return $oConfiguration;
 		}
 
 	}
