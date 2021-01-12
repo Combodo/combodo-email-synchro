@@ -171,7 +171,6 @@ function MailboxRefresh(data)
 {
 	$('#mailbox_content_output').html(data);
 	$('#mailbox_content_refresh').prop('disabled', false);
-	$("#mailbox_content_output .listResults").tablesorter( { headers: { 0: {sorter: false}}, widgets: ['myZebra']} ); // sortable and zebra tables
 	$("#mailbox_checkall").click(function() {
 		var bChecked = $(this).prop('checked');
 		$(".mailbox_item").each(function() {
