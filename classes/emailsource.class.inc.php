@@ -48,6 +48,13 @@ abstract class EmailSource
 	abstract public function GetMessage($index);
 
 	/**
+	 * Initializes the message when it is being processed.
+	 * @param $index integer The index between zero and count
+	 * @return void
+	 */
+	abstract public function InitMessage($index);
+	
+	/**
 	 * Deletes the message of the given index [0..Count] from the mailbox
 	 * @param $index integer The index between zero and count
 	 */
