@@ -28,6 +28,7 @@ class RawEmailMessageTest extends ItopTestCase
 	 */
 	public function testExtractAddressPieces(string $sSourceAddressString, string $sExpectedName, string $sExpectedEmail): void
 	{
+		//FIXME use instead \Combodo\iTop\Test\UnitTest\ItopTestCase::InvokeInvisibleStaticMethod (will be merged in develop soon)
 		$oReflector = new \ReflectionClass(RawEmailMessage::class);
 		$oMethod = $oReflector->getMethod('ExtractAddressPieces');
 		$oMethod->setAccessible(true);
