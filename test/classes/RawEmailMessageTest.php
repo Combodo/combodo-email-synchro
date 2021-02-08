@@ -4,8 +4,10 @@
  * @license     http://opensource.org/licenses/AGPL-3.0
  */
 
+namespace Combodo\iTop\Test\UnitTest\CombodoEmailSynchro;
 
 use Combodo\iTop\Test\UnitTest\ItopTestCase;
+use RawEmailMessage;
 
 class RawEmailMessageTest extends ItopTestCase
 {
@@ -28,7 +30,7 @@ class RawEmailMessageTest extends ItopTestCase
 	 */
 	public function testExtractAddressPieces(string $sSourceAddressString, string $sExpectedName, string $sExpectedEmail): void
 	{
-		//FIXME use instead \Combodo\iTop\Test\UnitTest\ItopTestCase::InvokeInvisibleStaticMethod (will be merged in develop soon)
+		//FIXME use instead \Combodo\iTop\Test\UnitTest\ItopTestCase::InvokeNonPublicStaticMethod (will be merged in develop soon)
 		$oReflector = new \ReflectionClass(RawEmailMessage::class);
 		$oMethod = $oReflector->getMethod('ExtractAddressPieces');
 		$oMethod->setAccessible(true);
