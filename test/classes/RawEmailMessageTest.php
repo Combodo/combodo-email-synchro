@@ -25,16 +25,10 @@ class RawEmailMessageTest extends ItopTestCase
 	 * @param string $sSourceAddressString
 	 * @param string $sExpectedName
 	 * @param string $sExpectedEmail
-	 *
-	 * @throws \ReflectionException
 	 */
 	public function testExtractAddressPieces(string $sSourceAddressString, string $sExpectedName, string $sExpectedEmail): void
 	{
-		//FIXME use instead \Combodo\iTop\Test\UnitTest\ItopTestCase::InvokeNonPublicStaticMethod (will be merged in develop soon)
-		$oReflector = new \ReflectionClass(RawEmailMessage::class);
-		$oMethod = $oReflector->getMethod('ExtractAddressPieces');
-		$oMethod->setAccessible(true);
-		$aAddressParts = $oMethod->invoke(null, $sSourceAddressString);
+		$aAddressParts = $this->InvokeNonPublicStaticMethod(RawEmailMessage::class, 'ExtractAddressPieces', [$sSourceAddressString]);
 
 		$this->assertCount(2, $aAddressParts, 'method should return 2 results');
 		$this->assertArrayHasKey('name', $aAddressParts, 'Result must contain the "name" key');
