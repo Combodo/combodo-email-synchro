@@ -215,23 +215,19 @@ class EmailBackgroundProcess implements iBackgroundProcess
 					for ($iMessage = 0; $iMessage < $iMsgCount; $iMessage++)
 					{
 						// N°3218 initialize a new CMDBChange for each message
-						/** @var \CMDBChange $oCurrentMessageChange */
-						$oCurrentMessageChange = MetaModel::NewObject('CMDBChange');
-						$oCurrentMessageChange->Set('date', time());
-						$oCurrentMessageChange->Set('userinfo', 'Mail to ticket automation (background process)');
-						$oCurrentMessageChange->Set('origin', 'custom-extension');
-						$oCurrentMessageChange->DBInsert(); // mandatory so that CMDBChangeOp objects could link to this CMDBChange
-						CMDBObject::SetCurrentChange($oCurrentMessageChange);
+						// we cannot use \CMDBObject::SetCurrentChange($oChange) as this would force to persist our change for each message
+						// even if no CMDBChangeOp is created during the message processing !
+						// By doing so we lose the ability to set the CMDBChange date
+						CMDBObject::SetCurrentChange(null);
+						CMDBObject::SetTrackInfo('Mail to ticket automation (background process)');
+						CMDBObject::SetTrackOrigin('custom-extension');
 
-						try
-						{
+						try {
 							$this->InitMessageTrace($oSource, $iMessage);
 							$iTotalMessages++;
-							if (self::IsMultiSourceMode())
-							{
+							if (self::IsMultiSourceMode()) {
 								$sUIDL = $oSource->GetName().'_'.$aMessages[$iMessage]['uidl'];
-							}
-							else
+							} else
 							{
 								$sUIDL = $aMessages[$iMessage]['uidl'];
 							}
