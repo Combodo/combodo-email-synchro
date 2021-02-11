@@ -8,9 +8,9 @@ SetupWebPage::AddModule(
 		'label' => 'Tickets synchronization via e-mail',
 		'category' => 'business',
 		// Setup
-		'dependencies' => [
+		'dependencies' => array(
 			'itop-config-mgmt/3.0.0',
-		],
+		),
 		'mandatory' => false,
 		'visible' => true,
 		'installer' => 'EmailSynchroInstaller',
@@ -20,7 +20,7 @@ SetupWebPage::AddModule(
 			'model.combodo-email-synchro.php',
 		),
 		'dictionary' => array(),
-	'data.struct' => array(
+		'data.struct' => array(
 	),
 	'data.sample' => array(
 	),
