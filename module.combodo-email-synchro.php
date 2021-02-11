@@ -9,7 +9,7 @@ SetupWebPage::AddModule(
 		'category' => 'business',
 		// Setup
 		'dependencies' => array(
-			'itop-config-mgmt/3.0.0',
+//			'itop-config-mgmt/3.0.0', // iTop 3.0.0 minimum is not necessary for now, maybe in the future ?
 		),
 		'mandatory' => false,
 		'visible' => true,
