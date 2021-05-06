@@ -48,16 +48,16 @@ class IMAPEmailSource extends EmailSource
 		if (!function_exists('imap_open')) throw new Exception('The imap_open function is missing. Did you forget to install the PHP module "IMAP" on the server?');
 
 		$sIMAPConnStr = "{{$sServer}:{$iPort}$sOptions}$sMailbox";
-		$this->rImapConn = imap_open($sIMAPConnStr, $sLogin, $sPwd );
-		if ($this->rImapConn === false)
-		{
-			if (class_exists('EventHealthIssue'))
+			$this->rImapConn = imap_open($sIMAPConnStr, $sLogin, $sPwd );
+			if ($this->rImapConn === false)
 			{
-				EventHealthIssue::LogHealthIssue('combodo-email-synchro', "Cannot connect to IMAP server: '$sIMAPConnStr', with credentials: '$sLogin'/'$sPwd'");
+				if (class_exists('EventHealthIssue'))
+				{
+					EventHealthIssue::LogHealthIssue('combodo-email-synchro', "Cannot connect to IMAP server: '$sIMAPConnStr', with credentials: '$sLogin'/".str_repeat("*", strlen($sPwd)));
+				}
+				print_r(imap_errors());
+				throw new Exception("Cannot connect to IMAP server: '$sIMAPConnStr', with credentials: '$sLogin'/***'".str_repeat("*", strlen($sPwd)));
 			}
-			print_r(imap_errors());
-			throw new Exception("Cannot connect to IMAP server: '$sIMAPConnStr', with credentials: '$sLogin'/'$sPwd'");
-		}
 	}	
 
 	/**
