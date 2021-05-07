@@ -36,7 +36,10 @@ class TestEmlFiles extends ItopTestCase
 
 		$sSubject = $oEmail->GetSubject();
 		$this->assertNotEmpty($sSubject);
-
+		//
+		if (str_replace(APPROOT . 'env-production/combodo-email-synchro/test/emailsSample/','',$sFileName) == "multi_lines_header_parsing.eml"){
+			$this->assertEquals( 'Re: autonet backup: nanobeam-ma15-sec-kunde.mgmt (1047) [Space.NET R-201909190397]',$sSubject);
+		}
 
 		$aSender = $oEmail->GetSender();
 		$this->assertValidEmailCollection($aSender, 'Sender is valid');

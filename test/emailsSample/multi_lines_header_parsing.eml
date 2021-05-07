@@ -1,0 +1,123 @@
+MIME-Version: 1.0
+Received: from in61.mail.ovh.net (unknown [10.101.4.61])
+	by vr33.mail.ovh.net (Postfix) with ESMTP id 4Fbfrh1WVHz1ckNl0
+	for <test@combodo.com>; Thu,  6 May 2021 16:57:24 +0000 (UTC)
+Received: from vr33.mail.ovh.net (unknown [10.101.8.33])
+	by out50.mail.ovh.net (Postfix) with ESMTP id 4Fbfrn278Pz9hG7qP
+	for <test@combodo.com>; Thu,  6 May 2021 16:57:29 +0000 (UTC)
+Received: from 6.mo174.mail-out.ovh.net (6.mo174.mail-out.ovh.net [46.105.43.252])
+	by in61.mail.ovh.net (Postfix) with ESMTPS id 4Fbfrh1HwDz15GC1T
+	for <test@combodo.com>; Thu,  6 May 2021 16:57:24 +0000 (UTC)
+Received: from combodo.com (37.59.142.98) by mxplan8.mail.ovh.net
+ (172.16.2.72) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id 15.1.2242.4; Thu, 6 May 2021
+ 18:57:22 +0200
+Received: from mxplan8.mail.ovh.net (unknown [10.109.143.18])
+	by mo174.mail-out.ovh.net (Postfix) with ESMTPS id D9F00BC950EA
+	for <test@combodo.com>; Thu,  6 May 2021 18:57:23 +0200 (CEST)
+Received: from output50.mail.ovh.net (164.132.34.50) by mxplan8.mail.ovh.net
+ (172.16.2.12) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2242.4 via Frontend
+ Transport; Thu, 6 May 2021 18:57:29 +0200
+Received: from DAG1EX1.mxp8.local (172.16.2.1) by DAG1EX2.mxp8.local
+ (172.16.2.2) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2242.4 via Mailbox
+ Transport; Thu, 6 May 2021 18:57:29 +0200
+Received: from DAG2EX2.mxp8.local (172.16.2.12) by DAG1EX1.mxp8.local
+ (172.16.2.1) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2242.4; Thu, 6 May 2021
+ 18:57:29 +0200
+From: <test@combodo.com>
+To: <test@combodo.com>
+Subject: Re: autonet backup: nanobeam-ma15-sec-kunde.mgmt (1047)
+ [Space.NET R-201909190397]
+Date: Thu, 6 May 2021 18:57:21 +0200
+Message-ID: <000001d74298$e21702a0$a64507e0$@combodo.com>
+Content-Type: multipart/alternative;
+	boundary="----=_NextPart_000_000F_01D742A9.AFF711F0"
+X-Mailer: Microsoft Outlook 16.0
+Thread-Index: AQI09aLq1DSREFi51jxZZ3hzyFEMFw==
+Content-Language: fr
+X-OlkEid: 00000000E8AF9177B0A72745A254FE28E6C2C1BA0700ABDC821BB2399B46AD464ECA512BA5C10000000002050000ABDC821BB2399B46AD464ECA512BA5C100000000080D0000524CAF3BB28A654687CFDAE9F86CF762
+Authentication-Results: in61.mail.ovh.net; dkim=none; dkim-atps=neutral
+Authentication-Results: garm.ovh; auth=pass (GARM-98R002ae86d4e0-0efd-4be2-b83b-0c34c0a183b9,
+                    19E22FCB606CB7CA8F282A25D80B1AC3B2033F35) smtp.auth=test@combodo.com
+X-OVh-ClientIp: 92.145.0.51
+X-Ovh-Tracer-GUID: 9c01e4dc-cc5c-40d6-b901-2e1a802d1760
+X-Ovh-Tracer-Id: 2302183835630956567
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: 15
+X-VR-SPAMSCORE: 15
+X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeduledrvdegtddguddtjecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfqggfjpdevjffgvefmvefgnecuuegrihhlohhuthemucehtddtnecuogetfedtuddqtdduucdludehmdenucfjughrpefhvffufffkgggtofhtsegrtdhgpedvtddvnecuhfhrohhmpeeothgvshhtsegtohhmsghoughordgtohhmqeenucggtffrrghtthgvrhhnpeegvdevjeeftdfgkedutdejledujeeuvdefheffleelieeutdduveetfeelteegueenucfkphepgeeirddutdehrdegfedrvdehvddpfeejrdehledrudegvddrleekpddtrddtrddtrddtnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmohguvgepshhmthhppdhhvghlohepihhniedurdhmrghilhdrohhvhhdrnhgvthdpihhnvghtpeegiedruddthedrgeefrddvhedvpdhmrghilhhfrhhomhepthgvshhtsegtohhmsghoughordgtohhmpdhrtghpthhtohepthgvshhtsegtohhmsghoughordgtohhmpdhmohguvgepshhmthhpqdhouhhtpdhhvghlohepmhigphhlrghnkedrmhgrihhlrdhovhhhrdhnvghtpdhinhgvtheptddrtddrtddrtd
+X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeduledrvdegtddguddtjecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfqggfjpdevjffgvefmvefgnecuuegrihhlohhuthemucehtddtnecuogetfedtuddqtdduucdludehmdenucfjughrpefhvffufffkgggtofhtsegrtdhgpedvtddvnecuhfhrohhmpeeothgvshhtsegtohhmsghoughordgtohhmqeenucggtffrrghtthgvrhhnpeegvdevjeeftdfgkedutdejledujeeuvdefheffleelieeutdduveetfeelteegueenucfkpheptddrtddrtddrtddpfeejrdehledrudegvddrleeknecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmohguvgepshhmthhpqdhouhhtpdhhvghlohepmhigphhlrghnkedrmhgrihhlrdhovhhhrdhnvghtpdhinhgvtheptddrtddrtddrtddpmhgrihhlfhhrohhmpehtvghsthestghomhgsohguohdrtghomhdprhgtphhtthhopehtvghsthestghomhgsohguohdrtghomh
+X-Ovh-Remote: 46.105.43.252 (6.mo174.mail-out.ovh.net)
+X-Ovh-Spam-Status: OK
+X-Ovh-Spam-Reason: vr: OK; dkim: disabled; spf: disabled
+X-Ovh-Message-Type: OK
+X-MS-Exchange-Organization-Network-Message-Id: 4c876ab7-552e-4d4b-9ab9-08d910b00890
+X-MS-Exchange-Organization-PRD: combodo.com
+X-MS-Exchange-Organization-SenderIdResult: Pass
+X-MS-Exchange-Organization-AVStamp-Enterprise: 1.0
+X-MS-Exchange-Organization-AuthSource: DAG2EX2.mxp8.local
+X-MS-Exchange-Organization-AuthAs: Anonymous
+X-MS-Exchange-Transport-EndToEndLatency: 00:00:00.2472152
+X-MS-Exchange-Processed-By-BccFoldering: 15.01.2242.005
+
+
+------=_NextPart_000_000F_01D742A9.AFF711F0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+
+Test long titre
+
+
+------=_NextPart_000_000F_01D742A9.AFF711F0
+Content-Type: text/html;
+	boundary="----=_NextPart_000_0001_01D742A9.A5A095F0"; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+
+<html xmlns:v=3D"urn:schemas-microsoft-com:vml" xmlns:o=3D"urn:schemas-micr=
+osoft-com:office:office" xmlns:w=3D"urn:schemas-microsoft-com:office:word" =
+xmlns:m=3D"http://schemas.microsoft.com/office/2004/12/omml" xmlns=3D"http:=
+//www.w3.org/TR/REC-html40"><head>
+<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Dus-ascii"=
+><meta name=3D"Generator" content=3D"Microsoft Word 15 (filtered medium)"><=
+style><!--
+/* Font Definitions */
+@font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+@font-face
+	{font-family:Calibri;
+	panose-1:2 15 5 2 2 2 4 3 2 4;}
+/* Style Definitions */
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0cm;
+	font-size:11.0pt;
+	font-family:"Calibri",sans-serif;
+	mso-fareast-language:EN-US;}
+span.EmailStyle17
+	{mso-style-type:personal-compose;
+	font-family:"Calibri",sans-serif;
+	color:windowtext;}
+.MsoChpDefault
+	{mso-style-type:export-only;
+	font-family:"Calibri",sans-serif;
+	mso-fareast-language:EN-US;}
+@page WordSection1
+	{size:612.0pt 792.0pt;
+	margin:70.85pt 70.85pt 70.85pt 70.85pt;}
+div.WordSection1
+	{page:WordSection1;}
+--></style><!--[if gte mso 9]><xml>
+<o:shapedefaults v:ext=3D"edit" spidmax=3D"1026" />
+</xml><![endif]--><!--[if gte mso 9]><xml>
+<o:shapelayout v:ext=3D"edit">
+<o:idmap v:ext=3D"edit" data=3D"1" />
+</o:shapelayout></xml><![endif]--></head><body lang=3D"FR" link=3D"#0563C1"=
+ vlink=3D"#954F72" style=3D"word-wrap:break-word"><div class=3D"WordSection=
+1"><p class=3D"MsoNormal">Test long titre<o:p></o:p></p></div></body></html=
+>=
+
+------=_NextPart_000_000F_01D742A9.AFF711F0--
