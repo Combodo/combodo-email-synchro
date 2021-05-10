@@ -242,6 +242,8 @@ class EmailBackgroundProcess implements iBackgroundProcess
 								$oEmailReplica->Set('uidl', $sUIDL);
 								$oEmailReplica->Set('mailbox_path', $oSource->GetMailbox());
 								$oEmailReplica->Set('message_id', $iMessage);
+								$oEmailReplica->Set('last_seen', date('Y-m-d H:i:s'));
+
 							}
 							else
 							{
@@ -480,18 +482,25 @@ class EmailBackgroundProcess implements iBackgroundProcess
 						{
 							if (is_object($oUsedReplica) && ($oUsedReplica->GetKey() != null))
 							{
+								// Fix IMAP: remember last seen. Aka: do not delete message because connection failed.
+								$oUsedReplica->Set('last_seen', date('Y-m-d H:i:s'));
+								$oUsedReplica->DBUpdate();
 								$aIDs[] = $oUsedReplica->GetKey();
 							}
 						}
 						
 						// Cleanup the unused replicas based on the pattern of their UIDL, unfortunately this is not possible in NON multi-source mode
-						$sOQL = "SELECT EmailReplica WHERE uidl LIKE " . CMDBSource::Quote($oSource->GetName() . '_%') . " AND mailbox_path = " . CMDBSource::Quote($oSource->GetMailbox()) . " AND id NOT IN (" . implode(',', CMDBSource::Quote($aIDs)) . ')';
+						$iRetentionPeriod = MetaModel::GetModuleSetting('combodo-email-synchro', 'retention_period', '0');
+						$sOQL = "SELECT EmailReplica WHERE uidl LIKE " . CMDBSource::Quote($oSource->GetName() . '_%') .
+							" AND mailbox_path = " . CMDBSource::Quote($oSource->GetMailbox()) .
+							" AND id NOT IN (" . implode(',', CMDBSource::Quote($aIDs)) . ")".
+							" AND last_seen <	DATE_SUB(NOW(), INTERVAL ".$iRetentionPeriod." DAY)";
 						$this->Trace("Searching for unused EmailReplicas: '$sOQL'");
 						$oUnusedReplicaSet = new DBObjectSet(DBObjectSearch::FromOQL($sOQL));
 						$oUnusedReplicaSet->OptimizeColumnLoad(array('EmailReplica' => array('uidl')));
 						while($oReplica = $oUnusedReplicaSet->Fetch())
 						{
-							$this->Trace("Deleting unused EmailReplica (#".$oReplica->GetKey()."), UIDL: ".$oReplica->Get('uidl'));
+							$this->Trace("Deleting unused EmailReplica since ".$iRetentionPeriod."days (#".$oReplica->GetKey()."), UIDL: ".$oReplica->Get('uidl'));
 							$oReplica->DBDelete();
 							if (time() > $iTimeLimit) break; // We'll do the rest later
 						}
