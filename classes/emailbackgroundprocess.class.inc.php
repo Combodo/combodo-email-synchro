@@ -174,6 +174,7 @@ class EmailBackgroundProcess implements iBackgroundProcess
 		$iTotalMarkedAsError = 0;
 		$iTotalSkipped = 0;
         $iTotalDeleted = 0;
+		$iTotalMoved = 0;
         $iTotalUndesired = 0;
 		foreach(self::$aEmailProcessors as $sProcessorClass)
 		{
@@ -427,6 +428,17 @@ class EmailBackgroundProcess implements iBackgroundProcess
 													}
 													break;
 
+												case EmailProcessor::MOVE_MESSAGE:
+													$iTotalMoved++;
+													$this->Trace("Move message (and replica): $sUIDL");
+													$ret = $oSource->MoveMessage($iMessage);
+													if ($ret && !$oEmailReplica->IsNew())
+													{
+														$oEmailReplica->DBDelete();
+														$oEmailReplica = null;
+													}
+													break;
+
 												case EmailProcessor::PROCESS_ERROR:
 													$sSubject = $oProcessor->GetLastErrorSubject();
 													$sMessage = $oProcessor->GetLastErrorMessage();
@@ -510,7 +522,7 @@ class EmailBackgroundProcess implements iBackgroundProcess
 			}
 			if (time() > $iTimeLimit) break; // We'll do the rest later
 		}
-		return "Message(s) read: $iTotalMessages, message(s) skipped: $iTotalSkipped, message(s) processed: $iTotalProcessed, message(s) deleted: $iTotalDeleted, message(s) marked as error: $iTotalMarkedAsError, undesired message(s): $iTotalUndesired";
+		return "Message(s) read: $iTotalMessages, message(s) skipped: $iTotalSkipped, message(s) processed: $iTotalProcessed, message(s) deleted: $iTotalDeleted, message(s) marked as error: $iTotalMarkedAsError, undesired message(s): $iTotalUndesired, message(s) moved: $iTotalMoved,";
 	}
 
 	private function InitMessageTrace($oSource, $iMessage)

@@ -14,7 +14,7 @@
 //   along with this program; if not, write to the Free Software
 //   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 /**
- * @copyright   Copyright (C) 2012-2016 Combodo SARL
+ * @copyright   Copyright (C) 2012-2021 Combodo SARL
  * @license     http://opensource.org/licenses/AGPL-3.0
  */
 
@@ -30,14 +30,16 @@ class IMAPEmailSource extends EmailSource
 	protected $rImapConn = null;
 	protected $sLogin = '';
 	protected $sMailbox = '';
+	protected	$sTargetFolder = '';
 
-	public function __construct($sServer, $iPort, $sLogin, $sPwd, $sMailbox, $aOptions)
+	public function __construct($sServer, $iPort, $sLogin, $sPwd, $sMailbox, $aOptions, $sTargetFolder = '')
 	{
 		parent::__construct();
 		$this->sLastErrorSubject = '';
 		$this->sLastErrorMessage = '';
 		$this->sLogin = $sLogin;
 		$this->sMailbox = $sMailbox;
+		$this->sTargetFolder = $sTargetFolder;
 
 		$sOptions = '';
 		if (count($aOptions) > 0)
@@ -53,10 +55,10 @@ class IMAPEmailSource extends EmailSource
 			{
 				if (class_exists('EventHealthIssue'))
 				{
-					EventHealthIssue::LogHealthIssue('combodo-email-synchro', "Cannot connect to IMAP server: '$sIMAPConnStr', with credentials: '$sLogin'/".str_repeat("*", strlen($sPwd)));
+					EventHealthIssue::LogHealthIssue('combodo-email-synchro', "Cannot connect to IMAP server: '$sIMAPConnStr', with credentials: '$sLogin'/***");
 				}
 				print_r(imap_errors());
-				throw new Exception("Cannot connect to IMAP server: '$sIMAPConnStr', with credentials: '$sLogin'/***'".str_repeat("*", strlen($sPwd)));
+				throw new Exception("Cannot connect to IMAP server: '$sIMAPConnStr', with credentials: '$sLogin'/***'");
 			}
 	}	
 
@@ -102,7 +104,20 @@ class IMAPEmailSource extends EmailSource
 		$ret = imap_delete($this->rImapConn, (1+$index).':'.(1+$index));
 		return $ret;
 	}
-	
+
+	/**
+	 * Move the message of the given index [0..Count] from the mailbox to another folder
+	 * @param $index integer The index between zero and count
+	 */
+	public function MoveMessage($index)
+	{
+		$ret = imap_mail_move($this->rImapConn, (1+$index).':'.(1+$index), $this->sTargetFolder);
+		if (!$ret){
+			print_r(imap_errors());
+			throw new Exception("Error : Cannot move message to folder ".$this->sTargetFolder);
+		}
+		return $ret;
+	}
 	/**
 	 * Name of the eMail source
 	 */

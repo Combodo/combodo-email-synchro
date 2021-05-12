@@ -55,9 +55,9 @@ class POP3EmailSource extends EmailSource
 		{
 			if (class_exists('EventHealthIssue'))
 			{
-				EventHealthIssue::LogHealthIssue('combodo-email-synchro', "Cannot login on server '$sServer' using '$sLogin' with pwd: ".str_repeat("*", strlen($sPwd)));
+				EventHealthIssue::LogHealthIssue('combodo-email-synchro', "Cannot login on server '$sServer' using '$sLogin' with pwd: ***");
 			}
-			throw new Exception("Cannot login using $sLogin with pwd: ".str_repeat("*", strlen($sPwd)));
+			throw new Exception("Cannot login using $sLogin with pwd: ***");
 		}
 	}	
 
@@ -93,6 +93,14 @@ class POP3EmailSource extends EmailSource
 		$ret = $this->oPop3->deleteMsg(1+$index);
 		return $ret;
 
+	}
+	/**
+	 * Move the message of the given index [0..Count] from the mailbox to another folder
+	 * @param $index integer The index between zero and count
+	 */
+	public function MoveMessage($index){
+		// Do nothing !
+		return false;
 	}
 	
 	/**
