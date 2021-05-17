@@ -94,15 +94,7 @@ class POP3EmailSource extends EmailSource
 		return $ret;
 
 	}
-	/**
-	 * Move the message of the given index [0..Count] from the mailbox to another folder
-	 * @param $index integer The index between zero and count
-	 */
-	public function MoveMessage($index){
-		// Do nothing !
-		return false;
-	}
-	
+
 	/**
 	 * Name of the eMail source
 	 */
