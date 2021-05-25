@@ -502,11 +502,11 @@ class EmailBackgroundProcess implements iBackgroundProcess
 						}
 						
 						// Cleanup the unused replicas based on the pattern of their UIDL, unfortunately this is not possible in NON multi-source mode
-						$iRetentionPeriod = MetaModel::GetModuleSetting('combodo-email-synchro', 'retention_period', '0');
+						$iRetentionPeriod = MetaModel::GetModuleSetting('combodo-email-synchro', 'retention_period', '1');
 						$sOQL = "SELECT EmailReplica WHERE uidl LIKE " . CMDBSource::Quote($oSource->GetName() . '_%') .
 							" AND mailbox_path = " . CMDBSource::Quote($oSource->GetMailbox()) .
 							" AND id NOT IN (" . implode(',', CMDBSource::Quote($aIDs)) . ")".
-							" AND last_seen <	DATE_SUB(NOW(), INTERVAL ".$iRetentionPeriod." DAY)";
+							" AND last_seen <	DATE_SUB(NOW(), INTERVAL ".$iRetentionPeriod." HOUR)";
 						$this->Trace("Searching for unused EmailReplicas: '$sOQL'");
 						$oUnusedReplicaSet = new DBObjectSet(DBObjectSearch::FromOQL($sOQL));
 						$oUnusedReplicaSet->OptimizeColumnLoad(array('EmailReplica' => array('uidl')));
