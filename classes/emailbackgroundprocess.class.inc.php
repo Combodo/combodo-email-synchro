@@ -283,12 +283,6 @@ class EmailBackgroundProcess implements iBackgroundProcess
 											$iTotalDeleted++;
 											$ret = $oSource->DeleteMessage($iMessage);
 											$this->Trace("DeleteMessage($iMessage) returned $ret");
-											if (!$oEmailReplica->IsNew())
-											{
-												$this->Trace("Deleting replica #".$oEmailReplica->GetKey());
-												$oEmailReplica->DBDelete();
-												$oEmailReplica = null;
-											}
 											continue;
 										}
 										$iTotalSkipped++;
@@ -316,12 +310,6 @@ class EmailBackgroundProcess implements iBackgroundProcess
 									$this->Trace("Deleting message (AND replica): uidl=$sUIDL index=$iMessage");
 									$ret = $oSource->DeleteMessage($iMessage);
 									$this->Trace("DeleteMessage($iMessage) returned $ret");
-									if (!$oEmailReplica->IsNew())
-									{
-										$this->Trace("Deleting replica #".$oEmailReplica->GetKey());
-										$oEmailReplica->DBDelete();
-										$oEmailReplica = null;
-									}
 									break;
 
 								case EmailProcessor::PROCESS_MESSAGE:
@@ -356,11 +344,6 @@ class EmailBackgroundProcess implements iBackgroundProcess
 												$iTotalDeleted++;
 												$this->Trace("Email too big, deleting message (and replica): $sUIDL");
 												$oSource->DeleteMessage($iMessage);
-												if (!$oEmailReplica->IsNew())
-												{
-													$oEmailReplica->DBDelete();
-													$oEmailReplica = null;
-												}
 												break;
 										}
 									}
@@ -386,11 +369,6 @@ class EmailBackgroundProcess implements iBackgroundProcess
 													$iTotalDeleted++;
 													$this->Trace("Failed to decode the message, deleting it (and its replica): $sUIDL");
 													$oSource->DeleteMessage($iMessage);
-													if (!$oEmailReplica->IsNew())
-													{
-														$oEmailReplica->DBDelete();
-														$oEmailReplica = null;
-													}
 													break;
 											}
 										}
@@ -421,22 +399,12 @@ class EmailBackgroundProcess implements iBackgroundProcess
 													$iTotalDeleted++;
 													$this->Trace("Deleting message (and replica): $sUIDL");
 													$oSource->DeleteMessage($iMessage);
-													if (!$oEmailReplica->IsNew())
-													{
-														$oEmailReplica->DBDelete();
-														$oEmailReplica = null;
-													}
 													break;
 
 												case EmailProcessor::MOVE_MESSAGE:
 													$iTotalMoved++;
 													$this->Trace("Move message (and replica): $sUIDL");
 													$ret = $oSource->MoveMessage($iMessage);
-													if ($ret && !$oEmailReplica->IsNew())
-													{
-														$oEmailReplica->DBDelete();
-														$oEmailReplica = null;
-													}
 													break;
 
 												case EmailProcessor::PROCESS_ERROR:
@@ -446,11 +414,6 @@ class EmailBackgroundProcess implements iBackgroundProcess
 													$iTotalDeleted++;
 													$this->Trace("Deleting message (and replica): $sUIDL");
 													$oSource->DeleteMessage($iMessage);
-													if (!$oEmailReplica->IsNew())
-													{
-														$oEmailReplica->DBDelete();
-														$oEmailReplica = null;
-													}
 													break;
 
 												default:
