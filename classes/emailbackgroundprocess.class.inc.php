@@ -475,7 +475,7 @@ class EmailBackgroundProcess implements iBackgroundProcess
 						$oUnusedReplicaSet->OptimizeColumnLoad(array('EmailReplica' => array('uidl')));
 						while($oReplica = $oUnusedReplicaSet->Fetch())
 						{
-							$this->Trace("Deleting unused EmailReplica since ".$iRetentionPeriod."days (#".$oReplica->GetKey()."), UIDL: ".$oReplica->Get('uidl'));
+							$this->Trace("Deleting unused EmailReplica since ".$iRetentionPeriod." hours (#".$oReplica->GetKey()."), UIDL: ".$oReplica->Get('uidl'));
 							$oReplica->DBDelete();
 							if (time() > $iTimeLimit) break; // We'll do the rest later
 						}
