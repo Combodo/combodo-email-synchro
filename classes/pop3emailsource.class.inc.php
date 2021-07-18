@@ -55,9 +55,9 @@ class POP3EmailSource extends EmailSource
 		{
 			if (class_exists('EventHealthIssue'))
 			{
-				EventHealthIssue::LogHealthIssue('combodo-email-synchro', "Cannot login on server '$sServer' using '$sLogin' with pwd: $sPwd");
+				EventHealthIssue::LogHealthIssue('combodo-email-synchro', "Cannot login on server '$sServer' using '$sLogin' with pwd: ***");
 			}
-			throw new Exception("Cannot login using $sLogin with pwd: $sPwd");
+			throw new Exception("Cannot login using $sLogin with pwd: ***");
 		}
 	}	
 
@@ -94,7 +94,7 @@ class POP3EmailSource extends EmailSource
 		return $ret;
 
 	}
-	
+
 	/**
 	 * Name of the eMail source
 	 */

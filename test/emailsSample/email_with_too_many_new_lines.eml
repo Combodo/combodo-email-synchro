@@ -1,0 +1,661 @@
+Return-path: <frederic.griard@atos.net>
+Received: from mta1.ac-grenoble.fr ([195.221.235.173])
+ by vstore-fonct4.in.ac-grenoble.fr
+ (Oracle Communications Messaging Server 8.0.1.1.0 64bit (built Jun 15 2016))
+ with ESMTP id <0Q4M01FRRBXNUZ20@vstore-fonct4.in.ac-grenoble.fr>; Fri,
+ 24 Jan 2020 16:48:59 +0100 (CET)
+Received: from imsva4.ac-grenoble.fr (imsva4.ac-grenoble.fr [195.221.235.180])
+	by mta1.ac-grenoble.fr (Postfix) with ESMTP id E7C3220584	for
+ <support_region_ara@ac-grenoble.fr>; Fri, 24 Jan 2020 16:48:59 +0100 (CET)
+Received: from imsva4.ac-grenoble.fr (unknown [127.0.0.1])	by IMSVA (Postfix)
+ with ESMTP id A8F1720059	for <support_region_ara@ac-grenoble.fr>; Fri,
+ 24 Jan 2020 16:48:59 +0100 (CET)
+Received: from imsva4.ac-grenoble.fr (unknown [127.0.0.1])	by IMSVA (Postfix)
+ with ESMTP id 0F338200AD	for <support_region_ara@ac-grenoble.fr>; Fri,
+ 24 Jan 2020 16:48:01 +0100 (CET)
+Received: from mxb1-1.relay.renater.fr (unknown [194.214.201.8])
+	by imsva4.ac-grenoble.fr (Postfix)
+ with ESMTPS	for <support_region_ara@ac-grenoble.fr>; Fri,
+ 24 Jan 2020 16:48:01 +0100 (CET)
+Received: from smarthost5.atos.net (smtppost.atos.net [193.56.114.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)	by mxb1-1.relay.renater.fr (asm)
+ with ESMTPS id 986F920462	for <support_region_ara@ac-grenoble.fr>; Fri,
+ 24 Jan 2020 16:48:00 +0100 (CET)
+Received: from unknown (HELO DEFTHW99ETVMSX.ww931.my-it-solutions.net)
+ ([10.86.142.50]) by smarthost5.atos.net with
+ ESMTP/TLS/ECDHE-RSA-AES256-SHA384; Fri, 24 Jan 2020 16:47:59 +0100
+Received: from DEERLM99ETSMSX.ww931.my-it-solutions.net (10.86.142.104)
+ by DEFTHW99ETVMSX.ww931.my-it-solutions.net (10.86.142.50)
+ with Microsoft SMTP Server (TLS) id 14.3.468.0; Fri, 24 Jan 2020 16:47:59 +0100
+Received: from EUR05-AM6-obe.outbound.protection.outlook.com (10.86.142.137)
+ by hybridsmtp.it-solutions.atos.net (10.86.142.104) with Microsoft SMTP Server
+ (TLS) id 14.3.468.0; Fri, 24 Jan 2020 16:47:58 +0100
+Received: from DB7PR02MB4283.eurprd02.prod.outlook.com (20.176.238.205)
+ by DB7PR02MB4728.eurprd02.prod.outlook.com (20.177.122.223)
+ with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384)
+ id 15.20.2665.20; Fri, 24 Jan 2020 15:47:57 +0000
+Received: from DB7PR02MB4283.eurprd02.prod.outlook.com
+ ([fe80::acfe:86fd:e59b:7222]) by DB7PR02MB4283.eurprd02.prod.outlook.com
+ ([fe80::acfe:86fd:e59b:7222%2]) with mapi id 15.20.2665.017; Fri,
+ 24 Jan 2020 15:47:57 +0000
+Received-SPF: None (protection.outlook.com: atos.net does not designate
+ permitted sender hosts)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;  d=atos.net; i=@atos.net;
+ q=dns/txt; s=mail;  t=1579880880; x=1611416880;
+ h=from:to:subject:date:message-id:references:in-reply-to:   mime-version;
+ bh=oBiDiw3yARLnjaqROjfCqtC6UTQlxFzd/lRqEYqCzQ0=;
+ b=TtOXcv8YDiiKeoQArIPvg8BwENYCwN5vVQ7AIDPexlJDtSDgSafqqvWS
+ ZG9AqhTrlnJN5tf4csuwwXZiu9zlcJPT+e93TskRFCof/8TEJziovDtK/
+ RH62h4eHg9l+Qjhkn901w3UpyDfpyFDEX7xnyD/uFD0bBgXKM2sNQ+SBB   M=;
+Date: Fri, 24 Jan 2020 15:47:57 +0000
+From: "GRIARD, FREDERIC" <frederic.griard@atos.net>
+Subject:
+ =?iso-8859-1?Q?FW:_Demande_d'ouverture_d'un_ticket_aupr=E8s_du_rectorat_d?=
+ =?iso-8859-1?Q?e_Grenoble?=
+In-reply-to:
+ <AM0PR02MB45960A9753A255BCDA4C840CFE0E0@AM0PR02MB4596.eurprd02.prod.outlook.com>
+X-Originating-IP: [92.171.14.224]
+To: "support_region_ara@ac-grenoble.fr" <support_region_ara@ac-grenoble.fr>
+Message-id:
+ <DB7PR02MB4283E8AFF1C385C39B57D6758F0E0@DB7PR02MB4283.eurprd02.prod.outlook.com>
+MIME-version: 1.0
+Content-type: multipart/related;
+ boundary="Boundary_(ID_6M1oxOuYmKoPEtlLUAQ7vA)"; type="multipart/alternative"
+Content-language: fr-FR
+Accept-Language: fr-FR, en-US
+Thread-topic:
+ =?iso-8859-1?Q?Demande_d'ouverture_d'un_ticket_aupr=E8s_du_rectorat_de_Gr?=
+ =?iso-8859-1?Q?enoble?=
+Thread-index: AdXSya4UEo9FTviBTHy25c31DWzWSwAA+YWg
+IronPort-SDR:
+ 0f7bJjthoizhS0rUFRJIOcUsiczpqamoZ3nxcVIEmwWkdNHibpxF8AvMflJ5P8d6vAFbwb6D2/
+ V0q4hq2Sr13W7WUHiIK/0UZMkqUufKa+bHFQu7MxVP7O9TzbzeAKVQRWctQ+q5y9GKZU+01Ucg
+ EjBEHA4xFuJTQOI2WjDjg8268D9jlcB5u6jVLTffmCCEK44AesEC+FOhbDbT7FBp9jiXunoiVk
+ HZQwTQXpMtlxEa0PJB3IUR2UF7ST5cWxGgZkRsRtZbIf4pTj6C6FmfzhL+5uVQ937cQ6mbjmM9
+ uX6mbyGyVKIdRnKiMZdOzbeu
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=c4sWfjcD4JJd2Squlbxm/8Vi3arAQ4J51YM4bzNx12YAN8rLbiRnaEHExBfuJSRs0fBGckSN+PL9vgsGt43oSD9MBa2pzrr2jM4eHMbPAmd7IN1hQecFwE0JRP649nq0psrmZ6KBb/GBcqLS3SzIQM055Q5/yqV26mycmzDvQF5GtMidCpw0bgdnG7mD/711SPFTA/LSzlszXaHixIwKjgrfwWqgf91nSn9JBHes9gx7h5jfZTBtkFYloABKGOOw7/1qtC/zFY2/xZj0ZSIorxXnc4+VFGqTDMyZJRmvJI45O828rVw6abTnvPbpkmj6HyA8OEiWWYuoyFTaX69p3Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=cM5qOsTwwsAVpbeKfBKkSyqz2SYB+s1L+GbPKZmeAZ8=;
+ b=UihLq1LneXZB2OCoF22q9OGqQp3bIetB9v+wWgKfkFRFqtnW4gRHPEbL6MeMxEEBnzJiX+kP1OM3HQhyfrqk30hn/p0PblN0yaS9VN8ps4k92D92RN8P8bs5ncoeCTkrySOzdqX6PzJjsM6q30zUPrSOweULlm3EHg4Gou48FfGn/Am9BnmlfQuuP45ri6ss2V2T4HmydaeeqQrxmluWSmrXqgbVcvG8qNTTvLP+kEdt4Ac3cUryLxBKDqtvQ7vvhsHtTg7Ow1vSQqmlGcqwZxWcg0Z91EvlD/ZnAKkQmbk+B/wBQQNktyZTZ8p9EXUZjAnYiXv9gMFosklI0YNFKg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=atos.net; dmarc=pass action=none header.from=atos.net; dkim=pass
+ header.d=atos.net; arc=none
+msip_labels: MSIP_Label_112e00b9-34e2-4b26-a577-af1fd0f9f7ee_Enabled=True;
+ MSIP_Label_112e00b9-34e2-4b26-a577-af1fd0f9f7ee_SiteId=33440fc6-b7c7-412c-bb73-0e70b0198d5a;
+ MSIP_Label_112e00b9-34e2-4b26-a577-af1fd0f9f7ee_Owner=yannick.girard@atos.net;
+ MSIP_Label_112e00b9-34e2-4b26-a577-af1fd0f9f7ee_SetDate=2020-01-24T15:23:21.8102452Z;
+ MSIP_Label_112e00b9-34e2-4b26-a577-af1fd0f9f7ee_Name=Atos For Internal Use;
+ MSIP_Label_112e00b9-34e2-4b26-a577-af1fd0f9f7ee_Application=Microsoft Azure
+ Information Protection;
+ MSIP_Label_112e00b9-34e2-4b26-a577-af1fd0f9f7ee_ActionId=cd57a6d4-d06d-450e-a7dc-9ca4dd2bcf0a;
+ MSIP_Label_112e00b9-34e2-4b26-a577-af1fd0f9f7ee_Extended_MSFT_Method=Automatic;
+ MSIP_Label_e463cba9-5f6c-478d-9329-7b2295e4e8ed_Enabled=True;
+ MSIP_Label_e463cba9-5f6c-478d-9329-7b2295e4e8ed_SiteId=33440fc6-b7c7-412c-bb73-0e70b0198d5a;
+ MSIP_Label_e463cba9-5f6c-478d-9329-7b2295e4e8ed_Owner=yannick.girard@atos.net;
+ MSIP_Label_e463cba9-5f6c-478d-9329-7b2295e4e8ed_SetDate=2020-01-24T15:23:21.8102452Z;
+ MSIP_Label_e463cba9-5f6c-478d-9329-7b2295e4e8ed_Name=Atos For Internal Use -
+ All Employees;
+ MSIP_Label_e463cba9-5f6c-478d-9329-7b2295e4e8ed_Application=Microsoft Azure
+ Information Protection;
+ MSIP_Label_e463cba9-5f6c-478d-9329-7b2295e4e8ed_ActionId=cd57a6d4-d06d-450e-a7dc-9ca4dd2bcf0a;
+ MSIP_Label_e463cba9-5f6c-478d-9329-7b2295e4e8ed_Parent=112e00b9-34e2-4b26-a577-af1fd0f9f7ee;
+ MSIP_Label_e463cba9-5f6c-478d-9329-7b2295e4e8ed_Extended_MSFT_Method=Automatic
+X-IronPort-AV: E=Sophos;i="5.70,358,1574118000";
+ d="png'150?scan'150,208,217,150";a="46767864"
+X-MGA-submission: =?us-ascii?q?MDHXsL7b8TeLV6UkNcqcCbI4Q5cmOsPJUGptjm?=
+ =?us-ascii?q?h7sk4UtwOrHDJi2//u9Neej+0uRGwpNdEcI2KabQj8BW2syZcLuw9b7z?=
+ =?us-ascii?q?VDwugso7367G9r3tN+hILQgwBkxo2LzegnRgCc6Yj/HEWfpQRC8NPT+y?=
+ =?us-ascii?q?oD?=
+X-MS-Has-Attach: yes
+X-MS-TNEF-Correlator:
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: 4e45e20e-e160-4bf3-7427-08d7a0e4c8ab
+x-ms-traffictypediagnostic: DB7PR02MB4728:
+x-microsoft-antispam-prvs:
+ <DB7PR02MB4728164D2FBE34D58FCE0DBD8F0E0@DB7PR02MB4728.eurprd02.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:1051;
+x-forefront-prvs: 02929ECF07
+x-forefront-antispam-report:
+ SFV:NSPM;SFS:(10019020)(4636009)(136003)(366004)(396003)(376002)(346002)(39860400002)(199004)(189003)(6506007)(7696005)(53546011)(86362001)(52536014)(26005)(186003)(316002)(66574012)(5660300002)(224303003)(2906002)(478600001)(81156014)(81166006)(8936002)(6916009)(66476007)(64756008)(66446008)(71200400001)(55016002)(66556008)(66576008)(33656002)(76116006)(9686003)(66946007);DIR:OUT;SFP:1102;SCL:1;SRVR:DB7PR02MB4728;H:DB7PR02MB4283.eurprd02.prod.outlook.com;FPR:;SPF:None;LANG:fr;PTR:InfoNoRecords;A:1;MX:1;
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info:
+ 5jWX1fV7CIJfUXje73iSVBzCnIKnRs2XCHyVKMiHeRxm5bGv0D1IKKTGBJo72RnaVeKOQ50J9XTmmN6cPV6Zun2pVHHOvgauFHwS4qYOkJddXrUY+uk5ofdJk5X4jml5+FSWoKC/YIbCYnmkQ7AK1DAkoLe9i/NZkI4Wh6LjWLlL7sQDUWel0zBFXeeGWpTxv/8KNjKc4ZdoRVmMZQ0U55WGm8NI5AUTxA0zj7SSAxLJOHETxv1s50Gn85on41p5u1ANVMCFWoaGhENbf8MULd71Djyn6n5g4JshxZTNllTR9ccdt6j7PFCCANNGbRgFWqtfTToNbU+lgKqF4SqTod1LoX6LfjjWT/FTenTmHiA1VkwtT6Sl/lfq0A8Zsqv0jYb8iUra7F/S2tXdxLA3YYbdR5gqgzq2MopaRB6xVv/7+r5+UaLvEE0fV8aVUk9zyi0oGj+vxwYsb4Z9RXc9/CNui2EQZh7gWOzog41z71Y=
+x-ms-exchange-antispam-messagedata:
+ XYbmT3317pUydagVSTGSwE0bXjcvbJh+UkD2KkPB2yFqS+/RqnlyExSkco0BgLYZmx8RdDG0+rISByvCVHNiRJ4kvNAQQ3oKJVrq4xZiJirxAxGxNYmKbjF30r8V31OFMrkEI1eHkBHpHswzGSdYjg==
+x-ms-exchange-transport-forked: True
+X-MS-Exchange-CrossTenant-Network-Message-Id:
+ 4e45e20e-e160-4bf3-7427-08d7a0e4c8ab
+X-MS-Exchange-CrossTenant-originalarrivaltime: 24 Jan 2020 15:47:57.5252 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 33440fc6-b7c7-412c-bb73-0e70b0198d5a
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname:
+ OsXff75Feb8eLcZr3My4S7MfESmO/oZ6eL3YoI9NWCOCHgD7QmfdB8BDMLua+LmTofFxS63n2meIrxrd3EWUcETsn8Vr6lvUyVqS+dJYFOI=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB7PR02MB4728
+X-OriginatorOrg: atos.net
+X-Original-Source-IP: 193.56.114.176
+X-Renater-SpamState: 0
+X-Renater-SpamScore: 0
+X-Renater-SpamCause:
+ gggruggvucftvghtrhhoucdtuddrgedugedrvdeggdektdcutefuodetggdotefrodftvfcurfhrohhfihhlvgemucftgffptefvgfftpdggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecunecujfgurhephffvufhtfffkfhgjihgtggesrhdttdertddtjeenucfhrhhomhepfdfitffkteftffdpucfhtffgfffgtffkvedfuceofhhrvgguvghrihgtrdhgrhhirghrugesrghtohhsrdhnvghtqeenucffohhmrghinheprghtohhsrdhnvghtnecukfhppeduleefrdehiedruddugedrudejiedpledvrddujedurddugedrvddvgedpfhgvkedtmeemrggtfhgvmeekiehfugemvgehlegsmeejvddvvdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhhouggvpehsmhhtphdphhgvlhhopehsmhgrrhhthhhoshhthedrrghtohhsrdhnvghtpdhinhgvthepudelfedrheeirdduudegrddujeeipdhmrghilhhfrhhomhepfhhrvgguvghrihgtrdhgrhhirghrugesrghtohhsrdhnvghtpdhrtghpthhtohepshhuphhpohhrthgprhgvghhiohhnpggrrhgrsegrtgdqghhrvghnohgslhgvrdhfrh
+X-Renater-ServerName: mxb1-1.relay.renater.fr
+X-Bizanga: IMP - mxb1-1.relay.renater.fr
+X-TM-AS-GCONF: 00
+References:
+ <AM0PR02MB45960A9753A255BCDA4C840CFE0E0@AM0PR02MB4596.eurprd02.prod.outlook.com>
+Authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=frederic.griard@atos.net;
+Original-recipient: rfc822;support_region_ara@ac-grenoble.fr
+
+
+--Boundary_(ID_6M1oxOuYmKoPEtlLUAQ7vA)
+Content-type: multipart/alternative;
+ boundary="Boundary_(ID_TiYpKsP/e9+zJ/EJALBb8g)"
+
+
+--Boundary_(ID_TiYpKsP/e9+zJ/EJALBb8g)
+Content-type: text/plain; charset=utf-8
+Content-transfer-encoding: quoted-printable
+
+Bonjour,
+
+Pouvez-vous prendre en compte la demande ci-dessous ?
+
+Cordialement
+Fr=C3=A9d=C3=A9ric GRIARD
+Responsable =C3=A9quipe Support/exploitation AURA-TICE
+Fixe : +33 (0) 2 14 00 09 06
+Mobile : +33 (0) 6 85 71 70 66
+frederic.griard@atos.net<mailto:frederic.griard@atos.net>
+www.atos.net<http://www.atos.net/>
+
+[cid:image002.png@01D5D2D6.067D58D0]
+
+
+
+From: Girard, Yannick <yannick.girard@atos.net>
+Sent: Friday, January 24, 2020 4:23 PM
+To: GRIARD, FREDERIC <frederic.griard@atos.net>
+Cc: dl-rra-tice-exploitation <dl-rra-tice-exploitation@atos.net>
+Subject: Demande d'ouverture d'un ticket aupr=C3=A8s du rectorat de Grenobl=
+e
+
+Bonjour Fr=C3=A9d=C3=A9ric,
+
+Peux-tu stp faire ouvrir un ticket aupr=C3=A8s du rectorat de Grenoble pour=
+ l=E2=80=99obtention du password du compte Root de l=E2=80=99horus ceci afi=
+n de pouvoir traiter la DDS ci-dessous :
+
+TLPU026 LP Hotelier Largentiere
+Demande de service : RRA-S1912_0184
+< PLE 17/12/2019
+M.Balazuc a besoin d'une adress IP sur r=C3=A9seau administratif
+adresse Mac du poste: 00:80:F4:45:EA:32 >
+
+En te remerciant,
+
+Cordialement,
+
+Yannick GIRARD
+Exploitation RRA-TICE
+T=C3=A9l : 04 20 10 39 65
+Yannick.girard@atos.net<mailto:Yannick.girard@atos.net>
+34 rue de la Soie
+69100 Villeurbanne
+[cid:image001.png@01D5D2D2.57897910]
+
+Ce message et toutes les pi=C3=A8ces jointes (ci-apr=C3=A8s le "message") s=
+ont =C3=A9tablis =C3=A0 l=E2=80=99intention exclusive des destinataires d=
+=C3=A9sign=C3=A9s. Il contient des informations confidentielles et pouvant =
+=C3=AAtre prot=C3=A9g=C3=A9 par le secret professionnel. Si vous recevez ce=
+ message par erreur, merci d'en avertir imm=C3=A9diatement l'exp=C3=A9diteu=
+r et de d=C3=A9truire le message. Toute utilisation de ce message non confo=
+rme =C3=A0 sa destination, toute diffusion ou toute publication, totale ou =
+partielle, est interdite, sauf autorisation expresse de l=E2=80=99=C3=A9met=
+teur. L'internet ne garantissant pas l'int=C3=A9grit=C3=A9 de ce message lo=
+rs de son acheminement, Atos (et ses filiales) d=C3=A9cline(nt) toute respo=
+nsabilit=C3=A9 au titre de son contenu. Bien que ce message ait fait l=E2=
+=80=99objet d=E2=80=99un traitement anti-virus lors de son envoi, l=E2=80=
+=99=C3=A9metteur ne peut garantir l=E2=80=99absence totale de logiciels mal=
+veillants dans son contenu et ne pourrait =C3=AAtre tenu pour responsable d=
+es dommages engendr=C3=A9s par la transmission de l=E2=80=99un d=E2=80=99eu=
+x.
+
+This message and any attachments (the "message") are intended solely for th=
+e addressee(s). It contains confidential information, that may be privilege=
+d. If you receive this message in error, please notify the sender immediate=
+ly and delete the message. Any use of the message in violation of its purpo=
+se, any dissemination or disclosure, either wholly or partially is strictly=
+ prohibited, unless it has been explicitly authorized by the sender. As its=
+ integrity cannot be secured on the internet, Atos and its subsidiaries dec=
+line any liability for the content of this message. Although the sender end=
+eavors to maintain a computer virus-free network, the sender does not warra=
+nt that this transmission is virus-free and will not be liable for any dama=
+ges resulting from any virus transmitted.
+
+--Boundary_(ID_TiYpKsP/e9+zJ/EJALBb8g)
+Content-type: text/html; charset=utf-8
+Content-transfer-encoding: quoted-printable
+
+<html xmlns:v=3D"urn:schemas-microsoft-com:vml" xmlns:o=3D"urn:schemas-micr=
+osoft-com:office:office" xmlns:w=3D"urn:schemas-microsoft-com:office:word" =
+xmlns:m=3D"http://schemas.microsoft.com/office/2004/12/omml" xmlns=3D"http:=
+//www.w3.org/TR/REC-html40">
+<head>
+<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Dutf-8">
+<meta name=3D"Generator" content=3D"Microsoft Word 15 (filtered medium)">
+<!--[if !mso]><style>v\:* {behavior:url(#default#VML);}
+o\:* {behavior:url(#default#VML);}
+w\:* {behavior:url(#default#VML);}
+.shape {behavior:url(#default#VML);}
+</style><![endif]--><style><!--
+/* Font Definitions */
+@font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+@font-face
+	{font-family:Calibri;
+	panose-1:2 15 5 2 2 2 4 3 2 4;}
+@font-face
+	{font-family:Verdana;
+	panose-1:2 11 6 4 3 5 4 4 2 4;}
+/* Style Definitions */
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:11.0pt;
+	font-family:"Calibri",sans-serif;
+	mso-fareast-language:EN-US;}
+a:link, span.MsoHyperlink
+	{mso-style-priority:99;
+	color:#0563C1;
+	text-decoration:underline;}
+a:visited, span.MsoHyperlinkFollowed
+	{mso-style-priority:99;
+	color:#954F72;
+	text-decoration:underline;}
+p.msonormal0, li.msonormal0, div.msonormal0
+	{mso-style-name:msonormal;
+	mso-margin-top-alt:auto;
+	margin-right:0cm;
+	mso-margin-bottom-alt:auto;
+	margin-left:0cm;
+	font-size:11.0pt;
+	font-family:"Calibri",sans-serif;}
+span.EmailStyle18
+	{mso-style-type:personal;
+	font-family:"Calibri",sans-serif;
+	color:windowtext;}
+span.EmailStyle19
+	{mso-style-type:personal;
+	font-family:"Calibri",sans-serif;
+	color:windowtext;}
+.MsoChpDefault
+	{mso-style-type:export-only;
+	font-size:10.0pt;}
+@page WordSection1
+	{size:612.0pt 792.0pt;
+	margin:70.85pt 70.85pt 70.85pt 70.85pt;}
+div.WordSection1
+	{page:WordSection1;}
+--></style><!--[if gte mso 9]><xml>
+<o:shapedefaults v:ext=3D"edit" spidmax=3D"1026" />
+</xml><![endif]--><!--[if gte mso 9]><xml>
+<o:shapelayout v:ext=3D"edit">
+<o:idmap v:ext=3D"edit" data=3D"1" />
+</o:shapelayout></xml><![endif]-->
+</head>
+<body lang=3D"FR" link=3D"#0563C1" vlink=3D"#954F72">
+<div class=3D"WordSection1">
+<p class=3D"MsoNormal">Bonjour,<o:p></o:p></p>
+<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
+<p class=3D"MsoNormal">Pouvez-vous prendre en compte la demande ci-dessous&=
+nbsp;?<o:p></o:p></p>
+<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
+<div>
+<p class=3D"MsoNormal" style=3D"margin-top:10.0pt;line-height:115%"><span s=
+tyle=3D"font-size:9.0pt;line-height:115%;font-family:&quot;Verdana&quot;,sa=
+ns-serif;color:#365F91;mso-fareast-language:FR">Cordialement<o:p></o:p></sp=
+an></p>
+<p class=3D"MsoNormal" style=3D"margin-top:10.0pt;line-height:115%"><b><spa=
+n style=3D"font-size:9.0pt;line-height:115%;font-family:&quot;Verdana&quot;=
+,sans-serif;color:#365F91;mso-fareast-language:FR">Fr=C3=A9d=C3=A9ric GRIAR=
+D<o:p></o:p></span></b></p>
+<p class=3D"MsoNormal" style=3D"line-height:115%"><span style=3D"font-size:=
+8.0pt;line-height:115%;font-family:&quot;Verdana&quot;,sans-serif;color:#1F=
+497D;mso-fareast-language:FR">Responsable =C3=A9quipe Support/exploitation =
+AURA-TICE<o:p></o:p></span></p>
+<p class=3D"MsoNormal" style=3D"line-height:115%"><span style=3D"font-size:=
+8.0pt;line-height:115%;font-family:&quot;Verdana&quot;,sans-serif;color:#1F=
+497D;mso-fareast-language:FR">Fixe&nbsp;: &#43;33 (0) 2 14 00 09 06<o:p></o=
+:p></span></p>
+<p class=3D"MsoNormal" style=3D"line-height:115%"><span style=3D"font-size:=
+8.0pt;line-height:115%;font-family:&quot;Verdana&quot;,sans-serif;color:#1F=
+497D;mso-fareast-language:FR">Mobile&nbsp;: &#43;33 (0) 6 85 71 70 66</span=
+><span style=3D"color:#1F497D;mso-fareast-language:FR"><o:p></o:p></span></=
+p>
+<p class=3D"MsoNormal" style=3D"line-height:115%"><span style=3D"mso-fareas=
+t-language:FR"><a href=3D"mailto:frederic.griard@atos.net"><span style=3D"f=
+ont-size:8.0pt;line-height:115%;font-family:&quot;Verdana&quot;,sans-serif;=
+color:blue">frederic.griard@atos.net</span></a><span style=3D"color:#1F497D=
+"><o:p></o:p></span></span></p>
+<p class=3D"MsoNormal" style=3D"line-height:115%"><span style=3D"mso-fareas=
+t-language:FR"><a href=3D"http://www.atos.net/"><span style=3D"font-size:8.=
+0pt;line-height:115%;font-family:&quot;Verdana&quot;,sans-serif;color:blue"=
+>www.atos.net</span></a></span><span style=3D"font-size:8.0pt;line-height:1=
+15%;font-family:&quot;Verdana&quot;,sans-serif;color:#1F497D;mso-fareast-la=
+nguage:FR"><o:p></o:p></span></p>
+<p class=3D"MsoNormal" style=3D"line-height:115%"><span style=3D"color:#1F4=
+97D;mso-fareast-language:FR"><o:p>&nbsp;</o:p></span></p>
+<p class=3D"MsoNormal"><span style=3D"mso-fareast-language:FR"><img border=
+=3D"0" width=3D"78" height=3D"26" style=3D"width:.8125in;height:.2708in" id=
+=3D"Image_x0020_2" src=3D"cid:image002.png@01D5D2D6.067D58D0"><o:p></o:p></=
+span></p>
+<p class=3D"MsoNormal"><span style=3D"mso-fareast-language:FR"><o:p>&nbsp;<=
+/o:p></span></p>
+<p class=3D"MsoNormal"><span style=3D"mso-fareast-language:FR"><o:p>&nbsp;<=
+/o:p></span></p>
+</div>
+<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
+<div>
+<div style=3D"border:none;border-top:solid #E1E1E1 1.0pt;padding:3.0pt 0cm =
+0cm 0cm">
+<p class=3D"MsoNormal"><b><span style=3D"mso-fareast-language:FR">From:</sp=
+an></b><span style=3D"mso-fareast-language:FR"> Girard, Yannick &lt;yannick=
+.girard@atos.net&gt;
+<br>
+<b>Sent:</b> Friday, January 24, 2020 4:23 PM<br>
+<b>To:</b> GRIARD, FREDERIC &lt;frederic.griard@atos.net&gt;<br>
+<b>Cc:</b> dl-rra-tice-exploitation &lt;dl-rra-tice-exploitation@atos.net&g=
+t;<br>
+<b>Subject:</b> Demande d'ouverture d'un ticket aupr=C3=A8s du rectorat de =
+Grenoble<o:p></o:p></span></p>
+</div>
+</div>
+<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
+<p class=3D"MsoNormal">Bonjour Fr=C3=A9d=C3=A9ric,<o:p></o:p></p>
+<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
+<p class=3D"MsoNormal">Peux-tu stp faire ouvrir un ticket aupr=C3=A8s du re=
+ctorat de Grenoble pour l=E2=80=99obtention du password du compte Root de l=
+=E2=80=99horus ceci afin de pouvoir traiter la DDS ci-dessous&nbsp;:<o:p></=
+o:p></p>
+<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
+<p class=3D"MsoNormal">TLPU026 LP Hotelier Largentiere<o:p></o:p></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:9.0pt;font-family:&quot;Ver=
+dana&quot;,sans-serif;color:black;background:white">Demande&nbsp;de service=
+&nbsp;:
+</span>RRA-S1912_0184<o:p></o:p></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:9.0pt;font-family:&quot;Ver=
+dana&quot;,sans-serif;color:black;background:white">&lt;
+</span><i><span style=3D"font-size:8.0pt;font-family:&quot;Verdana&quot;,sa=
+ns-serif;color:black;background:white">PLE 17/12/2019</span></i><i><span st=
+yle=3D"font-size:8.0pt;font-family:&quot;Verdana&quot;,sans-serif;color:bla=
+ck"><br>
+<span style=3D"background:white">M.Balazuc a besoin d'une adress IP sur r=
+=C3=A9seau administratif</span><br>
+<span style=3D"background:white">adresse Mac du poste: 00:80:F4:45:EA:32 &g=
+t;<o:p></o:p></span></span></i></p>
+<p class=3D"MsoNormal"><i><span style=3D"font-size:8.0pt;font-family:&quot;=
+Verdana&quot;,sans-serif;color:black;background:white"><o:p>&nbsp;</o:p></s=
+pan></i></p>
+<p class=3D"MsoNormal"><span style=3D"color:black;background:white">En te r=
+emerciant,<o:p></o:p></span></p>
+<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
+<p class=3D"MsoNormal"><span style=3D"mso-fareast-language:FR">Cordialement=
+,<o:p></o:p></span></p>
+<p class=3D"MsoNormal"><b><span style=3D"mso-fareast-language:FR"><o:p>&nbs=
+p;</o:p></span></b></p>
+<p class=3D"MsoNormal"><b><span style=3D"mso-fareast-language:FR">Yannick G=
+IRARD<o:p></o:p></span></b></p>
+<p class=3D"MsoNormal"><span style=3D"mso-fareast-language:FR">Exploitation=
+ RRA-TICE<o:p></o:p></span></p>
+<p class=3D"MsoNormal"><i><span style=3D"mso-fareast-language:FR">T=C3=A9l&=
+nbsp;: 04 20 10 39 65<o:p></o:p></span></i></p>
+<p class=3D"MsoNormal"><span style=3D"mso-fareast-language:FR"><a href=3D"m=
+ailto:Yannick.girard@atos.net"><span style=3D"font-family:&quot;Times New R=
+oman&quot;,serif;color:blue">Yannick.girard@atos.net</span></a><o:p></o:p><=
+/span></p>
+<p class=3D"MsoNormal"><span style=3D"mso-fareast-language:FR">34 rue de la=
+ Soie <o:p>
+</o:p></span></p>
+<p class=3D"MsoNormal"><span style=3D"mso-fareast-language:FR">69100 Villeu=
+rbanne<o:p></o:p></span></p>
+<p class=3D"MsoNormal"><img border=3D"0" width=3D"128" height=3D"37" style=
+=3D"width:1.3333in;height:.3854in" id=3D"Image_x0020_1" src=3D"cid:image001=
+.png@01D5D2D2.57897910"><span style=3D"mso-fareast-language:FR"><o:p></o:p>=
+</span></p>
+<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
+</div>
+Ce message et toutes les pi=C3=A8ces jointes (ci-apr=C3=A8s le &quot;messag=
+e&quot;) sont =C3=A9tablis =C3=A0 l=E2=80=99intention exclusive des destina=
+taires d=C3=A9sign=C3=A9s. Il contient des informations confidentielles et =
+pouvant =C3=AAtre prot=C3=A9g=C3=A9 par le secret professionnel. Si vous re=
+cevez ce message par
+ erreur, merci d'en avertir imm=C3=A9diatement l'exp=C3=A9diteur et de d=C3=
+=A9truire le message. Toute utilisation de ce message non conforme =C3=A0 s=
+a destination, toute diffusion ou toute publication, totale ou partielle, e=
+st interdite, sauf autorisation expresse de l=E2=80=99=C3=A9metteur.
+ L'internet ne garantissant pas l'int=C3=A9grit=C3=A9 de ce message lors de=
+ son acheminement, Atos (et ses filiales) d=C3=A9cline(nt) toute responsabi=
+lit=C3=A9 au titre de son contenu. Bien que ce message ait fait l=E2=80=99o=
+bjet d=E2=80=99un traitement anti-virus lors de son envoi, l=E2=80=99=C3=A9=
+metteur
+ ne peut garantir l=E2=80=99absence totale de logiciels malveillants dans s=
+on contenu et ne pourrait =C3=AAtre tenu pour responsable des dommages enge=
+ndr=C3=A9s par la transmission de l=E2=80=99un d=E2=80=99eux.<br>
+<br>
+This message and any attachments (the &quot;message&quot;) are intended sol=
+ely for the addressee(s). It contains confidential information, that may be=
+ privileged. If you receive this message in error, please notify the sender=
+ immediately and delete the message. Any use
+ of the message in violation of its purpose, any dissemination or disclosur=
+e, either wholly or partially is strictly prohibited, unless it has been ex=
+plicitly authorized by the sender. As its integrity cannot be secured on th=
+e internet, Atos and its subsidiaries
+ decline any liability for the content of this message. Although the sender=
+ endeavors to maintain a computer virus-free network, the sender does not w=
+arrant that this transmission is virus-free and will not be liable for any =
+damages resulting from any virus
+ transmitted.<br>
+</body>
+</html>
+
+--Boundary_(ID_TiYpKsP/e9+zJ/EJALBb8g)--
+
+--Boundary_(ID_6M1oxOuYmKoPEtlLUAQ7vA)
+Content-id: <image001.png@01D5D2D2.57897910>
+Content-type: image/png; name=image001.png
+Content-transfer-encoding: base64
+Content-disposition: inline; filename=image001.png; size=4580;
+ creation-date="Fri, 24 Jan 2020 15:23:24 GMT";
+ modification-date="Fri, 24 Jan 2020 15:23:24 GMT"
+Content-description: image001.png
+
+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
++vjBJGI1DSAAAAAASUVORK5CYII=
+
+--Boundary_(ID_6M1oxOuYmKoPEtlLUAQ7vA)
+Content-id: <image002.png@01D5D2D6.067D58D0>
+Content-type: image/png; name=image002.png
+Content-transfer-encoding: base64
+Content-disposition: inline; filename=image002.png; size=5023;
+ creation-date="Fri, 24 Jan 2020 15:47:57 GMT";
+ modification-date="Fri, 24 Jan 2020 15:47:57 GMT"
+Content-description: image002.png
+
+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
+RU5ErkJggg==
+
+--Boundary_(ID_6M1oxOuYmKoPEtlLUAQ7vA)--

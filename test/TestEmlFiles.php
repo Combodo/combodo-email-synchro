@@ -1,21 +1,8 @@
 <?php
-// Copyright (c) 2010-2020 Combodo SARL
-//
-//   This file is part of iTop.
-//
-//   iTop is free software; you can redistribute it and/or modify
-//   it under the terms of the GNU Affero General Public License as published by
-//   the Free Software Foundation, either version 3 of the License, or
-//   (at your option) any later version.
-//
-//   iTop is distributed in the hope that it will be useful,
-//   but WITHOUT ANY WARRANTY; without even the implied warranty of
-//   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//   GNU Affero General Public License for more details.
-//
-//   You should have received a copy of the GNU Affero General Public License
-//   along with iTop. If not, see <http://www.gnu.org/licenses/>
-//
+/*
+ * @copyright   Copyright (C) 2010-2021 Combodo SARL
+ * @license     http://opensource.org/licenses/AGPL-3.0
+ */
 
 
 namespace Combodo\iTop\Test\UnitTest\CombodoEmailSynchro;
@@ -23,14 +10,21 @@ namespace Combodo\iTop\Test\UnitTest\CombodoEmailSynchro;
 use Combodo\iTop\Test\UnitTest\ItopTestCase;
 use RawEmailMessage;
 
-class RawEmailMessageTest extends ItopTestCase
+/**
+ * Class TestEmlFiles
+ *
+ * Use EML files in `/test/emailsSample`
+ *
+ * @package Combodo\iTop\Test\UnitTest\CombodoEmailSynchro
+ */
+class TestEmlFiles extends ItopTestCase
 {
 
 	public function setUp()
 	{
 		parent::setUp();
 
-		require_once(APPROOT . 'env-production/combodo-email-synchro/classes/rawemailmessage.class.inc.php');
+		require_once(APPROOT.'env-production/combodo-email-synchro/classes/rawemailmessage.class.inc.php');
 	}
 
 	/**
@@ -42,7 +36,10 @@ class RawEmailMessageTest extends ItopTestCase
 
 		$sSubject = $oEmail->GetSubject();
 		$this->assertNotEmpty($sSubject);
-
+		//
+		if (str_replace(APPROOT . 'env-production/combodo-email-synchro/test/emailsSample/','',$sFileName) == "multi_lines_header_parsing.eml"){
+			$this->assertEquals( 'Re: autonet backup: nanobeam-ma15-sec-kunde.mgmt (1047) [Space.NET R-201909190397]',$sSubject);
+		}
 
 		$aSender = $oEmail->GetSender();
 		$this->assertValidEmailCollection($aSender, 'Sender is valid');

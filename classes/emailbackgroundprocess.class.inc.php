@@ -174,6 +174,7 @@ class EmailBackgroundProcess implements iBackgroundProcess
 		$iTotalMarkedAsError = 0;
 		$iTotalSkipped = 0;
         $iTotalDeleted = 0;
+		$iTotalMoved = 0;
         $iTotalUndesired = 0;
 		foreach(self::$aEmailProcessors as $sProcessorClass)
 		{
@@ -215,23 +216,19 @@ class EmailBackgroundProcess implements iBackgroundProcess
 					for ($iMessage = 0; $iMessage < $iMsgCount; $iMessage++)
 					{
 						// N°3218 initialize a new CMDBChange for each message
-						/** @var \CMDBChange $oCurrentMessageChange */
-						$oCurrentMessageChange = MetaModel::NewObject('CMDBChange');
-						$oCurrentMessageChange->Set('date', time());
-						$oCurrentMessageChange->Set('userinfo', 'Mail to ticket automation (background process)');
-						$oCurrentMessageChange->Set('origin', 'custom-extension');
-						$oCurrentMessageChange->DBInsert(); // mandatory so that CMDBChangeOp objects could link to this CMDBChange
-						CMDBObject::SetCurrentChange($oCurrentMessageChange);
+						// we cannot use \CMDBObject::SetCurrentChange($oChange) as this would force to persist our change for each message
+						// even if no CMDBChangeOp is created during the message processing !
+						// By doing so we lose the ability to set the CMDBChange date
+						CMDBObject::SetCurrentChange(null);
+						CMDBObject::SetTrackInfo('Mail to ticket automation (background process)');
+						CMDBObject::SetTrackOrigin('custom-extension');
 
-						try
-						{
+						try {
 							$this->InitMessageTrace($oSource, $iMessage);
 							$iTotalMessages++;
-							if (self::IsMultiSourceMode())
-							{
+							if (self::IsMultiSourceMode()) {
 								$sUIDL = $oSource->GetName().'_'.$aMessages[$iMessage]['uidl'];
-							}
-							else
+							} else
 							{
 								$sUIDL = $aMessages[$iMessage]['uidl'];
 							}
@@ -246,6 +243,8 @@ class EmailBackgroundProcess implements iBackgroundProcess
 								$oEmailReplica->Set('uidl', $sUIDL);
 								$oEmailReplica->Set('mailbox_path', $oSource->GetMailbox());
 								$oEmailReplica->Set('message_id', $iMessage);
+								$oEmailReplica->Set('last_seen', date('Y-m-d H:i:s'));
+
 							}
 							else
 							{
@@ -284,12 +283,6 @@ class EmailBackgroundProcess implements iBackgroundProcess
 											$iTotalDeleted++;
 											$ret = $oSource->DeleteMessage($iMessage);
 											$this->Trace("DeleteMessage($iMessage) returned $ret");
-											if (!$oEmailReplica->IsNew())
-											{
-												$this->Trace("Deleting replica #".$oEmailReplica->GetKey());
-												$oEmailReplica->DBDelete();
-												$oEmailReplica = null;
-											}
 											continue;
 										}
 										$iTotalSkipped++;
@@ -317,12 +310,6 @@ class EmailBackgroundProcess implements iBackgroundProcess
 									$this->Trace("Deleting message (AND replica): uidl=$sUIDL index=$iMessage");
 									$ret = $oSource->DeleteMessage($iMessage);
 									$this->Trace("DeleteMessage($iMessage) returned $ret");
-									if (!$oEmailReplica->IsNew())
-									{
-										$this->Trace("Deleting replica #".$oEmailReplica->GetKey());
-										$oEmailReplica->DBDelete();
-										$oEmailReplica = null;
-									}
 									break;
 
 								case EmailProcessor::PROCESS_MESSAGE:
@@ -357,11 +344,6 @@ class EmailBackgroundProcess implements iBackgroundProcess
 												$iTotalDeleted++;
 												$this->Trace("Email too big, deleting message (and replica): $sUIDL");
 												$oSource->DeleteMessage($iMessage);
-												if (!$oEmailReplica->IsNew())
-												{
-													$oEmailReplica->DBDelete();
-													$oEmailReplica = null;
-												}
 												break;
 										}
 									}
@@ -387,11 +369,6 @@ class EmailBackgroundProcess implements iBackgroundProcess
 													$iTotalDeleted++;
 													$this->Trace("Failed to decode the message, deleting it (and its replica): $sUIDL");
 													$oSource->DeleteMessage($iMessage);
-													if (!$oEmailReplica->IsNew())
-													{
-														$oEmailReplica->DBDelete();
-														$oEmailReplica = null;
-													}
 													break;
 											}
 										}
@@ -422,11 +399,12 @@ class EmailBackgroundProcess implements iBackgroundProcess
 													$iTotalDeleted++;
 													$this->Trace("Deleting message (and replica): $sUIDL");
 													$oSource->DeleteMessage($iMessage);
-													if (!$oEmailReplica->IsNew())
-													{
-														$oEmailReplica->DBDelete();
-														$oEmailReplica = null;
-													}
+													break;
+
+												case EmailProcessor::MOVE_MESSAGE:
+													$iTotalMoved++;
+													$this->Trace("Move message (and replica): $sUIDL");
+													$ret = $oSource->MoveMessage($iMessage);
 													break;
 
 												case EmailProcessor::PROCESS_ERROR:
@@ -436,11 +414,6 @@ class EmailBackgroundProcess implements iBackgroundProcess
 													$iTotalDeleted++;
 													$this->Trace("Deleting message (and replica): $sUIDL");
 													$oSource->DeleteMessage($iMessage);
-													if (!$oEmailReplica->IsNew())
-													{
-														$oEmailReplica->DBDelete();
-														$oEmailReplica = null;
-													}
 													break;
 
 												default:
@@ -484,18 +457,25 @@ class EmailBackgroundProcess implements iBackgroundProcess
 						{
 							if (is_object($oUsedReplica) && ($oUsedReplica->GetKey() != null))
 							{
+								// Fix IMAP: remember last seen. Aka: do not delete message because connection failed.
+								$oUsedReplica->Set('last_seen', date('Y-m-d H:i:s'));
+								$oUsedReplica->DBUpdate();
 								$aIDs[] = $oUsedReplica->GetKey();
 							}
 						}
 						
 						// Cleanup the unused replicas based on the pattern of their UIDL, unfortunately this is not possible in NON multi-source mode
-						$sOQL = "SELECT EmailReplica WHERE uidl LIKE " . CMDBSource::Quote($oSource->GetName() . '_%') . " AND mailbox_path = " . CMDBSource::Quote($oSource->GetMailbox()) . " AND id NOT IN (" . implode(',', CMDBSource::Quote($aIDs)) . ')';
+						$iRetentionPeriod = MetaModel::GetModuleSetting('combodo-email-synchro', 'retention_period', '1');
+						$sOQL = "SELECT EmailReplica WHERE uidl LIKE " . CMDBSource::Quote($oSource->GetName() . '_%') .
+							" AND mailbox_path = " . CMDBSource::Quote($oSource->GetMailbox()) .
+							" AND id NOT IN (" . implode(',', CMDBSource::Quote($aIDs)) . ")".
+							" AND last_seen <	DATE_SUB(NOW(), INTERVAL ".$iRetentionPeriod." HOUR)";
 						$this->Trace("Searching for unused EmailReplicas: '$sOQL'");
 						$oUnusedReplicaSet = new DBObjectSet(DBObjectSearch::FromOQL($sOQL));
 						$oUnusedReplicaSet->OptimizeColumnLoad(array('EmailReplica' => array('uidl')));
 						while($oReplica = $oUnusedReplicaSet->Fetch())
 						{
-							$this->Trace("Deleting unused EmailReplica (#".$oReplica->GetKey()."), UIDL: ".$oReplica->Get('uidl'));
+							$this->Trace("Deleting unused EmailReplica since ".$iRetentionPeriod." hours (#".$oReplica->GetKey()."), UIDL: ".$oReplica->Get('uidl'));
 							$oReplica->DBDelete();
 							if (time() > $iTimeLimit) break; // We'll do the rest later
 						}
@@ -505,7 +485,7 @@ class EmailBackgroundProcess implements iBackgroundProcess
 			}
 			if (time() > $iTimeLimit) break; // We'll do the rest later
 		}
-		return "Message(s) read: $iTotalMessages, message(s) skipped: $iTotalSkipped, message(s) processed: $iTotalProcessed, message(s) deleted: $iTotalDeleted, message(s) marked as error: $iTotalMarkedAsError, undesired message(s): $iTotalUndesired";
+		return "Message(s) read: $iTotalMessages, message(s) skipped: $iTotalSkipped, message(s) processed: $iTotalProcessed, message(s) deleted: $iTotalDeleted, message(s) marked as error: $iTotalMarkedAsError, undesired message(s): $iTotalUndesired, message(s) moved: $iTotalMoved,";
 	}
 
 	private function InitMessageTrace($oSource, $iMessage)
