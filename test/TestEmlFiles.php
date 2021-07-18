@@ -37,8 +37,13 @@ class TestEmlFiles extends ItopTestCase
 		$sSubject = $oEmail->GetSubject();
 		$this->assertNotEmpty($sSubject);
 		//
-		if (str_replace(APPROOT . 'env-production/combodo-email-synchro/test/emailsSample/','',$sFileName) == "multi_lines_header_parsing.eml"){
-			$this->assertEquals( 'Re: autonet backup: nanobeam-ma15-sec-kunde.mgmt (1047) [Space.NET R-201909190397]',$sSubject);
+		switch(str_replace(APPROOT . 'env-production/combodo-email-synchro/test/emailsSample/', '', $sFileName)) {
+			case 'multi_lines_header_parsing.eml':
+				$this->assertEquals('Re: autonet backup: nanobeam-ma15-sec-kunde.mgmt (1047) [Space.NET R-201909190397]', $sSubject);
+				break;
+			case 'email_133_kb4170_multiple_lines_encoded_data.eml':
+				$this->assertEquals('FW: ⚠ This is a test with an emoji in the subject and a long subject message which will cause multi line subjects and encoding', $sSubject);
+				break;
 		}
 
 		$aSender = $oEmail->GetSender();
