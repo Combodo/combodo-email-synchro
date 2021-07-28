@@ -90,7 +90,7 @@ if (!class_exists('EmailSynchroInstaller'))
 		public static function AfterDatabaseCreation(Config $oConfiguration, $sPreviousVersion, $sCurrentVersion)
 		{
 			// For each email sources, update email replicas by setting mailbox_path to source.mailbox where mailbox_path is null
-			SetupPage::log_info("Updating email replicas to set their mailbox path.");
+			SetupLog::Info("Updating email replicas to set their mailbox path.");
 
 			// Preparing mailboxes search
 			$oSearch = new DBObjectSearch('MailInboxBase');
@@ -111,9 +111,9 @@ if (!class_exists('EmailSynchroInstaller'))
 			while ($oInbox = $oSet->Fetch())
 			{
 				$sUpdateQuery = "UPDATE $sTableName SET $sMailboxColName = " . CMDBSource::Quote($oInbox->Get('mailbox')) . " WHERE $sUidlColName LIKE " . CMDBSource::Quote($oInbox->Get('login') . '_%') . " AND $sMailboxColName IS NULL";
-				SetupPage::log_info("Executing query: " . $sUpdateQuery);
+				SetupLog::Info("Executing query: " . $sUpdateQuery);
 				$iRet = CMDBSource::Query($sUpdateQuery); // Throws an exception in case of error
-				SetupPage::log_info("Updated $iRet rows.");
+				SetupLog::Info("Updated $iRet rows.");
 			}
 		}
 
