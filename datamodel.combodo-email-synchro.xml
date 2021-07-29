@@ -15,7 +15,7 @@
  *
  * @package     combodo-email-synchro
  */</comment>
-        <category>searchable,view_in_gui,bizmodel</category>
+        <category>grant_by_profile</category>
         <abstract>true</abstract>
         <key_type>autoincrement</key_type>
         <db_table>mailinbox_base</db_table>
@@ -96,22 +96,6 @@
 		$this->iMaxAttachmentSize = (int)$aData[0]['@@global.max_allowed_packet'] - 500; // Keep some room for the rest of the SQL query
 		$this->sBigFilesDir = MetaModel::GetModuleSetting('combodo-email-synchro', 'big_files_dir', '');
 		$this->sLastError = '';
-	}]]></code>
-        </method>
-        <method id="Get">
-          <comment>/**
-	 * Make sure that only administrators can see/export the password
-	 */</comment>
-          <static>false</static>
-          <access>public</access>
-          <type>Overload-DBObject</type>
-          <code><![CDATA[	public function Get($sAttCode)
-	{
-		if (($sAttCode == 'password') && (!UserRights::IsActionAllowed('MailInboxBase', UR_ACTION_MODIFY)))
-		{
-			return '*****';
-		}
-		return parent::Get($sAttCode);
 	}]]></code>
         </method>
         <method id="DisplayBareRelations">
@@ -1269,4 +1253,52 @@ JS
       </presentation>
     </class>
   </classes>
+  <user_rights>
+    <groups>
+      <group id="MailInbox" _delta="define">
+        <classes><class id="MailInboxBase"/></classes>
+      </group>
+      <group id="MailMessage" _delta="define">
+        <classes> <class id="EmailReplica"/></classes>
+      </group>
+    </groups>
+    <profiles>
+      <profile id="121" _delta="define">
+        <name>Mail Inbox Manager</name>
+        <description>Person in charge to create/modify Mail Inboxes</description>
+        <groups>
+          <group id="MailInbox">
+            <actions>
+              <action id="action:read">allow</action>
+              <action id="action:bulk read">allow</action>
+              <action id="action:write">allow</action>
+              <action id="action:bulk write">allow</action>
+              <action id="action:delete">allow</action>
+            </actions>
+          </group>
+        </groups>
+      </profile>
+      <profile id="122" _delta="define">
+        <name>Mail Messages Manager</name>
+        <description>Person in charge to manage Mail Messages</description>
+        <groups>
+          <group id="MailMessage">
+            <actions>
+              <action id="action:read">allow</action>
+              <action id="action:bulk read">allow</action>
+              <action id="action:write">allow</action>
+              <action id="action:bulk write">allow</action>
+              <action id="action:delete">allow</action>
+              <action id="action:bulk delete">allow</action>
+            </actions>
+          </group>
+          <group id="MailInbox">
+            <actions>
+              <action id="action:read">allow</action>
+            </actions>
+          </group>
+        </groups>
+      </profile>
+    </profiles>
+  </user_rights>
 </itop_design>
