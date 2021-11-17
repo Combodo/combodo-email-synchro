@@ -31,7 +31,7 @@ Dict::Add('DE DE', 'German', 'Deutsch', array(
 	'Class:MailInboxBase/Attribute:active/Value:no' => 'Nein',
 
 	'MailInbox:MailboxContent' => 'Mailbox Inhalt',
-	'MailInbox:MailboxContent:ConfirmMessage' => 'Are you sure ?~~',
+	'MailInbox:MailboxContent:ConfirmMessage' => 'Sind Sie sicher?',
 	'MailInbox:EmptyMailbox' => 'Die Mailbox ist leer',
 	'MailInbox:Z_DisplayedThereAre_X_Msg_Y_NewInTheMailbox' => '%1$d Mails angezeigt. Es sind %2$d EMail(s) in der Mailbox (%3$d neu).',
 	'MailInbox:MaxAllowedPacketTooSmall' => 'Der MySQL-Parameter max_allowed_packet in "my.ini" ist zu klein: %1$s. Der empfohlene Wert ist mindestens: %2$s',
