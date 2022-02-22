@@ -15,7 +15,7 @@
  *
  * @package     combodo-email-synchro
  */</comment>
-        <category>grant_by_profile</category>
+        <category>grant_by_profile,application</category>
         <abstract>true</abstract>
         <key_type>autoincrement</key_type>
         <db_table>mailinbox_base</db_table>
