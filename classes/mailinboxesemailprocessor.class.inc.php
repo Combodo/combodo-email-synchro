@@ -68,17 +68,17 @@ class MailInboxesEmailProcessor extends EmailProcessor
 	 * @throws \MySQLException
 	 */
 	public function ListEmailSources()
-	{		
+	{
+		static::Trace("-----------------------------------------------------------------------------------------");
+		static::Trace("Listing sources:");
+
 		$aSources = array();
 		$oSearch = new DBObjectSearch('MailInboxBase');
 		$oSearch->AddCondition('active', 'yes');
 		$oSet = new DBObjectSet($oSearch);
-		/** @var \MailInboxBase $oInbox */
-		while($oInbox = $oSet->Fetch())
-		{
+		while ($oInbox = $oSet->Fetch()) {
 			$this->aInboxes[$oInbox->GetKey()] = $oInbox;
-			try
-			{
+			try {
 				$oSource = $oInbox->GetEmailSource();
 				$oSource->SetToken($oInbox->GetKey()); // to match the source and the inbox later on
 				$oSource->SetPartsOrder(self::$sBodyPartsOrder); // in which order to decode the message's body
