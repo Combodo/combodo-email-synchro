@@ -37,9 +37,13 @@ class EmailBackgroundProcess implements iBackgroundProcess
 	 * @var EmailSource
 	 */
 	private $oCurrentSource;
-	
+
+	/** @var string Message to print before exiting, when the iProcess time limit is exceeded */
+	const CRON_TIME_LIMIT_REACHED_MESSAGE = 'iProcess time limit exceeded : exiting !';
+
 	/**
 	 * Activates the given EmailProcessor specified by its class name
+	 *
 	 * @param string $sClassName
 	 */
 	static public function RegisterEmailProcessor($sClassName)
@@ -434,30 +438,29 @@ class EmailBackgroundProcess implements iBackgroundProcess
 									$aReplicas[$sUIDL] = $oEmailReplica; // Remember this new replica, don't delete it later as "unused"
 									break;
 							}
-							if (time() > $iTimeLimit)
-							{
-								break;
-							} // We'll do the rest later
+							if (time() > $iTimeLimit) {
+								$this->Trace(self::CRON_TIME_LIMIT_REACHED_MESSAGE);
+								break; // We'll do the rest later
+							}
 						}
-						catch (Exception $e)
-						{
-							if (!empty($oEmailReplica))
-							{
+						catch (Exception $e) {
+							if (!empty($oEmailReplica)) {
 								$this->Trace($e->getMessage());
 								$this->UpdateEmailReplica($oEmailReplica, $oProcessor);
 							}
+
 							return $e->getMessage();
 						}
 					}
-					if (time() > $iTimeLimit) break; // We'll do the rest later
-					
-					if (self::IsMultiSourceMode())
-					{
+					if (time() > $iTimeLimit) {
+						$this->Trace(self::CRON_TIME_LIMIT_REACHED_MESSAGE);
+						break; // We'll do the rest later
+					}
+
+					if (self::IsMultiSourceMode()) {
 						$aIDs = array(-1); // Make sure that the array is never empty...
-						foreach($aReplicas as $oUsedReplica)
-						{
-							if (is_object($oUsedReplica) && ($oUsedReplica->GetKey() != null))
-							{
+						foreach ($aReplicas as $oUsedReplica) {
+							if (is_object($oUsedReplica) && ($oUsedReplica->GetKey() != null)) {
 								// Fix IMAP: remember last seen. Aka: do not delete message because connection failed.
 								$oUsedReplica->Set('last_seen', date('Y-m-d H:i:s'));
 								$oUsedReplica->DBUpdate();
@@ -474,17 +477,22 @@ class EmailBackgroundProcess implements iBackgroundProcess
 						$this->Trace("Searching for unused EmailReplicas: '$sOQL'");
 						$oUnusedReplicaSet = new DBObjectSet(DBObjectSearch::FromOQL($sOQL));
 						$oUnusedReplicaSet->OptimizeColumnLoad(array('EmailReplica' => array('uidl')));
-						while($oReplica = $oUnusedReplicaSet->Fetch())
-						{
+						while($oReplica = $oUnusedReplicaSet->Fetch()) {
 							$this->Trace("Deleting unused EmailReplica since ".$iRetentionPeriod." hours (#".$oReplica->GetKey()."), UIDL: ".$oReplica->Get('uidl'));
 							$oReplica->DBDelete();
-							if (time() > $iTimeLimit) break; // We'll do the rest later
+							if (time() > $iTimeLimit) {
+								$this->Trace(self::CRON_TIME_LIMIT_REACHED_MESSAGE);
+								break; // We'll do the rest later
+							}
 						}
 					}
 				}
 				$oSource->Disconnect();
 			}
-			if (time() > $iTimeLimit) break; // We'll do the rest later
+			if (time() > $iTimeLimit) {
+				$this->Trace(self::CRON_TIME_LIMIT_REACHED_MESSAGE);
+				break; // We'll do the rest later
+			}
 		}
 		return "Message(s) read: $iTotalMessages, message(s) skipped: $iTotalSkipped, message(s) processed: $iTotalProcessed, message(s) deleted: $iTotalDeleted, message(s) marked as error: $iTotalMarkedAsError, undesired message(s): $iTotalUndesired, message(s) moved: $iTotalMoved,";
 	}
