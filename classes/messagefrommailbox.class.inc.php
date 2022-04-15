@@ -33,7 +33,7 @@ class MessageFromMailbox extends RawEmailMessage
 	 * @param string $sFilePath The path to the file to load
 	 * @return RawEmailMessage The loaded message
 	 */
-	static public function FromFile($sFilePath)
+	public static function FromFile($sFilePath)
 	{
 		//TODO: improve error handling in case the file does not exist or is corrupted...
 		return new MessageFromMailbox(basename($sFilePath), file_get_contents($sFilePath), '');
