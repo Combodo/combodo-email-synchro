@@ -39,7 +39,7 @@ class EmailBackgroundProcess implements iBackgroundProcess
 	private $oCurrentSource;
 
 	/** @var string Message to print before exiting, when the iProcess time limit is exceeded */
-	const CRON_TIME_LIMIT_REACHED_MESSAGE = 'iProcess time limit exceeded : exiting !';
+	const CRON_TIME_LIMIT_REACHED_MESSAGE = 'iProcess time limit exceeded: exiting!';
 
 	/**
 	 * Activates the given EmailProcessor specified by its class name
