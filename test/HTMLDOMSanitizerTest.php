@@ -33,11 +33,11 @@ use RawEmailMessage;
  */
 class HTMLDOMSanitizerTest extends ItopTestCase
 {
-	public function setUp()
+	public function setUp(): void
 	{
 		parent::setUp();
 
-		require_once(APPROOT . 'env-production/combodo-email-synchro/classes/rawemailmessage.class.inc.php');
+		require_once(APPROOT.'env-production/combodo-email-synchro/classes/rawemailmessage.class.inc.php');
 	}
 
 
