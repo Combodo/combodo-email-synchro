@@ -143,7 +143,7 @@ class TestEmlFiles extends ItopTestCase
 
 		$oEmail = RawEmailMessage::FromFile($sEmlFilePath);
 		$sSubjectActualValue = $oEmail->GetSubject();
-		$this->assertSame($sSubjectExpectedValue, $sSubjectActualValue, 'Decoded subject has a wrong value');
+		$this->assertSame($sSubjectExpectedValue, $sSubjectActualValue, "File `{$sEmailFilename}` : decoded subject has a wrong value");
 	}
 
 	public function MultilineLongSubjectsProvider(): array
@@ -151,10 +151,10 @@ class TestEmlFiles extends ItopTestCase
 		return [
 			['multi_lines_header_parsing.eml', 'Re: autonet backup: nanobeam-ma15-sec-kunde.mgmt (1047) [Space.NET R-201909190397]'],
 			['email_133_kb4170_multiple_lines_encoded_data.eml', 'FW: ⚠ This is a test with an emoji in the subject and a long subject message which will cause multi line subjects and encoding'],
-			//			['email_065.eml', ''],//FIXME
-			//			['email_077.eml', ''],//FIXME
-			//			['email_107.eml', ''],//FIXME
-			//			['test gmail.eml', ''],//FIXME
+			['email_065.eml', 'Re: iTop - Enhancement request - Classes et héritage'],
+			['email_077.eml', 'Vente Flash Otto Office ! Spécial High-Tech, attention stocks limités !'],
+			['email_107.eml', 'Fwd: Suite entretien téléphonique de ce jour'],
+			['test gmail.eml', 'Test de mail envoyé avec Gmail et contenant un très très long sujet avec d\'aillleurs aussi des caractères accentués histoire de voir ce qui se passe dans ce cas là. Je sais c\'est un peu exagéré, enfin à peine...'],
 		];
 	}
 }
