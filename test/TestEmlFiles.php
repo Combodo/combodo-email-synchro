@@ -20,7 +20,7 @@ use RawEmailMessage;
 class TestEmlFiles extends ItopTestCase
 {
 
-	public function setUp()
+	public function setUp(): void
 	{
 		parent::setUp();
 

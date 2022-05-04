@@ -25,7 +25,8 @@ We would like to give a special thank you to the people from the community who c
 
 ### Names
 
-- Lars Kaltefleiter (aka @larhip)
+- Bostoen, Jeffrey (a.k.a @jbostoen)
+- Lars Kaltefleiter (a.k.a @larhip)
 
 ### Companies
 

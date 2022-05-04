@@ -192,9 +192,13 @@ try
 	require_once(APPROOT.'/application/startup.inc.php');
 
 	require_once(APPROOT.'/application/loginwebpage.class.inc.php');
-	LoginWebPage::DoLogin(true /* bMustBeAdmin */, false /* IsAllowedToPortalUsers */); // Check user rights and prompt if needed
+	LoginWebPage::DoLogin(); // Check user rights and prompt if needed
 
-	$oPage = new ajax_page("");
+	if (version_compare(ITOP_DESIGN_LATEST_VERSION , '3.0') < 0) {
+		$oPage = new ajax_page('');
+	} else {
+		$oPage = new AjaxPage('');
+	}
 
 	$sOperation = utils::ReadParam('operation', '');
 	$iMailInboxId = utils::ReadParam('id', 0, false, 'raw_data');

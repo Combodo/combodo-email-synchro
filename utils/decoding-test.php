@@ -53,6 +53,10 @@ $oEmail = $oMessage->Decode($sPartsOrder);
 $endTime = microtime(true);
 
 echo "====== Decoded eMail: =========\n";
+
+echo "\n\n\n\n\n\n";
+echo "========================================================================================================================\n";
+echo "------ HEADER\n";
 echo "Subject: {$oEmail->sSubject}\n";
 echo "MessageID: {$oEmail->sMessageId}\n";
 echo "Date: {$oEmail->sDate}\n";
@@ -64,70 +68,67 @@ echo 'CC: '.print_r($oEmail->aCCs, true)."\n";
 echo "Attachments:".count($oEmail->aAttachments)."\n";
 $idx = 1;
 $aCIDToImage = array();
-foreach($oEmail->aAttachments as $aAttachment)
-{
+foreach ($oEmail->aAttachments as $aAttachment) {
 	$sInline = $aAttachment['inline'] ? 'yes' : 'no';
 	echo "\t$idx {$aAttachment['filename']} - {$aAttachment['mimeType']}, ".strlen($aAttachment['content'])." bytes, CID: ".$aAttachment['content-id'].", Inline ?: $sInline\n";
 	// Uncomment the line below to dump the attachments as separate files
 	//file_put_contents('/tmp/'.$aAttachment['filename'], $aAttachment['content']);
-	if ($aAttachment['content-id'] != '')
-	{
+	if ($aAttachment['content-id'] != '') {
 		$aCIDToImage[$aAttachment['content-id']] = $aAttachment;
 	}
 	$idx++;
 }
+
+echo "\n\n\n\n\n\n";
+echo "========================================================================================================================\n";
+echo "------ BODY\n";
 echo "Body Format: {$oEmail->sBodyFormat}\n\n";
 echo "Body Text:\n{$oEmail->sBodyText}\n\n";
-if ($oEmail->sBodyFormat == 'text/html')
-{
-	if(preg_match_all('/<img[^>]+src=(?:"cid:([^"]+)"|cid:([^ >]+))[^>]*>/i', $oEmail->sBodyText, $aMatches, PREG_OFFSET_CAPTURE))
-	{
+if ($oEmail->sBodyFormat == 'text/html') {
+	if (preg_match_all('/<img[^>]+src=(?:"cid:([^"]+)"|cid:([^ >]+))[^>]*>/i', $oEmail->sBodyText, $aMatches, PREG_OFFSET_CAPTURE)) {
 		//print_r($aMatches);
 		$aInlineImages = array();
-		foreach($aMatches[0] as $idx => $aInfo)
-		{
+		foreach ($aMatches[0] as $idx => $aInfo) {
 			$aInlineImages[$idx] = array('position' => $aInfo[1]);
 		}
-		foreach($aMatches[1] as $idx => $aInfo)
-		{
+		foreach ($aMatches[1] as $idx => $aInfo) {
 			$sCID = $aInfo[0];
-			if (!array_key_exists($sCID, $aCIDToImage))
-			{
+			if (!array_key_exists($sCID, $aCIDToImage)) {
 				echo "ERROR: inline image: $sCID NOT FOUND !!!\n";
-			}
-			else
-			{
+			} else {
 				$aInlineImages[$idx]['cid'] = $sCID;
 				echo "Ok, inline image {$aCIDToImage[$sCID]['filename']} as cid:$sCID\n";
 			}
 		}
-		$sWholeText =  $oEmail->sBodyText;
+		$sWholeText = $oEmail->sBodyText;
 		$idx = count($aInlineImages);
-		while($idx > 0)
-		{
+		while ($idx > 0) {
 			$idx--;
 			$sBefore = substr($sWholeText, 0, $aInlineImages[$idx]['position']);
 			$sAfter = substr($sWholeText, $aInlineImages[$idx]['position']);
 			$sWholeText = $sBefore." [itop attachment: {$aInlineImages[$idx]['cid']}] ".$sAfter;
 		}
-echo "=================\n";
-echo "$sWholeText\n";
-echo "=================\n";
+		echo "=================\n";
+		echo "$sWholeText\n";
+		echo "=================\n";
 
 		$sBodyText = $oEmail->StripTags($sWholeText);
-	}
-	else
-	{
+	} else {
 		echo "Inline Images: no inline-image found\n";
 		$sBodyText = $oEmail->StripTags();
 	}
+	echo "------ BODY Text version\n";
 	echo "Plain Text Version:\n$sBodyText\n";
 }
-echo "===============================\n";
+
+echo "\n\n\n\n\n\n";
+echo "========================================================================================================================\n";
 echo "GetNewPartHTML() returned:\n";
 echo "===============================\n";
 echo $oEmail->GetNewPartHTML($oEmail->sBodyText);
 echo "===============================\n";
 
 
-echo "Decoding duration: ".sprintf('%.1f', 1000*($endTime - $startTime))." ms\n";
+echo "\n\n\n\n\n\n";
+echo "========================================================================================================================\n";
+echo "Decoding duration: ".sprintf('%.1f', 1000 * ($endTime - $startTime))." ms\n";

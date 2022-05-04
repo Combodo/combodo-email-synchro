@@ -62,7 +62,7 @@ class MailInboxesEmailProcessor extends EmailProcessor
 	/**
 	 * Initializes the email sources: one source is created and associated with each MailInboxBase instance
 	 *
-	 * @return array An array of EmailSource objects
+	 * @return MailInboxBase[] An array of EmailSource objects
 	 * @throws \CoreException
 	 * @throws \CoreUnexpectedValue
 	 * @throws \MySQLException
@@ -73,6 +73,7 @@ class MailInboxesEmailProcessor extends EmailProcessor
 		$oSearch = new DBObjectSearch('MailInboxBase');
 		$oSearch->AddCondition('active', 'yes');
 		$oSet = new DBObjectSet($oSearch);
+		/** @var \MailInboxBase $oInbox */
 		while($oInbox = $oSet->Fetch())
 		{
 			$this->aInboxes[$oInbox->GetKey()] = $oInbox;
@@ -118,33 +119,37 @@ class MailInboxesEmailProcessor extends EmailProcessor
 	protected function GetActionFromCode($iRetCode)
 	{
 		$sRetCode = 'Unknown Code '.$iRetCode;
-		switch($iRetCode)
-		{
+		switch ($iRetCode) {
 			case EmailProcessor::NO_ACTION:
-			$sRetCode = 'NO_ACTION';
-			break;
-			
-			case EmailProcessor::DELETE_MESSAGE;
-			$sRetCode = 'DELETE_MESSAGE';
-			break;
-			
-			case EmailProcessor::PROCESS_MESSAGE:
-			$sRetCode = 'PROCESS_MESSAGE';
-			break;
-			
-			case EmailProcessor::PROCESS_ERROR:
-			$sRetCode = 'PROCESS_ERROR';
-			break;
-			
-			case EmailProcessor::MARK_MESSAGE_AS_ERROR:
-			$sRetCode = 'MARK_MESSAGE_AS_ERROR';
-			break;
+				$sRetCode = 'NO_ACTION';
+				break;
 
-            case EmailProcessor::MARK_MESSAGE_AS_UNDESIRED:
-            $sRetCode = 'MARK_MESSAGE_AS_UNDESIRED';
-            break;
+			case EmailProcessor::DELETE_MESSAGE;
+				$sRetCode = 'DELETE_MESSAGE';
+				break;
+
+			case EmailProcessor::PROCESS_MESSAGE:
+				$sRetCode = 'PROCESS_MESSAGE';
+				break;
+
+			case EmailProcessor::PROCESS_ERROR:
+				$sRetCode = 'PROCESS_ERROR';
+				break;
+
+			case EmailProcessor::MARK_MESSAGE_AS_ERROR:
+				$sRetCode = 'MARK_MESSAGE_AS_ERROR';
+				break;
+
+			case EmailProcessor::MARK_MESSAGE_AS_UNDESIRED:
+				$sRetCode = 'MARK_MESSAGE_AS_UNDESIRED';
+				break;
+
+			case EmailProcessor::MOVE_MESSAGE:
+				$sRetCode = 'MOVE_MESSAGE';
+				break;
 		}
-		return $sRetCode;		
+
+		return $sRetCode;
 	}
 
 	/**

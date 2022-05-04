@@ -11,7 +11,7 @@ use RawEmailMessage;
 
 class RawEmailMessageTest extends ItopTestCase
 {
-	public function setUp()
+	public function setUp(): void
 	{
 		parent::setUp();
 
