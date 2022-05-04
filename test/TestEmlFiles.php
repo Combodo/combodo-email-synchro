@@ -36,15 +36,6 @@ class TestEmlFiles extends ItopTestCase
 
 		$sSubject = $oEmail->GetSubject();
 		$this->assertNotEmpty($sSubject);
-		//
-		switch(str_replace(APPROOT . 'env-production/combodo-email-synchro/test/emailsSample/', '', $sFileName)) {
-			case 'multi_lines_header_parsing.eml':
-				$this->assertEquals('Re: autonet backup: nanobeam-ma15-sec-kunde.mgmt (1047) [Space.NET R-201909190397]', $sSubject);
-				break;
-			case 'email_133_kb4170_multiple_lines_encoded_data.eml':
-				$this->assertEquals('FW: ⚠ This is a test with an emoji in the subject and a long subject message which will cause multi line subjects and encoding', $sSubject);
-				break;
-		}
 
 		$aSender = $oEmail->GetSender();
 		$this->assertValidEmailCollection($aSender, 'Sender is valid');
@@ -76,7 +67,6 @@ class TestEmlFiles extends ItopTestCase
 			$this->assertArrayHasKey('mimeType', $aAttachment);
 			$this->assertArrayHasKey('content', $aAttachment);
 		}
-
 	}
 
 	private function assertEmptyCollection($aEmails, $message = '')
@@ -134,12 +124,37 @@ class TestEmlFiles extends ItopTestCase
 			$sTestName = basename($sFile);
 
 			$aReturn[$sTestName] = array(
-				'sFile' => $sFile,
-				'sComment' => isset($aMetaData[$sTestName]['sComment']) ? $aMetaData[$sTestName]['sComment'] : '',
+				'sFile'      => $sFile,
+				'sComment'   => isset($aMetaData[$sTestName]['sComment']) ? $aMetaData[$sTestName]['sComment'] : '',
 				'bToIsEmpty' => isset($aMetaData[$sTestName]['bToIsEmpty']) ? $aMetaData[$sTestName]['bToIsEmpty'] : false,
 			);
 		}
 
 		return $aReturn;
+	}
+
+	/**
+	 * @dataProvider MultilineLongSubjectsProvider
+	 */
+	public function testMultilineLongSubjects($sEmailFilename, $sSubjectExpectedValue): void
+	{
+		$sEmlFilePath = APPROOT.'env-production/combodo-email-synchro/test/emailsSample/'.$sEmailFilename;
+		$this->assertFileExists($sEmlFilePath, 'EML file is not existing');
+
+		$oEmail = RawEmailMessage::FromFile($sEmlFilePath);
+		$sSubjectActualValue = $oEmail->GetSubject();
+		$this->assertSame($sSubjectExpectedValue, $sSubjectActualValue, 'Decoded subject has a wrong value');
+	}
+
+	public function MultilineLongSubjectsProvider(): array
+	{
+		return [
+			['multi_lines_header_parsing.eml', 'Re: autonet backup: nanobeam-ma15-sec-kunde.mgmt (1047) [Space.NET R-201909190397]'],
+			['email_133_kb4170_multiple_lines_encoded_data.eml', 'FW: ⚠ This is a test with an emoji in the subject and a long subject message which will cause multi line subjects and encoding'],
+			//			['email_065.eml', ''],//FIXME
+			//			['email_077.eml', ''],//FIXME
+			//			['email_107.eml', ''],//FIXME
+			//			['test gmail.eml', ''],//FIXME
+		];
 	}
 }
