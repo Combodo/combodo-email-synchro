@@ -72,6 +72,7 @@ function GetMailboxContent($oPage, $oInbox)
 				$aUIDLs[] = $oSource->GetName().'_'.$aMessages[$iMessage]['uidl'];
 			}
 			$sOQL = 'SELECT EmailReplica WHERE uidl IN ('.implode(',', CMDBSource::Quote($aUIDLs)).') AND mailbox_path = ' . CMDBSource::Quote($oInbox->Get('mailbox'));
+			IssueLog::Info("Searching EmailReplica: $sOQL");
 			$oReplicaSet = new DBObjectSet(DBObjectSearch::FromOQL($sOQL));
 			$oReplicaSet->OptimizeColumnLoad(array('EmailReplica' => array('uidl', 'ticket_id', 'status', 'error_message')));
 			$iProcessedCount = $oReplicaSet->Count();
