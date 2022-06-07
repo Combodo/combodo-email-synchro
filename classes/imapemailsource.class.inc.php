@@ -57,8 +57,9 @@ class IMAPEmailSource extends EmailSource
 				{
 					EventHealthIssue::LogHealthIssue('combodo-email-synchro', "Cannot connect to IMAP server: '$sIMAPConnStr', with credentials: '$sLogin'/***");
 				}
-				print_r(imap_errors());
-				throw new Exception("Cannot connect to IMAP server: '$sIMAPConnStr', with credentials: '$sLogin'/***'");
+				$sMessage = "Cannot connect to IMAP server: '$sIMAPConnStr', with credentials: '$sLogin'/***'";
+				IssueLog::Error($sMessage.' '.var_export(imap_errors(), true));
+				throw new Exception($sMessage);
 			}
 	}	
 
