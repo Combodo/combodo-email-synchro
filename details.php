@@ -26,8 +26,6 @@ use Combodo\iTop\Application\UI\Base\Component\Panel\PanelUIBlockFactory;
 use Combodo\iTop\Application\UI\Base\Layout\UIContentBlock;
 
 require_once('../approot.inc.php');
-require_once(APPROOT.'/application/application.inc.php');
-require_once(APPROOT.'/application/itopwebpage.class.inc.php');
 
 /**
  * @param \iTopWebPage $oPage
