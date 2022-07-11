@@ -2,17 +2,16 @@
 
 SetupWebPage::AddModule(
 	__FILE__, // Path to the current file, all other file names are relative to the directory containing this file
-	'combodo-email-synchro/3.5.3',
-	array(
-		// Identification
-		'label' => 'Tickets synchronization via e-mail',
-		'category' => 'business',
-		// Setup
-		'dependencies' => array(
-//			'itop-config-mgmt/3.0.0', // iTop 3.0.0 minimum is not necessary for now, maybe in the future ?
-		),
-		'mandatory' => false,
-		'visible' => true,
+    'combodo-email-synchro/3.6.0',
+    array(
+        // Identification
+        'label' => 'Tickets synchronization via e-mail',
+        'category' => 'business',
+        // Setup
+        'dependencies' => array(//			'itop-config-mgmt/3.0.0', // iTop 3.0.0 minimum is not necessary for now, maybe in the future ?
+        ),
+        'mandatory' => false,
+        'visible' => true,
 		'installer' => 'EmailSynchroInstaller',
 		// Components
 		'datamodel' => array(
