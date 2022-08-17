@@ -162,7 +162,13 @@ class EmailReplica extends DBObject
 	
 	public static function MakeMessageId($oObject)
 	{
-		$sMessageId = sprintf('<iTop_%s_%d_%f@%s.openitop.org>', get_class($oObject), $oObject->GetKey(), microtime(true /* get as float*/), MetaModel::GetConfig()->Get('session_name'));
+		$sMessageId = sprintf('<iTop_%s_%d_%F@%s.openitop.org>',
+			get_class($oObject),
+			$oObject->GetKey(),
+			microtime(true /* get as float*/),
+			MetaModel::GetConfig()->Get('session_name')
+		);
+
 		return $sMessageId;
 	}
 }
