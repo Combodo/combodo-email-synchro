@@ -95,28 +95,28 @@ class MyPEAR
 /**
 *  +----------------------------- IMPORTANT ------------------------------+
 *  | Usage of this class compared to native php extensions such as IMAP   |
-*  | is slow and may be feature deficient. If available you are STRONGLY  |
-*  | recommended to use the php extensions.                               |
-*  +----------------------------------------------------------------------+
-*
-* POP3 Access Class
-*
-* For usage see the example script
-*/
+ *  | is slow and may be feature deficient. If available you are STRONGLY  |
+ *  | recommended to use the php extensions.                               |
+ *  +----------------------------------------------------------------------+
+ *
+ * POP3 Access Class
+ *
+ * For usage see the example script
+ */
 
-define('NET_POP3_STATE_DISCONNECTED',  1, true);
-define('NET_POP3_STATE_AUTHORISATION', 2, true);
-define('NET_POP3_STATE_TRANSACTION',   4, true);
+	define('NET_POP3_STATE_DISCONNECTED', 1);
+	define('NET_POP3_STATE_AUTHORISATION', 2);
+	define('NET_POP3_STATE_TRANSACTION', 4);
 
-class Net_POP3
-{
+	class Net_POP3
+	{
 
-    /**
-    * Some basic information about the mail drop
-    * garnered from the STAT command
-    *
-    * @var array
-    */
+		/**
+		 * Some basic information about the mail drop
+		 * garnered from the STAT command
+		 *
+		 * @var array
+		 */
     var $_maildrop;
 
     /**
