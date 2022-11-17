@@ -36,6 +36,7 @@ SetupWebPage::AddModule(
 		'body_parts_order' => 'text/html,text/plain', // Order in which to read the parts of the incoming emails
 		'pop3_auth_option' => 'USER',
 		'imap_options' => array('imap'),
+		'imap_open_options' => array(),
 		'maximum_email_size' => '10M', // Maximum allowed size for incoming emails
 		'big_files_dir' => '',
 		'exclude_attachment_types' => array('application/exe'), // Example: 'application/exe', 'application/x-winexe', 'application/msdos-windows'

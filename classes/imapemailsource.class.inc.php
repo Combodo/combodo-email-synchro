@@ -49,18 +49,19 @@ class IMAPEmailSource extends EmailSource
 		
 		if (!function_exists('imap_open')) throw new Exception('The imap_open function is missing. Did you forget to install the PHP module "IMAP" on the server?');
 
+		$aImapOpenOptions = MetaModel::GetModuleSetting('combodo-email-synchro', 'imap_open_options', []);
 		$sIMAPConnStr = "{{$sServer}:{$iPort}$sOptions}$sMailbox";
-			$this->rImapConn = imap_open($sIMAPConnStr, $sLogin, $sPwd );
-			if ($this->rImapConn === false)
+		$this->rImapConn = imap_open($sIMAPConnStr, $sLogin, $sPwd, 0, 0, $aImapOpenOptions );
+		if ($this->rImapConn === false)
+		{
+			if (class_exists('EventHealthIssue'))
 			{
-				if (class_exists('EventHealthIssue'))
-				{
-					EventHealthIssue::LogHealthIssue('combodo-email-synchro', "Cannot connect to IMAP server: '$sIMAPConnStr', with credentials: '$sLogin'/***");
-				}
-				$sMessage = "Cannot connect to IMAP server: '$sIMAPConnStr', with credentials: '$sLogin'/***'";
-				IssueLog::Error($sMessage.' '.var_export(imap_errors(), true));
-				throw new Exception($sMessage);
+				EventHealthIssue::LogHealthIssue('combodo-email-synchro', "Cannot connect to IMAP server: '$sIMAPConnStr', with credentials: '$sLogin'/***");
 			}
+			$sMessage = "Cannot connect to IMAP server: '$sIMAPConnStr', with credentials: '$sLogin'/***'";
+			IssueLog::Error($sMessage.' '.var_export(imap_errors(), true));
+			throw new Exception($sMessage);
+		}
 	}	
 
 	/**
