@@ -102,11 +102,29 @@ abstract class EmailSource
 	 */
 	abstract public function Disconnect();
 
+	/**
+	 * Workaround for some email servers (like gMail!) where the UID may change between two sessions, so let's use the MessageID
+	 * as a replacement for the UID !
+	 *
+	 * Note that it is possible to receive twice a message with the same MessageID, but since the content of the message
+	 * will be the same, it's a safe to process such messages only once...
+	 *
+	 * BEWARE: Make sure that you empty the mailbox before toggling this setting in the config file, since all the messages
+	 *    present in the mailbox at the time of the toggle will be considered as "new" and thus processed again.
+	 *
+	 * @return boolean
+	 * @uses `use_message_id_as_uid` config parameter
+	 */
+	public static function UseMessageIdAsUid()
+	{
+		return (bool)MetaModel::GetModuleSetting('combodo-email-synchro', 'use_message_id_as_uid', false);
+	}
+
 	public function GetLastErrorSubject()
 	{
 		return $this->sLastErrorSubject;
 	}
-	
+
 	public function GetLastErrorMessage()
 	{
 		return $this->sLastErrorMessage;
