@@ -90,7 +90,8 @@ class POP3EmailSource extends EmailSource
 	 */
 	public function DeleteMessage($index)
 	{
-		$ret = $this->oPop3->deleteMsg(1+$index);
+		$ret = $this->oPop3->deleteMsg(1 + $index);
+
 		return $ret;
 
 	}
@@ -98,27 +99,33 @@ class POP3EmailSource extends EmailSource
 	/**
 	 * Name of the eMail source
 	 */
-	 public function GetName()
-	 {
-	 	return $this->sLogin;
-	 }
+	public function GetName()
+	{
+		return $this->sLogin;
+	}
+
+	public function GetSourceId()
+	{
+		return $this->sServer.'/'.$this->sLogin;
+	}
 
 	/**
 	 * Get the list (with their IDs) of all the messages
+	 *
 	 * @return Array An array of hashes: 'msg_id' => index 'uild' => message identifier
 	 */
-	 public function GetListing()
-	 {
+	public function GetListing()
+	{
 		$ret = $this->oPop3->_cmdUidl();
-		if ($ret == null)
-		{
+		if ($ret == null) {
 			$ret = array();
 		}
+
 		return $ret;
-	 }
-	 
-	 public function Disconnect()
-	 {
-	 	$this->oPop3->disconnect();
+	}
+
+	public function Disconnect()
+	{
+		$this->oPop3->disconnect();
 	 }
 }

@@ -49,15 +49,18 @@ abstract class EmailSource
 
 	/**
 	 * Deletes the message of the given index [0..Count] from the mailbox
+	 *
 	 * @param $index integer The index between zero and count
 	 */
 	abstract public function DeleteMessage($index);
 
 	/**
 	 * Move the message of the given index [0..Count] from the mailbox to another folder
+	 *
 	 * @param $index integer The index between zero and count
 	 */
-	public function MoveMessage($index){
+	public function MoveMessage($index)
+	{
 		// Do nothing !
 		return false;
 	}
@@ -66,6 +69,18 @@ abstract class EmailSource
 	 * Name of the eMail source
 	 */
 	abstract public function GetName();
+
+	/**
+	 * This impl is bad, but it will lower the risk for children classes in extensions !
+	 *
+	 * @return string something to identify the source in a log
+	 *                this is useful as for example EmailBackgroundProcess is working on this class and not persisted mailboxes ({@link \MailInboxBase})
+	 * @since 3.6.1 N°5633 method creation
+	 */
+	public function GetSourceId()
+	{
+		return $this->token;
+	}
 
 	/**
 	 * Mailbox path of the eMail source

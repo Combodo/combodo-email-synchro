@@ -28,6 +28,7 @@
 class IMAPEmailSource extends EmailSource
 {
 	protected $rImapConn = null;
+	protected $sServer = '';
 	protected $sLogin = '';
 	protected $sMailbox = '';
 	protected	$sTargetFolder = '';
@@ -37,6 +38,7 @@ class IMAPEmailSource extends EmailSource
 		parent::__construct();
 		$this->sLastErrorSubject = '';
 		$this->sLastErrorMessage = '';
+		$this->sServer = $sServer;
 		$this->sLogin = $sLogin;
 		$this->sMailbox = $sMailbox;
 		$this->sTargetFolder = $sTargetFolder;
@@ -118,15 +120,22 @@ class IMAPEmailSource extends EmailSource
 			print_r(imap_errors());
 			throw new Exception("Error : Cannot move message to folder ".$this->sTargetFolder);
 		}
+
 		return $ret;
 	}
+
 	/**
 	 * Name of the eMail source
 	 */
-	 public function GetName()
-	 {
-	 	return $this->sLogin;
-	 }
+	public function GetName()
+	{
+		return $this->sLogin;
+	}
+
+	public function GetSourceId()
+	{
+		return $this->sServer.'/'.$this->sLogin;
+	}
 
 	/**
 	 * Mailbox path of the eMail source
