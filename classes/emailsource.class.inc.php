@@ -92,7 +92,8 @@ abstract class EmailSource
 
 	/**
 	 * Get the list (with their IDs) of all the messages
-	 * @return array An array of hashes: 'msg_id' => index 'uild' => message identifier
+	 *
+	 * @return array{msg_id: int, uidl: ?string} 'msg_id' => index, 'uidl' => message identifier (null if message cannot be decoded)
 	 */
 	abstract public function GetListing();
 

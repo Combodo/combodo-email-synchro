@@ -98,17 +98,11 @@ class TestEmailSource extends EmailSource
 		return $this->sName.' ('.$this->sSourceDir.')';
 	}
 
-	/**
-	 * Get the list (with their IDs) of all the messages
-	 *
-	 * @return Array An array of hashes: 'msg_id' => index 'uild' => message identifier
-	 */
 	public function GetListing()
 	{
 		$aListing = array();
-		foreach($this->aMessages as $index => $sName)
-		{
-			$aListing[] = array('msd_id' => $index, 'uidl' => basename($sName));
+		foreach ($this->aMessages as $index => $sName) {
+			$aListing[] = array('msg_id' => $index, 'uidl' => basename($sName));
 		}
 
 		return $aListing;

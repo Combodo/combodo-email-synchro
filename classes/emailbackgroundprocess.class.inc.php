@@ -190,34 +190,45 @@ class EmailBackgroundProcess implements iBackgroundProcess
 			$aSources = $oProcessor->ListEmailSources();
 			foreach($aSources as $oSource)
 			{
-				$iMsgCount = $oSource->GetMessagesCount();
-				$this->Trace("-----------------------------------------------------------------------------------------");			
-				$this->Trace("Processing Message Source: ".$oSource->GetName()." GetMessagesCount returned: $iMsgCount");			
+				$this->Trace("-----------------------------------------------------------------------------------------");
+				$this->Trace("Processing Message Source: ".$oSource->GetName());
+				try {
+					$iMsgCount = $oSource->GetMessagesCount();
+				}
+				catch (Exception $e) {
+					$this->LogProcessException($e, $oSource);
+					$oSource->Disconnect();
+					continue;
+				}
+				$this->Trace("GetMessagesCount returned: $iMsgCount");
 
-				if ($iMsgCount != 0)
-				{
-					$aMessages = $oSource->GetListing();
+				if ($iMsgCount != 0) {
+					try {
+						$aMessages = $oSource->GetListing();
+					}
+					catch (Exception $e) {
+						$this->LogProcessException($e, $oSource);
+						$oSource->Disconnect();
+						continue;
+					}
 					$iMsgCount = count($aMessages);
-					
+
 					// Get the corresponding EmailReplica object for each message
 					$aUIDLs = array();
-					for($iMessage = 0; $iMessage < $iMsgCount; $iMessage++)
-					{
-						if (self::IsMultiSourceMode())
-						{
-							$aUIDLs[] = $oSource->GetName().'_'.$aMessages[$iMessage]['uidl'];
-						}
-						else
-						{
-							$aUIDLs[] = $aMessages[$iMessage]['uidl'];
+					for ($iMessage = 0; $iMessage < $iMsgCount; $iMessage++) {
+						$sUIDL = $aMessages[$iMessage]['uidl'];
+						if (false === is_null($sUIDL)) {
+							if (self::IsMultiSourceMode()) {
+								$sUIDL = $oSource->GetName().'_'.$sUIDL;
+							}
+							$aUIDLs[] = $sUIDL;
 						}
 					}
-					$sOQL = 'SELECT EmailReplica WHERE uidl IN (' . implode(',', CMDBSource::Quote($aUIDLs)) . ') AND mailbox_path = ' . CMDBSource::Quote($oSource->GetMailbox());
+					$sOQL = 'SELECT EmailReplica WHERE uidl IN ('.implode(',', CMDBSource::Quote($aUIDLs)).') AND mailbox_path = '.CMDBSource::Quote($oSource->GetMailbox());
 					$this->Trace("Searching EmailReplicas: '$sOQL'");
 					$oReplicaSet = new DBObjectSet(DBObjectSearch::FromOQL($sOQL));
 					$aReplicas = array();
-					while($oReplica = $oReplicaSet->Fetch())
-					{
+					while ($oReplica = $oReplicaSet->Fetch()) {
 						$aReplicas[$oReplica->Get('uidl')] = $oReplica;
 					}				 
 					for ($iMessage = 0; $iMessage < $iMsgCount; $iMessage++)
@@ -234,17 +245,17 @@ class EmailBackgroundProcess implements iBackgroundProcess
 						try {
 							$this->InitMessageTrace($oSource, $iMessage);
 							$iTotalMessages++;
+							$sUIDL = $aMessages[$iMessage]['uidl'];
+							if (is_null($sUIDL)) {
+								continue; // invalid email, see \EmailSource::GetListing and N°5633
+							}
 							if (self::IsMultiSourceMode()) {
-								$sUIDL = $oSource->GetName().'_'.$aMessages[$iMessage]['uidl'];
-							} else
-							{
-								$sUIDL = $aMessages[$iMessage]['uidl'];
+								$sUIDL = $oSource->GetName().'_'.$sUIDL;
 							}
 
 							$oEmailReplica = array_key_exists($sUIDL, $aReplicas) ? $aReplicas[$sUIDL] : null;
 
-							if ($oEmailReplica == null)
-							{
+							if ($oEmailReplica == null) {
 								$this->Trace("\nDispatching new message: uidl=$sUIDL index=$iMessage");
 								// Create a replica to keep track that we've processed this email
 								$oEmailReplica = new EmailReplica();
@@ -253,33 +264,23 @@ class EmailBackgroundProcess implements iBackgroundProcess
 								$oEmailReplica->Set('message_id', $iMessage);
 								$oEmailReplica->Set('last_seen', date('Y-m-d H:i:s'));
 
-							}
-							else
-							{
-								if ($oEmailReplica->Get('status') == 'error')
-								{
+							} else {
+								if ($oEmailReplica->Get('status') == 'error') {
 									$this->Trace("\nSkipping old (already processed) message: uidl=$sUIDL index=$iMessage marked as 'error'");
 									$iTotalSkipped++;
 									continue;
-								}
-								elseif ($oEmailReplica->Get('status') == 'ignored')
-								{
+								} elseif ($oEmailReplica->Get('status') == 'ignored') {
 									$this->Trace("\nSkipping old (already processed) message: uidl=$sUIDL index=$iMessage marked as 'ignored'");
 									$iTotalSkipped++;
 									continue;
-								}
-								else
-								{
-									if ($oEmailReplica->Get('status') == 'undesired')
-									{
+								} else {
+									if ($oEmailReplica->Get('status') == 'undesired') {
 										$this->Trace("\nUndesired message: uidl=$sUIDL index=$iMessage");
 										$iDelay = MetaModel::GetModuleSetting('combodo-email-synchro', 'undesired-purge-delay', 7) * 86400;
-										if ($iDelay > 0)
-										{
+										if ($iDelay > 0) {
 											$sDate = $oEmailReplica->Get('message_date');
 											$oDate = DateTime::createFromFormat('Y-m-d H:i:s', $sDate);
-											if ($oDate !== false)
-											{
+											if ($oDate !== false) {
 												$iDate = $oDate->getTimestamp();
 												$iDelay -= time() - $iDate;
 											}
@@ -448,9 +449,10 @@ class EmailBackgroundProcess implements iBackgroundProcess
 						}
 						catch (Exception $e) {
 							if (!empty($oEmailReplica)) {
-								$this->Trace($e->getMessage());
 								$this->UpdateEmailReplica($oEmailReplica, $oProcessor);
 							}
+
+							$this->LogProcessException($e, $oSource);
 
 							return $e->getMessage();
 						}
@@ -497,7 +499,57 @@ class EmailBackgroundProcess implements iBackgroundProcess
 				break; // We'll do the rest later
 			}
 		}
+
 		return "Message(s) read: $iTotalMessages, message(s) skipped: $iTotalSkipped, message(s) processed: $iTotalProcessed, message(s) deleted: $iTotalDeleted, message(s) marked as error: $iTotalMarkedAsError, undesired message(s): $iTotalUndesired, message(s) moved: $iTotalMoved,";
+	}
+
+	/**
+	 * @param \Exception $e
+	 * @param \EmailSource $oSource
+	 *
+	 * @return void
+	 *
+	 * @since 3.6.1 N°5633 Method creation
+	 */
+	protected function LogProcessException($e, $oSource)
+	{
+		$sExceptionMessage = $e->getMessage();
+		$sSourceId = $oSource->GetSourceId();
+		$sSimpleErrorMessage = __CLASS__.': an exception occurred when reading content for mailbox';
+
+		// MailInboxStandard
+		$sMailboxId = $oSource->GetToken(); // see init in \MailInboxesEmailProcessor::ListEmailSources
+		/** @var \MailInboxStandard $oMailbox */
+		try {
+			$oMailbox = MetaModel::GetObject(MailInboxStandard::class, $sMailboxId, false);
+		}
+		catch (ArchivedObjectException $e) { // cannot group exceptions before PHP 7.1.0 (see https://www.php.net/manual/en/language.exceptions.php)
+			$oMailbox = null;
+		}
+		catch (CoreException $e) {
+			$oMailbox = null;
+		}
+		$sDetailedErrorMessage = $sSimpleErrorMessage;
+		if (is_null($oMailbox)) {
+			$sDetailedErrorMessage .= " `{$sSourceId}`: {$sExceptionMessage}";
+		} else {
+			$oMailbox->Trace($sSimpleErrorMessage);
+
+			try {
+				$sMailboxName = $oMailbox->GetName();
+			}
+			catch (CoreException $e) {
+				// shouldn't happen, but trying to be defensive !
+				$sMailboxName = 'N/A';
+			}
+			$sDetailedErrorMessage .= " `{$sMailboxName}::id=$sMailboxId`: {$sExceptionMessage}";
+		}
+
+		// BackgroundProcess
+		$this->Trace($sDetailedErrorMessage);
+
+		// LogAPI
+		IssueLog::Error($sDetailedErrorMessage, 'CLI'); // \LogChannels::CLI isn't available in iTop < 3.0.0
 	}
 
 	private function InitMessageTrace($oSource, $iMessage)

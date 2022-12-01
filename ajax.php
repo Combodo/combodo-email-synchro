@@ -76,7 +76,11 @@ function GetMailboxContent($oPage, $oInbox)
 			for($iMessage = 0; $iMessage < $iTotalMsgCount; $iMessage++)
 			{
 				// Assume that EmailBackgroundProcess::IsMultiSourceMode() is always set to true
-				$aUIDLs[] = $oSource->GetName().'_'.$aMessages[$iMessage]['uidl'];
+				$sMessageUidl = $aMessages[$iMessage]['uidl'];
+				if (is_null($sMessageUidl)) {
+					continue;
+				}
+				$aUIDLs[] = $oSource->GetName().'_'.$sMessageUidl;
 			}
 			$sOQL = 'SELECT EmailReplica WHERE uidl IN ('.implode(',', CMDBSource::Quote($aUIDLs)).') AND mailbox_path = ' . CMDBSource::Quote($oInbox->Get('mailbox'));
 			IssueLog::Info("Searching EmailReplica: $sOQL");
@@ -106,9 +110,11 @@ function GetMailboxContent($oPage, $oInbox)
 			);
 
 			$aData = array();
-			for($iMessage = $iStart; $iMessage < $iStart+$iMsgCount; $iMessage++)
-			{
+			for ($iMessage = $iStart; $iMessage < $iStart + $iMsgCount; $iMessage++) {
 				$oRawEmail = $oSource->GetMessage($iMessage);
+				if (is_null($oRawEmail)) {
+					continue;
+				}
 				$oEmail = $oRawEmail->Decode($oSource->GetPartsOrder());
 
 				// Assume that EmailBackgroundProcess::IsMultiSourceMode() is always set to true
@@ -117,27 +123,25 @@ function GetMailboxContent($oPage, $oInbox)
 				$sLink = '';
 				$sErrorMsg = '';
 				$sDetailsLink = '';
-				if (array_key_exists($sUIDLs, $aProcessed))
-				{
-				    switch ($aProcessed[$sUIDLs]['status'])
-                    {
-                        case 'ok':
-                        $sStatus = Dict::S('MailInbox:Status/Processed');
-                        break;
+				if (array_key_exists($sUIDLs, $aProcessed)) {
+					switch ($aProcessed[$sUIDLs]['status']) {
+						case 'ok':
+							$sStatus = Dict::S('MailInbox:Status/Processed');
+							break;
 
-                        case 'error':
-                        $sStatus = Dict::S('MailInbox:Status/Error');
-                        break;
+						case 'error':
+							$sStatus = Dict::S('MailInbox:Status/Error');
+							break;
 
-					    case 'undesired':
-						$sStatus = Dict::S('MailInbox:Status/Undesired');
-						break;
+						case 'undesired':
+							$sStatus = Dict::S('MailInbox:Status/Undesired');
+							break;
 
-					    case 'ignored':
-						$sStatus = Dict::S('MailInbox:Status/Ignored');
-						break;
+						case 'ignored':
+							$sStatus = Dict::S('MailInbox:Status/Ignored');
+							break;
 
-                    }
+					}
 					$sErrorMsg = $aProcessed[$sUIDLs]['error_message'];
 					if ($aProcessed[$sUIDLs]['ticket_id'] != '')
 					{

@@ -109,11 +109,6 @@ class POP3EmailSource extends EmailSource
 		return $this->sServer.'/'.$this->sLogin;
 	}
 
-	/**
-	 * Get the list (with their IDs) of all the messages
-	 *
-	 * @return Array An array of hashes: 'msg_id' => index 'uild' => message identifier
-	 */
 	public function GetListing()
 	{
 		$ret = $this->oPop3->_cmdUidl();

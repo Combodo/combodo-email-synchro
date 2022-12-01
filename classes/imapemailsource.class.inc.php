@@ -145,10 +145,6 @@ class IMAPEmailSource extends EmailSource
 		return $this->sMailbox;
 	}
 
-	/**
-	 * Get the list (with their IDs) of all the messages
-	 * @return Array An array of hashes: 'msg_id' => index 'uild' => message identifier
-	 */
 	 public function GetListing()
 	 {
 	 	$ret = null;
