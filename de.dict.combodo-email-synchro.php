@@ -32,8 +32,8 @@ Dict::Add('DE DE', 'German', 'Deutsch', array(
 
 	'MailInbox:MailboxContent' => 'Mailbox Inhalt',
 	'MailInbox:MailboxContent:ConfirmMessage' => 'Sind Sie sicher?',
-	'MailInbox:EmptyMailbox' => 'Die Mailbox ist leer',
-	'MailInbox:Z_DisplayedThereAre_X_Msg_Y_NewInTheMailbox' => '%1$d Mails angezeigt. Es sind %2$d EMail(s) in der Mailbox (%3$d neu).',
+	'MailInbox:EmptyMailbox' => 'No message to display~~',
+	'MailInbox:Z_DisplayedThereAre_X_Msg_Y_NewInTheMailbox' => '%1$d eMails displayed. There are %2$d email(s) in the mailbox (%3$d new, %4$d in error).~~',
 	'MailInbox:MaxAllowedPacketTooSmall' => 'Der MySQL-Parameter max_allowed_packet in "my.ini" ist zu klein: %1$s. Der empfohlene Wert ist mindestens: %2$s',
 	'MailInbox:Status' => 'Status',
 	'MailInbox:Subject' => 'Betreff',

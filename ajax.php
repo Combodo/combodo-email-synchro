@@ -69,7 +69,7 @@ function GetMailboxContent($oPage, $oInbox)
 			return;
 		}
 
-		$iMsgOkCount = 0;
+		$iTotalMsgOkCount = 0;
 		if ($iMsgCount > 0) {
 			// Get the corresponding EmailReplica object for each message
 			$aUIDLs = array();
@@ -82,10 +82,14 @@ function GetMailboxContent($oPage, $oInbox)
 				$aUIDLs[] = $oSource->GetName().'_'.$sMessageUidl;
 			}
 
-			$iMsgOkCount = count($aUIDLs);
+			/** @var int $iTotalMsgOkCount number of readable emails in total (whole mailbox content) */
+			$iTotalMsgOkCount = count($aUIDLs);
 		}
 
-		if ($iMsgOkCount > 0) {
+		/** @var int $iMsgOkCount number of readable emails between start and end index */
+		$iMsgOkCount = 0;
+		$iProcessedCount = 0;
+		if ($iTotalMsgOkCount > 0) {
 			$sOQL = 'SELECT EmailReplica WHERE uidl IN ('.implode(',', CMDBSource::Quote($aUIDLs)).') AND mailbox_path = '.CMDBSource::Quote($oInbox->Get('mailbox'));
 			IssueLog::Info("Searching EmailReplica: $sOQL");
 			$oReplicaSet = new DBObjectSet(DBObjectSearch::FromOQL($sOQL));
@@ -107,9 +111,9 @@ function GetMailboxContent($oPage, $oInbox)
 				'date'     => array('label' => Dict::S('MailInbox:Date'), 'description' => ''),
 				'from'     => array('label' => Dict::S('MailInbox:From'), 'description' => ''),
 				'subject'  => array('label' => Dict::S('MailInbox:Subject'), 'description' => ''),
-				'ticket'   => array('label' =>  Dict::S('MailInbox:RelatedTicket'), 'description' => ''),
-				'error'    => array('label' =>  Dict::S('MailInbox:ErrorMessage'), 'description' => ''),
-				'details'  => array('label' =>  Dict::S('MailInbox:MessageDetails'), 'description' => ''),
+				'ticket'   => array('label' => Dict::S('MailInbox:RelatedTicket'), 'description' => ''),
+				'error'    => array('label' => Dict::S('MailInbox:ErrorMessage'), 'description' => ''),
+				'details'  => array('label' => Dict::S('MailInbox:MessageDetails'), 'description' => ''),
 			);
 
 			$aData = array();
@@ -118,6 +122,7 @@ function GetMailboxContent($oPage, $oInbox)
 				if (is_null($oRawEmail)) {
 					continue;
 				}
+				$iMsgOkCount++;
 				$oEmail = $oRawEmail->Decode($oSource->GetPartsOrder());
 
 				// Assume that EmailBackgroundProcess::IsMultiSourceMode() is always set to true
@@ -165,7 +170,19 @@ function GetMailboxContent($oPage, $oInbox)
 					'details'  => $sDetailsLink,
 				);
 			}
-			$oPage->p(Dict::Format('MailInbox:Z_DisplayedThereAre_X_Msg_Y_NewInTheMailbox', $iMsgCount, $iTotalMsgCount, ($iTotalMsgCount - $iProcessedCount)));
+		}
+
+		if ($iTotalMsgCount > 0) {
+			// If we have messages in the mailbox, even if none can be read (meaning they can't be displayed), we are displaying the mailbox stats
+			// This will greatly help the user understanding what's going on !
+			$oPage->p(Dict::Format('MailInbox:Z_DisplayedThereAre_X_Msg_Y_NewInTheMailbox',
+				$iMsgOkCount,
+				$iTotalMsgCount,
+				($iTotalMsgCount - $iProcessedCount),
+				($iTotalMsgCount - $iTotalMsgOkCount))
+			);
+		}
+		if ($iMsgOkCount > 0) {
 			$oPage->table($aTableConfig, $aData);
 			$oPage->add('<div><img alt="" src="../images/tv-item-last.gif" style="vertical-align:bottom;margin-left:10px;"/>&nbsp;'.Dict::S('MailInbox:WithSelectedDo').'&nbsp;&nbsp<button class="mailbox_button ibo-button ibo-is-regular ibo-is-neutral" id="mailbox_reset_status">'.Dict::S('MailInbox:ResetStatus').'</button>&nbsp;&nbsp;<button class="mailbox_button ibo-button ibo-is-regular ibo-is-danger" id="mailbox_delete_messages">'.Dict::S('MailInbox:DeleteMessage').'</button>&nbsp;&nbsp;<button class="mailbox_button ibo-button ibo-is-regular ibo-is-neutral" id="mailbox_ignore_messages">'.Dict::S('MailInbox:IgnoreMessage').'</button></div>');
 		} else {

@@ -39,8 +39,8 @@ Dict::Add('ZH CN', 'Chinese', '简体中文', array(
 
 	'MailInbox:MailboxContent' => 'Mailbox Content~~',
 	'MailInbox:MailboxContent:ConfirmMessage' => 'Are you sure ?~~',
-	'MailInbox:EmptyMailbox' => 'The mailbox is empty~~',
-	'MailInbox:Z_DisplayedThereAre_X_Msg_Y_NewInTheMailbox' => '%1$d eMails displayed. There are %2$d email(s) in the mailbox (%3$d new).~~',
+	'MailInbox:EmptyMailbox' => 'No message to display~~',
+	'MailInbox:Z_DisplayedThereAre_X_Msg_Y_NewInTheMailbox' => '%1$d eMails displayed. There are %2$d email(s) in the mailbox (%3$d new, %4$d in error).~~',
 	'MailInbox:MaxAllowedPacketTooSmall' => 'MySQL parameter max_allowed_packet in "my.ini" is too small: %1$s. The recommended value is at least: %2$s~~',
 	'MailInbox:Status' => 'Status~~',
 	'MailInbox:Subject' => 'Subject~~',
