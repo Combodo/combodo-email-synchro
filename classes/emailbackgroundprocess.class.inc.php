@@ -180,16 +180,15 @@ class EmailBackgroundProcess implements iBackgroundProcess
 		$iTotalProcessed = 0;
 		$iTotalMarkedAsError = 0;
 		$iTotalSkipped = 0;
-        $iTotalDeleted = 0;
+		$iTotalDeleted = 0;
 		$iTotalMoved = 0;
-        $iTotalUndesired = 0;
-		foreach(self::$aEmailProcessors as $sProcessorClass)
-		{
+		$iTotalUndesired = 0;
+		$iTotalUnreadable = 0; // cannot be read by the mail library, see N°5633
+		foreach (self::$aEmailProcessors as $sProcessorClass) {
 			/** @var \EmailProcessor $oProcessor */
 			$oProcessor = new $sProcessorClass();
 			$aSources = $oProcessor->ListEmailSources();
-			foreach($aSources as $oSource)
-			{
+			foreach ($aSources as $oSource) {
 				$this->Trace("-----------------------------------------------------------------------------------------");
 				$this->Trace("Processing Message Source: ".$oSource->GetName());
 				try {
@@ -252,6 +251,7 @@ class EmailBackgroundProcess implements iBackgroundProcess
 							$iTotalMessages++;
 							$sUIDL = $aMessages[$iMessage]['uidl'];
 							if (is_null($sUIDL)) {
+								$iTotalUnreadable++;
 								continue; // invalid email, see \EmailSource::GetListing and N°5633
 							}
 							if (self::IsMultiSourceMode()) {
@@ -489,7 +489,7 @@ class EmailBackgroundProcess implements iBackgroundProcess
 			}
 		}
 
-		return "Message(s) read: $iTotalMessages, message(s) skipped: $iTotalSkipped, message(s) processed: $iTotalProcessed, message(s) deleted: $iTotalDeleted, message(s) marked as error: $iTotalMarkedAsError, undesired message(s): $iTotalUndesired, message(s) moved: $iTotalMoved,";
+		return "Message(s) read: $iTotalMessages, message(s) skipped: $iTotalSkipped, message(s) processed: $iTotalProcessed, message(s) deleted: $iTotalDeleted, message(s) marked as error: $iTotalMarkedAsError, undesired message(s): $iTotalUndesired, message(s) moved: $iTotalMoved, unereable: $iTotalUnreadable";
 	}
 
 	/**
