@@ -202,6 +202,7 @@ class EmailBackgroundProcess implements iBackgroundProcess
 				}
 				$this->Trace("GetMessagesCount returned: $iMsgCount");
 
+				$iMsgOkCount = 0;
 				if ($iMsgCount != 0) {
 					try {
 						$aMessages = $oSource->GetListing();
@@ -224,15 +225,19 @@ class EmailBackgroundProcess implements iBackgroundProcess
 							$aUIDLs[] = $sUIDL;
 						}
 					}
+
+					$iMsgOkCount = count($aUIDLs);
+				}
+
+				if ($iMsgOkCount > 0) {
 					$sOQL = 'SELECT EmailReplica WHERE uidl IN ('.implode(',', CMDBSource::Quote($aUIDLs)).') AND mailbox_path = '.CMDBSource::Quote($oSource->GetMailbox());
 					$this->Trace("Searching EmailReplicas: '$sOQL'");
 					$oReplicaSet = new DBObjectSet(DBObjectSearch::FromOQL($sOQL));
 					$aReplicas = array();
 					while ($oReplica = $oReplicaSet->Fetch()) {
 						$aReplicas[$oReplica->Get('uidl')] = $oReplica;
-					}				 
-					for ($iMessage = 0; $iMessage < $iMsgCount; $iMessage++)
-					{
+					}
+					for ($iMessage = 0; $iMessage < $iMsgCount; $iMessage++) {
 						// N°3218 initialize a new CMDBChange for each message
 						// we cannot use \CMDBObject::SetCurrentChange($oChange) as this would force to persist our change for each message
 						// even if no CMDBChangeOp is created during the message processing !
@@ -285,8 +290,7 @@ class EmailBackgroundProcess implements iBackgroundProcess
 												$iDelay -= time() - $iDate;
 											}
 										}
-										if ($iDelay <= 0)
-										{
+										if ($iDelay <= 0) {
 											$iDelay = MetaModel::GetModuleSetting('combodo-email-synchro', 'undesired-purge-delay', 7);
 											$this->Trace("\nDeleting undesired message (AND replica) due to purge delay threshold ({$iDelay}): uidl=$sUIDL index=$iMessage");
 											$iTotalDeleted++;
@@ -296,9 +300,7 @@ class EmailBackgroundProcess implements iBackgroundProcess
 										}
 										$iTotalSkipped++;
 										continue;
-									}
-									else
-									{
+									} else {
 										$this->Trace("\nDispatching old (already read) message: uidl=$sUIDL index=$iMessage");
 									}
 								}
@@ -306,8 +308,7 @@ class EmailBackgroundProcess implements iBackgroundProcess
 
 							$iActionCode = $oProcessor->DispatchMessage($oSource, $iMessage, $sUIDL, $oEmailReplica);
 
-							switch ($iActionCode)
-							{
+							switch ($iActionCode) {
 								case EmailProcessor::MARK_MESSAGE_AS_ERROR:
 									$iTotalMarkedAsError++;
 									$this->Trace("Marking the message (and replica): uidl=$sUIDL index=$iMessage as in error.");
@@ -323,25 +324,20 @@ class EmailBackgroundProcess implements iBackgroundProcess
 
 								case EmailProcessor::PROCESS_MESSAGE:
 									$iTotalProcessed++;
-									if ($oEmailReplica->IsNew())
-									{
+									if ($oEmailReplica->IsNew()) {
 										$this->Trace("Processing new message: $sUIDL");
-									}
-									else
-									{
+									} else {
 										$this->Trace("Processing old (already read) message: $sUIDL");
 									}
 
 
 									$oRawEmail = $oSource->GetMessage($iMessage);
-									if ((self::$iMaxEmailSize > 0) && ($oRawEmail->GetSize() > self::$iMaxEmailSize))
-									{
+									if ((self::$iMaxEmailSize > 0) && ($oRawEmail->GetSize() > self::$iMaxEmailSize)) {
 										$aErrors = array();
 										$iNextActionCode = $oProcessor->OnDecodeError($oSource, $sUIDL, null, $oRawEmail, $aErrors);
 										$sMessage = implode("\n", $aErrors);
 										$this->Trace($sMessage);
-										switch ($iNextActionCode)
-										{
+										switch ($iNextActionCode) {
 											case EmailProcessor::MARK_MESSAGE_AS_ERROR:
 												$iTotalMarkedAsError++;
 												$this->Trace("Email too big, marking the message (and replica): uidl=$sUIDL index=$iMessage as in error.");
@@ -355,18 +351,14 @@ class EmailBackgroundProcess implements iBackgroundProcess
 												$oSource->DeleteMessage($iMessage);
 												break;
 										}
-									}
-									else
-									{
+									} else {
 										$oEmail = $oRawEmail->Decode($oSource->GetPartsOrder());
-										if (!$oEmail->IsValid())
-										{
+										if (!$oEmail->IsValid()) {
 											$aErrors = array();
 											$iNextActionCode = $oProcessor->OnDecodeError($oSource, $sUIDL, $oEmail, $oRawEmail, $aErrors);
 											$sMessage = implode("\n", $aErrors);
 											$this->Trace($sMessage);
-											switch ($iNextActionCode)
-											{
+											switch ($iNextActionCode) {
 												case EmailProcessor::MARK_MESSAGE_AS_ERROR:
 													$iTotalMarkedAsError++;
 													$this->Trace("Failed to decode the message, marking the message (and replica): uidl=$sUIDL index=$iMessage as in error.");
@@ -380,15 +372,12 @@ class EmailBackgroundProcess implements iBackgroundProcess
 													$oSource->DeleteMessage($iMessage);
 													break;
 											}
-										}
-										else
-										{
+										} else {
 											$aErrors = array();
 											$iNextActionCode = $oProcessor->ProcessMessage($oSource, $iMessage, $oEmail, $oEmailReplica, $aErrors);
 											$sMessage = implode("\n", $aErrors);
 											$this->Trace($sMessage);
-											switch ($iNextActionCode)
-											{
+											switch ($iNextActionCode) {
 												case EmailProcessor::MARK_MESSAGE_AS_ERROR:
 													$iTotalMarkedAsError++;
 													$this->Trace("Marking the message (and replica): uidl=$sUIDL index=$iMessage as in error.");
@@ -472,7 +461,7 @@ class EmailBackgroundProcess implements iBackgroundProcess
 								$aIDs[] = $oUsedReplica->GetKey();
 							}
 						}
-						
+
 						// Cleanup the unused replicas based on the pattern of their UIDL, unfortunately this is not possible in NON multi-source mode
 						$iRetentionPeriod = MetaModel::GetModuleSetting('combodo-email-synchro', 'retention_period', '1');
 						$sOQL = "SELECT EmailReplica WHERE uidl LIKE " . CMDBSource::Quote($oSource->GetName() . '_%') .
