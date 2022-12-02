@@ -179,8 +179,9 @@ function GetMailboxContent($oPage, $oInbox)
 				$iMsgOkCount,
 				$iTotalMsgCount,
 				($iTotalMsgCount - $iProcessedCount),
-				($iTotalMsgCount - $iTotalMsgOkCount))
-			);
+				($iTotalMsgCount - $iTotalMsgOkCount),
+				$iProcessedCount
+			));
 		}
 		if ($iMsgOkCount > 0) {
 			$oPage->table($aTableConfig, $aData);
