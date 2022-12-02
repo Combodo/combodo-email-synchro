@@ -70,7 +70,7 @@ function GetMailboxContent($oPage, $oInbox)
 		}
 
 		$iTotalMsgOkCount = 0;
-		if ($iMsgCount > 0) {
+		if ($iTotalMsgCount > 0) {
 			// Get the corresponding EmailReplica object for each message
 			$aUIDLs = array();
 			for ($iMessage = 0; $iMessage < $iTotalMsgCount; $iMessage++) {
