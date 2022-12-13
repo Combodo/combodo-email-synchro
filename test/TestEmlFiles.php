@@ -36,10 +36,6 @@ class TestEmlFiles extends ItopTestCase
 
 		$sSubject = $oEmail->GetSubject();
 		$this->assertNotEmpty($sSubject);
-		//
-		if (str_replace(APPROOT . 'env-production/combodo-email-synchro/test/emailsSample/','',$sFileName) == "multi_lines_header_parsing.eml"){
-			$this->assertEquals( 'Re: autonet backup: nanobeam-ma15-sec-kunde.mgmt (1047) [Space.NET R-201909190397]',$sSubject);
-		}
 
 		$aSender = $oEmail->GetSender();
 		$this->assertValidEmailCollection($aSender, 'Sender is valid');
@@ -71,7 +67,6 @@ class TestEmlFiles extends ItopTestCase
 			$this->assertArrayHasKey('mimeType', $aAttachment);
 			$this->assertArrayHasKey('content', $aAttachment);
 		}
-
 	}
 
 	private function assertEmptyCollection($aEmails, $message = '')
@@ -129,12 +124,37 @@ class TestEmlFiles extends ItopTestCase
 			$sTestName = basename($sFile);
 
 			$aReturn[$sTestName] = array(
-				'sFile' => $sFile,
-				'sComment' => isset($aMetaData[$sTestName]['sComment']) ? $aMetaData[$sTestName]['sComment'] : '',
+				'sFile'      => $sFile,
+				'sComment'   => isset($aMetaData[$sTestName]['sComment']) ? $aMetaData[$sTestName]['sComment'] : '',
 				'bToIsEmpty' => isset($aMetaData[$sTestName]['bToIsEmpty']) ? $aMetaData[$sTestName]['bToIsEmpty'] : false,
 			);
 		}
 
 		return $aReturn;
+	}
+
+	/**
+	 * @dataProvider MultilineLongSubjectsProvider
+	 */
+	public function testMultilineLongSubjects($sEmailFilename, $sSubjectExpectedValue): void
+	{
+		$sEmlFilePath = APPROOT.'env-production/combodo-email-synchro/test/emailsSample/'.$sEmailFilename;
+		$this->assertFileExists($sEmlFilePath, 'EML file is not existing');
+
+		$oEmail = RawEmailMessage::FromFile($sEmlFilePath);
+		$sSubjectActualValue = $oEmail->GetSubject();
+		$this->assertSame($sSubjectExpectedValue, $sSubjectActualValue, "File `{$sEmailFilename}` : decoded subject has a wrong value");
+	}
+
+	public function MultilineLongSubjectsProvider(): array
+	{
+		return [
+			['multi_lines_header_parsing.eml', 'Re: autonet backup: nanobeam-ma15-sec-kunde.mgmt (1047) [Space.NET R-201909190397]'],
+			['email_133_kb4170_multiple_lines_encoded_data.eml', 'FW: ⚠ This is a test with an emoji in the subject and a long subject message which will cause multi line subjects and encoding'],
+			['email_065.eml', 'Re: iTop - Enhancement request - Classes et héritage'],
+			['email_077.eml', 'Vente Flash Otto Office ! Spécial High-Tech, attention stocks limités !'],
+			['email_107.eml', 'Fwd: Suite entretien téléphonique de ce jour'],
+			['test gmail.eml', 'Test de mail envoyé avec Gmail et contenant un très très long sujet avec d\'aillleurs aussi des caractères accentués histoire de voir ce qui se passe dans ce cas là. Je sais c\'est un peu exagéré, enfin à peine...'],
+		];
 	}
 }
