@@ -172,6 +172,21 @@ class RawEmailMessage
 	 */
 	public function GetAttachments(&$aAttachments = null, $aPart = null, &$index = 1)
 	{
+		// This Regex complies with RFC 2045 regarding the Grammar of Content Type Headers Filenames:
+		// 	(1) Allow all chars for the filename, if the filename is quoted with double quotes
+		//	(2) Allow all chars for the filename, if the filename is quoted with single quotes
+		//	(3) If the filename is not quoted, allow only ASCII chars and exclude the following
+		//			chars from the set, referenced as "tspecials" in the RFC:
+		//					<ALL-CTL-CHARS-INCL-DEL>
+		//					<CHAR-SPACE>
+		//					()<>@,;:\"/[]?=
+		// 			To keep the regex as simple as possible, the _allowed_ chars are whitelisted
+		//			with their corresponding hexval.
+		$sFileNameRegex = <<<REGEX
+(("([^"]+)")|('([^']+)')|([\x21\x23-\x27\x2A\x2B\x2D\x2E\x30-\x39\x41-\x5A\x5E-\x7E]+))
+REGEX
+;
+		
 		static $iAttachmentCount = 0;
 		if ($aAttachments === null)
 		{
@@ -188,16 +203,9 @@ class RawEmailMessage
 			{
 				$sFileName = '';
 				$sContentDisposition = $this->GetHeader('content-disposition', $aPart['headers']);
-				if (($sContentDisposition != '') && (preg_match('/filename="([^"]+)"/', $sContentDisposition, $aMatches)))
+				if (($sContentDisposition != '') && (preg_match('/filename='.$sFileNameRegex.'/', $sContentDisposition, $aMatches)))
 				{
-					$sFileName = $aMatches[1];
-				}
-				else
-				{
-					if (($sContentDisposition != '') && (preg_match('/filename=([^"]+)/', $sContentDisposition, $aMatches))) // same but without quotes
-					{
-						$sFileName = $aMatches[1];
-					}
+					$sFileName = end($aMatches);
 				}
 
 				$bInline = true;
@@ -223,10 +231,13 @@ class RawEmailMessage
 				{
 					$sType = $aMatches[1];
 				}
-				if (empty($sFileName) && preg_match('/name="([^"]+)"/', $sContentType, $aMatches))
+				if (empty($sFileName) && preg_match('/name='.$sFileNameRegex.'/', $sContentType, $aMatches))
 				{
-					$sFileName = $aMatches[1];
+					$sFileName = end($aMatches);
 				}
+
+				$sFileName = trim($sFileName, '"\'');
+
 				if (empty($sFileName))
 				{
 					// generate a name based on the type of the file...
