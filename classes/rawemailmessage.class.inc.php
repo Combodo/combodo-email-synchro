@@ -236,8 +236,6 @@ REGEX
 					$sFileName = end($aMatches);
 				}
 
-				$sFileName = trim($sFileName, '"\'');
-
 				if (empty($sFileName))
 				{
 					// generate a name based on the type of the file...
