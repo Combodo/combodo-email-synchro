@@ -180,7 +180,7 @@ class RawEmailMessage
 		//					<ALL-CTL-CHARS-INCL-DEL>
 		//					<CHAR-SPACE>
 		//					()<>@,;:\"/[]?=
-		// 			To keep the regex as simple as possible, the _allowed_ chars are whitelisted
+		// 			To keep the regex as simple as possible, the _allowed_ chars are listed
 		//			with their corresponding hexval.
 		$sFileNameRegex = <<<REGEX
 (("([^"]+)")|('([^']+)')|([\x21\x23-\x27\x2A\x2B\x2D\x2E\x30-\x39\x41-\x5A\x5E-\x7E]+))
