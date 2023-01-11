@@ -67,6 +67,23 @@ class RawEmailMessage
 	protected $iNextId;
 
 	/**
+	 * @var string This Regex complies with RFC 2045 regarding the Grammar of 
+	 * Content Type Headers Filenames:
+	 * 	(1) Allow all chars for the filename, if the filename is quoted with double quotes
+	 * 	(2) Allow all chars for the filename, if the filename is quoted with single quotes
+	 * 	(3) If the filename is not quoted, allow only ASCII chars and exclude the following
+	 * 			chars from the set, referenced as "tspecials" in the RFC:
+	 * 					<ALL-CTL-CHARS-INCL-DEL>
+	 * 					<CHAR-SPACE>
+	 * 					()<>@,;:\"/[]?=
+	 * 			To keep the regex as simple as possible, the _allowed_ chars are listed
+	 * 			with their corresponding hexval.
+	 */
+	public static $sFileNameRegex = <<<REGEX
+(("([^"]+)")|('([^']+)')|([\x21\x23-\x27\x2A\x2B\x2D\x2E\x30-\x39\x41-\x5A\x5E-\x7E]+))
+REGEX;
+
+	/**
 	 * Construct a new message from the full text version of it (equivalent to the content of a .eml file)
 	 *
 	 * @param string $sRawContent The full text version of the message (headers + empty line + body)
@@ -172,21 +189,6 @@ class RawEmailMessage
 	 */
 	public function GetAttachments(&$aAttachments = null, $aPart = null, &$index = 1)
 	{
-		// This Regex complies with RFC 2045 regarding the Grammar of Content Type Headers Filenames:
-		// 	(1) Allow all chars for the filename, if the filename is quoted with double quotes
-		//	(2) Allow all chars for the filename, if the filename is quoted with single quotes
-		//	(3) If the filename is not quoted, allow only ASCII chars and exclude the following
-		//			chars from the set, referenced as "tspecials" in the RFC:
-		//					<ALL-CTL-CHARS-INCL-DEL>
-		//					<CHAR-SPACE>
-		//					()<>@,;:\"/[]?=
-		// 			To keep the regex as simple as possible, the _allowed_ chars are listed
-		//			with their corresponding hexval.
-		$sFileNameRegex = <<<REGEX
-(("([^"]+)")|('([^']+)')|([\x21\x23-\x27\x2A\x2B\x2D\x2E\x30-\x39\x41-\x5A\x5E-\x7E]+))
-REGEX
-;
-		
 		static $iAttachmentCount = 0;
 		if ($aAttachments === null)
 		{
@@ -203,7 +205,7 @@ REGEX
 			{
 				$sFileName = '';
 				$sContentDisposition = $this->GetHeader('content-disposition', $aPart['headers']);
-				if (($sContentDisposition != '') && (preg_match('/filename='.$sFileNameRegex.'/', $sContentDisposition, $aMatches)))
+				if (($sContentDisposition != '') && (preg_match('/filename='.self::$sFileNameRegex.'/', $sContentDisposition, $aMatches)))
 				{
 					$sFileName = end($aMatches);
 				}
@@ -213,7 +215,6 @@ REGEX
 				{
 					$bInline = false;
 				}
-
 
 				$sType = '';
 				$sContentId = $this->GetHeader('content-id', $aPart['headers']);
@@ -231,7 +232,7 @@ REGEX
 				{
 					$sType = $aMatches[1];
 				}
-				if (empty($sFileName) && preg_match('/name='.$sFileNameRegex.'/', $sContentType, $aMatches))
+				if (empty($sFileName) && preg_match('/name='.self::$sFileNameRegex.'/', $sContentType, $aMatches))
 				{
 					$sFileName = end($aMatches);
 				}
