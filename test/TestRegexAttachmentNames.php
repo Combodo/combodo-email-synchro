@@ -34,13 +34,10 @@ class TestRegexAttachmentNames extends ItopTestCase
 	{
 		$aMatches = array();
 		$sNormalizedAttachmentName = null;
-		if (preg_match(RawEmailMessage::$sFileNameRegex, $sInput, $aMatches))
-		{
+		if (preg_match(RawEmailMessage::FILENAME_REGEX, $sInput, $aMatches)) {
 			$sNormalizedAttachmentName = end($aMatches);
 			$this->assertEquals($sExpectedAttachmentName, $sNormalizedAttachmentName, "Attachmentname for '".bin2hex($sInput)."' doesn't match. Got'".bin2hex($sNormalizedAttachmentName)."', expected '$sExpectedAttachmentName'.");
-		}
-		else
-		{
+		} else {
 			$this->AssertNull($sNormalizedAttachmentName);
 		}
 	}
@@ -53,7 +50,7 @@ class TestRegexAttachmentNames extends ItopTestCase
 				"!#$%&'*+-.0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ^_`abcdefghijklmnopqrstuvwxyz{|}~",
 			],
 			// Something is odd here: x2C (comma) is not in the list of allowed
-			// chars in RawEmailMessage::$sFileNameRegex, but nevertheless is
+			// chars in {@see RawEmailMessage::FILENAME_REGEX}, but nevertheless is
 			// not filtered by the Regex, resulting in this test case is failing. 
 			// I have no clue, as to why this is happening.
 			'All not allowed Chars (from the ASCII Table)' => [ 
