@@ -201,7 +201,7 @@ REGEX;
 
 		if ($aPart['type'] == 'simple') {
 			if ($this->IsAttachment($aPart['headers'])) {
-				$sFileName           = '';
+				$sFileName = '';
 				$sContentDisposition = $this->GetHeader('content-disposition', $aPart['headers']);
 				if ($sContentDisposition != '') {
 					$sFileName = static::GetAttachmentFilename($sContentDisposition);
@@ -212,7 +212,7 @@ REGEX;
 					$bInline = false;
 				}
 
-				$sType      = '';
+				$sType = '';
 				$sContentId = $this->GetHeader('content-id', $aPart['headers']);
 				if (($sContentId != '') && (preg_match('/^<(.+)>$/', $sContentId, $aMatches))) {
 					$sContentId = $aMatches[1];
