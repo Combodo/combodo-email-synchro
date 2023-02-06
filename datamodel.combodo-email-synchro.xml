@@ -894,9 +894,9 @@ JS
 	 * @param string $sText
 	 */</comment>
           <static>false</static>
-          <access>protected</access>
+          <access>public</access>
           <type>Overload-DBObject</type>
-          <code>	protected function Trace($sText)
+          <code>	public function Trace($sText)
 	{
 		MailInboxesEmailProcessor::Trace($sText);
 	}</code>

@@ -3,6 +3,7 @@
 #
 log
 test
+tests
 utils
 readme.txt
 decoding-test.php

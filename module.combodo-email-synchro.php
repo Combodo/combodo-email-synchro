@@ -2,7 +2,7 @@
 
 SetupWebPage::AddModule(
 	__FILE__, // Path to the current file, all other file names are relative to the directory containing this file
-	'combodo-email-synchro/3.6.1-dev',
+	'combodo-email-synchro/3.7.0',
 	array(
 		// Identification
 		'label'        => 'Tickets synchronization via e-mail',
@@ -36,6 +36,7 @@ SetupWebPage::AddModule(
 		'body_parts_order' => 'text/html,text/plain', // Order in which to read the parts of the incoming emails
 		'pop3_auth_option' => 'USER',
 		'imap_options' => array('imap'),
+		'imap_open_options' => array(),
 		'maximum_email_size' => '10M', // Maximum allowed size for incoming emails
 		'big_files_dir' => '',
 		'exclude_attachment_types' => array('application/exe'), // Example: 'application/exe', 'application/x-winexe', 'application/msdos-windows'

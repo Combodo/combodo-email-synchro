@@ -28,6 +28,7 @@
 class IMAPEmailSource extends EmailSource
 {
 	protected $rImapConn = null;
+	protected $sServer = '';
 	protected $sLogin = '';
 	protected $sMailbox = '';
 	protected	$sTargetFolder = '';
@@ -37,6 +38,7 @@ class IMAPEmailSource extends EmailSource
 		parent::__construct();
 		$this->sLastErrorSubject = '';
 		$this->sLastErrorMessage = '';
+		$this->sServer = $sServer;
 		$this->sLogin = $sLogin;
 		$this->sMailbox = $sMailbox;
 		$this->sTargetFolder = $sTargetFolder;
@@ -49,18 +51,19 @@ class IMAPEmailSource extends EmailSource
 		
 		if (!function_exists('imap_open')) throw new Exception('The imap_open function is missing. Did you forget to install the PHP module "IMAP" on the server?');
 
+		$aImapOpenOptions = MetaModel::GetModuleSetting('combodo-email-synchro', 'imap_open_options', []);
 		$sIMAPConnStr = "{{$sServer}:{$iPort}$sOptions}$sMailbox";
-			$this->rImapConn = imap_open($sIMAPConnStr, $sLogin, $sPwd );
-			if ($this->rImapConn === false)
+		$this->rImapConn = imap_open($sIMAPConnStr, $sLogin, $sPwd, 0, 0, $aImapOpenOptions );
+		if ($this->rImapConn === false)
+		{
+			if (class_exists('EventHealthIssue'))
 			{
-				if (class_exists('EventHealthIssue'))
-				{
-					EventHealthIssue::LogHealthIssue('combodo-email-synchro', "Cannot connect to IMAP server: '$sIMAPConnStr', with credentials: '$sLogin'/***");
-				}
-				$sMessage = "Cannot connect to IMAP server: '$sIMAPConnStr', with credentials: '$sLogin'/***'";
-				IssueLog::Error($sMessage.' '.var_export(imap_errors(), true));
-				throw new Exception($sMessage);
+				EventHealthIssue::LogHealthIssue('combodo-email-synchro', "Cannot connect to IMAP server: '$sIMAPConnStr', with credentials: '$sLogin'/***");
 			}
+			$sMessage = "Cannot connect to IMAP server: '$sIMAPConnStr', with credentials: '$sLogin'/***'";
+			IssueLog::Error($sMessage.' '.var_export(imap_errors(), true));
+			throw new Exception($sMessage);
+		}
 	}	
 
 	/**
@@ -87,7 +90,7 @@ class IMAPEmailSource extends EmailSource
 		$aOverviews = imap_fetch_overview($this->rImapConn, 1+$index);
 		$oOverview = array_pop($aOverviews);
 
-		$bUseMessageId = (bool) MetaModel::GetModuleSetting('combodo-email-synchro', 'use_message_id_as_uid', false);
+		$bUseMessageId = static::UseMessageIdAsUid();
 		if ($bUseMessageId)
 		{
 			$oOverview->uid = $oOverview->message_id;
@@ -117,15 +120,22 @@ class IMAPEmailSource extends EmailSource
 			print_r(imap_errors());
 			throw new Exception("Error : Cannot move message to folder ".$this->sTargetFolder);
 		}
+
 		return $ret;
 	}
+
 	/**
 	 * Name of the eMail source
 	 */
-	 public function GetName()
-	 {
-	 	return $this->sLogin;
-	 }
+	public function GetName()
+	{
+		return $this->sLogin;
+	}
+
+	public function GetSourceId()
+	{
+		return $this->sServer.'/'.$this->sLogin;
+	}
 
 	/**
 	 * Mailbox path of the eMail source
@@ -135,41 +145,26 @@ class IMAPEmailSource extends EmailSource
 		return $this->sMailbox;
 	}
 
-	/**
-	 * Get the list (with their IDs) of all the messages
-	 * @return Array An array of hashes: 'msg_id' => index 'uild' => message identifier
-	 */
 	 public function GetListing()
 	 {
-	 	$ret = null;
-	 	
-	 	$oInfo = imap_check($this->rImapConn);
-        if (($oInfo !== false) && ($oInfo->Nmsgs > 0))
-		{
-        	$sRange = "1:".$oInfo->Nmsgs;
-		// Workaround for some email servers (like gMail!) where the UID may change between two sessions, so let's use the
-		// MessageID as a replacement for the UID.
-		// Note that it is possible to receive two times a message with the same MessageID, but since the content of the message
-		// will be the same, it's safe to process such messages only once...
-		// BEWARE: Make sure that you empty the mailbox before toggling this setting in the config file, since all the messages
-		// present in the mailbox at the time of the toggle will be considered as "new" and thus processed again.
-        	$bUseMessageId = (bool)MetaModel::GetModuleSetting('combodo-email-synchro', 'use_message_id_as_uid', false);
+		 $ret = null;
 
-        	$ret = array();
-			$aResponse = imap_fetch_overview($this->rImapConn,$sRange);
-			
-			foreach ($aResponse as $aMessage)
-			{
-				if ($bUseMessageId)
-				{
-					$ret[] = array('msg_id' => $aMessage->msgno, 'uidl' => $aMessage->message_id);
-				}
-				else
-				{
-					$ret[] = array('msg_id' => $aMessage->msgno, 'uidl' => $aMessage->uid);
-				}
-			}
-        }
+		 $oInfo = imap_check($this->rImapConn);
+		 if (($oInfo !== false) && ($oInfo->Nmsgs > 0)) {
+			 $sRange = "1:".$oInfo->Nmsgs;
+			 $bUseMessageId = static::UseMessageIdAsUid();
+
+			 $ret = array();
+			 $aResponse = imap_fetch_overview($this->rImapConn, $sRange);
+
+			 foreach ($aResponse as $aMessage) {
+				 if ($bUseMessageId) {
+					 $ret[] = array('msg_id' => $aMessage->msgno, 'uidl' => $aMessage->message_id);
+				 } else {
+					 $ret[] = array('msg_id' => $aMessage->msgno, 'uidl' => $aMessage->uid);
+				 }
+			 }
+		 }
         
 		return $ret;
 	 }

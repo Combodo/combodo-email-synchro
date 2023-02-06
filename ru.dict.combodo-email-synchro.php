@@ -26,8 +26,8 @@ Dict::Add('RU RU', 'Russian', 'Русский', array(
 
 	'MailInbox:MailboxContent' => 'Содержимое ящика',
 	'MailInbox:MailboxContent:ConfirmMessage' => 'Are you sure ?~~',
-	'MailInbox:EmptyMailbox' => 'Ящик пуст',
-	'MailInbox:Z_DisplayedThereAre_X_Msg_Y_NewInTheMailbox' => '%1$d сообщений показано. Всего %2$d сообщений в ящике (%3$d новых).',
+	'MailInbox:EmptyMailbox' => 'No message to display~~',
+	'MailInbox:Z_DisplayedThereAre_X_Msg_Y_NewInTheMailbox' => '%1$d eMails displayed. There are %2$d email(s) in the mailbox : %3$d new (including %4$d unreadable), %5$d processed.~~',
 	'MailInbox:MaxAllowedPacketTooSmall' => 'MySQL parameter max_allowed_packet in "my.ini" is too small: %1$s. The recommended value is at least: %2$s~~',
 	'MailInbox:Status' => 'Статус',
 	'MailInbox:Subject' => 'Тема',

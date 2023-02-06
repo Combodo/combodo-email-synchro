@@ -57,51 +57,72 @@ function GetMailboxContent($oPage, $oInbox)
 		}
 		catch(Exception $e)
 		{
-			IssueLog::Error('Failed to initialize the mailbox: '.$oInbox->GetName().'. Reason: '.$e->getMessage());
+			$aContext = array(
+				'file'            => $e->getFile(),
+				'line'            => $e->getLine(),
+				'exception.class' => get_class($e),
+				'exception.stack' => $e->getTraceAsString(),
+			);
+			IssueLog::Error('Failed to initialize the mailbox: '.$oInbox->GetName().'. Reason: '.$e->getMessage(), null, $aContext);
 			$oPage->p("Failed to initialize the mailbox: ".$oInbox->GetName().". Reason: ".$e->getMessage());
+
 			return;
 		}
 
-		if ($iMsgCount > 0)
-		{
+		$iTotalMsgOkCount = 0;
+		if ($iTotalMsgCount > 0) {
 			// Get the corresponding EmailReplica object for each message
 			$aUIDLs = array();
-			for($iMessage = 0; $iMessage < $iTotalMsgCount; $iMessage++)
-			{
+			for ($iMessage = 0; $iMessage < $iTotalMsgCount; $iMessage++) {
 				// Assume that EmailBackgroundProcess::IsMultiSourceMode() is always set to true
-				$aUIDLs[] = $oSource->GetName().'_'.$aMessages[$iMessage]['uidl'];
+				$sMessageUidl = $aMessages[$iMessage]['uidl'];
+				if (is_null($sMessageUidl)) {
+					continue;
+				}
+				$aUIDLs[] = $oSource->GetName().'_'.$sMessageUidl;
 			}
-			$sOQL = 'SELECT EmailReplica WHERE uidl IN ('.implode(',', CMDBSource::Quote($aUIDLs)).') AND mailbox_path = ' . CMDBSource::Quote($oInbox->Get('mailbox'));
+
+			/** @var int $iTotalMsgOkCount number of readable emails in total (whole mailbox content) */
+			$iTotalMsgOkCount = count($aUIDLs);
+		}
+
+		/** @var int $iMsgOkCount number of readable emails between start and end index */
+		$iMsgOkCount = 0;
+		$iProcessedCount = 0;
+		if ($iTotalMsgOkCount > 0) {
+			$sOQL = 'SELECT EmailReplica WHERE uidl IN ('.implode(',', CMDBSource::Quote($aUIDLs)).') AND mailbox_path = '.CMDBSource::Quote($oInbox->Get('mailbox'));
 			IssueLog::Info("Searching EmailReplica: $sOQL");
 			$oReplicaSet = new DBObjectSet(DBObjectSearch::FromOQL($sOQL));
 			$oReplicaSet->OptimizeColumnLoad(array('EmailReplica' => array('uidl', 'ticket_id', 'status', 'error_message')));
 			$iProcessedCount = $oReplicaSet->Count();
 			$aProcessed = array();
-			while($oReplica = $oReplicaSet->Fetch())
-			{
+			while ($oReplica = $oReplicaSet->Fetch()) {
 				$aProcessed[$oReplica->Get('uidl')] = array(
-						'status' => $oReplica->Get('status'),
-						'ticket_id' => $oReplica->Get('ticket_id'),
-						'error_message' => $oReplica->Get('error_message'),
-						'id' => $oReplica->GetKey(),
+					'status'        => $oReplica->Get('status'),
+					'ticket_id'     => $oReplica->Get('ticket_id'),
+					'error_message' => $oReplica->Get('error_message'),
+					'id'            => $oReplica->GetKey(),
 				);
 			}
 
 			$aTableConfig = array(
 				'checkbox' => array('label' => '<input type="checkbox" id="mailbox_checkall"/>', 'description' => ''),
-				'status' => array('label' => Dict::S('MailInbox:Status'), 'description' => ''),
-				'date' => array('label' => Dict::S('MailInbox:Date'), 'description' => ''),
-				'from' => array('label' => Dict::S('MailInbox:From'), 'description' => ''),
-				'subject' => array('label' => Dict::S('MailInbox:Subject'), 'description' => ''),
-				'ticket' => array('label' =>  Dict::S('MailInbox:RelatedTicket'), 'description' => ''),
-				'error' => array('label' =>  Dict::S('MailInbox:ErrorMessage'), 'description' => ''),
-				'details' => array('label' =>  Dict::S('MailInbox:MessageDetails'), 'description' => ''),
+				'status'   => array('label' => Dict::S('MailInbox:Status'), 'description' => ''),
+				'date'     => array('label' => Dict::S('MailInbox:Date'), 'description' => ''),
+				'from'     => array('label' => Dict::S('MailInbox:From'), 'description' => ''),
+				'subject'  => array('label' => Dict::S('MailInbox:Subject'), 'description' => ''),
+				'ticket'   => array('label' => Dict::S('MailInbox:RelatedTicket'), 'description' => ''),
+				'error'    => array('label' => Dict::S('MailInbox:ErrorMessage'), 'description' => ''),
+				'details'  => array('label' => Dict::S('MailInbox:MessageDetails'), 'description' => ''),
 			);
 
 			$aData = array();
-			for($iMessage = $iStart; $iMessage < $iStart+$iMsgCount; $iMessage++)
-			{
+			for ($iMessage = $iStart; $iMessage < $iStart + $iMsgCount; $iMessage++) {
 				$oRawEmail = $oSource->GetMessage($iMessage);
+				if (is_null($oRawEmail)) {
+					continue;
+				}
+				$iMsgOkCount++;
 				$oEmail = $oRawEmail->Decode($oSource->GetPartsOrder());
 
 				// Assume that EmailBackgroundProcess::IsMultiSourceMode() is always set to true
@@ -110,30 +131,27 @@ function GetMailboxContent($oPage, $oInbox)
 				$sLink = '';
 				$sErrorMsg = '';
 				$sDetailsLink = '';
-				if (array_key_exists($sUIDLs, $aProcessed))
-				{
-				    switch ($aProcessed[$sUIDLs]['status'])
-                    {
-                        case 'ok':
-                        $sStatus = Dict::S('MailInbox:Status/Processed');
-                        break;
+				if (array_key_exists($sUIDLs, $aProcessed)) {
+					switch ($aProcessed[$sUIDLs]['status']) {
+						case 'ok':
+							$sStatus = Dict::S('MailInbox:Status/Processed');
+							break;
 
-                        case 'error':
-                        $sStatus = Dict::S('MailInbox:Status/Error');
-                        break;
+						case 'error':
+							$sStatus = Dict::S('MailInbox:Status/Error');
+							break;
 
-					    case 'undesired':
-						$sStatus = Dict::S('MailInbox:Status/Undesired');
-						break;
+						case 'undesired':
+							$sStatus = Dict::S('MailInbox:Status/Undesired');
+							break;
 
-					    case 'ignored':
-						$sStatus = Dict::S('MailInbox:Status/Ignored');
-						break;
+						case 'ignored':
+							$sStatus = Dict::S('MailInbox:Status/Ignored');
+							break;
 
-                    }
+					}
 					$sErrorMsg = $aProcessed[$sUIDLs]['error_message'];
-					if ($aProcessed[$sUIDLs]['ticket_id'] != '')
-					{
+					if ($aProcessed[$sUIDLs]['ticket_id'] != '') {
 						$sTicketUrl = ApplicationContext::MakeObjectUrl($oInbox->Get('target_class'), $aProcessed[$sUIDLs]['ticket_id']);
 						$sLink = '<a href="'.$sTicketUrl.'">'.$oInbox->Get('target_class').'::'.$aProcessed[$sUIDLs]['ticket_id'].'</a>';
 					}
@@ -143,21 +161,32 @@ function GetMailboxContent($oPage, $oInbox)
 				}
 				$aData[] = array(
 					'checkbox' => '<input type="checkbox" class="mailbox_item" value="'.htmlentities($sUIDLs, ENT_QUOTES, 'UTF-8').'"/>',
-					'status' => $sStatus,
-					'date' => $oEmail->sDate,
-					'from' => $oEmail->sCallerEmail,
-					'subject' => $oEmail->sSubject,
-					'ticket' => $sLink,
-					'error' => $sErrorMsg,
-					'details' => $sDetailsLink,
+					'status'   => $sStatus,
+					'date'     => $oEmail->sDate,
+					'from'     => $oEmail->sCallerEmail,
+					'subject'  => $oEmail->sSubject,
+					'ticket'   => $sLink,
+					'error'    => $sErrorMsg,
+					'details'  => $sDetailsLink,
 				);
 			}
-			$oPage->p(Dict::Format('MailInbox:Z_DisplayedThereAre_X_Msg_Y_NewInTheMailbox', $iMsgCount, $iTotalMsgCount, ($iTotalMsgCount - $iProcessedCount)));
+		}
+
+		if ($iTotalMsgCount > 0) {
+			// If we have messages in the mailbox, even if none can be read (meaning they can't be displayed), we are displaying the mailbox stats
+			// This will greatly help the user understanding what's going on !
+			$oPage->p(Dict::Format('MailInbox:Z_DisplayedThereAre_X_Msg_Y_NewInTheMailbox',
+				$iMsgOkCount,
+				$iTotalMsgCount,
+				($iTotalMsgCount - $iProcessedCount),
+				($iTotalMsgCount - $iTotalMsgOkCount),
+				$iProcessedCount
+			));
+		}
+		if ($iMsgOkCount > 0) {
 			$oPage->table($aTableConfig, $aData);
 			$oPage->add('<div><img alt="" src="../images/tv-item-last.gif" style="vertical-align:bottom;margin-left:10px;"/>&nbsp;'.Dict::S('MailInbox:WithSelectedDo').'&nbsp;&nbsp<button class="mailbox_button ibo-button ibo-is-regular ibo-is-neutral" id="mailbox_reset_status">'.Dict::S('MailInbox:ResetStatus').'</button>&nbsp;&nbsp;<button class="mailbox_button ibo-button ibo-is-regular ibo-is-danger" id="mailbox_delete_messages">'.Dict::S('MailInbox:DeleteMessage').'</button>&nbsp;&nbsp;<button class="mailbox_button ibo-button ibo-is-regular ibo-is-neutral" id="mailbox_ignore_messages">'.Dict::S('MailInbox:IgnoreMessage').'</button></div>');
-		}
-		else
-		{
+		} else {
 			$oPage->p(Dict::Format('MailInbox:EmptyMailbox'));
 		}
 	}
