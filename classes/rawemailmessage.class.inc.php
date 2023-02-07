@@ -233,7 +233,7 @@ REGEX;
 
 				if (empty($sFileName)) {
 					// generate a name based on the type of the file...
-					$aTypes         = explode('/', $sType);
+					$aTypes = explode('/', $sType);
 					$sFileExtension = $aTypes[1];
 					// map the type to a useful extension if needed
 					switch ($aTypes[1]) {
