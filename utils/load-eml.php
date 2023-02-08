@@ -1,7 +1,16 @@
 <?php
 /**
  * Loads an EML file into the DB
- * Launch without any parameter to see how to use it
+ *
+ * To be launched from env-production
+ * Help will be displayed if launched without any parameter
+ *
+ * ```
+ * cd env-production/combodo-email-synchro/utils
+ * php load-eml.php
+ * ```
+ *
+ * @since 3.6.0
  */
 
 function Usage()
