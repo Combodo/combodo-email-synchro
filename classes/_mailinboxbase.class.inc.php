@@ -29,6 +29,13 @@ abstract class _MailInboxBase extends cmdbAbstractObject
 	protected static $iMaxImageHeight = null;
 	protected static $aExcludeAttachments = null;
 
+	/** @var int */
+	protected $iMaxAttachmentSize;
+	/** @var string */
+	protected $sBigFilesDir;
+	/** @var string */
+	protected $sLastError;
+
 	const XML_LEGACY_VERSION = '1.7';
 
 	/**
