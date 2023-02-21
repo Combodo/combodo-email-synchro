@@ -67,6 +67,25 @@ class RawEmailMessage
 	protected $iNextId;
 
 	/**
+	 * @var string This Regex complies with RFC 2045 regarding the Grammar of
+	 * Content Type Headers Filenames:
+	 *    (1) Allow all chars for the filename, if the filename is quoted with double quotes
+	 *    (2) Allow all chars for the filename, if the filename is quoted with single quotes
+	 *    (3) If the filename is not quoted, allow only ASCII chars and exclude the following
+	 *            chars from the set, referenced as "specials" in the RFC:
+	 *                    <ALL-CTL-CHARS-INCL-DEL>
+	 *                    <CHAR-SPACE>
+	 *                    ()<>@,;:\"/[]?=
+	 *            To keep the regex as simple as possible, the _allowed_ chars are listed
+	 *            with their corresponding hexval.
+	 *
+	 * @since 3.7.1 N°4281
+	 */
+	public const FILENAME_REGEX = <<<REGEX
+(("([^"]+)")|('([^']+)')|([\x21\x23-\x27\x2A\x2B\x2D\x2E\x30-\x39\x41-\x5A\x5E-\x7E]+))
+REGEX;
+
+	/**
 	 * Construct a new message from the full text version of it (equivalent to the content of a .eml file)
 	 *
 	 * @param string $sRawContent The full text version of the message (headers + empty line + body)
@@ -173,68 +192,51 @@ class RawEmailMessage
 	public function GetAttachments(&$aAttachments = null, $aPart = null, &$index = 1)
 	{
 		static $iAttachmentCount = 0;
-		if ($aAttachments === null)
-		{
+		if ($aAttachments === null) {
 			$aAttachments = array();
 		}
-		if ($aPart === null)
-		{
+		if ($aPart === null) {
 			$aPart = $this->aParts;
 		} //Init for recursion
 
-		if ($aPart['type'] == 'simple')
-		{
-			if ($this->IsAttachment($aPart['headers']))
-			{
+		if ($aPart['type'] == 'simple') {
+			if ($this->IsAttachment($aPart['headers'])) {
 				$sFileName = '';
 				$sContentDisposition = $this->GetHeader('content-disposition', $aPart['headers']);
-				if (($sContentDisposition != '') && (preg_match('/filename="([^"]+)"/', $sContentDisposition, $aMatches)))
-				{
-					$sFileName = $aMatches[1];
-				}
-				else
-				{
-					if (($sContentDisposition != '') && (preg_match('/filename=([^"]+)/', $sContentDisposition, $aMatches))) // same but without quotes
-					{
-						$sFileName = $aMatches[1];
-					}
+				if ($sContentDisposition != '') {
+					$sFileName = static::GetAttachmentFilename($sContentDisposition);
 				}
 
 				$bInline = true;
-				if (stripos($sContentDisposition, 'attachment;') !== false)
-				{
+				if (stripos($sContentDisposition, 'attachment;') !== false) {
 					$bInline = false;
 				}
 
-
 				$sType = '';
 				$sContentId = $this->GetHeader('content-id', $aPart['headers']);
-				if (($sContentId != '') && (preg_match('/^<(.+)>$/', $sContentId, $aMatches)))
-				{
+				if (($sContentId != '') && (preg_match('/^<(.+)>$/', $sContentId, $aMatches))) {
 					$sContentId = $aMatches[1];
-				}
-				else
-				{
+				} else {
 					$sContentId = 'itop_'.$iAttachmentCount;
 					$iAttachmentCount++;
 				}
 				$sContentType = $this->GetHeader('content-type', $aPart['headers']);
-				if (($sContentType != '') && (preg_match('/^([^;]+)/', $sContentType, $aMatches)))
-				{
+				if (($sContentType != '') && (preg_match('/^([^;]+)/', $sContentType, $aMatches))) {
 					$sType = $aMatches[1];
 				}
-				if (empty($sFileName) && preg_match('/name="([^"]+)"/', $sContentType, $aMatches))
-				{
-					$sFileName = $aMatches[1];
+				if (empty($sFileName)) {
+					$sContentTypeFilename = static::GetAttachmentFilename($sContentType);
+					if ($sContentTypeFilename !== '') {
+						$sFileName = $sContentTypeFilename;
+					}
 				}
-				if (empty($sFileName))
-				{
+
+				if (empty($sFileName)) {
 					// generate a name based on the type of the file...
 					$aTypes = explode('/', $sType);
 					$sFileExtension = $aTypes[1];
 					// map the type to a useful extension if needed
-					switch ($aTypes[1])
-					{
+					switch ($aTypes[1]) {
 						case 'rfc822':
 							// Special case for messages: use the .eml extension
 							$sFileExtension = 'eml';
@@ -243,23 +245,39 @@ class RawEmailMessage
 					$sFileName = sprintf('%s%03d.%s', $aTypes[0], $index, $sFileExtension); // i.e. image001.jpg 
 				}
 				$aAttachments['part_'.$aPart['part_id']] = array(
-					'filename' => $sFileName,
-					'mimeType' => $sType,
+					'filename'   => $sFileName,
+					'mimeType'   => $sType,
 					'content-id' => $sContentId,
-					'content' => $this->DecodePart($aPart['headers'], $aPart['body']),
-					'inline' => $bInline,
+					'content'    => $this->DecodePart($aPart['headers'], $aPart['body']),
+					'inline'     => $bInline,
 				);
 			}
-		}
-		else
-		{
-			foreach ($aPart['parts'] as $aSubPart)
-			{
+		} else {
+			foreach ($aPart['parts'] as $aSubPart) {
 				$aAttachments = array_merge($aAttachments, $this->GetAttachments($aAttachments, $aSubPart, $index));
 			}
 		}
 
 		return $aAttachments;
+	}
+
+	/**
+	 * Allow to handle RFC 2045 filename syntax in attachments
+	 *
+	 * @param string $sHeaderValue
+	 *
+	 * @return string empty string if none found
+	 * @uses static::FILENAME_REGEX
+	 *
+	 * @since 3.7.1 N°4281
+	 */
+	public static function GetAttachmentFilename($sHeaderValue)
+	{
+		if (preg_match('/name='.static::FILENAME_REGEX.'/', $sHeaderValue, $aMatches)) {
+			return end($aMatches);
+		}
+
+		return '';
 	}
 
 	/**

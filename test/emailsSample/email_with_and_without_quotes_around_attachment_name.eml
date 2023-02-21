@@ -1,0 +1,97 @@
+Return-Path: <martin.raenker@itomig.de>
+Received: from www192.your-server.de
+	by www192.your-server.de with LMTP
+	id cANPJDAmYmNaVQEAUXDXKw
+	(envelope-from <martin.raenker@itomig.de>); Wed, 02 Nov 2022 09:11:28 +0100
+Envelope-to: martin.raenker@itomig.de
+Delivery-date: Wed, 02 Nov 2022 09:11:28 +0100
+Authentication-Results: www192.your-server.de;
+	iprev=pass (localhost) smtp.remote-ip=127.0.0.1;
+	spf=pass smtp.mailfrom=itomig.de;
+	dkim=pass header.d=itomig.de header.s=default2012 header.a=rsa-sha256;
+	dmarc=skipped
+Received: from localhost ([127.0.0.1] helo=www192.your-server.de)
+	by www192.your-server.de with esmtps  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <martin.raenker@itomig.de>)
+	id 1oq8qO-000NG0-7r
+	for martin.raenker@itomig.de; Wed, 02 Nov 2022 09:11:28 +0100
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=itomig.de;
+	s=default2012; h=Subject:From:To:MIME-Version:Date:Message-ID:Content-Type:
+	Sender:Reply-To:Cc:Content-Transfer-Encoding:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	In-Reply-To:References; bh=qfsa/c5xPqZ3d+6wNfzUExTW0ZNkPkALI3o0hp2R85A=; b=r5
+	zbg+7XSo/HBfaFAqqdBD0gDiOIa8ujhqmikWoXps5jf9oMJVJ6af5ynLdfZPbxkpWss5t6os7LhO/
+	w/ZdvjR8sOpvIX5nkR3DJxnG76Z28p0aFtpBz1OSIXpWe7LmSj8mBwsXBuh6jTLLH2xRGY3gBEIU9
+	fkOlRbJQ6lU3qhS9Xa9cgSGECPfhIvZzdM/Rb0vdvvERCmrpvr9TylqFb+3RA05pQJBOvG3i/ih7O
+	5a9RytEsd5rpN1IabPoMV6UJFhKaxPY4hMG4qdgzI2GQZAcoK5kNm/IrUxeHQ8KLy5HigJ1I11e9e
+	kzqzy6hT0ZKrELFcqh6Y8L6EzgtC+aOg==;
+Received: from [95.90.147.54] (helo=[192.168.0.103])
+	by www192.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <martin.raenker@itomig.de>)
+	id 1oq8qO-000NFs-3t
+	for martin.raenker@itomig.de; Wed, 02 Nov 2022 09:11:28 +0100
+Content-Type: multipart/mixed; boundary="------------8PrwbWLJ6Ep94lElB18RfVAR"
+Message-ID: <2525d616-c82b-fa1e-05c6-065e9f91f46d@itomig.de>
+Date: Wed, 2 Nov 2022 09:11:25 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.2.2
+Content-Language: en-US
+To: martin.raenker@itomig.de
+From: Martin Raenker <martin.raenker@itomig.de>
+Subject: test for attachments with unquoted name
+X-Authenticated-Sender: martin.raenker@itomig.de
+X-Virus-Scanned: Clear (ClamAV 0.103.7/26707/Tue Nov  1 21:23:26 2022)
+X-local-sign: yes
+X-DKIM-Status: pass [(itomig.de) - 127.0.0.1]
+Delivered-To: itomig-martin.raenker@itomig.de
+
+This is a multi-part message in MIME format.
+--------------8PrwbWLJ6Ep94lElB18RfVAR
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+
+testbody
+--------------8PrwbWLJ6Ep94lElB18RfVAR
+Content-Type: application/octet-stream; charset=UTF-8; name="example_attachment_mail.csv"
+Content-Disposition: attachment;
+Content-Transfer-Encoding: base64
+
+InRlc3QiLCJ0b3N0Igo=
+
+--------------8PrwbWLJ6Ep94lElB18RfVAR
+Content-Type: application/octet-stream; charset=UTF-8; name='example_attachment_mail.csv'
+Content-Disposition: attachment;
+Content-Transfer-Encoding: base64
+
+InRlc3QiLCJ0b3N0Igo=
+
+--------------8PrwbWLJ6Ep94lElB18RfVAR
+Content-Type: application/octet-stream; charset=UTF-8; name=example_attachment_mail.csv
+Content-Disposition: attachment;
+Content-Transfer-Encoding: base64
+
+InRlc3QiLCJ0b3N0Igo=
+
+--------------8PrwbWLJ6Ep94lElB18RfVAR
+Content-Type: application/octet-stream; charset=UTF-8;
+Content-Disposition: attachment; filename="example_attachment_mail.csv"
+Content-Transfer-Encoding: base64
+
+InRlc3QiLCJ0b3N0Igo=
+
+--------------8PrwbWLJ6Ep94lElB18RfVAR
+Content-Type: application/octet-stream; charset=UTF-8;
+Content-Disposition: attachment; filename='example_attachment_mail.csv'
+Content-Transfer-Encoding: base64
+
+InRlc3QiLCJ0b3N0Igo=
+
+--------------8PrwbWLJ6Ep94lElB18RfVAR
+Content-Type: application/octet-stream; charset=UTF-8;
+Content-Disposition: attachment; filename=example_attachment_mail.csv
+Content-Transfer-Encoding: base64
+
+InRlc3QiLCJ0b3N0Igo=
