@@ -66,7 +66,7 @@
             <value>imap</value>
           </values>
           <sql>protocol</sql>
-          <default_value>pop3</default_value>
+          <default_value>imap</default_value>
           <is_null_allowed>false</is_null_allowed>
         </field>
         <field id="port" xsi:type="AttributeInteger">
