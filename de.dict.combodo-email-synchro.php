@@ -17,19 +17,23 @@ Dict::Add('DE DE', 'German', 'Deutsch', array(
 	// Dictionary entries go here
 	'Class:MailInboxBase' => 'Posteingang',
 	'Class:MailInboxBase+' => 'Quelle der eingehenden EMails',
-
 	'Class:MailInboxBase/Attribute:server' => 'Mail Server',
+	'Class:MailInboxBase/Attribute:server+' => 'The IP address or fully qualified hostname of the mail server~~',
 	'Class:MailInboxBase/Attribute:mailbox' => 'Mailbox (für IMAP)',
+	'Class:MailInboxBase/Attribute:mailbox+' => 'The IMAP mailbox (folder) to scan for incoming messages. If omitted the default (root) mailbox will be scanned~~',
 	'Class:MailInboxBase/Attribute:login' => 'Login',
+	'Class:MailInboxBase/Attribute:login+' => 'The name of the mail account used for connecting to the mailbox~~',
 	'Class:MailInboxBase/Attribute:password' => 'Passwort',
 	'Class:MailInboxBase/Attribute:protocol' => 'Protokol',
+	'Class:MailInboxBase/Attribute:protocol+' => 'Warning, from iTop 3.1, POP3 is no more guaranteed~~',
 	'Class:MailInboxBase/Attribute:protocol/Value:pop3' => 'POP3',
 	'Class:MailInboxBase/Attribute:protocol/Value:imap' => 'IMAP',
 	'Class:MailInboxBase/Attribute:port' => 'Port',
+	'Class:MailInboxBase/Attribute:port+' => '143 (secured: 993) for IMAP and 110 (secured: 995) for POP3~~',
 	'Class:MailInboxBase/Attribute:active' => 'Aktiv',
+	'Class:MailInboxBase/Attribute:active+' => 'If set to “Yes”, the inbox will be polled. Otherwise no~~',
 	'Class:MailInboxBase/Attribute:active/Value:yes' => 'Ja',
 	'Class:MailInboxBase/Attribute:active/Value:no' => 'Nein',
-
 	'MailInbox:MailboxContent' => 'Mailbox Inhalt',
 	'MailInbox:MailboxContent:ConfirmMessage' => 'Sind Sie sicher?',
 	'MailInbox:EmptyMailbox' => 'No message to display~~',
@@ -43,10 +47,9 @@ Dict::Add('DE DE', 'German', 'Deutsch', array(
 	'MailInbox:ErrorMessage' => 'Fehlermeldung',
 	'MailInbox:Status/Processed' => 'bereits abgearbeitet',
 	'MailInbox:Status/New' => 'Neu',
-    'MailInbox:Status/Error' => 'Fehler',
+	'MailInbox:Status/Error' => 'Fehler',
 	'MailInbox:Status/Undesired' => 'Unerwünscht',
 	'MailInbox:Status/Ignored' => 'Ignoriert',
-
 	'MailInbox:Login/ServerMustBeUnique' => 'Diese Kombination aus Login (%1$s) und Server (%2$s) ist bereits für einen anderen Posteingang konfiguriert.',
 	'MailInbox:Login/Server/MailboxMustBeUnique' => 'Diese Kombination aus Login (%1$s), Server (%2$s) und Mailbox (%3$s) ist bereits für eine anderen Posteingang konfiguriert.',
 	'MailInbox:Display_X_eMailsStartingFrom_Y' => 'Anzeige von %1$s EMail(s), beginnend von %2$s.',
@@ -54,11 +57,8 @@ Dict::Add('DE DE', 'German', 'Deutsch', array(
 	'MailInbox:ResetStatus' => 'Status zurücksetzen',
 	'MailInbox:DeleteMessage' => 'Löschen',
 	'MailInbox:IgnoreMessage' => 'EMail ignorieren',
-
 	'MailInbox:MessageDetails' => 'Nachrichtendetails',
 	'MailInbox:DownloadEml' => 'EML-Datei herunterladen',
-
-
 	'Class:TriggerOnMailUpdate' => 'Trigger (beim Mail-Update)',
 	'Class:TriggerOnMailUpdate+' => '',
 ));
