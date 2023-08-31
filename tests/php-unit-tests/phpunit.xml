@@ -1,7 +1,10 @@
 <phpunit bootstrap="../unittestautoload.php" backupGlobals="false" verbose="true">
   <testsuites>
     <testsuite name="testsU">
-      <directory>.</directory>
+      <directory suffix="Test.php">./classes</directory>
+    </testsuite>
+    <testsuite name="brokenTests">
+      <directory suffix="Test.php">./broken</directory>
     </testsuite>
   </testsuites>
 </phpunit>

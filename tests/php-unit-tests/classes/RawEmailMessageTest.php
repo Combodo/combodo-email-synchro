@@ -14,8 +14,7 @@ class RawEmailMessageTest extends ItopTestCase
 	public function setUp(): void
 	{
 		parent::setUp();
-
-		require_once(APPROOT.'env-production/combodo-email-synchro/classes/rawemailmessage.class.inc.php');
+        $this->RequireOnceItopFile('env-production/combodo-email-synchro/classes/rawemailmessage.class.inc.php');
 	}
 
 	/**
@@ -76,5 +75,38 @@ class RawEmailMessageTest extends ItopTestCase
 				'$sExpectedEmail' => 'name@domain.com',
 			],
 		];
+	}
+
+	public function MessageToTruncateProvider()
+	{
+		return [
+			'simple case'  => [
+				'eml_path'          => __DIR__.'./../emailsSample/email_000.eml',
+				'expected_email_id' => '<20110112151854.456323DF24@60gp.ovh.net>',
+			],
+			'too long'     => [
+				'eml_path'          => __DIR__.'./../emailsSample/email_134_messageid_too_long.eml',
+				'expected_email_id' => '<74ce6d9f-106e-3125-ce04-15b7e68055efilmefautunmessagebeaucouptroplongpouretreinetegreetquivafaireplanceritopilmefautunmessagebeaucouptroplongpouretreinetegreetquivafaireplanceritopilmefautunmessagebeaucouptroplongpouretreinetegreetquivafaireplanceritopil',
+			],
+			'not existing' => [
+				'eml_path'          => __DIR__.'./../emailsSample/email_135_messageid_empty.eml',
+				'expected_email_id' => '',
+			],
+			'empty string' => [
+				'eml_path'          => __DIR__.'./../emailsSample/email_136_messageid_not_existing.eml',
+				'expected_email_id' => '',
+			],
+		];
+	}
+
+	/**
+	 * @dataProvider MessageToTruncateProvider
+	 */
+	public function testTruncateMessageId(string $sEMLFilePath, string $sExpectedMessageId)
+	{
+		$sRrawContent = @file_get_contents($sEMLFilePath);
+		$oRawEmailMessage = new RawEmailMessage($sRrawContent);
+
+		$this->assertEquals($sExpectedMessageId, $oRawEmailMessage->GetMessageId());
 	}
 }
