@@ -15,7 +15,7 @@ class RawEmailMessageTest extends ItopTestCase
 	{
 		parent::setUp();
 
-		require_once(APPROOT.'env-production/combodo-email-synchro/classes/rawemailmessage.class.inc.php');
+		$this->RequireOnceCurrentModuleFile('/classes/rawemailmessage.class.inc.php');
 	}
 
 	/**
