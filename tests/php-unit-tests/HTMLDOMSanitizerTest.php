@@ -31,7 +31,7 @@ class HTMLDOMSanitizerTest extends ItopTestCase
 	{
 		parent::setUp();
 
-		$this->RequireOnceCurrentModuleFile('/classes/rawemailmessage.class.inc.php');
+		$this->RequireOnceCurrentModuleFile('/classes/rawemailmessage.class.inc.php', __DIR__);
 	}
 
 
