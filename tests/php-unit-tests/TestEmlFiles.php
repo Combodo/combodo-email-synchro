@@ -107,7 +107,7 @@ class TestEmlFiles extends ItopTestCase
 	{
 		parent::setUp();
 
-		$aFiles = glob(__DIR__ . '/test/emailsSample/*.eml');
+		$aFiles = glob(__DIR__ . '/emailsSample/*.eml');
 
 		$aMetaData = array(
 			'email_042.eml' => array(
@@ -138,7 +138,7 @@ class TestEmlFiles extends ItopTestCase
 	 */
 	public function testMultilineLongSubjects($sEmailFilename, $sSubjectExpectedValue): void
 	{
-		$sEmlFilePath = __DIR__ . '/test/emailsSample/' . $sEmailFilename;
+		$sEmlFilePath = __DIR__ . '/emailsSample/' . $sEmailFilename;
 		$this->assertFileExists($sEmlFilePath, 'EML file is not existing');
 
 		$oEmail = RawEmailMessage::FromFile($sEmlFilePath);
