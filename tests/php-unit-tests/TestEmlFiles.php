@@ -24,7 +24,7 @@ class TestEmlFiles extends ItopTestCase
 	{
 		parent::setUp();
 
-		require_once(APPROOT.'env-production/combodo-email-synchro/classes/rawemailmessage.class.inc.php');
+		$this->RequireOnceItopFile('env-production/combodo-email-synchro/classes/rawemailmessage.class.inc.php');
 	}
 
 	/**
@@ -107,7 +107,7 @@ class TestEmlFiles extends ItopTestCase
 	{
 		parent::setUp();
 
-		$aFiles = glob(APPROOT . 'env-production/combodo-email-synchro/test/emailsSample/*.eml');
+		$aFiles = glob(__DIR__ . '/test/emailsSample/*.eml');
 
 		$aMetaData = array(
 			'email_042.eml' => array(
@@ -138,7 +138,7 @@ class TestEmlFiles extends ItopTestCase
 	 */
 	public function testMultilineLongSubjects($sEmailFilename, $sSubjectExpectedValue): void
 	{
-		$sEmlFilePath = APPROOT.'env-production/combodo-email-synchro/test/emailsSample/'.$sEmailFilename;
+		$sEmlFilePath = __DIR__ . '/test/emailsSample/' . $sEmailFilename;
 		$this->assertFileExists($sEmlFilePath, 'EML file is not existing');
 
 		$oEmail = RawEmailMessage::FromFile($sEmlFilePath);
