@@ -31,7 +31,7 @@ class HTMLDOMSanitizerTest extends ItopTestCase
 	{
 		parent::setUp();
 
-		require_once(APPROOT.'env-production/combodo-email-synchro/classes/rawemailmessage.class.inc.php');
+		$this->RequireOnceItopFile('env-production/combodo-email-synchro/classes/rawemailmessage.class.inc.php');
 	}
 
 
