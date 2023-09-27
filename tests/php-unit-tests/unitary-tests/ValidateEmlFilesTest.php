@@ -5,7 +5,7 @@
  */
 
 
-namespace Combodo\iTop\Test\UnitTest\CombodoEmailSynchro;
+namespace Combodo\iTop\CombodoEmailSynchro\Test\UnitTest\Unitary;
 
 use Combodo\iTop\Test\UnitTest\ItopTestCase;
 use RawEmailMessage;
