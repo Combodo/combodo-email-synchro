@@ -104,13 +104,12 @@ class ValidateEmlFilesTest extends ItopTestCase
 		$domain = "$sub_domain(\\x2e$sub_domain)*.?";
 		$local_part = "$word(\\x2e$word)*";
 		$addr_spec = "$local_part\\x40$domain";
-		$this->assertRegExp("!^$addr_spec$!", $email, $message);
+		$this->assertMatchesRegularExpression("!^$addr_spec$!", $email, $message);
 	}
+
 	public function EmailMessageProvider()
 	{
-		parent::setUp();
-
-		$aFiles = glob(__DIR__ . '/emailsSample/*.eml');
+		$aFiles = glob(__DIR__ . '/../resources/email-samples/*.eml');
 
 		$aMetaData = array(
 			'email_042.eml' => array(
