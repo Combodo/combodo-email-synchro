@@ -2,6 +2,7 @@
   <testsuites>
     <testsuite name="testsU">
       <directory suffix="Test.php">./classes</directory>
+      <directory>./TestEmlFiles</directory>
     </testsuite>
     <testsuite name="brokenTests">
       <directory suffix="Test.php">./broken</directory>

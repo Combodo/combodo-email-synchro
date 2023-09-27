@@ -74,19 +74,20 @@ class HTMLDOMSanitizerTest extends ItopTestCase
     {
         clearstatcache();
 
-        $sEmailsSamplePath = __DIR__ . '/emailsSample';
-        $aFiles = glob($sEmailsSamplePath . '/*.eml');
+        $sEmailsSamplePath = __DIR__ . '/../emailsSample/';
+        $aFiles = glob($sEmailsSamplePath . '*.eml');
 
         $aReturn = array();
         foreach ($aFiles as $sFile) {
-            if (!is_file($sFile)) {
+	        $sTestName = basename($sFile);
+	        $sExpectedFileName = __DIR__ . '/../DoSanitizeExpected/' . basename($sFile, '.eml') . '.html';
+            if (!is_file($sExpectedFileName)) {
                 // Tips: if you want to pre-create the files, you can add a touch($sExpectedFileName);  but beware, they will be located in env-production ;)
                 $sExpected = null;
             } else {
-                $sExpected = file_get_contents($sFile);
+                $sExpected = file_get_contents($sExpectedFileName);
             }
 
-            $sTestName = basename($sFile);
             $aReturn[$sTestName] = array(
                 'sFileName' => $sFile,
                 'expected' => $sExpected,
@@ -94,7 +95,7 @@ class HTMLDOMSanitizerTest extends ItopTestCase
         }
 
         if (count($aReturn) === 0) {
-            $this->markTestSkipped('No files to test ! Check that the module is correctly deployed in env-production !');
+            $this->markTestSkipped('No files to test! Check that the module is correctly deployed in env-production!');
         }
 
         return $aReturn;
