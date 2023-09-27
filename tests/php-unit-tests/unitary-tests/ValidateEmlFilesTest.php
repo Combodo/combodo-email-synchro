@@ -11,20 +11,23 @@ use Combodo\iTop\Test\UnitTest\ItopTestCase;
 use RawEmailMessage;
 
 /**
- * Class TestEmlFiles
+ * Class ValidateEmlFilesTest
  *
  * Use EML files in `/test/emailsSample`
  *
  * @package Combodo\iTop\Test\UnitTest\CombodoEmailSynchro
  */
-class TestEmlFiles extends ItopTestCase
+class ValidateEmlFilesTest extends ItopTestCase
 {
 
-	public function setUp(): void
+	/**
+	 * @inheritDoc
+	 */
+	protected function LoadRequiredItopFiles(): void
 	{
-		parent::setUp();
+		parent::LoadRequiredItopFiles();
 
-		require_once(APPROOT.'env-production/combodo-email-synchro/classes/rawemailmessage.class.inc.php');
+		$this->RequireOnceItopFile('env-production/combodo-email-synchro/classes/rawemailmessage.class.inc.php');
 	}
 
 	/**
