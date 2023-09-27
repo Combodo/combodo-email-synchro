@@ -18,20 +18,31 @@
 //
 
 
-namespace Combodo\iTop\Test\UnitTest\CombodoEmailSynchro;
+namespace Combodo\iTop\Test\UnitTest\CombodoEmailSynchro\Integration;
 
 use Combodo\iTop\Test\UnitTest\ItopTestCase;
 use RawEmailMessage;
 use function file_exists;
 
 
+/**
+ * Class HTMLDOMSanitizerTest
+ *
+ * Test integration of the module with iTop HTMLDOMSanitizer
+ *
+ * @package Combodo\iTop\Test\UnitTest\CombodoEmailSynchro\Integration
+ * @author  Guillaume Lajarige <guillaume.lajarige@combodo.com>
+ */
 class HTMLDOMSanitizerTest extends ItopTestCase
 {
-	public function setUp(): void
+	/**
+	 * @inheritDoc
+	 */
+	protected function LoadRequiredItopFiles(): void
 	{
-		parent::setUp();
+		parent::LoadRequiredItopFiles();
 
-		require_once(APPROOT.'env-production/combodo-email-synchro/classes/rawemailmessage.class.inc.php');
+		$this->RequireOnceItopFile('env-production/combodo-email-synchro/classes/rawemailmessage.class.inc.php');
 	}
 
 
@@ -40,7 +51,7 @@ class HTMLDOMSanitizerTest extends ItopTestCase
 	 *
 	 * @dataProvider RemoveBlackListedTagContentProvider
 	 */
-    public function testDoSanitizeRemoveBlackListedTagContent($sFileName, $expected)
+    public function testDoSanitizeRemoveBlackListedTagContent(string $sFileName, $expected)
     {
         $this->markTestSkipped('Test needs to be fixed, see N°6536');
 
@@ -54,13 +65,15 @@ class HTMLDOMSanitizerTest extends ItopTestCase
         $oSanitizer = new \HTMLDOMSanitizer();
         $sSanitizedBody = $oSanitizer->DoSanitize($sBody);
 
+		$sSanitizedBodyOutputFolderPath = APPROOT . 'data/testDoSanitizePreserveBlackListedTagContent/';
+
         if (null == $expected) {
-            @mkdir(APPROOT . 'data/testDoSanitizePreserveBlackListedTagContent/');
-            file_put_contents(APPROOT . 'data/testDoSanitizePreserveBlackListedTagContent/' . basename($sFileName, '.eml') . '.html', $sSanitizedBody);
-            file_put_contents(APPROOT . 'data/testDoSanitizePreserveBlackListedTagContent/' . basename($sFileName, '.eml') . '.raw.html', $sSanitizedBody);
+            @mkdir();
+            file_put_contents($sSanitizedBodyOutputFolderPath . basename($sFileName, '.eml') . '.html', $sSanitizedBody);
+            file_put_contents($sSanitizedBodyOutputFolderPath . basename($sFileName, '.eml') . '.raw.html', $sSanitizedBody);
             $this->assertEquals($sBody, $sSanitizedBody, 'No expectation found, comparing the raw with the filtered, if acceptable, please paste the file generated into data/testDoSanitizePreserveBlackListedTagContent');
         } else {
-            $sRawFilesPath = APPROOT . 'data/testDoSanitizePreserveBlackListedTagContent/';
+            $sRawFilesPath = $sSanitizedBodyOutputFolderPath;
             if (false === file_exists($sRawFilesPath)) {
                 mkdir($sRawFilesPath);
             }
@@ -69,18 +82,17 @@ class HTMLDOMSanitizerTest extends ItopTestCase
         }
     }
 
-
     public function RemoveBlackListedTagContentProvider()
     {
         clearstatcache();
 
-        $sEmailsSamplePath = __DIR__ . '/../emailsSample/';
+        $sEmailsSamplePath = __DIR__ . '/../resources/email-samples/';
         $aFiles = glob($sEmailsSamplePath . '*.eml');
 
         $aReturn = array();
         foreach ($aFiles as $sFile) {
 	        $sTestName = basename($sFile);
-	        $sExpectedFileName = __DIR__ . '/../DoSanitizeExpected/' . basename($sFile, '.eml') . '.html';
+	        $sExpectedFileName = __DIR__ . '/../resources/email-expected-sanitized-content/' . basename($sFile, '.eml') . '.html';
             if (!is_file($sExpectedFileName)) {
                 // Tips: if you want to pre-create the files, you can add a touch($sExpectedFileName);  but beware, they will be located in env-production ;)
                 $sExpected = null;

@@ -138,7 +138,7 @@ class TestEmlFiles extends ItopTestCase
 	 */
 	public function testMultilineLongSubjects($sEmailFilename, $sSubjectExpectedValue): void
 	{
-		$sEmlFilePath = __DIR__.'/emailsSample/'.$sEmailFilename;
+		$sEmlFilePath = __DIR__.'/../resources/email-samples/'.$sEmailFilename;
 		$this->assertFileExists($sEmlFilePath, 'EML file is not existing');
 
 		$oEmail = RawEmailMessage::FromFile($sEmlFilePath);
