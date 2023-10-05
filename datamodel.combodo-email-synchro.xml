@@ -551,6 +551,7 @@ JS
 	 * @param EmailMessage $oEmail
 	 * @param bool $bNoDuplicates If true, don't add attachment that seem already attached to the ticket (same type, same name, same size, same md5 checksum)
 	 * @param array $aIgnoredAttachments
+	 * @param User $oUser
 	 *
 	 * @return array array of cid => attachment_id
 	 * @throws \CoreException
@@ -562,7 +563,7 @@ JS
           <static>false</static>
           <access>protected</access>
           <type>Overload-DBObject</type>
-          <code><![CDATA[	protected function AddAttachments(Ticket $oTicket, EmailMessage $oEmail, $bNoDuplicates = true, &$aIgnoredAttachments = array())
+          <code><![CDATA[	protected function AddAttachments(Ticket $oTicket, EmailMessage $oEmail, $bNoDuplicates = true, &$aIgnoredAttachments = array(), $oCaller = null, $oUser = null)
 	{
 		if (self::$iMinImageWidth === null)
 		{
@@ -718,25 +719,26 @@ JS
 					$aRejectedAttachments[] = "attachment {$aAttachment['filename']} was reported as containing a virus, it has been skipped.";
 					$bIgnoreAttachment = true;
 				}
-				if (!$bIgnoreAttachment)
-				{
-					if ($this->IsImage($aAttachment['mimeType']) && class_exists('InlineImage') && $aAttachment['inline'])
-					{
+				if (!$bIgnoreAttachment)	{
+					if ($this->IsImage($aAttachment['mimeType']) && class_exists('InlineImage') && $aAttachment['inline'])	{
 						$oAttachment = new InlineImage();
 						MailInboxesEmailProcessor::Trace("Info: email attachment {$aAttachment['filename']} will be stored as an InlineImage.");
 						$oAttachment->Set('secret', sprintf ('%06x', mt_rand(0, 0xFFFFFF))); // something not easy to guess
-					}
-					else
-					{
+					}	else {
 						MailInboxesEmailProcessor::Trace("Info: email attachment {$aAttachment['filename']} will be stored as an Attachment.");
 						$oAttachment = new Attachment();
+            $oAttachment->SetIfNull('creation_date', time());
+            if ($oUser !== null) {
+                $oAttachment->Set('user_id', $oUser);
+            }
+
+            if (get_class(MetaModel::GetAttributeDef('Attachment', 'contact_id')) == 'AttributeExternalKey' && $oCaller !== null) {
+                $oAttachment->Set('contact_id', $oCaller);
+            }
 					}
-					if ($oTicket->IsNew())
-					{
+					if ($oTicket->IsNew()) {
 						$oAttachment->Set('item_class', get_class($oTicket));
-					}
-					else
-					{
+					}	else	{
 						$oAttachment->SetItem($oTicket);
 					}
 					$oBlob = new ormDocument($aAttachment['content'], $aAttachment['mimeType'], $aAttachment['filename']);
@@ -752,9 +754,7 @@ JS
 					MailInboxesEmailProcessor::Trace("Info: Attachment {$aAttachment['filename']} added to the ticket.");
 					$aAddedAttachments[$aAttachment['content-id']] = $oAttachment;
 				}
-			}
-			else
-			{
+			}	else {
 				MailInboxesEmailProcessor::Trace("Info: The attachment {$aAttachment['filename']} was NOT added to the ticket because its type '{$aAttachment['mimeType']}' is excluded according to the configuration");
 			}
 		}
