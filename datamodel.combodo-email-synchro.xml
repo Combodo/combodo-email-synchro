@@ -919,9 +919,9 @@ JS
 		$sInputText = str_replace("\r\n", "\r", $sInputText);
 		$sInputText = str_replace("\n", "\r", $sInputText);
 		$sInputText = str_replace("\r", "\r\n", $sInputText);
-		if (strlen($sInputText) > $iMaxLength)
+		if (mb_strlen($sInputText) > $iMaxLength)
 		{
-			$sInputText = trim(substr($sInputText, 0, $iMaxLength-3)).'...';
+			$sInputText = trim(mb_substr($sInputText, 0, $iMaxLength-3)).'...';
 		}
 		return $sInputText;
 	}]]></code>
