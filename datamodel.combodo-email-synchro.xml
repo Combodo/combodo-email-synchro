@@ -551,6 +551,7 @@ JS
 	 * @param EmailMessage $oEmail
 	 * @param bool $bNoDuplicates If true, don't add attachment that seem already attached to the ticket (same type, same name, same size, same md5 checksum)
 	 * @param array $aIgnoredAttachments
+	 * @param Contact $oCaller
 	 * @param User $oUser
 	 *
 	 * @return array array of cid => attachment_id
@@ -732,7 +733,7 @@ JS
                 $oAttachment->Set('user_id', $oUser);
             }
 
-            if (get_class(MetaModel::GetAttributeDef('Attachment', 'contact_id')) == 'AttributeExternalKey' && $oCaller !== null) {
+            if (MetaModel::GetAttributeDef('Attachment', 'contact_id') instanceof \AttributeExternalKey && $oCaller !== null) {
                 $oAttachment->Set('contact_id', $oCaller);
             }
 					}
