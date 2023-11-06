@@ -38,7 +38,7 @@ Dict::Add('ZH CN', 'Chinese', '简体中文', array(
 	'Class:MailInboxBase/Attribute:port' => '端口',
 	'Class:MailInboxBase/Attribute:port+' => '143 (加密的: 993) 用于IMAP, 110 (加密的: 995) 用于POP3',
 	'Class:MailInboxBase/Attribute:active' => '启用的',
-	'Class:MailInboxBase/Attribute:active+' => '如果设置为 "是", 则邮箱将被读取. 否则将不被取',
+	'Class:MailInboxBase/Attribute:active+' => '如果设置为 "是", 则邮箱将被读取. 否则将不被读取',
 	'Class:MailInboxBase/Attribute:active/Value:yes' => '是',
 	'Class:MailInboxBase/Attribute:active/Value:no' => '否',
 	'MailInbox:MailboxContent' => 'Mailbox Content~~',
