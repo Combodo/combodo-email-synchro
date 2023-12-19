@@ -1,6 +1,6 @@
 <?php
 /**
- * Loads an EML file into the DB
+ * Loads an EML file into the DB, using a mailbox configuration
  *
  * To be launched from env-production
  * Help will be displayed if launched without any parameter
@@ -9,6 +9,8 @@
  * cd env-production/combodo-email-synchro/utils
  * php load-eml.php
  * ```
+ *
+ * @see TestEmailProcessor another mean to load eml files directly from a directory
  *
  * @since 3.6.0
  */
@@ -93,3 +95,5 @@ if (false === $oEmail->IsValid()) {
 $iNextActionCode = $oProcessor->ProcessMessage($oSource, 0, $oEmail, $oEmailReplica, $aErrors);
 
 echo "Done !\n";
+echo "nextActionCode=$iNextActionCode\n";
+echo "Process errors=\n" . var_export($aErrors, true) . "\n\n";
