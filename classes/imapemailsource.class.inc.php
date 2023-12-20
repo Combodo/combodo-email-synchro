@@ -85,11 +85,15 @@ class IMAPEmailSource extends EmailSource
 	 */
 	public function GetMessage($index)
 	{
-		$sRawHeaders = imap_fetchheader($this->rImapConn, 1+$index);
-		$sBody = imap_body($this->rImapConn, 1+$index, FT_PEEK);
 		$aOverviews = imap_fetch_overview($this->rImapConn, 1+$index);
 		$oOverview = array_pop($aOverviews);
-
+		if (($this->GetMaxMessageSize() > 0) && ($oOverview->size > $this->GetMaxMessageSize()))
+		{
+			$sMessage = "Message #$index is ".$oOverview->size." bytes, whereas the configured limit is ".$this->GetMaxMessageSize()." bytes";
+			throw new EmailBiggerThanMaxMessageSizeException($sMessage, $oOverview->size);
+		}
+		$sRawHeaders = imap_fetchheader($this->rImapConn, 1+$index);
+		$sBody = imap_body($this->rImapConn, 1+$index, FT_PEEK);
 		$bUseMessageId = static::UseMessageIdAsUid();
 		if ($bUseMessageId)
 		{

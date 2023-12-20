@@ -61,4 +61,6 @@ Dict::Add('FR FR', 'French', 'Français', array(
 	'MailInbox:DownloadEml' => 'Télécharger l\'eml',
 	'Class:TriggerOnMailUpdate' => 'Déclencheur sur mise à jour par mail',
 	'Class:TriggerOnMailUpdate+' => 'Déclencheur activé sur la mise à jour de tickets par mail',
+	
+	'MailInboxProcessor:MessageTooBig_Size_MaxSize' => 'Message trop gros: %1$s (la taille max autorisée est %2$s)',
 ));

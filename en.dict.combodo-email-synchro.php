@@ -75,4 +75,6 @@ Dict::Add('EN US', 'English', 'English', array(
 
 	'Class:TriggerOnMailUpdate' => 'Trigger (when updated by mail)',
 	'Class:TriggerOnMailUpdate+' => 'Trigger activated when a ticket is updated by processing an incoming email',
+	
+	'MailInboxProcessor:MessageTooBig_Size_MaxSize' => 'Message too big: %1$s (maximum allowed size %2$s)',
 ));

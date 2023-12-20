@@ -1,5 +1,5 @@
 <?php
-// Copyright (C) 2016 Combodo SARL
+// Copyright (C) 2016-2023 Combodo SARL
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Lesser General Public License as published by
@@ -19,6 +19,32 @@
  */
 
 /**
+ * Exception triggered when encoutering messages too big to be read
+ */
+class EmailBiggerThanMaxMessageSizeException extends Exception
+{
+	/**
+	 * @var int
+	 */
+	protected $iMessageSize;
+
+	/**
+	 *
+	 * @inheritDoc
+	 */
+	public function __construct($message = null, $iMessageSize = 0, $code = null, $previous = null)
+	{
+		parent::__construct($message, $code, $previous);
+		$this->iMessageSize = $iMessageSize;
+	}
+	
+	public function GetMessageSize()
+	{
+		return $this->iMessageSize;
+	}
+}
+
+/**
  * A source of messages either POP3, IMAP or File...
  */
 abstract class EmailSource
@@ -27,11 +53,18 @@ abstract class EmailSource
 	protected $sLastErrorMessage;
 	protected $sPartsOrder;
 	protected $token;
+	/**
+	 * Maximum size for reading messages
+	 * Messages larger than this value will not be read (will cause an EmailBiggerThanMaxMessageSizeException)
+	 * @var int|float
+	 */
+	protected $maxMessageSize;
 	
 	public function __construct()
 	{
 		$this->sPartsOrder = 'text/plain,text/html'; // Default value can be changed via SetPartsOrder
 		$this->token  =null;
+		$this->maxMessageSize = 0;
 	}
 	
 	/**
@@ -161,5 +194,24 @@ abstract class EmailSource
  	public function GetToken()
  	{
  		return $this->token;
+ 	}
+ 	
+ 	/**
+ 	 * Set the maximum size for a message (in byte)
+ 	 * Messages larger than this value will not be read (will cause an EmailBiggerThanMaxMessageSizeException)
+ 	 * @param int|float $maxMessageSize Could be an int if we are not on 32-bit system since 2Gb may be too small as a limit one day
+ 	 */
+ 	public function SetMaxMessageSize($maxMessageSize)
+ 	{
+ 		$this->maxMessageSize = $maxMessageSize;
+ 	}
+
+ 	/**
+ 	 * Get the maximum size set for reading messages
+ 	 * @return int|float
+ 	 */
+ 	public function GetMaxMessageSize()
+ 	{
+ 		return $this->maxMessageSize;
  	}
 }

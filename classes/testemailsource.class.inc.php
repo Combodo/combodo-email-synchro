@@ -69,7 +69,14 @@ class TestEmailSource extends EmailSource
 	 */
 	public function GetMessage($index)
 	{
-		return MessageFromMailbox::FromFile($this->sSourceDir.'/'.$this->aMessages[$index]);
+		$sFilename = $this->sSourceDir.'/'.$this->aMessages[$index];
+		$iMessageSize = filesize($sFilename);
+		if (($this->GetMaxMessageSize() > 0) && ($iMessageSize > $this->GetMaxMessageSize()))
+		{
+			$sMessage = "Message #$index is $iMessageSize bytes, whereas the configured limit is ".$this->GetMaxMessageSize()." bytes";
+			throw new EmailBiggerThanMaxMessageSizeException($sMessage, $iMessageSize);
+		}
+		return MessageFromMailbox::FromFile($sFilename);
 	}
 
 	/**

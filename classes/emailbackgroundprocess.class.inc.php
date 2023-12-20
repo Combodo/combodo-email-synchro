@@ -95,7 +95,11 @@ class EmailBackgroundProcess implements iBackgroundProcess
 				$iCurrentMessage = $this->iCurrentMessage;
 				if (isset($oCurrentSource))
 				{
-					$oRawEmail = $oCurrentSource->GetMessage($iCurrentMessage);
+					try {
+						$oRawEmail = $oCurrentSource->GetMessage($iCurrentMessage);
+					} catch(Exception $e) {
+						// Too bad, really cannot read the message, maybe it is too big
+					}
 				}
 			}
 			if (!in_array($sErrorCode, MetaModel::GetAllowedValues_att('EmailReplica', 'status')))
@@ -191,6 +195,8 @@ class EmailBackgroundProcess implements iBackgroundProcess
 			foreach ($aSources as $oSource) {
 				$this->Trace("-----------------------------------------------------------------------------------------");
 				$this->Trace("Processing Message Source: ".$oSource->GetName());
+				$oSource->SetMaxMessageSize(static::$iMaxEmailSize);
+				$this->Trace("Maximum size for messages set to ".static::$iMaxEmailSize." bytes.");
 				try {
 					$iMsgCount = $oSource->GetMessagesCount();
 				}
@@ -330,28 +336,9 @@ class EmailBackgroundProcess implements iBackgroundProcess
 										$this->Trace("Processing old (already read) message: $sUIDL");
 									}
 
+									try {
+										$oRawEmail = $oSource->GetMessage($iMessage);
 
-									$oRawEmail = $oSource->GetMessage($iMessage);
-									if ((self::$iMaxEmailSize > 0) && ($oRawEmail->GetSize() > self::$iMaxEmailSize)) {
-										$aErrors = array();
-										$iNextActionCode = $oProcessor->OnDecodeError($oSource, $sUIDL, null, $oRawEmail, $aErrors);
-										$sMessage = implode("\n", $aErrors);
-										$this->Trace($sMessage);
-										switch ($iNextActionCode) {
-											case EmailProcessor::MARK_MESSAGE_AS_ERROR:
-												$iTotalMarkedAsError++;
-												$this->Trace("Email too big, marking the message (and replica): uidl=$sUIDL index=$iMessage as in error.");
-												$this->UpdateEmailReplica($oEmailReplica, $oProcessor);
-												$aReplicas[$sUIDL] = $oEmailReplica; // Remember this new replica, don't delete it later as "unused"
-												break;
-
-											case EmailProcessor::DELETE_MESSAGE:
-												$iTotalDeleted++;
-												$this->Trace("Email too big, deleting message (and replica): $sUIDL");
-												$oSource->DeleteMessage($iMessage);
-												break;
-										}
-									} else {
 										$oEmail = $oRawEmail->Decode($oSource->GetPartsOrder());
 										if (!$oEmail->IsValid()) {
 											$aErrors = array();
@@ -422,6 +409,18 @@ class EmailBackgroundProcess implements iBackgroundProcess
 													break;
 											}
 										}
+									} catch(EmailBiggerThanMaxMessageSizeException $e) {
+											$iTotalMarkedAsError++;
+											$this->Trace("Email too big, marking the message (and replica): uidl=$sUIDL index=$iMessage as in error.\n");
+											$sMessageSizeForHumans = static::HumanReadableSize($e->GetMessageSize());
+											$sMaxSizeForHumans = static::HumanReadableSize(static::$iMaxEmailSize);
+											$oEmailReplica->Set('error_message', Dict::Format('MailInboxProcessor:MessageTooBig_Size_MaxSize', $sMessageSizeForHumans, $sMaxSizeForHumans));
+											$oEmailReplica->SetCurrentDate('message_date');
+											$oEmailReplica->Set('error_trace', $this->GetMessageTrace());
+											$oEmailReplica->Set('status', 'error');
+
+											$oEmailReplica->DBWrite();
+											$aReplicas[$sUIDL] = $oEmailReplica; // Remember this new replica, don't delete it later as "unused"
 									}
 									break;
 
@@ -573,5 +572,21 @@ class EmailBackgroundProcess implements iBackgroundProcess
 			$this->Trace("EML too big ($iContentSize bytes) max is ($iMaxServerSize bytes), not saved in database.");
 			$oEmailReplica->Set('error_trace', $this->GetMessageTrace());
 		}
+	}
+
+	protected static function HumanReadableSize(int $size)
+	{
+		$aPrefixes = array('b', 'Kb', 'Mb', 'Gb', 'Tb', 'Pb');
+		$index = 0;
+		if ($size < 1024)
+		{
+			return $size.' b';
+		}
+		while (($size > 1023) && ($index < count($aPrefixes)))
+		{
+			$index++;
+			$size = $size / 1024;
+		}
+		return sprintf("%.2f %s", $size, $aPrefixes[$index] );
 	}
 }
