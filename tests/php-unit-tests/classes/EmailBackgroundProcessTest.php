@@ -18,7 +18,7 @@ class EmailBackgroundProcessTest extends ItopDataTestCase
 	 */
 	public function testHumanReadableSize(int $iSize, string $sExpectedFormattedSize)
 	{
-		require_once(dirname(__DIR__, 3).'/classes/autoload.php');
+		$this->RequireOnceItopFile('env-production/combodo-email-synchro/classes/autoload.php');
 		$sFormattedSize = $this->InvokeNonPublicStaticMethod(EmailBackgroundProcess::class, 'HumanReadableSize', [$iSize]);
 		$this->assertEquals($sExpectedFormattedSize, $sFormattedSize);
 	}
