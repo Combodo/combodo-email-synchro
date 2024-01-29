@@ -42,7 +42,7 @@ class EmailMessage {
 	public $aTos;
 	public $aCCs;
 	/**
-	 * @var ormdocument
+	 * @var DOMDocument
 	 * Property is protected. The declaration was just made to make it compatible with PHP 8.2.
 	 */
 	protected $oDoc = null;
