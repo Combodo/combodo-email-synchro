@@ -31,7 +31,6 @@ abstract class _MailInboxBase extends cmdbAbstractObject
 
 	/**
 	 * @var int
-	 * Property is protected. The declaration was just made to make it compatible with PHP 8.2.
 	 */
 	protected $iNextAction = null;
 
