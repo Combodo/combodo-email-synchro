@@ -41,10 +41,7 @@ class EmailMessage {
 	public $oRawEmail; // raw source email
 	public $aTos;
 	public $aCCs;
-	/**
-	 * @var DOMDocument
-	 * Property is protected. The declaration was just made to make it compatible with PHP 8.2.
-	 */
+	/** @var DOMDocument */
 	protected $oDoc = null;
 
 	const NEW_LINE_MARKER = '__NEWLINE__'; // unlikely to be found in the body of an email message
