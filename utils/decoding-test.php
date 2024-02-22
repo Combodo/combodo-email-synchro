@@ -1,25 +1,23 @@
 <?php
-// Copyright (C) 2010-2013 Combodo SARL
-//
-//   This program is free software; you can redistribute it and/or modify
-//   it under the terms of the GNU Lesser General Public License as published by
-//   the Free Software Foundation; version 3 of the License.
-//
-//   This program is distributed in the hope that it will be useful,
-//   but WITHOUT ANY WARRANTY; without even the implied warranty of
-//   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//   GNU General Public License for more details.
-//
-//   You should have received a copy of the GNU General Public License
-//   along with this program; if not, write to the Free Software
-//   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+/*
+ * @copyright   Copyright (C) 2010-2024 Combodo SARL
+ * @license     http://opensource.org/licenses/AGPL-3.0
+ */
 
-// Stand-alone command-line tool to test the decoding of a message (as a .eml file)
-//
-// Usage: php decoding-test.php <eml.file>
-//
+/**
+ * Stand-alone command-line tool to test the decoding of a message (as a .eml file)
+ *
+ * Usage: php decoding-test.php <eml.file>
+ * Usage: php decoding-test.php <eml.file>
+ *
+ * @since 3.7.7 
+ */
+
+use Laminas\Mail\Message;
 
 require_once('../classes/autoload.php');
+require_once('../../../approot.inc.php');
+require_once(APPROOT.'/lib/autoload.php'); // needs Laminas lib !
 
 date_default_timezone_set('Europe/Paris');
 
@@ -40,13 +38,38 @@ if ($argc != 2)
 $sFilePath = $argv[1];
 $sPartsOrder = 'text/html,text/plain,application/pkcs7-mime';
 
-echo "Decoding test for file '$sFilePath'\n";
+echo "# Decoding test for file '$sFilePath'\n";
 if (!file_exists($sFilePath))
 {
 	echo "ERROR: File '$sFilePath' not found.\n";
 }
+echo "\n\n\n\n\n\n";
 
 
+
+///////////////////////////////////////////////////////////////
+echo "## Decoding using Laminas !\n\n";
+$sEmlFileContent = file_get_contents($sFilePath);
+try {
+	$oLaminasMessage = Message::fromString($sEmlFileContent);
+	echo "------ HEADER\n";
+	var_export($oLaminasMessage->getHeaders()->toArray(), false);
+	echo "------ BODY\n";
+	var_export($oLaminasMessage->getBodyText(), false);
+} catch (Exception $e) {
+	echo "💥 An exception was returned :(\n";
+	var_export([
+		'exception_class' => get_class($e),
+		'exception_message' => $e->getMessage(),
+		'exception_trace' => $e->getTraceAsString(),
+	], false);
+}
+echo "\n\n\n\n\n\n";
+
+
+
+///////////////////////////////////////////////////////////////
+echo "## Decoding using MessageFromMailbox::Decode !\n\n";
 $oMessage = MessageFromMailbox::FromFile($sFilePath);
 $startTime = microtime(true);
 $oEmail = $oMessage->Decode($sPartsOrder);
