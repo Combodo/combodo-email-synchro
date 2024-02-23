@@ -51,25 +51,29 @@ echo "\n\n\n\n\n\n";
 
 ///////////////////////////////////////////////////////////////
 echo "## Decoding using Laminas !\n\n";
-$sEmlFileContent = file_get_contents($sFilePath);
-try {
-	$oLaminasMessage = Message::fromString($sEmlFileContent);
-	echo "------ HEADER\n";
-	var_export($oLaminasMessage->getHeaders()->toArray(), false);
-	echo "------ BODY\n";
-	if ($bOutputDetails) {
-		var_export($oLaminasMessage->getBodyText(), false);
-	} else {
-		$sLaminasBodyLength = mb_strlen($oLaminasMessage->getBodyText());
-		echo "length: $sLaminasBodyLength\n";
+if (class_exists(Message::class)) {
+	$sEmlFileContent = file_get_contents($sFilePath);
+	try {
+		$oLaminasMessage = Message::fromString($sEmlFileContent);
+		echo "------ HEADER\n";
+		var_export($oLaminasMessage->getHeaders()->toArray(), false);
+		echo "------ BODY\n";
+		if ($bOutputDetails) {
+			var_export($oLaminasMessage->getBodyText(), false);
+		} else {
+			$sLaminasBodyLength = mb_strlen($oLaminasMessage->getBodyText());
+			echo "length: $sLaminasBodyLength\n";
+		}
+	} catch (Exception $e) {
+		echo "💥 An exception was returned :(\n";
+		var_export([
+			'exception_class' => get_class($e),
+			'exception_message' => $e->getMessage(),
+			'exception_trace' => $e->getTraceAsString(),
+		], false);
 	}
-} catch (Exception $e) {
-	echo "💥 An exception was returned :(\n";
-	var_export([
-		'exception_class' => get_class($e),
-		'exception_message' => $e->getMessage(),
-		'exception_trace' => $e->getTraceAsString(),
-	], false);
+} else {
+	echo "No Laminas lib present :(\n";
 }
 echo "\n\n\n\n\n\n";
 
