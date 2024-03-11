@@ -1,0 +1,47 @@
+Received: from ABCDEF.XYZT.PROD.OUTLOOK.COM (2603:10a6:20b:48c::21)
+ by ABCDEFGH.XYZT.PROD.OUTLOOK.COM with HTTPS; Wed, 23 Jan 2024
+ 14:17:52 +0000
+From: John DOE <john.doe@demo.com>
+To: Harry COVER <harry.cover@demo.com>
+CC: =?windows-1258?Q?C=E9line_RENAUD?= <celine@demo.com>, Joe CYCLONA
+	<joe@demo.com>
+Subject: R-123654 : TEST WINDOWS 1258
+Thread-Topic: R-123654 : TEST WINDOWS 1258
+Date: Wed, 23 Jan 2024 14:17:48 +0000
+Message-ID:
+	<DB4P251MB087942F5628FE52E25A9F1E0789A1@FEDCBA.XYZT.PROD.OUTLOOK.COM>
+Accept-Language: fr-FR, en-US
+Content-Language: fr-FR
+Content-Type: multipart/mixed;
+	boundary="_011_DB4P251MB087942E5618FE62E25A9F1E0877B2DB4P251MB0879EURP_"
+MIME-Version: 1.0
+
+--_011_DB4P251MB087942E5618FE62E25A9F1E0877B2DB4P251MB0879EURP_
+Content-Type: multipart/related;
+	boundary="_010_DB4P251MB087942E5618FE62E25A9F1E0877B2DB4P251MB0879EURP_";
+	type="multipart/alternative"
+
+--_010_DB4P251MB087942E5618FE62E25A9F1E0877B2DB4P251MB0879EURP_
+Content-Type: multipart/alternative;
+	boundary="_000_DB4P251MB087942E5618FE62E25A9F1E0877B2DB4P251MB0879EURP_"
+
+--_000_DB4P251MB087942E5618FE62E25A9F1E0877B2DB4P251MB0879EURP_
+Content-Type: text/plain; charset="windows-1258"
+Content-Transfer-Encoding: quoted-printable
+
+Bonjour,
+
+Apr=E8s v=E9rification votre soci=E9t=E9 a bien =E9t=E9 param=E9tr=E9 dans =
+notre liste de clients connus.
+Nous avons lanc=E9 une nouvelle commande de portant la r=E9f=E9rence :=
+ 20240124CLG12013
+
+Cordialement
+
+
+[Logo]
+
+John DOE
+
+
+--_011_DB4P251MB087942E5618FE62E25A9F1E0877B2DB4P251MB0879EURP_--
