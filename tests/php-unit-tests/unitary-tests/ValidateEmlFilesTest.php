@@ -125,6 +125,10 @@ class ValidateEmlFilesTest extends ItopTestCase
 		{
 			$sTestName = basename($sFile);
 
+			if (version_compare(phpversion(), '8.0.0', '<') && ('windows-1258.eml' === $sTestName)) {
+				// Due to a bug in PHP 7.x (#79200), skip this particular test case
+				continue;
+			}
 			$aReturn[$sTestName] = array(
 				'sFile'      => $sFile,
 				'sComment'   => isset($aMetaData[$sTestName]['sComment']) ? $aMetaData[$sTestName]['sComment'] : '',
