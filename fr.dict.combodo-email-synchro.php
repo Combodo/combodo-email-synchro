@@ -55,6 +55,6 @@ Dict::Add('FR FR', 'French', 'Français', [
 	'MailInbox:Status/Undesired' => 'Indésirable',
 	'MailInbox:Subject' => 'Objet',
 	'MailInbox:WithSelectedDo' => 'Pour les éléments sélectionnés : ',
-	'MailInbox:Z_DisplayedThereAre_X_Msg_Y_NewInTheMailbox' => '%1$d eMails affichés. Il y a au total %2$d eMail(s) dans la boîte : %3$d nouveaux (dont %4$d illisibles), et %4$d traités.',
+	'MailInbox:Z_DisplayedThereAre_X_Msg_Y_NewInTheMailbox' => '%1$d eMails affichés. Il y a au total %2$d eMail(s) dans la boîte : %3$d nouveaux (dont %4$d illisibles), et %5$d traités.',
 	'MailInboxProcessor:MessageTooBig_Size_MaxSize' => 'Message trop gros: %1$s (la taille max autorisée est %2$s)',
 ]);
