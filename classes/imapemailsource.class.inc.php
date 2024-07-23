@@ -31,9 +31,9 @@ class IMAPEmailSource extends EmailSource
 	protected $sServer = '';
 	protected $sLogin = '';
 	protected $sMailbox = '';
-	protected	$sTargetFolder = '';
+	protected $sTargetFolder = '';
 
-	public function __construct($sServer, $iPort, $sLogin, $sPwd, $sMailbox, $aOptions, $sTargetFolder = '')
+	public function __construct($sServer, $iPort, $sLogin, #[\SensitiveParameter] $sPwd, $sMailbox, $aOptions, $sTargetFolder = '')
 	{
 		parent::__construct();
 		$this->sLastErrorSubject = '';
