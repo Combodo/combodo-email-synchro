@@ -56,5 +56,5 @@ Dict::Add('DE DE', 'German', 'Deutsch', [
 	'MailInbox:Subject' => 'Betreff',
 	'MailInbox:WithSelectedDo' => 'Für die ausgewählten EMails: ',
 	'MailInbox:Z_DisplayedThereAre_X_Msg_Y_NewInTheMailbox' => '%1$d E-Mail(s) werden angezeigt. Es befinden sich %2$d E-Mail(s) im Postfach: %3$d neue (davon %4$d unlesbar), %5$d bearbeitete.',
-	'MailInboxProcessor:MessageTooBig_Size_MaxSize' => 'Message too big: %1$s (maximum allowed size %2$s)~~',
+	'MailInboxProcessor:MessageTooBig_Size_MaxSize' => 'Die Nachrichti ist zu groß: %1$s (maximale zulässige Größe %2$s)',
 ]);
