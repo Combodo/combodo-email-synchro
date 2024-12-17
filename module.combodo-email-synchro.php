@@ -8,7 +8,8 @@ SetupWebPage::AddModule(
 		'label'        => 'Tickets synchronization via e-mail',
 		'category'     => 'business',
 		// Setup
-		'dependencies' => array(//			'itop-config-mgmt/3.0.0', // iTop 3.0.0 minimum is not necessary for now, maybe in the future ?
+		'dependencies' => array(
+            'itop-profiles-itil/2.7.7', // iTop 3.0.0 minimum is not necessary for now, maybe in the future ?
 		),
 		'mandatory'    => false,
 		'visible'      => true,
