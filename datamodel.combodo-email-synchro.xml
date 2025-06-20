@@ -1156,12 +1156,12 @@ JS
 			
 			default:
 			// Unsupported image type, return the image as-is
-			self::Trace("Warning: unsupported image type: '{$aAttachment['mimeType']}'. Cannot resize the image, original image will be used.");
+			MailInboxesEmailProcessor::Trace("Warning: unsupported image type: '{$aAttachment['mimeType']}'. Cannot resize the image, original image will be used.");
 			return $aAttachment;
 		}
 		if ($img === false)
 		{
-			self::Trace("Warning: corrupted image: '{$aAttachment['filename']} / {$aAttachment['mimeType']}'. Cannot resize the image, original image will be used.");
+			MailInboxesEmailProcessor::Trace("Warning: corrupted image: '{$aAttachment['filename']} / {$aAttachment['mimeType']}'. Cannot resize the image, original image will be used.");
 			return $aAttachment;
 		}
 		else
@@ -1170,10 +1170,10 @@ JS
 			
 			$fScale = min($iMaxImageWidth / $iWidth, $iMaxImageHeight / $iHeight);
 
-			$iNewWidth = $iWidth * $fScale;
-			$iNewHeight = $iHeight * $fScale;
+			$iNewWidth = round($iWidth * $fScale);
+			$iNewHeight = round($iHeight * $fScale);
 			
-			self::Trace("Info: resizing image from ($iWidth x $iHeight) to ($iNewWidth x $iNewHeight) px");
+			MailInboxesEmailProcessor::Trace("Info: resizing image from ($iWidth x $iHeight) to ($iNewWidth x $iNewHeight) px");
 			$new = imagecreatetruecolor($iNewWidth, $iNewHeight);
 			
 			// Preserve transparency
@@ -1207,7 +1207,7 @@ JS
 			imagedestroy($img);
 			imagedestroy($new);
 			
-			self::Trace("Info: resized image is ".strlen($aAttachment['content'])." bytes long.");
+			MailInboxesEmailProcessor::Trace("Info: resized image is ".strlen($aAttachment['content'])." bytes long.");
 				
 			return $aAttachment;
 		}
