@@ -464,4 +464,34 @@ class EmailMessage {
 		}
 		return null;
 	}
+
+	/**
+	 * Check whether the message is an auto reply
+	 * @return bool
+	 * @since 3.5.1
+	 */
+	public function IsAutoReplyEmail()
+	{
+		$aAutoReplyHeaderPatterns = array(
+			'auto-submitted' => '/^auto-replied.*$/i',
+		);
+		if (class_exists('MetaModel'))
+		{
+			$aAutoReplyHeaderPatterns = MetaModel::GetModuleSetting('combodo-email-synchro', 'auto_reply_header_patterns', $aAutoReplyHeaderPatterns);
+		}	
+		foreach ($aAutoReplyHeaderPatterns as $sHeader => $sPattern) {
+			if(array_key_exists(strtolower($sHeader), $this->aHeaders))
+			{
+				IssueLog::Debug("Header \"$sHeader\" exists with the value: \"" . $this->aHeaders[strtolower($sHeader)] . "\"");
+				if (preg_match($sPattern, $this->aHeaders[strtolower($sHeader)]))
+				{
+					// Current mail is an auto reply
+					IssueLog::Debug("Given mail is an autoreply!");
+					return true;
+				}	
+			}
+		}
+
+		return false;
+	}
 }

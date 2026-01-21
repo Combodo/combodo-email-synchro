@@ -62,6 +62,9 @@ SetupWebPage::AddModule(
 		'images_minimum_size' => '100x20', // Images smaller that these dimensions will be ignored (signatures...)
 		'images_maximum_size' => '', // Images bigger that these dimensions will be resized before uploading into iTop
 		'recommended_max_allowed_packet' => 10*1024*1024, // MySQL parameter for attachments
+		'auto_reply_header_patterns' => array (
+		  'auto-submitted' => '/^auto-replied.*$/i',
+		),
 	),
 	)
 );
