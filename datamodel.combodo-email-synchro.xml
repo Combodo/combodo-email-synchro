@@ -724,7 +724,7 @@ JS
 					if ($this->IsImage($aAttachment['mimeType']) && class_exists('InlineImage') && $aAttachment['inline'])	{
 						$oAttachment = new InlineImage();
 						MailInboxesEmailProcessor::Trace("Info: email attachment {$aAttachment['filename']} will be stored as an InlineImage.");
-						$oAttachment->Set('secret', sprintf ('%06x', mt_rand(0, 0xFFFFFF))); // something not easy to guess
+						$oAttachment->Set('secret', bin2hex(random_bytes(16))); // 128 bits of entropy, cryptographically secure
 					}	else {
 						MailInboxesEmailProcessor::Trace("Info: email attachment {$aAttachment['filename']} will be stored as an Attachment.");
 						$oAttachment = new Attachment();
