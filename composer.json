@@ -1,0 +1,21 @@
+{
+  "config": {
+    "classmap-authoritative": true,
+    "platform": {
+      "php": "8.1.0"
+    }
+  },
+  "autoload": {
+    "psr-4": {
+      "Combodo\\iTop\\Extension\\EmailSynchro\\": "src"
+    }
+  },
+  "name": "combodo/combodo-email-synchro",
+  "type": "itop-extension",
+  "description": "Email synchro",
+  "require": {
+    "php": ">=8.1.0 <8.4.0",
+    "composer-runtime-api": "^2.0",
+    "directorytree/imapengine": "^1.15"
+  }
+}

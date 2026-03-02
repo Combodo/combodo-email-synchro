@@ -1113,9 +1113,7 @@ JS
 		switch($sProtocol)
 		{
 			case 'imap':
-			$aImapOptions = MetaModel::GetModuleSetting('combodo-email-synchro', 'imap_options', array('imap'));
-			self::Trace("Protocol: $sProtocol Mail server: $sServer, port: $iPort, login: $sLogin, password: ***, mailbox: $sMailbox, options: /".implode('/', $aImapOptions));
-			$oSource = new IMAPEmailSource($sServer, $iPort, $sLogin, $sPwd, $sMailbox, $aImapOptions, $this->Get('target_folder') );
+			$oSource = new Combodo\iTop\Extension\EmailSynchro\Service\IMAPEmailSource($this);
 			break;
 
 			case 'pop3':

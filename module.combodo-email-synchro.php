@@ -16,6 +16,7 @@ SetupWebPage::AddModule(
 		'installer'    => 'EmailSynchroInstaller',
 		// Components
 		'datamodel' => array(
+			'vendor/autoload.php',
 			'classes/autoload.php',
 			'model.combodo-email-synchro.php',
 		),
