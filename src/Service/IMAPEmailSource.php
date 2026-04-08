@@ -118,15 +118,21 @@ class IMAPEmailSource extends EmailSource
 		return $oNewMail;
 	}
 
-	public function DeleteMessage($index)
+	public function DeleteMessage($index, $bMessageNumberAsIdentifier = true)
 	{
-		$iOffsetIndex = 1 + $index;
+		if ($bMessageNumberAsIdentifier) {
+			$iOffsetIndex = 1 + $index;
+			$identifier = ImapFetchIdentifier::MessageNumber;
+		} else {
+			$iOffsetIndex = $index;
+			$identifier = ImapFetchIdentifier::Uid;
+		}
 
 		IssueLog::Debug(__METHOD__." Start: $iOffsetIndex for $this->sServer", static::LOG_CHANNEL);
 		try {
 			$oMessage = $this->GetFolder()
 				->messages()
-				->find($iOffsetIndex, ImapFetchIdentifier::MessageNumber);
+				->find($iOffsetIndex, $identifier);
 
 			if (!$oMessage) {
 				return null;
