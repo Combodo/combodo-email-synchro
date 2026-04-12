@@ -118,7 +118,12 @@ class IMAPEmailSource extends EmailSource
 		return $oNewMail;
 	}
 
-	public function DeleteMessage($index, $bMessageNumberAsIdentifier = true)
+	/**
+	 * @param $index
+	 * @param bool $bMessageNumberAsIdentifier If true, the index is considered as the message number (1-based index), otherwise it is considered as the UID (0-based index)
+	 * @return true|null
+	 */
+	public function DeleteMessage($index, bool $bMessageNumberAsIdentifier = true)
 	{
 		if ($bMessageNumberAsIdentifier) {
 			$iOffsetIndex = 1 + $index;
