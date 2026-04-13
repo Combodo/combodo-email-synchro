@@ -231,6 +231,10 @@ class EmailMessage {
 			$sBodyText = '<html><body>'.$sBodyText.'</body></html>';
 		}
 		
+		$aGlobalDelimiterPatterns = array(
+			"/\RFrom: .+\RSent: .+\R/m",
+			"/\RDe : .+\REnvoyé : .+\R/m",
+		);
 		// default tags to remove: array of tag_name => array of class names
 		$aTagsToRemove = array(
 			'blockquote' => array(),
@@ -240,14 +244,19 @@ class EmailMessage {
 
 		if (class_exists('MetaModel'))
 		{
-			$aTagsToRemove = MetaModel::GetModuleSetting('combodo-email-synchro', 'html-tags-to-remove', $aTagsToRemove);	
-		}		
+			$aTagsToRemove = MetaModel::GetModuleSetting('combodo-email-synchro', 'html-tags-to-remove', $aTagsToRemove);
+			$aGlobalDelimiterPatterns = MetaModel::GetModuleSetting('combodo-email-synchro', 'multiline-delimiter-patterns', $aGlobalDelimiterPatterns);
+
+			// Reset the configuration if HTML delimit is not wanted. (default old behaviour)
+			if (!MetaModel::GetModuleSetting('combodo-email-synchro', 'delimit_html_message', false))
+				$aGlobalDelimiterPatterns = array();
+		}
 		
 		$this->oDoc = new DOMDocument();
 		$this->oDoc->preserveWhiteSpace = true;
 		@$this->oDoc->loadHTML('<?xml encoding="UTF-8"?>'.$sBodyText); // For loading HTML chunks where the character set is not specified
 		
-		$this->CleanNode($this->oDoc, $aTagsToRemove);
+		$this->CleanNode($this->oDoc, $aTagsToRemove, $aGlobalDelimiterPatterns);
 		
 		$oXPath = new DOMXPath($this->oDoc);
 		$sXPath = "//body";
@@ -273,11 +282,11 @@ class EmailMessage {
 	 * Clean the given node according to the list of tags / classes to remove
 	 * @param DOMNode $oElement
 	 * @param unknown $aTagsToRemove
+	 * @param array $aGlobalDelimiterPatterns
+	 * @param bool $bRemoveAll
 	 */
-	protected function CleanNode(DOMNode $oElement, $aTagsToRemove)
+	protected function CleanNode(DOMNode $oElement, $aTagsToRemove, $aGlobalDelimiterPatterns, &$bRemoveAll = false)
 	{
-		$aAttrToRemove = array();
-		
 		if ($oElement->hasChildNodes())
 		{
 			$aChildElementsToRemove = array();
@@ -303,7 +312,7 @@ class EmailMessage {
 						else
 						{
 							// Recurse
-							$this->CleanNode($oNode, $aTagsToRemove);
+							$this->CleanNode($oNode, $aTagsToRemove, $aGlobalDelimiterPatterns, $bRemoveAll);
 						}
 					}
 				}
@@ -312,10 +321,15 @@ class EmailMessage {
 					// Remove comments
 					$aChildElementsToRemove[] = $oNode;
 				}
-				else
+				else if (!$bRemoveAll)
 				{
 					// Recurse
-					$this->CleanNode($oNode, $aTagsToRemove);
+					$this->CleanNode($oNode, $aTagsToRemove, $aGlobalDelimiterPatterns, $bRemoveAll);
+				}
+				else
+				{
+					// Remove all following nodes
+					$aChildElementsToRemove[] = $oNode;
 				}
 			}
 						
@@ -324,7 +338,19 @@ class EmailMessage {
 			{
 				$oElement->removeChild($oDomElement);
 			}
-		}		
+			
+			// Search for delimiter patterns
+			foreach ($aGlobalDelimiterPatterns as $sPattern)
+			{
+				if(preg_match($sPattern, $oElement->textContent))
+				{
+					$bRemoveAll = true;
+					$this->sTrace .= 'Found a match with the global pattern: "'.$sPattern.'"';
+					$this->sTrace .= "\n=== ".$oElement->getNodePath()." ===\n".$oElement->textContent."\n=============\n";
+					$oElement->parentNode->removeChild($oElement);
+				}
+			}
+		}
 	}
 
 	/**
