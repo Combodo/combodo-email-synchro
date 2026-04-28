@@ -187,9 +187,13 @@ class IMAPEmailSource extends EmailSource
 
 	public function GetFolder()
 	{
-		if ($this->oFolder === null) {
-			$this->oFolder =  $this->oMailbox->folders()->find($this->sMailbox);
-		}
+        if ($this->oFolder === null && $this->sMailbox === "") {
+            $this->oFolder = $this->oMailbox->inbox();
+        }
+        else if ($this->oFolder === null) {
+            $this->oFolder =  $this->oMailbox->folders()->find($this->sMailbox);
+        }
+
 		return $this->oFolder;
 	}
 
