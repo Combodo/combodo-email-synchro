@@ -34,6 +34,7 @@ class IMAPEmailSource extends EmailSource
 	 */
 	private $oFolder;
 	private $bMessagesDeleted = false;
+	private array $aIndexedUids = [];
 
 	public function __construct(MailInboxBase $oMailbox)
 	{
@@ -90,22 +91,22 @@ class IMAPEmailSource extends EmailSource
 
 	public function GetMessage($index)
 	{
-		$iOffsetIndex = 1 + $index;
+		$iUid = $this->aIndexedUids[$index] ?? null;
 
-		IssueLog::Debug(__METHOD__." Start: $iOffsetIndex for $this->sServer", static::LOG_CHANNEL);
+		IssueLog::Debug(__METHOD__." Start: uid=$iUid index=$index for $this->sServer", static::LOG_CHANNEL);
 		try {
 			$oMessage = $this->GetFolder()
 				->messages()
 				->withHeaders()
 				->withBody()
-				->findOrFail($iOffsetIndex, ImapFetchIdentifier::MessageNumber);
+				->findOrFail($iUid, ImapFetchIdentifier::Uid);
 
 			if (!$oMessage) {
 				return null;
 			}
 			$sUIDL = static::UseMessageIdAsUid() ? $oMessage->messageId() : $oMessage->uid();
 		} catch (Exception $e) {
-			IssueLog::Error(__METHOD__." $iOffsetIndex for $this->sServer throws an exception", static::LOG_CHANNEL, [
+			IssueLog::Error(__METHOD__." uid=$iUid for $this->sServer throws an exception", static::LOG_CHANNEL, [
 				'exception.message' => $e->getMessage(),
 				'exception.stack'   => $e->getTraceAsString(),
 			]);
@@ -113,19 +114,23 @@ class IMAPEmailSource extends EmailSource
 			return null;
 		}
 		$oNewMail = new MessageFromMailbox($sUIDL, $oMessage->head(), $oMessage->body());
-		IssueLog::Debug(__METHOD__." End: $iOffsetIndex for $this->sServer", static::LOG_CHANNEL);
+		IssueLog::Debug(__METHOD__." End: uid=$iUid for $this->sServer", static::LOG_CHANNEL);
 
 		return $oNewMail;
 	}
 
 	/**
 	 * @param $index
-	 * @param bool $bMessageNumberAsIdentifier If true, the index is considered as the message number (1-based index), otherwise it is considered as the UID (0-based index)
+	 * @param bool $bMessageNumberAsIdentifier Ignored when a cached UID is available; kept for API compatibility.
 	 * @return true|null
 	 */
 	public function DeleteMessage($index, bool $bMessageNumberAsIdentifier = true)
 	{
-		if ($bMessageNumberAsIdentifier) {
+		$iCachedUid = $this->aIndexedUids[$index] ?? null;
+		if ($iCachedUid !== null) {
+			$iOffsetIndex = $iCachedUid;
+			$identifier = ImapFetchIdentifier::Uid;
+		} elseif ($bMessageNumberAsIdentifier) {
 			$iOffsetIndex = 1 + $index;
 			$identifier = ImapFetchIdentifier::MessageNumber;
 		} else {
@@ -171,15 +176,18 @@ class IMAPEmailSource extends EmailSource
 
 	public function GetListing()
 	{
+		$this->aIndexedUids = [];
 		$aReturn = [];
 		$oMessages = $this->GetFolder()
 			->messages()
 			->withHeaders()
 			->get();
 		foreach ($oMessages as $oMessage) {
+			$iUid = $oMessage->uid();
+			$this->aIndexedUids[] = $iUid;
 			$aReturn[] = [
 				'msg_id' => $oMessage->messageId(),
-				'uidl'   => static::UseMessageIdAsUid() ? $oMessage->messageId() : $oMessage->uid(),
+				'uidl'   => static::UseMessageIdAsUid() ? $oMessage->messageId() : $iUid,
 			];
 		}
 		return $aReturn;
@@ -206,12 +214,14 @@ class IMAPEmailSource extends EmailSource
 	 */
 	public function MoveMessage($index)
 	{
-		$iOffsetIndex = 1 + $index;
+		$iCachedUid = $this->aIndexedUids[$index] ?? null;
+		$iOffsetIndex = $iCachedUid ?? (1 + $index);
+		$identifier = $iCachedUid !== null ? ImapFetchIdentifier::Uid : ImapFetchIdentifier::MessageNumber;
 		IssueLog::Debug(__METHOD__." Start: $iOffsetIndex for $this->sServer", static::LOG_CHANNEL);
 		try {
 			$oMessage = $this->GetFolder()
 				->messages()
-				->find($iOffsetIndex, ImapFetchIdentifier::MessageNumber);
+				->find($iOffsetIndex, $identifier);
 
 			if (!$oMessage) {
 				return false;
