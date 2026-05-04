@@ -187,12 +187,17 @@ class IMAPEmailSource extends EmailSource
 
 	public function GetFolder()
 	{
-        if ($this->oFolder === null && $this->sMailbox === "") {
-            $this->oFolder = $this->oMailbox->inbox();
-        }
-        else if ($this->oFolder === null) {
-            $this->oFolder =  $this->oMailbox->folders()->find($this->sMailbox);
-        }
+		// Set the folder if not already done
+		if ($this->oFolder === null && $this->sMailbox === '') {
+			$this->oFolder = $this->oMailbox->inbox();
+		} elseif ($this->oFolder === null) {
+			$this->oFolder = $this->oMailbox->folders()->find($this->sMailbox);
+		}
+
+		// If we haven't found a real folder yet, throw an error
+		if ($this->oFolder === null) {
+			throw new Exception("IMAP folder '{$this->sMailbox}' not found on server {$this->sServer}. Please check the 'Mailbox (for IMAP)' field and make sure it follows RFC 3501 (https://www.rfc-editor.org/rfc/rfc3501.html#section-5.1)");
+		}
 
 		return $this->oFolder;
 	}
