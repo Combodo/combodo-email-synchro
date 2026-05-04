@@ -14,6 +14,7 @@ use DirectoryTree\ImapEngine\FolderRepositoryInterface;
 use DirectoryTree\ImapEngine\MailboxInterface;
 use Exception;
 use ReflectionClass;
+use utils;
 
 /**
  * @covers \Combodo\iTop\Extension\EmailSynchro\Service\IMAPEmailSource
@@ -21,6 +22,13 @@ use ReflectionClass;
 class IMAPEmailSourceTest extends ItopTestCase
 {
 	private const SERVER_HOST = 'imap.example.com';
+
+	public function setUp(): void
+	{
+		parent::setUp();
+
+		$this->RequireOnceItopFile('env-'.utils::GetCurrentEnvironment().'/combodo-email-synchro/vendor/autoload.php');
+	}
 
 	/**
 	 * Creates an IMAPEmailSource instance without going through the constructor (which requires a real IMAP connection), and injects the given dependencies.
