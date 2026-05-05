@@ -27,6 +27,7 @@ class IMAPEmailSourceTest extends ItopTestCase
 	{
 		parent::setUp();
 
+		$this->RequireOnceItopFile('env-'.utils::GetCurrentEnvironment().'/combodo-email-synchro/classes/autoload.php');
 		$this->RequireOnceItopFile('env-'.utils::GetCurrentEnvironment().'/combodo-email-synchro/vendor/autoload.php');
 	}
 
