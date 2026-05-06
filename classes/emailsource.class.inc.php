@@ -1,4 +1,5 @@
 <?php
+
 // Copyright (C) 2016-2024 Combodo SAS
 //
 //   This program is free software; you can redistribute it and/or modify
@@ -19,7 +20,7 @@
  */
 
 /**
- * Exception triggered when encoutering messages too big to be read
+ * Exception triggered when encountering messages too big to be read
  */
 class EmailBiggerThanMaxMessageSizeException extends Exception
 {
@@ -37,7 +38,7 @@ class EmailBiggerThanMaxMessageSizeException extends Exception
 		parent::__construct($message, $code, $previous);
 		$this->iMessageSize = $iMessageSize;
 	}
-	
+
 	public function GetMessageSize()
 	{
 		return $this->iMessageSize;
@@ -59,20 +60,20 @@ abstract class EmailSource
 	 * @var int|float
 	 */
 	protected $maxMessageSize;
-	
+
 	public function __construct()
 	{
 		$this->sPartsOrder = 'text/plain,text/html'; // Default value can be changed via SetPartsOrder
-		$this->token  =null;
+		$this->token  = null;
 		$this->maxMessageSize = 0;
 	}
-	
+
 	/**
 	 * Get the number of messages to process
 	 * @return integer The number of available messages
 	 */
 	abstract public function GetMessagesCount();
-	
+
 	/**
 	 * Retrieves the message of the given index [0..Count]
 	 * @param $index integer The index between zero and count
@@ -136,8 +137,11 @@ abstract class EmailSource
 	abstract public function Disconnect();
 
 	/**
-	 * Workaround for some email servers (like gMail!) where the UID may change between two sessions, so let's use the MessageID
-	 * as a replacement for the UID !
+	 * Workaround for some email servers (like Gmail!) where the sequence number may change between two sessions, so let's use the MessageID
+	 * as a replacement for the sequence number!
+	 *
+	 * Up until we migrated from php_imap/laminas-mail library usage to ImapEngine, we used the sequence number instead of the UID and created
+	 * confusion in the code. We thought UID was able to mutate after an expunge, but it was the sequence number all along
 	 *
 	 * Note that it is possible to receive twice a message with the same MessageID, but since the content of the message
 	 * will be the same, it's a safe to process such messages only once...
@@ -162,7 +166,7 @@ abstract class EmailSource
 	{
 		return $this->sLastErrorMessage;
 	}
-	
+
 	/**
 	 * Preferred order for retrieving the mail "body" when scanning a multiparts emails
 	 * @param $sPartsOrder string A comma separated list of MIME types e.g. text/plain,text/html
@@ -183,35 +187,35 @@ abstract class EmailSource
 	 * Set an opaque reference token for use by the caller...
 	 * @param mixed $token
 	 */
- 	public function SetToken($token)
- 	{
- 		$this->token = $token;
- 	}
- 	/**
- 	 * Get the reference token set earlier....
- 	 * @return mixed The token set by SetToken()
- 	 */
- 	public function GetToken()
- 	{
- 		return $this->token;
- 	}
- 	
- 	/**
- 	 * Set the maximum size for a message (in byte)
- 	 * Messages larger than this value will not be read (will cause an EmailBiggerThanMaxMessageSizeException)
- 	 * @param int|float $maxMessageSize Could be an int if we are not on 32-bit system since 2Gb may be too small as a limit one day
- 	 */
- 	public function SetMaxMessageSize($maxMessageSize)
- 	{
- 		$this->maxMessageSize = $maxMessageSize;
- 	}
+	public function SetToken($token)
+	{
+		$this->token = $token;
+	}
+	/**
+	 * Get the reference token set earlier....
+	 * @return mixed The token set by SetToken()
+	 */
+	public function GetToken()
+	{
+		return $this->token;
+	}
 
- 	/**
- 	 * Get the maximum size set for reading messages
- 	 * @return int|float
- 	 */
- 	public function GetMaxMessageSize()
- 	{
- 		return $this->maxMessageSize;
- 	}
+	/**
+	 * Set the maximum size for a message (in byte)
+	 * Messages larger than this value will not be read (will cause an EmailBiggerThanMaxMessageSizeException)
+	 * @param int|float $maxMessageSize Could be an int if we are not on 32-bit system since 2Gb may be too small as a limit one day
+	 */
+	public function SetMaxMessageSize($maxMessageSize)
+	{
+		$this->maxMessageSize = $maxMessageSize;
+	}
+
+	/**
+	 * Get the maximum size set for reading messages
+	 * @return int|float
+	 */
+	public function GetMaxMessageSize()
+	{
+		return $this->maxMessageSize;
+	}
 }
