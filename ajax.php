@@ -200,11 +200,11 @@ function GetMailboxContent($oPage, $oInbox)
 }
 
 /**
- * Finds the message with the given UIDL identifier
+ * Finds the index of the message with the given UIDL identifier
  * @param array $aMessages The array returned by $oSource->GetListing()
  * @param string $sUIDL The UIDL to find
  * @param EmailSource $oSource
- * @return array|false The message data if found, false otherwise
+ * @return int|false The index of the message if found, false otherwise
  */
 function FindMessageIDFromUIDL($aMessages, $sUIDL, EmailSource $oSource)
 {
