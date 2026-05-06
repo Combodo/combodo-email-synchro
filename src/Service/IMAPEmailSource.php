@@ -253,7 +253,7 @@ class IMAPEmailSource extends EmailSource
 
 	/**
 	 * Resolve a sequence index as an UID. If none is found in our index, we'll try to use it as a sequence index
-	 * bMessagesDeleted
+	 *
 	 * @param int $iSequenceIndex
 	 * @return array{0:int,1:ImapFetchIdentifier}
 	 */
