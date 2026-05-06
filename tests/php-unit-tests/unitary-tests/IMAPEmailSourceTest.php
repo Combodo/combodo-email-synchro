@@ -16,7 +16,6 @@ use DirectoryTree\ImapEngine\Testing\FakeFolder;
 use DirectoryTree\ImapEngine\Testing\FakeMailbox;
 use Exception;
 use MessageFromMailbox;
-use MetaModel;
 use ReflectionClass;
 use ReflectionProperty;
 use utils;
@@ -31,9 +30,9 @@ class IMAPEmailSourceTest extends ItopTestCase
 	{
 		parent::setUp();
 		$this->oConfig = utils::GetConfig();
-		$this->bOriginalUseMessageIdAsUid = MetaModel::GetModuleSetting('combodo-email-synchro', 'use_message_id_as_uid', false);
-    
-    $this->RequireOnceItopFile('env-'.utils::GetCurrentEnvironment().'/combodo-email-synchro/classes/autoload.php');
+		$this->bOriginalUseMessageIdAsUid = $this->oConfig->GetModuleSetting('combodo-email-synchro', 'use_message_id_as_uid', false);
+
+		$this->RequireOnceItopFile('env-'.utils::GetCurrentEnvironment().'/combodo-email-synchro/classes/autoload.php');
 		$this->RequireOnceItopFile('env-'.utils::GetCurrentEnvironment().'/combodo-email-synchro/vendor/autoload.php');
 		$this->RequireOnceItopFile('env-'.utils::GetCurrentEnvironment().'/combodo-email-synchro/tests/php-unit-tests/unitary-tests/classes/TestImapMessage.php');
 
@@ -139,8 +138,7 @@ class IMAPEmailSourceTest extends ItopTestCase
 		$this->assertEquals('Processed', $sMessages[0]->copiedTo());
 		$this->assertTrue($sMessages[0]->wasDeleted());
 	}
-  
-  
+
 	/**
 	 * When the mailbox field is empty, GetFolder() must return the server's INBOX and must never call folders()->find().
 	 *
@@ -238,8 +236,8 @@ class IMAPEmailSourceTest extends ItopTestCase
 		$this->assertSame($oFirstResult, $oSecondResult);
 		$this->assertSame($oFirstResult, $oThirdResult);
 	}
-  
-  	/**
+
+	/**
 	 * Creates an IMAPEmailSource instance without going through the constructor (which requires a real IMAP connection), and injects the given dependencies.
 	 */
 	private function MakeSource(string $sMailbox, MailboxInterface $oMockMailbox): IMAPEmailSource
@@ -297,5 +295,5 @@ class IMAPEmailSourceTest extends ItopTestCase
 	private function setUseMessageIdAsUid(bool $bUseMessageIdAsUid): void
 	{
 		$this->oConfig->SetModuleSetting('combodo-email-synchro', 'use_message_id_as_uid', $bUseMessageIdAsUid);
-  }
+	}
 }
