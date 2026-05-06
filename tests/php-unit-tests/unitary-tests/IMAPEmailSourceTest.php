@@ -8,7 +8,7 @@
 namespace Combodo\iTop\CombodoEmailSynchro\Test\UnitTest\Unitary;
 
 use Combodo\iTop\Extension\EmailSynchro\Service\IMAPEmailSource;
-use Combodo\iTop\Test\UnitTest\ItopTestCase;
+use Combodo\iTop\Test\UnitTest\ItopDataTestCase;
 use DirectoryTree\ImapEngine\FolderInterface;
 use DirectoryTree\ImapEngine\FolderRepositoryInterface;
 use DirectoryTree\ImapEngine\MailboxInterface;
@@ -20,7 +20,7 @@ use ReflectionClass;
 use ReflectionProperty;
 use utils;
 
-class IMAPEmailSourceTest extends ItopTestCase
+class IMAPEmailSourceTest extends ItopDataTestCase
 {
 	private $oConfig;
 	private $bOriginalUseMessageIdAsUid;
