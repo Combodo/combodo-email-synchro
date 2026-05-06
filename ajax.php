@@ -200,19 +200,19 @@ function GetMailboxContent($oPage, $oInbox)
 }
 
 /**
- * Finds the message with the given UIDL identifier
+ * Finds the index of the message with the given UIDL identifier
  * @param array $aMessages The array returned by $oSource->GetListing()
  * @param string $sUIDL The UIDL to find
  * @param EmailSource $oSource
- * @return array|false The message data if found, false otherwise
+ * @return int|false The index of the message if found, false otherwise
  */
-function FindMessageDataFromUIDL($aMessages, $sUIDL, EmailSource $oSource)
+function FindMessageIDFromUIDL($aMessages, $sUIDL, EmailSource $oSource)
 {
 	$sKey = $sUIDL;
 	$sMultiSourceKey = substr($sUIDL, 1 + strlen($oSource->GetName())); // in Multisource mode the name of the source plus _ are prepended to the UIDL
 	foreach ($aMessages as $aData) {
 		if ((strcmp($sKey, $aData['uidl']) == 0) || (strcmp($sMultiSourceKey, $aData['uidl']) == 0)) {
-			return $aData;
+			return $aData['msg_id'] - 1; // As our message_id is 1 based, we make it 0 based to communicate with internal API
 		}
 	}
 	return false;
@@ -267,14 +267,10 @@ try {
 						$aReplicas[$sUIDL]->DBDelete();
 					}
 					if ($sOperation == 'mailbox_delete_messages') {
-						$aMessageData = FindMessageDataFromUIDL($aMessages, $sUIDL, $oSource);
-						if ($aMessageData !== false) {
+						$idx = FindMessageIDFromUIDL($aMessages, $sUIDL, $oSource);
+						if ($idx !== false) {
 							// Delete the actual email from the mailbox
-							if (is_int($aMessageData['msg_id'])) {
-								$oSource->DeleteMessage($aMessageData['msg_id']);
-							} else {
-								$oSource->DeleteMessage($aMessageData['uidl'], false);
-							}
+							$oSource->DeleteMessage($idx);
 						}
 					}
 				}

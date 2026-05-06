@@ -34,6 +34,7 @@ class IMAPEmailSource extends EmailSource
 	 */
 	private $oFolder;
 	private $bMessagesDeleted = false;
+	private array $aIndexedUids = [];
 
 	public function __construct(MailInboxBase $oMailbox)
 	{
@@ -90,22 +91,22 @@ class IMAPEmailSource extends EmailSource
 
 	public function GetMessage($index)
 	{
-		$iOffsetIndex = 1 + $index;
+		[$iOffsetIndex, $identifier] = $this->ResolveMessageIdentifier($index);
 
-		IssueLog::Debug(__METHOD__." Start: $iOffsetIndex for $this->sServer", static::LOG_CHANNEL);
+		IssueLog::Debug(__METHOD__." Start: uid=$iOffsetIndex index=$index for $this->sServer", static::LOG_CHANNEL);
 		try {
 			$oMessage = $this->GetFolder()
 				->messages()
 				->withHeaders()
 				->withBody()
-				->findOrFail($iOffsetIndex, ImapFetchIdentifier::MessageNumber);
+				->findOrFail($iOffsetIndex, $identifier);
 
 			if (!$oMessage) {
 				return null;
 			}
 			$sUIDL = static::UseMessageIdAsUid() ? $oMessage->messageId() : $oMessage->uid();
 		} catch (Exception $e) {
-			IssueLog::Error(__METHOD__." $iOffsetIndex for $this->sServer throws an exception", static::LOG_CHANNEL, [
+			IssueLog::Error(__METHOD__." uid=$iOffsetIndex for $this->sServer throws an exception", static::LOG_CHANNEL, [
 				'exception.message' => $e->getMessage(),
 				'exception.stack'   => $e->getTraceAsString(),
 			]);
@@ -113,25 +114,18 @@ class IMAPEmailSource extends EmailSource
 			return null;
 		}
 		$oNewMail = new MessageFromMailbox($sUIDL, $oMessage->head(), $oMessage->body());
-		IssueLog::Debug(__METHOD__." End: $iOffsetIndex for $this->sServer", static::LOG_CHANNEL);
+		IssueLog::Debug(__METHOD__." End: uid=$iOffsetIndex for $this->sServer", static::LOG_CHANNEL);
 
 		return $oNewMail;
 	}
 
 	/**
 	 * @param $index
-	 * @param bool $bMessageNumberAsIdentifier If true, the index is considered as the message number (1-based index), otherwise it is considered as the UID (0-based index)
 	 * @return true|null
 	 */
-	public function DeleteMessage($index, bool $bMessageNumberAsIdentifier = true)
+	public function DeleteMessage($index)
 	{
-		if ($bMessageNumberAsIdentifier) {
-			$iOffsetIndex = 1 + $index;
-			$identifier = ImapFetchIdentifier::MessageNumber;
-		} else {
-			$iOffsetIndex = $index;
-			$identifier = ImapFetchIdentifier::Uid;
-		}
+		[$iOffsetIndex, $identifier] = $this->ResolveMessageIdentifier($index);
 
 		IssueLog::Debug(__METHOD__." Start: $iOffsetIndex for $this->sServer", static::LOG_CHANNEL);
 		try {
@@ -171,16 +165,24 @@ class IMAPEmailSource extends EmailSource
 
 	public function GetListing()
 	{
+		// Indexes the UIDs of the messages to communicate with the IMAP server with UID only (if we can)
+		// Internally iTop uses sequence number, we'll use this cache to map both
+		$this->aIndexedUids = [];
 		$aReturn = [];
 		$oMessages = $this->GetFolder()
 			->messages()
 			->withHeaders()
 			->get();
+
+		$iIndex = 1; // We start at 1 to be consistent with IMAP sequence index
 		foreach ($oMessages as $oMessage) {
+			$iUid = $oMessage->uid();
+			$this->aIndexedUids[] = $iUid;
 			$aReturn[] = [
-				'msg_id' => $oMessage->messageId(),
-				'uidl'   => static::UseMessageIdAsUid() ? $oMessage->messageId() : $oMessage->uid(),
+				'msg_id' => $iIndex, // msg_id is historically not a messageId, but the sequence index
+				'uidl'   => static::UseMessageIdAsUid() ? $oMessage->messageId() : $iUid,
 			];
+			$iIndex++;
 		}
 		return $aReturn;
 	}
@@ -211,18 +213,18 @@ class IMAPEmailSource extends EmailSource
 	 */
 	public function MoveMessage($index)
 	{
-		$iOffsetIndex = 1 + $index;
+		[$iOffsetIndex, $identifier] = $this->ResolveMessageIdentifier($index);
 		IssueLog::Debug(__METHOD__." Start: $iOffsetIndex for $this->sServer", static::LOG_CHANNEL);
 		try {
 			$oMessage = $this->GetFolder()
 				->messages()
-				->find($iOffsetIndex, ImapFetchIdentifier::MessageNumber);
+				->find($iOffsetIndex, $identifier);
 
 			if (!$oMessage) {
 				return false;
 			}
 
-			// Use copy+delete instead of move as GMail won't expunge automatically and break our way of iterating over messages indexes
+			// Use copy+delete instead of move as Gmail won't expunge automatically and break our way of iterating over messages indexes
 			$oMessage->copy($this->sTargetFolder);
 			$oMessage->delete();
 			$this->bMessagesDeleted = true;
@@ -253,5 +255,22 @@ class IMAPEmailSource extends EmailSource
 	public function GetMailbox()
 	{
 		return $this->sMailbox;
+	}
+
+	/**
+	 * Resolve a sequence index as an UID. If none is found in our index, we'll try to use it as a sequence index
+	 *
+	 * @param int $iSequenceIndex
+	 * @return array{0:int,1:ImapFetchIdentifier}
+	 */
+	private function ResolveMessageIdentifier(int $iSequenceIndex): array
+	{
+		$iCachedUid = $this->aIndexedUids[$iSequenceIndex] ?? null;
+		if ($iCachedUid !== null) {
+			return [$iCachedUid, ImapFetchIdentifier::Uid];
+		}
+
+		// Our internal API use 0 based sequence number, we make it 1 based to match IMAP RFC 9051 2.3.1.2.https://www.ietf.org/rfc/rfc9051.html#section-2.3.1.2
+		return [1 + $iSequenceIndex, ImapFetchIdentifier::MessageNumber];
 	}
 }
