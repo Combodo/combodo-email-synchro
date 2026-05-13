@@ -46,13 +46,8 @@ function GetMessageDetails($oPage, $sUIDL)
 		return;
 	}
 	$oPage->set_title(Dict::S('MailInbox:MessageDetails'));
-	if(MailInboxBase::UseLegacy()){
-		$oPage->add('<h2>'.Dict::S('MailInbox:MessageDetails').'</h2>');
-	}
-	else{
-		$oPanel = PanelUIBlockFactory::MakeForInformation(Dict::S('MailInbox:MessageDetails'));
-		$oPage->AddUiBlock($oPanel);
-	}
+	$oPanel = PanelUIBlockFactory::MakeForInformation(Dict::S('MailInbox:MessageDetails'));
+	$oPage->AddUiBlock($oPanel);
 
 		// Display the eml link
 	$iDocId = $oReplica->GetKey();
@@ -61,14 +56,9 @@ function GetMessageDetails($oPage, $sUIDL)
 	if (!$oDoc->IsEmpty())
 	{
 		$sDownloadURL = $oDoc->GetDownloadURL('EmailReplica', $iDocId, 'contents');
-		if(MailInboxBase::UseLegacy()){
-			$oPage->add('<h3><div class="attachment" id="display_attachment_'.$iDocId.'"><a href="'.$sDownloadURL.'">'.Dict::S('MailInbox:DownloadEml').'</a></div></h3>');
-		}
-		else{
-			$oSubtitle = new UIContentBlock();
-			$oSubtitle->AddHtml('<a href="'.$sDownloadURL.'">'.Dict::S('MailInbox:DownloadEml').'</a>');
-			$oPanel->SetSubTitleBlock($oSubtitle);
-		}
+		$oSubtitle = new UIContentBlock();
+		$oSubtitle->AddHtml('<a href="'.$sDownloadURL.'">'.Dict::S('MailInbox:DownloadEml').'</a>');
+		$oPanel->SetSubTitleBlock($oSubtitle);
 
 	}
 
@@ -78,13 +68,8 @@ function GetMessageDetails($oPage, $sUIDL)
 	{
 		$aValues[$sAttCode] = array('label' => MetaModel::GetLabel(get_class($oReplica), $sAttCode), 'value' => $oReplica->GetAsHTML($sAttCode));
 	}
-	if(MailInboxBase::UseLegacy()){
-		$oPage->details($aValues);
-	}
-	else{
-		$oPanel->AddHtml($oPage->GetDetails($aValues));
-		$oPage->AddUiBlock($oPanel);
-	}
+	$oPanel->AddHtml($oPage->GetDetails($aValues));
+	$oPage->AddUiBlock($oPanel);
 
 }
 

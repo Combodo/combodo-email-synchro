@@ -100,6 +100,7 @@ return array(
     'Carbon\\Unit' => $vendorDir . '/nesbot/carbon/src/Carbon/Unit.php',
     'Carbon\\WeekDay' => $vendorDir . '/nesbot/carbon/src/Carbon/WeekDay.php',
     'Carbon\\WrapperClock' => $vendorDir . '/nesbot/carbon/src/Carbon/WrapperClock.php',
+    'Combodo\\iTop\\Extension\\EmailSynchro\\Helper\\EmailHelper' => $baseDir . '/src/Helper/EmailHelper.php',
     'Combodo\\iTop\\Extension\\EmailSynchro\\Helper\\ImapOptionsHelper' => $baseDir . '/src/Helper/ImapOptionsHelper.php',
     'Combodo\\iTop\\Extension\\EmailSynchro\\Service\\IMAPEmailLogger' => $baseDir . '/src/Service/IMAPEmailLogger.php',
     'Combodo\\iTop\\Extension\\EmailSynchro\\Service\\IMAPEmailSource' => $baseDir . '/src/Service/IMAPEmailSource.php',

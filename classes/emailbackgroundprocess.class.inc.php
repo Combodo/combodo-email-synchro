@@ -18,6 +18,8 @@
  * @license     http://opensource.org/licenses/AGPL-3.0
  */
 
+use Combodo\iTop\Extension\EmailSynchro\Helper\EmailHelper;
+
 /**
  * The interface between iBackgroundProcess (generic background tasks for iTop)
  * and the emails processing mechanism based on EmailProcessor
@@ -156,8 +158,18 @@ class EmailBackgroundProcess implements iBackgroundProcess
 	{
 		if ( (self::$sNotifyErrorsTo != '') && (self::$sNotifyErrorsFrom != ''))
 		{
-			$oRawEmail->SendAsAttachment(self::$sNotifyErrorsTo, self::$sNotifyErrorsFrom, $sSubject, $sMessage);
-			//@mail(self::$sNotifyErrorsTo, $sSubject, $sMessage, 'From: '.self::$sNotifyErrorsFrom);
+			if ($oRawEmail != null) {
+				$oRawEmail->SendAsAttachment(self::$sNotifyErrorsTo, self::$sNotifyErrorsFrom, $sSubject, $sMessage);
+			} else {
+				$oEmail = new Email();
+				$oEmail->SetRecipientTO(self::$sNotifyErrorsTo);
+				$oEmail->SetSubject($sSubject);
+				$oEmail->SetBody($sMessage, 'text/html');
+
+				$aIssues = array();
+				$oEmail->SetRecipientFrom(self::$sNotifyErrorsFrom);
+				$oEmail->Send($aIssues, true /* bForceSynchronous */, null /* $oLog */);
+			}
 		}
 	}
 	
@@ -336,92 +348,92 @@ class EmailBackgroundProcess implements iBackgroundProcess
 										$this->Trace("Processing old (already read) message: $sUIDL");
 									}
 
-									try {
-										$oRawEmail = $oSource->GetMessage($iMessage);
+									$oRawEmail = $oSource->GetMessage($iMessage);
+									if ($oRawEmail == null && $oSource->GetLastErrorMessage() != "") {
+										$iTotalMarkedAsError++;
+										$this->Trace("Email too big, marking the message (and replica): uidl=$sUIDL index=$iMessage as in error.\n");
+										$oEmailReplica->Set('error_message', $oSource->GetLastErrorMessage());
+										$oEmailReplica->SetCurrentDate('message_date');
+										$oEmailReplica->Set('error_trace', $this->GetMessageTrace());
+										$oEmailReplica->Set('status', 'error');
 
-										$oEmail = $oRawEmail->Decode($oSource->GetPartsOrder());
-										if (!$oEmail->IsValid()) {
-											$aErrors = array();
-											$iNextActionCode = $oProcessor->OnDecodeError($oSource, $sUIDL, $oEmail, $oRawEmail, $aErrors);
-											$sMessage = implode("\n", $aErrors);
-											$this->Trace($sMessage);
-											switch ($iNextActionCode) {
-												case EmailProcessor::MARK_MESSAGE_AS_ERROR:
-													$iTotalMarkedAsError++;
-													$this->Trace("Failed to decode the message, marking the message (and replica): uidl=$sUIDL index=$iMessage as in error.");
-													$this->UpdateEmailReplica($oEmailReplica, $oProcessor);
-													$aReplicas[$sUIDL] = $oEmailReplica; // Remember this new replica, don't delete it later as "unused"
-													break;
-
-												case EmailProcessor::DELETE_MESSAGE:
-													$iTotalDeleted++;
-													$this->Trace("Failed to decode the message, deleting it (and its replica): $sUIDL");
-													$oSource->DeleteMessage($iMessage);
-													break;
-											}
-										} else {
-											$aErrors = array();
-											$iNextActionCode = $oProcessor->ProcessMessage($oSource, $iMessage, $oEmail, $oEmailReplica, $aErrors);
-											$sMessage = implode("\n", $aErrors);
-											$this->Trace($sMessage);
-											switch ($iNextActionCode) {
-												case EmailProcessor::MARK_MESSAGE_AS_ERROR:
-													$iTotalMarkedAsError++;
-													$this->Trace("Marking the message (and replica): uidl=$sUIDL index=$iMessage as in error.");
-													$this->UpdateEmailReplica($oEmailReplica, $oProcessor);
-													$aReplicas[$sUIDL] = $oEmailReplica; // Remember this new replica, don't delete it later as "unused"
-													$this->Trace("EmailReplica ID: ".$oEmailReplica->GetKey());
-													break;
-
-												case EmailProcessor::MARK_MESSAGE_AS_UNDESIRED:
-													$iTotalUndesired++;
-													$this->Trace("Marking the message (and replica): uidl=$sUIDL index=$iMessage as undesired.");
-													$this->UpdateEmailReplica($oEmailReplica, $oProcessor, 'undesired');
-													$aReplicas[$sUIDL] = $oEmailReplica; // Remember this new replica, don't delete it later as "unused"
-													break;
-
-												case EmailProcessor::DELETE_MESSAGE:
-													$iTotalDeleted++;
-													$this->Trace("Deleting message (and replica): $sUIDL");
-													$oSource->DeleteMessage($iMessage);
-													break;
-
-												case EmailProcessor::MOVE_MESSAGE:
-													$iTotalMoved++;
-													$this->Trace("Move message (and replica): $sUIDL");
-													$ret = $oSource->MoveMessage($iMessage);
-													break;
-
-												case EmailProcessor::PROCESS_ERROR:
-													$sSubject = $oProcessor->GetLastErrorSubject();
-													$sMessage = $oProcessor->GetLastErrorMessage();
-													$this->ReportError($sSubject, $sMessage, $oRawEmail);
-													$iTotalDeleted++;
-													$this->Trace("Deleting message (and replica): $sUIDL");
-													$oSource->DeleteMessage($iMessage);
-													break;
-
-												default:
-												case EmailProcessor::NO_ACTION:
-													$this->Trace("No more action for EmailReplica ID: ".$oEmailReplica->GetKey());
-													$this->UpdateEmailReplica($oEmailReplica, $oProcessor, 'ok', $oRawEmail);
-													$aReplicas[$sUIDL] = $oEmailReplica; // Remember this new replica, don't delete it later as "unused"
-													break;
-											}
-										}
-									} catch(EmailBiggerThanMaxMessageSizeException $e) {
-											$iTotalMarkedAsError++;
-											$this->Trace("Email too big, marking the message (and replica): uidl=$sUIDL index=$iMessage as in error.\n");
-											$sMessageSizeForHumans = static::HumanReadableSize($e->GetMessageSize());
-											$sMaxSizeForHumans = static::HumanReadableSize(static::$iMaxEmailSize);
-											$oEmailReplica->Set('error_message', Dict::Format('MailInboxProcessor:MessageTooBig_Size_MaxSize', $sMessageSizeForHumans, $sMaxSizeForHumans));
-											$oEmailReplica->SetCurrentDate('message_date');
-											$oEmailReplica->Set('error_trace', $this->GetMessageTrace());
-											$oEmailReplica->Set('status', 'error');
-
-											$oEmailReplica->DBWrite();
-											$aReplicas[$sUIDL] = $oEmailReplica; // Remember this new replica, don't delete it later as "unused"
+										$oEmailReplica->DBWrite();
+										$aReplicas[$sUIDL] = $oEmailReplica; // Remember this new replica, don't delete it later as "unused"
+										$this->ReportError($oSource->GetLastErrorSubject(), $oSource->GetLastErrorMessage(), null);
+										$this->Trace("Email too big, marking the message (and replica): uidl=$sUIDL index=$iMessage as in error.\n");
+										break;
 									}
+									$oEmail = $oRawEmail->Decode($oSource->GetPartsOrder());
+									if (!$oEmail->IsValid()) {
+										$aErrors = array();
+										$iNextActionCode = $oProcessor->OnDecodeError($oSource, $sUIDL, $oEmail, $oRawEmail, $aErrors);
+										$sMessage = implode("\n", $aErrors);
+										$this->Trace($sMessage);
+										switch ($iNextActionCode) {
+											case EmailProcessor::MARK_MESSAGE_AS_ERROR:
+												$iTotalMarkedAsError++;
+												$this->Trace("Failed to decode the message, marking the message (and replica): uidl=$sUIDL index=$iMessage as in error.");
+												$this->UpdateEmailReplica($oEmailReplica, $oProcessor);
+												$aReplicas[$sUIDL] = $oEmailReplica; // Remember this new replica, don't delete it later as "unused"
+												break;
+
+											case EmailProcessor::DELETE_MESSAGE:
+												$iTotalDeleted++;
+												$this->Trace("Failed to decode the message, deleting it (and its replica): $sUIDL");
+												$oSource->DeleteMessage($iMessage);
+												break;
+										}
+									} else {
+										$aErrors = array();
+										$iNextActionCode = $oProcessor->ProcessMessage($oSource, $iMessage, $oEmail, $oEmailReplica, $aErrors);
+										$sMessage = implode("\n", $aErrors);
+										$this->Trace($sMessage);
+										switch ($iNextActionCode) {
+											case EmailProcessor::MARK_MESSAGE_AS_ERROR:
+												$iTotalMarkedAsError++;
+												$this->Trace("Marking the message (and replica): uidl=$sUIDL index=$iMessage as in error.");
+												$this->UpdateEmailReplica($oEmailReplica, $oProcessor);
+												$aReplicas[$sUIDL] = $oEmailReplica; // Remember this new replica, don't delete it later as "unused"
+												$this->Trace("EmailReplica ID: ".$oEmailReplica->GetKey());
+												break;
+
+											case EmailProcessor::MARK_MESSAGE_AS_UNDESIRED:
+												$iTotalUndesired++;
+												$this->Trace("Marking the message (and replica): uidl=$sUIDL index=$iMessage as undesired.");
+												$this->UpdateEmailReplica($oEmailReplica, $oProcessor, 'undesired');
+												$aReplicas[$sUIDL] = $oEmailReplica; // Remember this new replica, don't delete it later as "unused"
+												break;
+
+											case EmailProcessor::DELETE_MESSAGE:
+												$iTotalDeleted++;
+												$this->Trace("Deleting message (and replica): $sUIDL");
+												$oSource->DeleteMessage($iMessage);
+												break;
+
+											case EmailProcessor::MOVE_MESSAGE:
+												$iTotalMoved++;
+												$this->Trace("Move message (and replica): $sUIDL");
+												$ret = $oSource->MoveMessage($iMessage);
+												break;
+
+											case EmailProcessor::PROCESS_ERROR:
+												$sSubject = $oProcessor->GetLastErrorSubject();
+												$sMessage = $oProcessor->GetLastErrorMessage();
+												$this->ReportError($sSubject, $sMessage, $oRawEmail);
+												$iTotalDeleted++;
+												$this->Trace("Deleting message (and replica): $sUIDL");
+												$oSource->DeleteMessage($iMessage);
+												break;
+
+											default:
+											case EmailProcessor::NO_ACTION:
+												$this->Trace("No more action for EmailReplica ID: ".$oEmailReplica->GetKey());
+												$this->UpdateEmailReplica($oEmailReplica, $oProcessor, 'ok', $oRawEmail);
+												$aReplicas[$sUIDL] = $oEmailReplica; // Remember this new replica, don't delete it later as "unused"
+												break;
+										}
+									}
+
 									break;
 
 								case EmailProcessor::NO_ACTION:
@@ -572,21 +584,5 @@ class EmailBackgroundProcess implements iBackgroundProcess
 			$this->Trace("EML too big ($iContentSize bytes) max is ($iMaxServerSize bytes), not saved in database.");
 			$oEmailReplica->Set('error_trace', $this->GetMessageTrace());
 		}
-	}
-
-	protected static function HumanReadableSize(int $size)
-	{
-		$aPrefixes = array('b', 'Kb', 'Mb', 'Gb', 'Tb', 'Pb');
-		$index = 0;
-		if ($size < 1024)
-		{
-			return $size.' b';
-		}
-		while (($size > 1023) && ($index < count($aPrefixes)))
-		{
-			$index++;
-			$size = $size / 1024;
-		}
-		return sprintf("%.2f %s", $size, $aPrefixes[$index] );
 	}
 }

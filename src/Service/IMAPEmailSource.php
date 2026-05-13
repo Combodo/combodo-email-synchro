@@ -2,7 +2,9 @@
 
 namespace Combodo\iTop\Extension\EmailSynchro\Service;
 
+use Combodo\iTop\Extension\EmailSynchro\Helper\EmailHelper;
 use Combodo\iTop\Extension\EmailSynchro\Helper\ImapOptionsHelper;
+use Dict;
 use DirectoryTree\ImapEngine\Enums\ImapFetchIdentifier;
 use DirectoryTree\ImapEngine\FolderInterface;
 use DirectoryTree\ImapEngine\Mailbox;
@@ -91,6 +93,8 @@ class IMAPEmailSource extends EmailSource
 
 	public function GetMessage($index)
 	{
+		$this->sLastErrorSubject = null;
+		$this->sLastErrorMessage = null;
 		[$iOffsetIndex, $identifier] = $this->ResolveMessageIdentifier($index);
 
 		IssueLog::Debug(__METHOD__." Start: uid=$iOffsetIndex index=$index for $this->sServer", static::LOG_CHANNEL);
@@ -102,6 +106,19 @@ class IMAPEmailSource extends EmailSource
 				->findOrFail($iOffsetIndex, $identifier);
 
 			if (!$oMessage) {
+				throw new Exception("Email with UID {$oMessage->uid()} is not found", 0);
+			}
+
+			$iMessageSize = strlen($oMessage);
+			if ($this->GetMaxMessageSize() > 0 && $iMessageSize > $this->GetMaxMessageSize()) {
+				IssueLog::Error("Message #$index is ".$iMessageSize." bytes, whereas the configured limit is ".$this->GetMaxMessageSize()." bytes", static::LOG_CHANNEL, [
+					'exception.message' => "Message #$index is ".$iMessageSize." bytes, whereas the configured limit is ".$this->GetMaxMessageSize()." bytes",
+					'exception.stack'   => '',
+				]);
+				$this->sLastErrorSubject = $oMessage->subject() ?? '';
+				$sMessageSizeForHumans = EmailHelper::HumanReadableSize($iMessageSize);
+				$sMaxSizeForHumans = EmailHelper::HumanReadableSize($this->GetMaxMessageSize());
+				$this->sLastErrorMessage = Dict::Format('MailInboxProcessor:MessageTooBig_Size_MaxSize', $sMessageSizeForHumans, $sMaxSizeForHumans);
 				return null;
 			}
 			$sUIDL = static::UseMessageIdAsUid() ? $oMessage->messageId() : $oMessage->uid();
@@ -110,6 +127,8 @@ class IMAPEmailSource extends EmailSource
 				'exception.message' => $e->getMessage(),
 				'exception.stack'   => $e->getTraceAsString(),
 			]);
+			$sLastErrorSubject = '';
+			$sLastErrorMessage = " uid=$iOffsetIndex for $this->sServer throws an exception";
 
 			return null;
 		}

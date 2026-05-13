@@ -21,13 +21,13 @@ class ComposerStaticInitea871028e601c117c14eea0cebe726cf
     );
 
     public static $prefixLengthsPsr4 = array (
-        'Z' =>
+        'Z' => 
         array (
             'ZBateson\\StreamDecorators\\' => 26,
             'ZBateson\\MbWrapper\\' => 19,
             'ZBateson\\MailMimeParser\\' => 24,
         ),
-        'S' =>
+        'S' => 
         array (
             'Symfony\\Polyfill\\Php83\\' => 23,
             'Symfony\\Polyfill\\Mbstring\\' => 26,
@@ -39,7 +39,7 @@ class ComposerStaticInitea871028e601c117c14eea0cebe726cf
             'Symfony\\Component\\Mime\\' => 23,
             'Symfony\\Component\\Clock\\' => 24,
         ),
-        'P' =>
+        'P' => 
         array (
             'Psr\\SimpleCache\\' => 16,
             'Psr\\Log\\' => 8,
@@ -47,31 +47,31 @@ class ComposerStaticInitea871028e601c117c14eea0cebe726cf
             'Psr\\Container\\' => 14,
             'Psr\\Clock\\' => 10,
         ),
-        'L' =>
+        'L' => 
         array (
             'Laravel\\SerializableClosure\\' => 28,
         ),
-        'I' =>
+        'I' => 
         array (
             'Invoker\\' => 8,
             'Illuminate\\Support\\' => 19,
             'Illuminate\\Contracts\\' => 21,
         ),
-        'G' =>
+        'G' => 
         array (
             'GuzzleHttp\\Psr7\\' => 16,
         ),
-        'E' =>
+        'E' => 
         array (
             'Egulias\\EmailValidator\\' => 23,
         ),
-        'D' =>
+        'D' => 
         array (
             'Doctrine\\Common\\Lexer\\' => 22,
             'DirectoryTree\\ImapEngine\\' => 25,
             'DI\\' => 3,
         ),
-        'C' =>
+        'C' => 
         array (
             'Combodo\\iTop\\Extension\\EmailSynchro\\' => 36,
             'Carbon\\Doctrine\\' => 16,
@@ -80,122 +80,122 @@ class ComposerStaticInitea871028e601c117c14eea0cebe726cf
     );
 
     public static $prefixDirsPsr4 = array (
-        'ZBateson\\StreamDecorators\\' =>
+        'ZBateson\\StreamDecorators\\' => 
         array (
             0 => __DIR__ . '/..' . '/zbateson/stream-decorators/src',
         ),
-        'ZBateson\\MbWrapper\\' =>
+        'ZBateson\\MbWrapper\\' => 
         array (
             0 => __DIR__ . '/..' . '/zbateson/mb-wrapper/src',
         ),
-        'ZBateson\\MailMimeParser\\' =>
+        'ZBateson\\MailMimeParser\\' => 
         array (
             0 => __DIR__ . '/..' . '/zbateson/mail-mime-parser/src',
         ),
-        'Symfony\\Polyfill\\Php83\\' =>
+        'Symfony\\Polyfill\\Php83\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/polyfill-php83',
         ),
-        'Symfony\\Polyfill\\Mbstring\\' =>
+        'Symfony\\Polyfill\\Mbstring\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/polyfill-mbstring',
         ),
-        'Symfony\\Polyfill\\Intl\\Normalizer\\' =>
+        'Symfony\\Polyfill\\Intl\\Normalizer\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/polyfill-intl-normalizer',
         ),
-        'Symfony\\Polyfill\\Intl\\Idn\\' =>
+        'Symfony\\Polyfill\\Intl\\Idn\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/polyfill-intl-idn',
         ),
-        'Symfony\\Polyfill\\Iconv\\' =>
+        'Symfony\\Polyfill\\Iconv\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/polyfill-iconv',
         ),
-        'Symfony\\Contracts\\Translation\\' =>
+        'Symfony\\Contracts\\Translation\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/translation-contracts',
         ),
-        'Symfony\\Component\\Translation\\' =>
+        'Symfony\\Component\\Translation\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/translation',
         ),
-        'Symfony\\Component\\Mime\\' =>
+        'Symfony\\Component\\Mime\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/mime',
         ),
-        'Symfony\\Component\\Clock\\' =>
+        'Symfony\\Component\\Clock\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/clock',
         ),
-        'Psr\\SimpleCache\\' =>
+        'Psr\\SimpleCache\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/simple-cache/src',
         ),
-        'Psr\\Log\\' =>
+        'Psr\\Log\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/log/src',
         ),
-        'Psr\\Http\\Message\\' =>
+        'Psr\\Http\\Message\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/http-factory/src',
             1 => __DIR__ . '/..' . '/psr/http-message/src',
         ),
-        'Psr\\Container\\' =>
+        'Psr\\Container\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/container/src',
         ),
-        'Psr\\Clock\\' =>
+        'Psr\\Clock\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/clock/src',
         ),
-        'Laravel\\SerializableClosure\\' =>
+        'Laravel\\SerializableClosure\\' => 
         array (
             0 => __DIR__ . '/..' . '/laravel/serializable-closure/src',
         ),
-        'Invoker\\' =>
+        'Invoker\\' => 
         array (
             0 => __DIR__ . '/..' . '/php-di/invoker/src',
         ),
-        'Illuminate\\Support\\' =>
+        'Illuminate\\Support\\' => 
         array (
             0 => __DIR__ . '/..' . '/illuminate/collections',
             1 => __DIR__ . '/..' . '/illuminate/macroable',
             2 => __DIR__ . '/..' . '/illuminate/conditionable',
         ),
-        'Illuminate\\Contracts\\' =>
+        'Illuminate\\Contracts\\' => 
         array (
             0 => __DIR__ . '/..' . '/illuminate/contracts',
         ),
-        'GuzzleHttp\\Psr7\\' =>
+        'GuzzleHttp\\Psr7\\' => 
         array (
             0 => __DIR__ . '/..' . '/guzzlehttp/psr7/src',
         ),
-        'Egulias\\EmailValidator\\' =>
+        'Egulias\\EmailValidator\\' => 
         array (
             0 => __DIR__ . '/..' . '/egulias/email-validator/src',
         ),
-        'Doctrine\\Common\\Lexer\\' =>
+        'Doctrine\\Common\\Lexer\\' => 
         array (
             0 => __DIR__ . '/..' . '/doctrine/lexer/src',
         ),
-        'DirectoryTree\\ImapEngine\\' =>
+        'DirectoryTree\\ImapEngine\\' => 
         array (
             0 => __DIR__ . '/..' . '/directorytree/imapengine/src',
         ),
-        'DI\\' =>
+        'DI\\' => 
         array (
             0 => __DIR__ . '/..' . '/php-di/php-di/src',
         ),
-        'Combodo\\iTop\\Extension\\EmailSynchro\\' =>
+        'Combodo\\iTop\\Extension\\EmailSynchro\\' => 
         array (
             0 => __DIR__ . '/../..' . '/src',
         ),
-        'Carbon\\Doctrine\\' =>
+        'Carbon\\Doctrine\\' => 
         array (
             0 => __DIR__ . '/..' . '/carbonphp/carbon-doctrine-types/src/Carbon/Doctrine',
         ),
-        'Carbon\\' =>
+        'Carbon\\' => 
         array (
             0 => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon',
         ),
@@ -296,6 +296,7 @@ class ComposerStaticInitea871028e601c117c14eea0cebe726cf
         'Carbon\\Unit' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/Unit.php',
         'Carbon\\WeekDay' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/WeekDay.php',
         'Carbon\\WrapperClock' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/WrapperClock.php',
+        'Combodo\\iTop\\Extension\\EmailSynchro\\Helper\\EmailHelper' => __DIR__ . '/../..' . '/src/Helper/EmailHelper.php',
         'Combodo\\iTop\\Extension\\EmailSynchro\\Helper\\ImapOptionsHelper' => __DIR__ . '/../..' . '/src/Helper/ImapOptionsHelper.php',
         'Combodo\\iTop\\Extension\\EmailSynchro\\Service\\IMAPEmailLogger' => __DIR__ . '/../..' . '/src/Service/IMAPEmailLogger.php',
         'Combodo\\iTop\\Extension\\EmailSynchro\\Service\\IMAPEmailSource' => __DIR__ . '/../..' . '/src/Service/IMAPEmailSource.php',

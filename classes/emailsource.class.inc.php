@@ -20,32 +20,6 @@
  */
 
 /**
- * Exception triggered when encountering messages too big to be read
- */
-class EmailBiggerThanMaxMessageSizeException extends Exception
-{
-	/**
-	 * @var int
-	 */
-	protected $iMessageSize;
-
-	/**
-	 *
-	 * @inheritDoc
-	 */
-	public function __construct($message = null, $iMessageSize = 0, $code = null, $previous = null)
-	{
-		parent::__construct($message, $code, $previous);
-		$this->iMessageSize = $iMessageSize;
-	}
-
-	public function GetMessageSize()
-	{
-		return $this->iMessageSize;
-	}
-}
-
-/**
  * A source of messages either POP3, IMAP or File...
  */
 abstract class EmailSource
@@ -56,7 +30,8 @@ abstract class EmailSource
 	protected $token;
 	/**
 	 * Maximum size for reading messages
-	 * Messages larger than this value will not be read (will cause an EmailBiggerThanMaxMessageSizeException)
+	 * Messages larger than this value will not be read
+	 *
 	 * @var int|float
 	 */
 	protected $maxMessageSize;
@@ -202,7 +177,8 @@ abstract class EmailSource
 
 	/**
 	 * Set the maximum size for a message (in byte)
-	 * Messages larger than this value will not be read (will cause an EmailBiggerThanMaxMessageSizeException)
+	 * Messages larger than this value will not be read
+	 *
 	 * @param int|float $maxMessageSize Could be an int if we are not on 32-bit system since 2Gb may be too small as a limit one day
 	 */
 	public function SetMaxMessageSize($maxMessageSize)

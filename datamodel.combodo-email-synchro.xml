@@ -109,7 +109,6 @@
           <code><![CDATA[	function DisplayBareRelations(WebPage $oPage, $bEditMode = false)
 	{
 		parent::DisplayBareRelations($oPage, $bEditMode);
-    $bUseLegacy = static::UseLegacy();
 		if (!$bEditMode)
 		{
 			$oPage->SetCurrentTab(Dict::S('MailInbox:MailboxContent'));
@@ -138,7 +137,6 @@
 			$sAjaxUrl = addslashes(utils::GetAbsoluteUrlModulesRoot().basename(dirname(__FILE__)).'/ajax.php');
 			$iId = $this->GetKey();
 			$sConfirmMessage = Dict::S('MailInbox:MailboxContent:ConfirmMessage');
-			$sUseLegacy = $bUseLegacy === true ? 'true' : 'false';
 			$oPage->add_script(
 <<<JS
 function MailboxUpdateActionButtons()
@@ -157,9 +155,6 @@ function MailboxRefresh(data)
 {
 	$('#mailbox_content_output').html(data);
 	$('#mailbox_content_refresh').prop('disabled', false);
-	if ($sUseLegacy){
-	  $("#mailbox_content_output .listResults").tablesorter( { headers: { 0: {sorter: false}}, widgets: ['myZebra']} ); // sortable and zebra tables
-	}
 	$("#mailbox_checkall").click(function() {
 		var bChecked = $(this).prop('checked');
 		$(".mailbox_item").each(function() {
