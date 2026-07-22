@@ -26,14 +26,6 @@
 require_once('../../approot.inc.php');
 require_once(APPROOT.'/application/application.inc.php');
 
-//remove require itopdesignformat at the same time as version_compare(ITOP_DESIGN_LATEST_VERSION , '3.0') < 0
-if (!defined("ITOP_DESIGN_LATEST_VERSION")) {
-	require_once APPROOT.'setup/itopdesignformat.class.inc.php';
-}
-if (version_compare(ITOP_DESIGN_LATEST_VERSION, '3.0') < 0) {
-	require_once(APPROOT.'/application/ajaxwebpage.class.inc.php');
-}
-
 /**
  * @param \ajax_page $oPage
  * @param \MailInboxBase $oInbox
@@ -225,11 +217,7 @@ try {
 	require_once(APPROOT.'/application/loginwebpage.class.inc.php');
 	LoginWebPage::DoLogin(); // Check user rights and prompt if needed
 
-	if (version_compare(ITOP_DESIGN_LATEST_VERSION, '3.0') < 0) {
-		$oPage = new ajax_page('');
-	} else {
-		$oPage = new AjaxPage('');
-	}
+	$oPage = new AjaxPage('');
 
 	$sOperation = utils::ReadParam('operation', '');
 	$iMailInboxId = utils::ReadParam('id', 0, false, 'raw_data');
