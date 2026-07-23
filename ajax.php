@@ -26,6 +26,8 @@
 require_once('../../approot.inc.php');
 require_once(APPROOT.'/application/application.inc.php');
 
+use Combodo\iTop\Application\WebPage\AjaxPage;
+
 /**
  * @param \ajax_page $oPage
  * @param \MailInboxBase $oInbox
