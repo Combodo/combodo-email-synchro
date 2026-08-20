@@ -2,7 +2,7 @@
 
 SetupWebPage::AddModule(
 	__FILE__, // Path to the current file, all other file names are relative to the directory containing this file
-	'combodo-email-synchro/3.9.3',
+	'combodo-email-synchro/3.10.0',
 	[
 		// Identification
 		'label'        => 'Tickets synchronization via e-mail',
